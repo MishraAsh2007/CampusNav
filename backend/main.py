@@ -2,14 +2,23 @@ import json
 import os
 from contextlib import asynccontextmanager
 from datetime import UTC, datetime, timedelta
+from hmac import compare_digest
 from pathlib import Path
 from threading import Lock
 from typing import TYPE_CHECKING, Annotated, Literal
 from uuid import uuid4
 
-from fastapi import FastAPI, HTTPException, Request, status
+from fastapi import Depends, FastAPI, HTTPException, Request, Security, status
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
+from fastapi.security import APIKeyHeader
+from pydantic import (
+    AwareDatetime,
+    BaseModel,
+    ConfigDict,
+    Field,
+    computed_field,
+    model_validator,
+)
 
 if TYPE_CHECKING:
     from pymongo.collection import Collection
@@ -21,9 +30,63 @@ CLOSURES_FILE = Path(__file__).with_name("closures.json")
 OFFICIAL_SNAPSHOT_ID = "umass-service-interruptions"
 
 
-class ClosureLocation(BaseModel):
+class MapPoint(BaseModel):
     lat: Annotated[float, Field(ge=-90, le=90)]
     lng: Annotated[float, Field(ge=-180, le=180)]
+
+
+class Entrance(MapPoint):
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
+    name: Annotated[str, Field(min_length=1)]
+    step_free: bool
+    hasAutoDoorOpener: bool | None = None
+    isAccessibleToAllFloors: bool | None = None
+    IsKeyCardRequired: bool | None = None
+    automatic_door: bool | None = None
+
+    @model_validator(mode="after")
+    def normalize_door_opener(self) -> "Entrance":
+        if self.hasAutoDoorOpener is None:
+            self.hasAutoDoorOpener = self.automatic_door
+        elif self.automatic_door is not None and self.hasAutoDoorOpener != self.automatic_door:
+            raise ValueError("Door opener fields disagree")
+        self.automatic_door = self.hasAutoDoorOpener
+        return self
+
+
+class IndoorLocation(BaseModel):
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
+    location: Annotated[str, Field(min_length=1)]
+    lat: Annotated[float, Field(ge=-90, le=90)] | None = None
+    lng: Annotated[float, Field(ge=-180, le=180)] | None = None
+
+
+class Bathroom(IndoorLocation):
+    transfer_type: Annotated[str, Field(min_length=1)] | None
+
+
+class Building(MapPoint):
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
+    id: Annotated[str, Field(pattern=r"^[a-z0-9]+(-[a-z0-9]+)*$")]
+    name: Annotated[str, Field(min_length=1)]
+    entrances: list[Entrance]
+    elevator_count: Annotated[int, Field(ge=0)] | None = None
+    elevators: list[IndoorLocation] = Field(default_factory=list)
+    bathrooms: list[Bathroom] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def set_elevator_count(self) -> "Building":
+        if self.elevator_count is None:
+            self.elevator_count = len(self.elevators)
+        elif self.elevator_count < len(self.elevators):
+            raise ValueError("Elevator count cannot be smaller than the list of elevator locations")
+        return self
+
+
+class ClosureLocation(MapPoint):
     radius: Annotated[float, Field(gt=0, allow_inf_nan=False)] = 10.0
     type: Literal["elevator", "ramp", "path", "construction"]
 
@@ -41,6 +104,70 @@ class Closure(ClosureLocation):
     last_confirmed: AwareDatetime
     title: str | None = None
     details: str | None = None
+    description: str | None = None
+
+    @model_validator(mode="after")
+    def fill_official_description(self) -> "Closure":
+        if self.source == "official" and self.description is None:
+            self.description = self.details or self.title
+        return self
+
+    @computed_field
+    @property
+    def last_updated(self) -> datetime:
+        return self.last_confirmed
+
+    @computed_field
+    @property
+    def location(self) -> MapPoint:
+        return MapPoint(lat=self.lat, lng=self.lng)
+
+
+class OfficialNotice(BaseModel):
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
+    id: Annotated[str, Field(min_length=1)]
+    type: Literal["elevator", "ramp", "path", "construction"]
+    radius: Annotated[float, Field(gt=0, allow_inf_nan=False)] = 10.0
+    location: MapPoint | None = None
+    lat: Annotated[float, Field(ge=-90, le=90)] | None = None
+    lng: Annotated[float, Field(ge=-180, le=180)] | None = None
+    title: Annotated[str, Field(min_length=1)] | None = None
+    description: Annotated[str, Field(min_length=1)] | None = None
+    details: str | None = None
+    start_time: AwareDatetime | None = None
+    end_time: AwareDatetime | None = None
+
+    @model_validator(mode="after")
+    def validate_notice(self) -> "OfficialNotice":
+        if self.location is not None:
+            if (
+                (self.lat is not None and self.lat != self.location.lat)
+                or (self.lng is not None and self.lng != self.location.lng)
+            ):
+                raise ValueError("Location disagrees with top-level coordinates")
+            self.lat, self.lng = self.location.lat, self.location.lng
+        if self.lat is None or self.lng is None:
+            raise ValueError("Location coordinates are required")
+        self.description = self.description or self.details or self.title
+        if not self.description:
+            raise ValueError("A description is required")
+        self.title = self.title or self.description
+        if self.start_time is not None and self.end_time is not None and self.end_time <= self.start_time:
+            raise ValueError("End time must be after start time")
+        return self
+
+
+class OfficialSnapshot(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    closures: list[OfficialNotice]
+
+    @model_validator(mode="after")
+    def validate_unique_ids(self) -> "OfficialSnapshot":
+        if len({notice.id for notice in self.closures}) != len(self.closures):
+            raise ValueError("Official closure IDs must be unique")
+        return self
 
 
 def utc_now() -> datetime:
@@ -52,6 +179,8 @@ def utc_now() -> datetime:
 class MemoryClosures:
     def __init__(self) -> None:
         self.closures: list[Closure] = []
+        self.official_closures: list[Closure] = []
+        self.buildings: dict[str, Building] = {}
         self.lock = Lock()
 
     def add(self, closure: Closure) -> None:
@@ -82,11 +211,32 @@ class MemoryClosures:
                     return updated
         return None
 
+    def list_official(self) -> list[Closure]:
+        with self.lock:
+            return list(self.official_closures)
+
+    def replace_official(self, closures: list[Closure]) -> None:
+        with self.lock:
+            self.official_closures = closures
+
+    def list_buildings(self) -> list[Building]:
+        with self.lock:
+            return list(self.buildings.values())
+
+    def add_building(self, building: Building) -> None:
+        with self.lock:
+            if building.id in self.buildings:
+                raise HTTPException(status_code=409, detail="Building ID already exists")
+            self.buildings[building.id] = building
+
 
 class MongoClosures:
-    def __init__(self, collection: "Collection", official_snapshots: "Collection") -> None:
+    def __init__(
+        self, collection: "Collection", official_snapshots: "Collection", buildings: "Collection"
+    ) -> None:
         self.collection = collection
         self.official_snapshots = official_snapshots
+        self.buildings = buildings
 
     def add(self, closure: Closure) -> None:
         from pymongo.errors import PyMongoError
@@ -105,17 +255,10 @@ class MongoClosures:
             documents = self.collection.find(
                 {"start_time": {"$lte": now}, "end_time": {"$gt": now}}
             )
-            closures = [
+            return [
                 Closure.model_validate({**document, "id": document["_id"]})
                 for document in documents
             ]
-            snapshot = self.official_snapshots.find_one({"_id": OFFICIAL_SNAPSHOT_ID})
-            if snapshot:
-                closures.extend(
-                    closure for item in snapshot["closures"]
-                    if (closure := Closure.model_validate(item)).start_time <= now
-                )
-            return closures
         except PyMongoError as error:
             raise HTTPException(status_code=503, detail="Closure storage is unavailable") from error
 
@@ -131,7 +274,10 @@ class MongoClosures:
                 },
                 [
                     {"$set": {"last_confirmed": {"$max": ["$$NOW", "$last_confirmed"]}}},
-                    {"$set": {"end_time": {"$add": ["$last_confirmed", REPORT_LIFETIME_MS]}}},
+                    {"$set": {
+                        "end_time": {"$add": ["$last_confirmed", REPORT_LIFETIME_MS]},
+                        "last_updated": "$last_confirmed",
+                    }},
                 ],
                 return_document=ReturnDocument.AFTER,
             )
@@ -140,6 +286,51 @@ class MongoClosures:
             return None
         except PyMongoError as error:
             raise HTTPException(status_code=503, detail="Closure storage is unavailable") from error
+
+    def list_official(self) -> list[Closure]:
+        from pymongo.errors import PyMongoError
+
+        try:
+            snapshot = self.official_snapshots.find_one({"_id": OFFICIAL_SNAPSHOT_ID})
+            return [Closure.model_validate(item) for item in snapshot["closures"]] if snapshot else []
+        except PyMongoError as error:
+            raise HTTPException(status_code=503, detail="Official closure storage is unavailable") from error
+
+    def replace_official(self, closures: list[Closure]) -> None:
+        from pymongo.errors import PyMongoError
+
+        try:
+            self.official_snapshots.update_one(
+                {"_id": OFFICIAL_SNAPSHOT_ID},
+                {"$set": {"closures": [closure.model_dump() for closure in closures]}},
+                upsert=True,
+            )
+        except PyMongoError as error:
+            raise HTTPException(status_code=503, detail="Official closure storage is unavailable") from error
+
+    def list_buildings(self) -> list[Building]:
+        from pymongo.errors import PyMongoError
+
+        try:
+            buildings = []
+            for document in self.buildings.find():
+                document["id"] = document.pop("_id")
+                buildings.append(Building.model_validate(document))
+            return buildings
+        except PyMongoError as error:
+            raise HTTPException(status_code=503, detail="Building storage is unavailable") from error
+
+    def add_building(self, building: Building) -> None:
+        from pymongo.errors import DuplicateKeyError, PyMongoError
+
+        document = building.model_dump()
+        document["_id"] = document.pop("id")
+        try:
+            self.buildings.insert_one(document)
+        except DuplicateKeyError as error:
+            raise HTTPException(status_code=409, detail="Building ID already exists") from error
+        except PyMongoError as error:
+            raise HTTPException(status_code=503, detail="Building storage is unavailable") from error
 
 
 def seed_demo(store: MemoryClosures) -> None:
@@ -162,10 +353,17 @@ async def lifespan(app: FastAPI):
     mongo_uri = os.environ.get("MONGODB_URI")
     if mongo_uri:
         from pymongo import MongoClient
+        from pymongo.errors import OperationFailure
 
         with MongoClient(mongo_uri, tz_aware=True, timeoutMS=5000) as client:
             db = client[os.environ.get("MONGODB_DB", "campusnav")]
-            collection = db["closures"]
+            for name in ("Buildings", "OfficialClosures"):
+                try:
+                    db.create_collection(name, check_exists=False)
+                except OperationFailure as error:
+                    if error.code != 48:  # NamespaceExists
+                        raise
+            collection = db["CommunityReports"]
             # TTL cleanup runs periodically. The read query also filters by end_time.
             new_expiry = {"$add": ["$last_confirmed", REPORT_LIFETIME_MS]}
             collection.update_many(
@@ -173,7 +371,7 @@ async def lifespan(app: FastAPI):
                 [{"$set": {"end_time": new_expiry}}],
             )
             collection.create_index("end_time", expireAfterSeconds=0)
-            app.state.closures = MongoClosures(collection, db["official_snapshots"])
+            app.state.closures = MongoClosures(collection, db["OfficialClosures"], db["Buildings"])
             yield
     else:
         store = MemoryClosures()
@@ -190,8 +388,18 @@ origins = [
     if origin.strip()
 ]
 app.add_middleware(
-    CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST"], allow_headers=["Content-Type"]
+    CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type", "X-Admin-Key"],
 )
+admin_header = APIKeyHeader(name="X-Admin-Key", auto_error=False)
+
+
+def require_admin(key: Annotated[str | None, Security(admin_header)]) -> None:
+    expected = os.environ.get("CAMPUSNAV_ADMIN_KEY")
+    if not expected:
+        raise HTTPException(status_code=503, detail="Admin writes are disabled")
+    if key is None or not compare_digest(key.encode(), expected.encode()):
+        raise HTTPException(status_code=403, detail="Invalid admin key")
 
 
 @app.get("/health")
@@ -202,11 +410,67 @@ def health() -> dict[str, str]:
 @app.get("/closures")
 def get_closures(request: Request) -> list[Closure]:
     """Return currently active closures, most recently confirmed first."""
-    closures = request.app.state.closures.active(utc_now())
+    now = utc_now()
+    store = request.app.state.closures
+    closures = store.active(now)
+    closures.extend(
+        notice for notice in store.list_official()
+        if notice.start_time <= now and (notice.end_time is None or now < notice.end_time)
+    )
     return sorted(closures, key=lambda closure: (closure.last_confirmed, closure.id), reverse=True)
 
 
-@app.post("/reports", status_code=status.HTTP_201_CREATED)
+@app.get("/buildings")
+def get_buildings(request: Request) -> list[Building]:
+    return sorted(request.app.state.closures.list_buildings(), key=lambda building: building.id)
+
+
+@app.post("/buildings", status_code=status.HTTP_201_CREATED, dependencies=[Depends(require_admin)])
+def create_building(building: Building, request: Request) -> Building:
+    request.app.state.closures.add_building(building)
+    return building
+
+
+@app.get("/official-reports")
+def get_official_closures(request: Request) -> list[Closure]:
+    """Return the current official snapshot, including any scheduled notices."""
+    return request.app.state.closures.list_official()
+
+
+@app.post("/official-reports", dependencies=[Depends(require_admin)])
+def replace_official_closures(snapshot: OfficialSnapshot, request: Request) -> list[Closure]:
+    """Replace the complete current official snapshot."""
+    now = utc_now()
+    if any(
+        notice.start_time is None and notice.end_time is not None and notice.end_time <= now
+        for notice in snapshot.closures
+    ):
+        raise HTTPException(status_code=422, detail="An end time before posting requires an earlier start time")
+    closures = [
+        Closure(
+            **notice.model_dump(exclude={"start_time", "location"}),
+            source="official",
+            start_time=notice.start_time or now,
+            last_confirmed=now,
+        )
+        for notice in snapshot.closures
+    ]
+    request.app.state.closures.replace_official(closures)
+    return closures
+
+
+@app.get("/community-reports")
+def get_reports(request: Request) -> list[Closure]:
+    """Return active community reports."""
+    reports = request.app.state.closures.active(utc_now())
+    return sorted(
+        (report for report in reports if report.source == "community"),
+        key=lambda report: (report.last_confirmed, report.id),
+        reverse=True,
+    )
+
+
+@app.post("/community-reports", status_code=status.HTTP_201_CREATED)
 def create_report(report: ReportCreate, request: Request) -> Closure:
     """Record a community report and make its closure immediately available."""
     now = utc_now()
@@ -221,7 +485,7 @@ def create_report(report: ReportCreate, request: Request) -> Closure:
     return closure
 
 
-@app.post("/reports/{report_id}/confirm")
+@app.post("/community-reports/{report_id}/confirm")
 def confirm_report(report_id: str, request: Request) -> Closure:
     """Keep an active community report for another 48 hours."""
     closure = request.app.state.closures.confirm(report_id)
