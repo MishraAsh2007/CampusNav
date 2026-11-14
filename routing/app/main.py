@@ -58,7 +58,11 @@ def route(req: RouteRequest) -> RouteResponse:
         raise HTTPException(503, detail=f"graph not loaded: {app.state.graph_error}")
 
     # Reject points far outside the covered area rather than snapping across campus.
-    points = [("start", req.start.lat, req.start.lon)]
+    points = []
+    if req.start is not None:
+        points.append(("start", req.start.lat, req.start.lon))
+    if req.origin is not None:
+        points.append((f"origin {req.origin.building.name}", req.origin.building.lat, req.origin.building.lng))
     if req.end is not None:
         points.append(("end", req.end.lat, req.end.lon))
     if req.destination is not None:

@@ -170,7 +170,12 @@ class Destination(BaseModel):
 
 
 class RouteRequest(BaseModel):
-    start: LatLon
+    start: Optional[LatLon] = Field(default=None, description="Required unless `origin` is given")
+    origin: Optional[Destination] = Field(
+        default=None,
+        description="Start building: the engine picks the exit. `needs_elevator` = user is on a floor "
+                    "that needs an elevator to reach the exit level.",
+    )
     end: Optional[LatLon] = Field(default=None, description="Required unless `destination` is given")
     destination: Optional[Destination] = None
     max_grade_pct: float = Field(default=config.DEFAULT_MAX_GRADE_PCT, ge=0, le=config.MAX_GRADE_PCT_LIMIT)
@@ -182,6 +187,8 @@ class RouteRequest(BaseModel):
     def _needs_target(self) -> "RouteRequest":
         if self.end is None and self.destination is None:
             raise ValueError("give `end` or `destination`")
+        if self.start is None and self.origin is None:
+            raise ValueError("give `start` or `origin`")
         return self
 
 
@@ -292,9 +299,23 @@ class DestinationPlan(BaseModel):
     warnings: list[str] = Field(default_factory=list, description="Plain-language notes for the user")
 
 
+class OriginPlan(BaseModel):
+    building_id: str
+    building_name: str
+    room: Optional[str] = None
+    needs_elevator: bool
+    can_reach_exit: bool = Field(description="False if the user needs an elevator and none works")
+    exit: Optional[EntranceOption] = Field(default=None, description="Where the accessible route starts")
+    standard_exit: Optional[EntranceOption] = Field(default=None, description="Where the standard route starts")
+    exits: list[EntranceOption] = Field(default_factory=list)
+    elevators: ElevatorStatus
+    warnings: list[str] = Field(default_factory=list)
+
+
 class RouteResponse(BaseModel):
     accessible: RouteResult
     standard: Optional[RouteResult] = None
+    origin: Optional[OriginPlan] = None
     destination: Optional[DestinationPlan] = None
     meta: RouteMeta
 

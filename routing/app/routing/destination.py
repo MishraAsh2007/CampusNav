@@ -262,24 +262,43 @@ def _with_standard(target: PlannedTarget, G, dest: Destination, active: list[Clo
     """Shortest route: nearest entrance that isn't closed to everyone (stairs and doors don't matter)."""
     if std_prefs is None or not dest.building.entrances:
         return target
-    best = None
-    for e in dest.building.entrances:
-        if any(c.type in AFFECTS_STANDARD and _near(c, e.lat, e.lng) for c in active):
-            continue
-        node, snap = nearest_node(G, e.lat, e.lng)
-        path = find_path(G, source, node, std_prefs, std_blocked or {})
-        if path is None:
-            continue
-        length = path_cost(G, path, std_prefs, std_blocked or {})[1]
-        if best is None or length < best[0]:
-            best = (length, e, node, snap, path)
+    best = best_open_door(G, dest.building.entrances, active, source, std_prefs, std_blocked or {})
     if best is None:
         return target
     length, e, node, snap, path = best
     target.standard_node, target.standard_snap_m, target.standard_path = node, snap, path
-    target.plan.standard_entrance = EntranceOption(
-        id=e.id, name=e.name, lat=e.lat, lon=e.lng, step_free=e.step_free, usable=True, chosen=True,
-        route_distance_m=round(length, 1), auto_door=e.auto_door, key_card_required=e.IsKeyCardRequired,
-        accessible_to_all_floors=e.isAccessibleToAllFloors,
-    )
+    target.plan.standard_entrance = door_option(e, length)
     return target
+
+
+def open_doors(G, doors: list[DestinationEntrance], active: list[Closure]) -> list[tuple[DestinationEntrance, int, float]]:
+    """Doors not closed to everyone (steps and openers don't matter), with their graph nodes."""
+    out = []
+    for e in doors:
+        if any(c.type in AFFECTS_STANDARD and _near(c, e.lat, e.lng) for c in active):
+            continue
+        node, snap = nearest_node(G, e.lat, e.lng)
+        out.append((e, node, snap))
+    return out
+
+
+def best_open_door(G, doors: list[DestinationEntrance], active: list[Closure], source: int,
+                   prefs: Prefs, blocked: Mapping[EdgeKey, object]):
+    """Shortest route from ``source`` to any open door: (length, door, node, snap, path) or None."""
+    best = None
+    for e, node, snap in open_doors(G, doors, active):
+        path = find_path(G, source, node, prefs, blocked)
+        if path is None:
+            continue
+        length = path_cost(G, path, prefs, blocked)[1]
+        if best is None or length < best[0]:
+            best = (length, e, node, snap, path)
+    return best
+
+
+def door_option(e: DestinationEntrance, length: Optional[float]) -> EntranceOption:
+    return EntranceOption(
+        id=e.id, name=e.name, lat=e.lat, lon=e.lng, step_free=e.step_free, usable=True, chosen=True,
+        route_distance_m=round(length, 1) if length is not None else None, auto_door=e.auto_door,
+        key_card_required=e.IsKeyCardRequired, accessible_to_all_floors=e.isAccessibleToAllFloors,
+    )

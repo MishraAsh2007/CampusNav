@@ -9,7 +9,7 @@ import networkx as nx
 
 from ..schemas import RouteMeta, RouteRequest, RouteResponse, RouteResult, SnapInfo
 from ..utils.geo import haversine_m, nearest_node, node_latlon
-from .closures import ClosureIndex, resolve_closures
+from .closures import ClosureIndex, is_active, resolve_closures
 from .serialize import not_found, serialize_path
 from .snapping import Snap, snap_points
 from .weights import ACCESSIBLE, STANDARD, EdgeKey, Prefs, best_parallel_edge, make_weight_fn
@@ -82,11 +82,65 @@ def plan_routes(G, req: RouteRequest, now: Optional[datetime] = None) -> RouteRe
     if not req.avoid_steps:
         note = " under the grade limit"
 
+    blocked_a, blocked_s = idx.blocked_for(ACCESSIBLE), idx.blocked_for(STANDARD)
+
     # Standard route: plain nearest junction. Accessible route: avoid dead-end junctions.
-    src, src_d = nearest_node(G, req.start.lat, req.start.lon)
+    o = req.origin
+    anchor = (req.start.lat, req.start.lon) if req.start is not None else (o.building.lat, o.building.lng)
+    src, src_d = nearest_node(G, *anchor)
     end_pt = (req.end.lat, req.end.lon) if req.end is not None else None
-    acc_s, acc_e = snap_points(G, (req.start.lat, req.start.lon), end_pt, acc_prefs, idx.blocked_for(ACCESSIBLE))
+    acc_s, acc_e = snap_points(G, anchor, end_pt, acc_prefs, blocked_a)
     acc_src = acc_s.node
+
+    origin_plan = None
+    origin_blocked = False
+    if o is not None:
+        # Look ahead from the start building: the best exit is the one with the cheapest whole trip.
+        from .destination import best_open_door
+        from .origin import plan_origin, standard_exit
+
+        active = [c for c in req.closures if is_active(c, now)]
+        dest_b = req.destination.building if req.destination is not None else None
+        std_end = None
+        if dest_b is None:
+            std_end = nearest_node(G, req.end.lat, req.end.lon)[0]
+        elif not dest_b.entrances:
+            std_end = nearest_node(G, dest_b.lat, dest_b.lng)[0]
+
+        def acc_onward(n):
+            if req.destination is not None:
+                t = plan_destination(G, req.destination, req.closures, now, n, acc_prefs, blocked_a)
+                p = t.accessible_path if t.node is not None else None
+            else:
+                p = find_path(G, n, acc_e.node, acc_prefs, blocked_a)
+            if p is None:
+                return None
+            c, length = path_cost(G, p, acc_prefs, blocked_a)
+            return c, length, None
+
+        def std_onward(n):
+            if std_end is None:
+                best = best_open_door(G, dest_b.entrances, active, n, std_prefs, blocked_s)
+                return (best[0], best[0], None) if best else None
+            p = find_path(G, n, std_end, std_prefs, blocked_s)
+            if p is None:
+                return None
+            length = path_cost(G, p, std_prefs, blocked_s)[1]
+            return length, length, None
+
+        choice = plan_origin(G, o, active, acc_prefs, acc_onward)
+        if req.include_standard:
+            standard_exit(G, o, active, std_onward, choice)
+        origin_plan = choice.plan
+        if choice.node is not None:
+            acc_src, acc_s = choice.node, Snap(choice.node, choice.snap_m)
+        else:
+            origin_blocked = True
+            acc_src, acc_s = choice.fallback_node, Snap(choice.fallback_node, choice.fallback_snap_m)
+        if choice.standard_node is not None:
+            src, src_d = choice.standard_node, choice.standard_snap_m
+        elif o.building.entrances:
+            src, src_d = choice.fallback_node, choice.fallback_snap_m
 
     plan = None
     acc_path = None
@@ -107,6 +161,10 @@ def plan_routes(G, req: RouteRequest, now: Optional[datetime] = None) -> RouteRe
     else:
         dst, dst_d = nearest_node(G, req.end.lat, req.end.lon)
         accessible = _route_one(G, acc_src, acc_e.node, acc_prefs, idx, note)
+
+    if origin_blocked:
+        kind = "step-free exit" if req.avoid_steps else "exit"
+        accessible = not_found(acc_prefs, idx, f"No usable {kind} from {origin_plan.building_name} leads to your destination")
 
     standard = None
     if req.include_standard:
@@ -134,4 +192,4 @@ def plan_routes(G, req: RouteRequest, now: Optional[datetime] = None) -> RouteRe
         start=snap(acc_s),
         end=snap(acc_e),
     )
-    return RouteResponse(accessible=accessible, standard=standard, destination=plan, meta=meta)
+    return RouteResponse(accessible=accessible, standard=standard, origin=origin_plan, destination=plan, meta=meta)

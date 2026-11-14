@@ -66,7 +66,8 @@ class FrontendDestination(BaseModel):
 
 class FrontendRouteRequest(BaseModel):
     model_config = ConfigDict(extra="ignore")
-    start: Point
+    start: Optional[Point] = None
+    origin: Optional[FrontendDestination] = None  # start building: the engine picks the exit
     end: Optional[Point] = None
     destination: Optional[FrontendDestination] = None
     preferences: dict[str, Any] = Field(default_factory=dict)
@@ -76,6 +77,8 @@ class FrontendRouteRequest(BaseModel):
     def _target(self) -> "FrontendRouteRequest":
         if self.end is None and self.destination is None:
             raise ValueError("give `end` or `destination`")
+        if self.start is None and self.origin is None:
+            raise ValueError("give `start` or `origin`")
         return self
 
 
@@ -333,22 +336,31 @@ def frontend_route(body: FrontendRouteRequest, request: Request) -> dict[str, An
     grade, avoid_steps, ignored = map_preferences(body.preferences)
     closures, skipped = map_closures(body.closures)
 
-    destination = None
-    if body.destination is not None:
+    def building_block(fd: Optional[FrontendDestination], label: str) -> Optional[Destination]:
+        if fd is None:
+            return None
         try:
-            destination = Destination.model_validate({
-                "building": map_building(body.destination.building),
-                "needs_elevator": body.destination.needs_elevator,
-                "room": body.destination.room,
+            return Destination.model_validate({
+                "building": map_building(fd.building),
+                "needs_elevator": fd.needs_elevator,
+                "room": fd.room,
                 "need_automatic_door": bool(body.preferences.get("need_automatic_door", False)),
                 "door_issues": door_issues(body.closures),
             })
         except ValidationError as exc:
-            raise HTTPException(422, detail=f"destination building: {exc.errors()[0].get('msg')}")
-        ignored = [p for p in ignored if p != "need_automatic_door"]  # used for the entrance choice
+            raise HTTPException(422, detail=f"{label} building: {exc.errors()[0].get('msg')}")
+
+    destination = building_block(body.destination, "destination")
+    origin = building_block(body.origin, "origin")
+    if destination is not None or origin is not None:
+        ignored = [p for p in ignored if p != "need_automatic_door"]  # used for the door choice
 
     b, pad = config.BBOX, 0.002
-    points = [("start", body.start.lat, body.start.lng)]
+    points = []
+    if body.start is not None:
+        points.append(("start", body.start.lat, body.start.lng))
+    if origin is not None:
+        points.append(("origin", origin.building.lat, origin.building.lng))
     if body.end is not None:
         points.append(("end", body.end.lat, body.end.lng))
     if destination is not None:
@@ -358,7 +370,8 @@ def frontend_route(body: FrontendRouteRequest, request: Request) -> dict[str, An
             raise HTTPException(422, detail=f"{label} is outside the supported campus area")
 
     req = RouteRequest(
-        start={"lat": body.start.lat, "lon": body.start.lng},
+        start={"lat": body.start.lat, "lon": body.start.lng} if body.start is not None else None,
+        origin=origin,
         end=None if destination else {"lat": body.end.lat, "lon": body.end.lng},
         destination=destination,
         max_grade_pct=grade,
@@ -383,21 +396,41 @@ def frontend_route(body: FrontendRouteRequest, request: Request) -> dict[str, An
 
     step_free = to_frontend(G, resp.accessible, closures, target, grade, arrive)
     shortest = to_frontend(G, resp.standard, closures, std_target, grade, std_arrive) if resp.standard else None
+    oplan = resp.origin
+    if oplan is not None:
+        if oplan.exit is not None:
+            depart = f"Leave {oplan.building_name} by the {oplan.exit.name}"
+            if step_free["steps"]:
+                step_free["steps"][0]["instruction"] = f"{depart}. " + step_free["steps"][0]["instruction"]
+        if shortest and shortest["steps"] and oplan.standard_exit is not None:
+            shortest["steps"][0]["instruction"] = (f"Leave {oplan.building_name} by the {oplan.standard_exit.name}. "
+                                                   + shortest["steps"][0]["instruction"])
     moved_notes = []
     for label, s in (("Starting", resp.meta.start), ("Ending", resp.meta.end)):
+        if label == "Starting" and oplan is not None:
+            continue  # exits are doors; never moved
         if s.moved and step_free["found"]:
             moved_notes.append(f"{label} from the nearest path you can use, about "
                                f"{round(s.snap_distance_m)} m from the point you chose.")
     step_free["summary"]["warnings"] = moved_notes + step_free["summary"]["warnings"]
-    if plan is not None:
+    plan_warnings = (oplan.warnings if oplan else []) + (plan.warnings if plan else [])
+    if plan_warnings:
         # Elevator and door notes belong to the step-free trip; show them before the user sets off.
-        merged = plan.warnings + step_free["summary"]["warnings"]
-        if not step_free["found"] and plan.warnings:
-            merged = plan.warnings  # the plan already explains why; skip the generic reason
+        merged = plan_warnings + step_free["summary"]["warnings"]
+        if not step_free["found"]:
+            merged = plan_warnings  # the plans already explain why; skip the generic reason
         step_free["summary"]["warnings"] = list(dict.fromkeys(merged))
     return {
         "step_free": step_free,
         "shortest": shortest,
+        "origin": None if oplan is None else {
+            **oplan.model_dump(mode="json"),
+            "exit_id": oplan.exit.id if oplan.exit else None,
+            "start": {"lat": oplan.exit.lat, "lng": oplan.exit.lon} if oplan.exit else None,
+            "standard_exit_id": oplan.standard_exit.id if oplan.standard_exit else None,
+            "standard_start": ({"lat": oplan.standard_exit.lat, "lng": oplan.standard_exit.lon}
+                               if oplan.standard_exit else None),
+        },
         "destination": None if plan is None else {
             **plan.model_dump(mode="json"),
             "entrance_id": plan.entrance.id if plan.entrance else None,

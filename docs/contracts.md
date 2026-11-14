@@ -261,6 +261,21 @@ GeoJSON FeatureCollection: one LineString feature per segment (`grade`, `is_step
 
 Start or end outside the campus area returns 422.
 
+### Letting the engine pick the start building's exit
+
+Send `origin: {building, needs_elevator, room}` instead of (or with) `start`, in the same shape
+as `destination`. Also accepted by `/route`. Each exit is judged like a destination entrance
+(steps only exclude it for step-free users; closures, door-opener issues and
+`need_automatic_door` apply the same way; key cards are ignored when leaving). The chosen exit
+is the one with the cheapest **whole trip**, including the destination's own entrance choice.
+`needs_elevator: true` means the user is on a floor that needs an elevator to reach the exit
+level: the door-to-elevator distance is added, and a warning is given if no elevator works.
+
+The response adds `origin` (null when `start` was used): `exit_id`, `start` (`{lat, lng}` of
+the chosen exit), `standard_exit_id`, `standard_start`, `exits[]` with reasons, `elevators`,
+`can_reach_exit` and `warnings` (also prepended to `step_free.summary.warnings`). The first
+step reads "Leave <building> by the <exit>. ...".
+
 **Snapping.** Points are matched to the nearest walking-network junction. For the step-free
 route, a point at least 15 m from any path (a building center, GPS fix or map tap) whose nearest
 junction is a dead end for this user (only stairs or a too-steep path lead out) is moved to the
