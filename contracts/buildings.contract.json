@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Buildings Accessibility Contract",
+  "description": "Standard schema for campus buildings, accessibility entrances, elevators, and automatic doors across UMass Central Campus.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "name",
+      "code",
+      "location",
+      "step_free_entrances",
+      "door_type",
+      "elevators"
+    ],
+    "properties": {
+      "id": { "type": "string" },
+      "name": { "type": "string" },
+      "code": { "type": "string" },
+      "category": { "type": "string", "enum": ["academic", "student_services", "dining", "library", "residential", "recreation"] },
+      "location": {
+        "type": "object",
+        "required": ["lat", "lng"],
+        "properties": {
+          "lat": { "type": "number" },
+          "lng": { "type": "number" }
+        }
+      },
+      "step_free_entrances": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["name", "lat", "lng", "door_type"],
+          "properties": {
+            "name": { "type": "string" },
+            "lat": { "type": "number" },
+            "lng": { "type": "number" },
+            "door_type": { "type": "string", "enum": ["automatic", "push-button", "manual"] },
+            "has_ramp": { "type": "boolean" },
+            "ramp_grade_pct": { "type": "number" },
+            "photo_url": { "type": "string" }
+          }
+        }
+      },
+      "door_type": {
+        "type": "string",
+        "enum": ["automatic", "push-button", "manual", "mixed"]
+      },
+      "elevators": {
+        "type": "object",
+        "required": ["total_count", "working_count"],
+        "properties": {
+          "total_count": { "type": "integer" },
+          "working_count": { "type": "integer" },
+          "floors_served": { "type": "string" },
+          "status": { "type": "string", "enum": ["all_operational", "partial_outage", "all_down"] },
+          "list": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string" },
+                "name": { "type": "string" },
+                "floors": { "type": "string" },
+                "status": { "type": "string", "enum": ["operational", "out_of_service"] }
+              }
+            }
+          }
+        }
+      },
+      "accessible_restrooms": { "type": "boolean" },
+      "lactation_room": { "type": "boolean" },
+      "notes": { "type": "string" }
+    }
+  }
+}

@@ -1,4 +1,21 @@
+# From main (backend)
 .env
 .venv/
 __pycache__/
 .vite/
+
+# Frontend
+node_modules/
+dist/
+*.local
+.env.*.local
+.vite/
+
+# Local scratch and backups
+.backup/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
