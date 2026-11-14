@@ -5,7 +5,11 @@
 
 export type BarrierType = 'elevator' | 'ramp' | 'path' | 'construction' | 'automatic_door';
 export type BarrierStatus = 'closed' | 'degraded' | 'repaired';
-export type BarrierSource = 'official' | 'community' | 'verified';
+export type BarrierSource = 'official' | 'community' | 'verified' | 'app';
+
+export function isCommunitySource(source: BarrierSource): boolean {
+  return source === 'community' || source === 'app';
+}
 
 export interface Closure {
   id: string;

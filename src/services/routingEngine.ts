@@ -14,6 +14,7 @@ import type {
   StepIcon,
   UserPreferences
 } from '../types';
+import { isCommunitySource } from '../types';
 
 // ---------- graph types ----------
 
@@ -803,7 +804,7 @@ export function computeRoutes(G: CampusGraph, q: RouteQuery): RouteBundle {
     // Degraded spots we still pass through
     for (const { ei } of accRes.edges) {
       const c = idx.degraded.get(ei);
-      if (c && !warnings.some((w) => w.includes(c.title))) warnings.push(`Passes ${c.title}. Reported ${c.source === 'community' ? 'by students' : 'officially'}.`);
+      if (c && !warnings.some((w) => w.includes(c.title))) warnings.push(`Passes ${c.title}. Reported ${isCommunitySource(c.source) ? 'by students' : 'officially'}.`);
     }
     if ((accessible.summary.rough_surface_m ?? 0) > 60 && q.prefs.avoid_rough_surfaces) {
       warnings.push(`${accessible.summary.rough_surface_m} m of brick or paver surface could not be avoided.`);

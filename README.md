@@ -43,7 +43,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m uvicorn main:app --reload    # http://127.0.0.1:8000
 ```
 
-The frontend finds the backend at `VITE_API_BASE_URL` (default `http://localhost:8000`), polls `GET /closures`, sends reports to `POST /reports`, and taps "Still a problem" to `POST /reports/{id}/confirm`. When the backend is off, the same features run from an in-browser store.
+The frontend uses `VITE_API_BASE_URL` (default `http://localhost:8000`) to fetch `GET /closures` and submit `POST /community-reports`. **Still a problem** calls `POST /community-reports/{id}/confirm`, and **It works now** calls `DELETE /community-reports/{id}` for the selected community report.
 
 The frontend works with no keys and no backend. Optional `.env` keys (see `.env.example`):
 
@@ -85,7 +85,7 @@ node scripts/analyze-graph.mjs        # slope stats, worst stair detours, buildi
 
 ## Integration notes for other roles
 
-- **Backend (`backend/main.py`)**: no changes needed. The frontend reads its closure shape as-is. `POST /reports` only takes `{lat, lng, type, radius}`, so the frontend keeps the report's title and `connector_id` locally, and elevator closures snap to the nearest elevator within 30 m. Two things the backend doesn't have yet and the frontend handles in the browser: `automatic_door` reports, and marking a closure fixed.
+- **Backend (`backend/main.py`)** supports creating and deleting community reports. See [the backend guide](backend/BACKEND.md) for the payloads. Elevator closures can snap to the nearest elevator within 30 m.
 - **Routing (Role 1)**: the frontend POSTs `{start, end, preferences, closures}` to `/api/route` and uses the answer if it's valid; otherwise the in-browser engine (`src/services/routingEngine.ts`) routes on `public/data/campusGraph.json`.
 - **Contracts**: `contracts/` adds an optional `connector_id` on reports and closures.
 - `roles/` holds the earlier per-role stubs; `backend/` is the real Role 4 service.

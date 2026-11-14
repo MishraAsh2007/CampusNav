@@ -1,16 +1,20 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Check, Crosshair, DoorOpen, Construction, MoveVertical, Phone, Route, TrendingUp } from 'lucide-react';
-import type { BarrierType, Building, UserReportPayload } from '../types';
+import type { BarrierType, Building, Closure, UserReportPayload } from '../types';
+import { isCommunitySource } from '../types';
+import { formatFreshness } from '../data/mockClosures';
 import { Sheet, cx } from './ui';
 
 interface Props {
   open: boolean;
   onClose: () => void;
   buildings: Building[];
+  closures: Closure[];
   initialBuildingId: string | null;
   pickedPoint: { lat: number; lng: number } | null;
   onPickOnMap: () => void;
   onSubmit: (p: UserReportPayload) => Promise<void>;
+  onResolve: (report: Closure) => Promise<void>;
 }
 
 const TYPES: { id: BarrierType; label: string; icon: JSX.Element }[] = [
@@ -27,7 +31,7 @@ const STATUSES = [
   { id: 'working', label: 'Fixed now' }
 ] as const;
 
-export function ReportSheet({ open, onClose, buildings, initialBuildingId, pickedPoint, onPickOnMap, onSubmit }: Props) {
+export function ReportSheet({ open, onClose, buildings, closures, initialBuildingId, pickedPoint, onPickOnMap, onSubmit, onResolve }: Props) {
   const [type, setType] = useState<BarrierType>('elevator');
   const [status, setStatus] = useState<(typeof STATUSES)[number]['id']>('broken');
   const [buildingId, setBuildingId] = useState<string>(initialBuildingId ?? '');
@@ -36,12 +40,14 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [resolveId, setResolveId] = useState('');
 
   useEffect(() => {
     if (open) {
       setBuildingId(initialBuildingId ?? '');
       setDone(false);
       setError(null);
+      setResolveId('');
     }
   }, [open, initialBuildingId]);
 
@@ -49,6 +55,11 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
   const lifts = b?.elevators.list ?? [];
   const lift = lifts.find((l) => l.id === liftId) ?? lifts[0];
   const where = pickedPoint ?? (b ? b.location : null);
+  const isFix = status === 'working';
+  const openReports = isFix ? closures.filter((report) =>
+    isCommunitySource(report.source) && report.status !== 'repaired'
+  ) : [];
+  const resolveTarget = openReports.find((report) => report.id === resolveId);
 
   const title = useMemo(() => {
     const t = TYPES.find((x) => x.id === type)!.label;
@@ -60,22 +71,26 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
   if (!open) return null;
 
   const submit = async () => {
-    if (!where || busy) return;
+    if (busy || (isFix ? !resolveTarget : !where)) return;
     setBusy(true);
     setError(null);
     try {
-      await onSubmit({
-      lat: where.lat,
-      lng: where.lng,
-      type,
-      status,
-      title,
-      description: details.trim(),
-      building_id: b?.id,
-      connector_id: type === 'elevator' ? lift?.connector_id : undefined,
-      reporter_device_id: 'web',
-      timestamp: new Date().toISOString()
-    });
+      if (isFix && resolveTarget) {
+        await onResolve(resolveTarget);
+      } else if (where) {
+        await onSubmit({
+          lat: where.lat,
+          lng: where.lng,
+          type,
+          status,
+          title,
+          description: details.trim(),
+          building_id: b?.id,
+          connector_id: type === 'elevator' ? lift?.connector_id : undefined,
+          reporter_device_id: 'web',
+          timestamp: new Date().toISOString()
+        });
+      }
       setDone(true);
       setTimeout(onClose, 1400);
     } catch (error) {
@@ -90,11 +105,11 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
       open
       onClose={onClose}
       eyebrow="Report"
-      title="What's not working?"
+      title={isFix ? 'What works now?' : "What's not working?"}
       footer={
         done ? null : (
-          <button className="btn-primary w-full !py-3 text-[15px]" disabled={!where || busy} onClick={submit}>
-            {busy ? 'Sending…' : 'Send report'}
+          <button className="btn-primary w-full !py-3 text-[15px]" disabled={busy || (isFix ? !resolveTarget : !where)} onClick={submit}>
+            {busy ? (isFix ? 'Removing…' : 'Sending…') : (isFix ? 'Mark fixed' : 'Send report')}
           </button>
         )
       }
@@ -104,13 +119,13 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
           <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-go-soft text-go">
             <Check className="h-7 w-7" />
           </div>
-          <p className="text-[17px] font-medium text-ink">Report saved. Thank you.</p>
+          <p className="text-[17px] font-medium text-ink">{isFix ? 'Report removed.' : 'Report saved. Thank you.'}</p>
           <p className="mt-1 text-[13px] text-ink-3">Your route is updating.</p>
         </div>
       ) : (
         <div className="space-y-5">
           {error && <p role="alert" className="text-sm text-stop">{error}</p>}
-          <div className="grid grid-cols-2 gap-1.5">
+          {!isFix && <div className="grid grid-cols-2 gap-1.5">
             {TYPES.map((t) => (
               <button
                 key={t.id}
@@ -126,12 +141,13 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
                 {t.label}
               </button>
             ))}
-          </div>
+          </div>}
 
           <div className="flex flex-wrap gap-1.5" role="radiogroup" aria-label="Condition">
             {STATUSES.map((s) => (
               <button
                 key={s.id}
+                disabled={busy}
                 role="radio"
                 aria-checked={status === s.id}
                 onClick={() => setStatus(s.id)}
@@ -145,6 +161,19 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
             ))}
           </div>
 
+          {isFix ? (
+            <label className="block space-y-2">
+              <span className="eyebrow block">Community report</span>
+              <select className="field" value={resolveId} disabled={busy} onChange={(event) => setResolveId(event.target.value)}>
+                <option value="">{openReports.length ? 'Choose the report that was fixed' : 'No active community reports'}</option>
+                {openReports.map((report) => (
+                  <option key={report.id} value={report.id}>
+                    {report.title} · {report.lat.toFixed(5)}, {report.lng.toFixed(5)} · {formatFreshness(report.last_confirmed)}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : <>
           <div className="space-y-2">
             <label className="eyebrow block" htmlFor="rep-b">
               Where
@@ -186,6 +215,7 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
             />
             <p className="mt-2 text-[12px] text-ink-3">Will post as: “{title}”</p>
           </div>
+          </>}
 
           <a href="tel:+14135456401" className="flex items-center gap-2 text-[12px] text-ink-3">
             <Phone className="h-3.5 w-3.5" /> Trapped in an elevator? Call Facilities 24/7 at 413-545-6401.

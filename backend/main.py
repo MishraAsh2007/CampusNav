@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from threading import Lock
-from typing import TYPE_CHECKING, Annotated, Literal
+from typing import TYPE_CHECKING, Annotated, Literal, get_args
 from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException, Request, status
@@ -133,10 +133,16 @@ class ClosureLocation(MapPoint, IndoorReferences):
     type: Literal["elevator", "ramp", "path", "construction"]
 
 
+CommunitySource = Literal["community", "app"]
+COMMUNITY_SOURCES = get_args(CommunitySource)
+
+
 class ReportCreate(ClosureLocation):
     model_config = ConfigDict(extra="forbid")
 
     title: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)] | None = None
+    description: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)] | None = None
+    source: CommunitySource = "community"
 
 
 class SnapshotObservation(BaseModel):
@@ -157,7 +163,7 @@ ClosureStatus = Literal["closed", "degraded"]
 class Closure(ClosureLocation, NoticeProvenance):
     id: str
     status: ClosureStatus = "closed"
-    source: Literal["community", "demo", "official"] = "community"
+    source: Literal[CommunitySource, "demo", "official"] = "community"
     start_time: AwareDatetime
     end_time: AwareDatetime | None
     last_confirmed: AwareDatetime | None
@@ -262,7 +268,7 @@ class MemoryClosures:
             now = utc_now()
             for index, closure in enumerate(self.closures):
                 if (
-                    closure.id == report_id and closure.source == "community"
+                    closure.id == report_id and closure.source in COMMUNITY_SOURCES
                     and closure.end_time is not None and closure.end_time > now
                 ):
                     confirmed_at = max(now, closure.last_confirmed)
@@ -272,6 +278,13 @@ class MemoryClosures:
                     self.closures[index] = updated
                     return updated
         return None
+
+    def delete_report(self, report_id: str) -> None:
+        with self.lock:
+            self.closures = [
+                closure for closure in self.closures
+                if closure.id != report_id or closure.source not in COMMUNITY_SOURCES
+            ]
 
     def list_official(self) -> list[Closure]:
         with self.lock:
@@ -331,7 +344,7 @@ class MongoClosures:
         try:
             document = self.collection.find_one_and_update(
                 {
-                    "_id": report_id, "source": "community",
+                    "_id": report_id, "source": {"$in": COMMUNITY_SOURCES},
                     "$expr": {"$gt": ["$end_time", "$$NOW"]},
                 },
                 [
@@ -346,6 +359,14 @@ class MongoClosures:
             if document is not None:
                 return Closure.model_validate({**document, "id": document["_id"]})
             return None
+        except PyMongoError as error:
+            raise HTTPException(status_code=503, detail="Closure storage is unavailable") from error
+
+    def delete_report(self, report_id: str) -> None:
+        from pymongo.errors import PyMongoError
+
+        try:
+            self.collection.delete_one({"_id": report_id, "source": {"$in": COMMUNITY_SOURCES}})
         except PyMongoError as error:
             raise HTTPException(status_code=503, detail="Closure storage is unavailable") from error
 
@@ -432,7 +453,7 @@ async def lifespan(app: FastAPI):
             # TTL cleanup runs periodically. The read query also filters by end_time.
             new_expiry = {"$add": ["$last_confirmed", REPORT_LIFETIME_MS]}
             collection.update_many(
-                {"source": "community", "end_time": {"$gt": utc_now()}, "$expr": {"$ne": ["$end_time", new_expiry]}},
+                {"source": {"$in": COMMUNITY_SOURCES}, "end_time": {"$gt": utc_now()}, "$expr": {"$ne": ["$end_time", new_expiry]}},
                 [{"$set": {"end_time": new_expiry}}],
             )
             collection.create_index("end_time", expireAfterSeconds=0)
@@ -453,7 +474,7 @@ origins = [
     if origin.strip()
 ]
 app.add_middleware(
-    CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST", "PUT"],
+    CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["Content-Type"],
 )
 
@@ -538,7 +559,7 @@ def get_reports(request: Request) -> list[Closure]:
     """Return active community reports."""
     reports = request.app.state.closures.active(utc_now())
     return sorted(
-        (report for report in reports if report.source == "community"),
+        (report for report in reports if report.source in COMMUNITY_SOURCES),
         key=lambda report: (report.last_confirmed, report.id),
         reverse=True,
     )
@@ -557,6 +578,12 @@ def create_report(report: ReportCreate, request: Request) -> Closure:
     )
     request.app.state.closures.add(closure)
     return closure
+
+
+@app.delete("/community-reports/{report_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_community_report(report_id: str, request: Request) -> None:
+    """Remove a resolved community report by ID."""
+    request.app.state.closures.delete_report(report_id)
 
 
 @app.post("/community-reports/{report_id}/confirm")

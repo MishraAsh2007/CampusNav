@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { CheckCircle2, Clock, ExternalLink, Phone, ShieldCheck, Siren, ThumbsUp, Users } from 'lucide-react';
 import type { Closure } from '../types';
 import { formatFreshness } from '../data/mockClosures';
@@ -10,7 +11,7 @@ interface Props {
   incident: Incident | null;
   onClose: () => void;
   onConfirm: (c: Closure) => void;
-  onResolve: (inc: Incident) => void;
+  onResolve: (report: Closure) => Promise<void>;
 }
 
 const typeLabel: Record<Closure['type'], string> = {
@@ -25,10 +26,27 @@ const day = (iso?: string) =>
   iso ? new Date(iso).toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : null;
 
 export function ClosureSheet({ incident: inc, onClose, onConfirm, onResolve }: Props) {
+  const [resolving, setResolving] = useState(false);
+  const [resolveError, setResolveError] = useState<string | null>(null);
+  const [resolveId, setResolveId] = useState('');
   if (!inc) return null;
   const c = inc.primary;
   const roadOnly = inc.isRoad && inc.all.every((x) => x.affects === 'road');
   const confirmTarget = inc.community[0] ?? c;
+  const resolveTarget = inc.community.find((report) => report.id === resolveId) ?? inc.community[0];
+
+  const resolve = async () => {
+    if (!resolveTarget || resolving) return;
+    setResolving(true);
+    setResolveError(null);
+    try {
+      await onResolve(resolveTarget);
+    } catch (error) {
+      setResolveError(error instanceof Error ? error.message : 'Could not remove the community reports.');
+    } finally {
+      setResolving(false);
+    }
+  };
 
   return (
     <Sheet
@@ -39,16 +57,29 @@ export function ClosureSheet({ incident: inc, onClose, onConfirm, onResolve }: P
       title={c.title}
       footer={
         <div className="flex gap-2">
-          <button className="btn-quiet flex-1" onClick={() => onConfirm(confirmTarget)}>
+          <button className="btn-quiet flex-1" disabled={resolving} onClick={() => onConfirm(confirmTarget)}>
             <ThumbsUp className="h-4 w-4" /> Still a problem
           </button>
-          <button className="btn-primary flex-1" onClick={() => onResolve(inc)}>
-            <CheckCircle2 className="h-4 w-4" /> It works now
-          </button>
+          {inc.community.length > 0 && (
+            <button className="btn-primary flex-1" disabled={resolving} onClick={resolve}>
+              <CheckCircle2 className="h-4 w-4" /> {resolving ? 'Removing…' : 'It works now'}
+            </button>
+          )}
         </div>
       }
     >
       <div className="space-y-4">
+        {resolveError && <p role="alert" className="text-sm text-stop">{resolveError}</p>}
+        {inc.community.length > 1 && (
+          <label className="block text-sm">
+            Community report to mark fixed
+            <select className="field" value={resolveTarget.id} disabled={resolving} onChange={(event) => setResolveId(event.target.value)}>
+              {inc.community.map((report) => (
+                <option key={report.id} value={report.id}>{report.title} · {day(report.start_time)}</option>
+              ))}
+            </select>
+          </label>
+        )}
         <div
           className={cx(
             'flex items-start gap-2.5 rounded-2xl px-3.5 py-3 text-[13px]',

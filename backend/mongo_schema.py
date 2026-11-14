@@ -120,10 +120,11 @@ SCHEMAS = {
     "CommunityReports": with_indoor_references(object_schema({
         **CLOSURE_FIELDS,
         "_id": NONEMPTY_STRING,
-        "source": {"enum": ["community"]},
+        "source": {"enum": ["community", "app"]},
         "end_time": {"bsonType": "date"},
         "title": {"bsonType": ["string", "null"]},
-    }, optional=("radius", "status", "title", "details", "last_updated"))),
+        "description": {"bsonType": ["string", "null"]},
+    }, optional=("radius", "status", "title", "description", "details", "last_updated"))),
 }
 
 

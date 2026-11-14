@@ -202,7 +202,7 @@ When the source reports that service is restored, omit the resolved notice from 
 
 **`POST /community-reports`** creates one report and returns HTTP 201. Use `elevator`, `ramp`, `path`, or `construction` for `type`. Coordinates are in decimal degrees. The optional `radius` defaults to 10 meters and also applies to official reports.
 
-Pass an optional `title` to name the report. The API trims surrounding whitespace and rejects a blank title with HTTP 422. Omit the title or send `null` for an untitled report. The saved title appears in the POST response, `GET /community-reports`, and `GET /closures`.
+Pass an optional `title` and `description` to name the report and describe the obstruction. The API trims surrounding whitespace and returns HTTP 422 for blank strings. Omit either field or send `null` when it is unknown. The saved text appears in the POST response, `GET /community-reports`, and `GET /closures`. The web form sends its generated title, any notes entered by the user, and the building ID when a building is selected.
 
 ```json
 {
@@ -210,6 +210,8 @@ Pass an optional `title` to name the report. The API trims surrounding whitespac
   "lng": -72.5267,
   "type": "ramp",
   "title": "Ramp blocked near the main entrance",
+  "source": "app",
+  "description": "A delivery cart is blocking the ramp.",
   "radius": 10
 }
 ```
@@ -234,14 +236,14 @@ Pass an optional `title` to name the report. The API trims surrounding whitespac
     "type": "ramp",
     "id": "2bcb2b35-865c-4b1e-b7cb-f4a4360016c3",
     "status": "closed",
-    "source": "community",
+    "source": "app",
     "start_time": "2026-11-14T15:00:00Z",
     "end_time": "2026-11-16T15:00:00Z",
     "last_confirmed": "2026-11-14T15:00:00Z",
     "ingested_at": null,
     "title": "Ramp blocked near the main entrance",
     "details": null,
-    "description": null,
+    "description": "A delivery cart is blocking the ramp.",
     "last_updated": "2026-11-14T15:00:00Z",
     "location": {
       "lat": 42.3912,
@@ -251,7 +253,11 @@ Pass an optional `title` to name the report. The API trims surrounding whitespac
 ]
 ```
 
-The server generates `id`, `start_time`, `end_time`, `source` (always `community`), and `last_updated`. Each submission creates a new report that expires after 48 hours. To renew an existing one, copy its `id` and call **`POST /community-reports/{report_id}/confirm`** with an empty body. Confirmation updates `last_updated` and extends expiry by 48 hours from the confirmation time. `last_confirmed` is still available for existing clients. A missing or expired report returns HTTP 404.
+The app sends `source: "app"`. The API defaults to `community` when a client omits `source`. Both appear in the community report feed and follow the same expiry, confirmation, and deletion rules.
+
+The server generates `id`, `start_time`, `end_time`, and `last_updated`. Each submission creates a new report that expires after 48 hours. To renew an existing one, copy its `id` and call **`POST /community-reports/{report_id}/confirm`** with an empty body. Confirmation updates `last_updated` and extends expiry by 48 hours from the confirmation time. `last_confirmed` is still available for existing clients. A missing or expired report returns HTTP 404.
+
+To mark a community report fixed, call **`DELETE /community-reports/{report_id}`** with the report's `id` and an empty body. The API deletes the matching document from `CommunityReports`. HTTP 204 means the community report is absent, so retrying the request is safe. In the app, use **It works now** on the incident or choose the report under **Fixed now** in the report form. Facilities notices are managed through the official snapshot.
 
 ## Combined closures
 
@@ -277,14 +283,14 @@ Official and community reports can include `building_id`, `asset_id`, and `floor
     "type": "ramp",
     "id": "2bcb2b35-865c-4b1e-b7cb-f4a4360016c3",
     "status": "closed",
-    "source": "community",
+    "source": "app",
     "start_time": "2026-11-14T15:00:00Z",
     "end_time": "2026-11-16T15:00:00Z",
     "last_confirmed": "2026-11-14T15:00:00Z",
     "ingested_at": null,
     "title": "Ramp blocked near the main entrance",
     "details": null,
-    "description": null,
+    "description": "A delivery cart is blocking the ramp.",
     "last_updated": "2026-11-14T15:00:00Z",
     "location": {
       "lat": 42.3912,

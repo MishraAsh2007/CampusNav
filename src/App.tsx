@@ -8,7 +8,7 @@ import {
   getClosures,
   getLocalBuildings,
   getLocalClosures,
-  markClosureResolved,
+  resolveCommunityReport,
   planRoutes,
   PlanResult,
   resetClosures,
@@ -218,7 +218,7 @@ export function App() {
     const rep = await submitUserReport(payload);
     log(
       rep.browserOnly ? 'local' : 'POST /reports',
-      rep.browserOnly ? 'kept in this browser (backend has no fix endpoint yet)' : `${rep.live ? 'stored in backend' : 'backend offline, stored locally'} · ${rep.ms} ms`,
+      rep.browserOnly ? 'demo action kept in this browser' : `${rep.live ? 'stored in backend' : 'backend offline, stored locally'} · ${rep.ms} ms`,
       'net'
     );
     onPlanned.current = (p) => {
@@ -310,6 +310,11 @@ export function App() {
     await postCommunityReport(p);
     applyClosures(getLocalClosures());
     setReportPoint(null);
+  };
+
+  const handleResolve = async (report: Closure) => {
+    await resolveCommunityReport(report);
+    applyClosures(getLocalClosures());
   };
 
   return (
@@ -439,29 +444,16 @@ export function App() {
       />
 
       <ClosureSheet
+        key={selectedIncidentId}
         incident={selectedIncident}
         onClose={() => setSelectedIncidentId(null)}
         onConfirm={(c) => {
           applyClosures(confirmClosure(c.id));
           setSelectedIncidentId(null);
         }}
-        onResolve={async (inc) => {
-          // Fixed means every report of this problem is fixed, official and student alike
-          let list: Closure[] = [];
-          for (const c of inc.all) list = markClosureResolved(c.id);
-          applyClosures(list);
+        onResolve={async (report) => {
+          await handleResolve(report);
           setSelectedIncidentId(null);
-          const c = inc.primary;
-          await submitUserReport({
-            lat: c.lat,
-            lng: c.lng,
-            type: c.type,
-            status: 'working',
-            title: `${c.title} (fixed)`,
-            description: '',
-            connector_id: c.connector_id,
-            timestamp: new Date().toISOString()
-          });
         }}
       />
 
@@ -469,6 +461,7 @@ export function App() {
         open={reportOpen}
         onClose={() => setReportOpen(false)}
         buildings={buildings}
+        closures={closures}
         initialBuildingId={reportBuildingId}
         pickedPoint={reportPoint}
         onPickOnMap={() => {
@@ -476,6 +469,7 @@ export function App() {
           setPicking('report');
         }}
         onSubmit={handleReportSubmit}
+        onResolve={handleResolve}
       />
 
       <AboutSheet open={aboutOpen} onClose={() => setAboutOpen(false)} graphMeta={graph?.meta ?? null} provider={provider} />

@@ -6,6 +6,7 @@
  * never depends on Wi-Fi.
  */
 import { Building, BuildingEntrance, Closure, Place, RouteResponse, UserPreferences, UserReportPayload } from '../types';
+import { isCommunitySource } from '../types';
 import { INITIAL_CLOSURES } from '../data/mockClosures';
 import { UMASS_BUILDINGS } from '../data/mockBuildings';
 import { computeRoutes, Endpoint, getDistanceMeters, loadCampusGraph, RouteBundle } from './routingEngine';
@@ -70,6 +71,7 @@ async function fetchJson<T>(url: string, init: RequestInit = {}, timeoutMs = 150
     const res = await fetch(url, { ...init, signal: ctrl.signal });
     const ms = Math.round(performance.now() - t0);
     if (!res.ok) return { ok: false, ms, status: res.status };
+    if (res.status === 204) return { ok: true, ms, status: res.status };
     return { ok: true, data: (await res.json()) as T, ms, status: res.status };
   } catch {
     return { ok: false, ms: Math.round(performance.now() - t0) };
@@ -98,8 +100,7 @@ export function normalizeClosure(raw: Record<string, unknown>): Closure {
     radius: Number(raw.radius ?? 15),
     type: (raw.type as Closure['type']) ?? 'path',
     status,
-    // Backend sources: official | community | demo. Role 3's file also uses reddit.
-    source: raw.source === 'official' || raw.source === 'verified' ? (raw.source as Closure['source']) : 'community',
+    source: raw.source === 'official' || raw.source === 'verified' || raw.source === 'app' ? raw.source : 'community',
     title: String(raw.title ?? TYPE_TITLES[String(raw.type)] ?? 'Reported barrier'),
     description: raw.description ? String(raw.description) : raw.details ? String(raw.details) : undefined,
     building_name: raw.building_name ? String(raw.building_name) : undefined,
@@ -389,7 +390,7 @@ export interface ReportResult {
   closure: Closure;
   live: boolean;
   ms: number;
-  /** Not sent: the backend has no endpoint for this (fixed reports, door openers). */
+  /** The demo kept this action in the browser. */
   browserOnly?: boolean;
 }
 
@@ -406,6 +407,10 @@ export async function postCommunityReport(report: UserReportPayload): Promise<Cl
       body: JSON.stringify({
         lat: report.lat, lng: report.lng, type: report.type,
         radius: report.type === 'elevator' ? 12 : 16,
+        title: report.title.trim() || undefined,
+        description: report.description.trim() || undefined,
+        building_id: report.building_id,
+        source: 'app',
       }),
     },
     10000,
@@ -454,7 +459,7 @@ export async function submitUserReport(report: UserReportPayload): Promise<Repor
     saveClosures([local, ...store]);
   }
 
-  // The team backend has no "fixed" endpoint and no automatic_door type: keep those in this browser.
+  // Keep simulated repairs and unsupported door opener reports in this browser.
   if (status === 'repaired' || !BACKEND_TYPES.includes(report.type)) {
     return { closure: local, live: false, ms: 0, browserOnly: true };
   }
@@ -464,7 +469,13 @@ export async function submitUserReport(report: UserReportPayload): Promise<Repor
   const minimal = JSON.stringify({ lat: report.lat, lng: report.lng, type: report.type, radius: local.radius });
   let r = await fetchJson<Record<string, unknown>>(
     `${API_BASE}${reportsPath}`,
-    { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: minimal },
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: reportsPath === '/community-reports'
+        ? JSON.stringify({ lat: report.lat, lng: report.lng, type: report.type, radius: local.radius, source: 'app' })
+        : minimal,
+    },
     1500
   );
   if (!r.ok && (r.status === 404 || r.status === 405) && reportsPath === '/community-reports') {
@@ -511,11 +522,23 @@ export function confirmClosure(id: string): Closure[] {
   return [...store];
 }
 
-export function markClosureResolved(id: string): Closure[] {
-  const now = new Date().toISOString();
-  override(id, { status: 'repaired', last_confirmed: now });
-  saveClosures(store.map((c) => (c.id === id ? { ...c, status: 'repaired', last_confirmed: now } : c)));
-  return [...store];
+export async function resolveCommunityReport(report: Closure): Promise<void> {
+  if (!isCommunitySource(report.source)) throw new Error('Only community reports can be resolved here.');
+  if (!report.id.startsWith('local-') && !report.id.startsWith('demo-')) {
+    const result = await fetchJson(
+      `${API_BASE}/community-reports/${encodeURIComponent(report.id)}`,
+      { method: 'DELETE' },
+      10000,
+    );
+    if (result.status !== 204) {
+      throw new Error(result.status
+        ? `Could not resolve the report (HTTP ${result.status}). Please try again.`
+        : 'Could not confirm that the report was removed. Please try again.');
+    }
+  }
+  overrides.delete(report.id);
+  reportMeta.delete(report.id);
+  saveClosures(store.filter((closure) => closure.id !== report.id || !isCommunitySource(closure.source)));
 }
 
 /**
