@@ -15,6 +15,10 @@ COORDINATES = {
     "lat": {"bsonType": NUMBER, "minimum": -90, "maximum": 90},
     "lng": {"bsonType": NUMBER, "minimum": -180, "maximum": 180},
 }
+INDOOR_REFERENCES = {
+    field: {"bsonType": ["string", "null"], "pattern": r"\S"}
+    for field in ("building_id", "asset_id", "floor_id")
+}
 CLOSURE_FIELDS = {
     **COORDINATES,
     "radius": {
@@ -40,38 +44,69 @@ def object_schema(
     }
 
 
+def with_indoor_references(schema: dict) -> dict:
+    return {
+        **schema,
+        "properties": {**schema["properties"], **INDOOR_REFERENCES},
+        "anyOf": [
+            {"properties": {"floor_id": {"bsonType": "null"}}},
+            {"required": ["building_id"], "properties": {"building_id": {"bsonType": "string"}}},
+        ],
+    }
+
+
 ENTRANCE_FLAGS = (
     "automatic_door", "hasAutoDoorOpener", "isAccessibleToAllFloors", "IsKeyCardRequired",
 )
 ENTRANCE = object_schema({
     **COORDINATES,
+    "id": {"bsonType": ["string", "null"], "pattern": r"\S"},
     "name": NONEMPTY_STRING,
-    "step_free": {"bsonType": "bool"},
+    "step_free": {"bsonType": ["bool", "null"]},
     **{flag: {"bsonType": ["bool", "null"]} for flag in ENTRANCE_FLAGS},
-}, optional=ENTRANCE_FLAGS, allow_extra=False)
+}, optional=("id", *ENTRANCE_FLAGS), allow_extra=False)
 INDOOR_LOCATION_FIELDS = {
     "location": NONEMPTY_STRING,
     **{name: {**bounds, "bsonType": [*NUMBER, "null"]} for name, bounds in COORDINATES.items()},
 }
-ELEVATOR = object_schema(INDOOR_LOCATION_FIELDS, optional=("lat", "lng"), allow_extra=False)
-BATHROOM = object_schema({
+ELEVATOR = with_indoor_references(
+    object_schema(INDOOR_LOCATION_FIELDS, optional=("lat", "lng"), allow_extra=False)
+)
+BATHROOM = with_indoor_references(object_schema({
     **INDOOR_LOCATION_FIELDS,
     "transfer_type": {"bsonType": ["string", "null"], "minLength": 1},
-}, optional=("lat", "lng"), allow_extra=False)
-OFFICIAL_NOTICE = object_schema({
+}, optional=("lat", "lng"), allow_extra=False))
+OFFICIAL_PROVENANCE = {
+    **{
+        field: {"bsonType": ["date", "null"]}
+        for field in ("ingested_at", "published_at", "snapshot_observed_at")
+    },
+    **{
+        field: {"bsonType": ["string", "null"]}
+        for field in ("source_ref", "source_id", "confirmation_kind")
+    },
+    "snapshot_fallback": {"bsonType": ["bool", "null"]},
+}
+OFFICIAL_NOTICE = with_indoor_references(object_schema({
     **CLOSURE_FIELDS,
+    **OFFICIAL_PROVENANCE,
     "id": NONEMPTY_STRING,
     "title": NONEMPTY_STRING,
     "description": {"bsonType": ["string", "null"], "minLength": 1},
     "location": object_schema(COORDINATES),
     "source": {"enum": ["official"]},
+    "status": {"enum": ["closed", "degraded"]},
     "end_time": {"bsonType": ["date", "null"]},
-}, optional=("radius", "status", "details", "description", "location", "last_updated"))
+    "last_confirmed": {"bsonType": ["date", "null"]},
+    "last_updated": {"bsonType": ["date", "null"]},
+}, optional=(
+    "radius", "status", "details", "description", "location", "last_updated", *OFFICIAL_PROVENANCE,
+)))
 
 SCHEMAS = {
     "Buildings": object_schema({
         **COORDINATES,
-        "_id": {"bsonType": "string", "pattern": r"^[a-z0-9]+(-[a-z0-9]+)*$"},
+        "_id": {"bsonType": "string", "pattern": r"^[a-z0-9]+([-_][a-z0-9]+)*$"},
         "name": NONEMPTY_STRING,
         "elevator_count": {"bsonType": ["int", "long"], "minimum": 0},
         "entrances": {"bsonType": "array", "items": ENTRANCE},
@@ -82,19 +117,32 @@ SCHEMAS = {
         "_id": {"enum": ["umass-service-interruptions"]},
         "closures": {"bsonType": "array", "items": OFFICIAL_NOTICE},
     }),
-    "CommunityReports": object_schema({
+    "CommunityReports": with_indoor_references(object_schema({
         **CLOSURE_FIELDS,
         "_id": NONEMPTY_STRING,
         "source": {"enum": ["community"]},
         "end_time": {"bsonType": "date"},
         "title": {"bsonType": ["string", "null"]},
-    }, optional=("radius", "status", "title", "details", "last_updated")),
+    }, optional=("radius", "status", "title", "details", "last_updated"))),
 }
+
+
+def create_closure_indexes(db) -> None:
+    db["CommunityReports"].create_index(
+        [("building_id", 1), ("asset_id", 1), ("floor_id", 1)],
+        name="indoor_closure_reference",
+        partialFilterExpression={"building_id": {"$type": "string"}},
+    )
+    db["OfficialClosures"].create_index(
+        [("closures.building_id", 1), ("closures.asset_id", 1), ("closures.floor_id", 1)],
+        name="indoor_closure_reference",
+        partialFilterExpression={"closures.building_id": {"$type": "string"}},
+    )
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--apply", action="store_true", help="Install validators after checking existing data")
+    parser.add_argument("--apply", action="store_true", help="Install validators and indexes after checking existing data")
     args = parser.parse_args()
 
     load_dotenv(Path(__file__).with_name(".env"))
@@ -125,6 +173,8 @@ def main() -> None:
                         validationLevel="strict", validationAction="error",
                     )
                     print(f"{name}: validator installed")
+                create_closure_indexes(db)
+                print("Indoor closure indexes installed")
     except PyMongoError as error:
         code = getattr(error, "code", None)
         parser.exit(1, f"MongoDB schema setup failed ({type(error).__name__}, code {code}).\n")
