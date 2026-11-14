@@ -11,9 +11,9 @@ from . import elevation as elevation_mod
 from . import overrides as overrides_mod
 
 # OSM tags whose change along a path must start a new graph segment.
-SEGMENT_SPLIT_ATTRS = ["highway", "footway", "ramp", "step_count", "bridge", "tunnel"]
+SEGMENT_SPLIT_ATTRS = ["highway", "footway", "ramp", "step_count", "bridge", "tunnel", "layer"]
 # OSMnx drops most way tags by default; keep the ones classify_edge() reads.
-EXTRA_WAY_TAGS = ["footway", "ramp", "ramp:wheelchair", "step_count"]
+EXTRA_WAY_TAGS = ["footway", "ramp", "ramp:wheelchair", "step_count", "layer"]
 
 
 def _first(value) -> Optional[str]:
@@ -57,7 +57,11 @@ def _slim_edges(G) -> None:
         }
         if steps and str(steps).isdigit():
             slim["step_count"] = int(steps)
-        if any(str(_first(data.get(t)) or "no").lower() not in ("no", "false") for t in ("bridge", "tunnel")):
+        # Bridges, tunnels and raised decks (layer != 0) aren't in the bare-earth DEM: treat as level
+        # (same rule as role-2-map-ui's build-campus-graph.mjs). Stairs keep their computed rise.
+        layer = str(_first(data.get("layer")) or "0").strip()
+        structure = any(str(_first(data.get(t)) or "no").lower() not in ("no", "false") for t in ("bridge", "tunnel"))
+        if kind != "steps" and (structure or layer not in ("0", "")):
             slim["level_structure"] = True  # grade forced to 0; removed before saving
         if "geometry" in data:
             slim["geometry"] = data["geometry"]
@@ -92,7 +96,7 @@ def build_graph(
     levels = 0
     for _u, _v, d in G.edges(data=True):
         levels += bool(d.pop("level_structure", False))
-    print(f"[build] {levels} bridge/tunnel edges set level")
+    print(f"[build] {levels} bridge/tunnel/raised-deck edges set level")
 
     overrides_mod.apply_ground_truth(G, ground_truth_path)
 

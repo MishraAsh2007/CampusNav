@@ -107,8 +107,8 @@ SPEED_ACCESSIBLE_MPS = 1.0
 # --------------------------------------------------------------------------
 # Elevation provider
 # --------------------------------------------------------------------------
-# opentopodata (NED 10 m, default) | epqs (USGS 3DEP) | openmeteo (90 m, coarse)
-ELEVATION_PROVIDER = os.getenv("ELEVATION_PROVIDER", "opentopodata")
+# epqs (USGS 3DEP, 1 m lidar on campus; default) | opentopodata (NED 10 m) | openmeteo (90 m, coarse)
+ELEVATION_PROVIDER = os.getenv("ELEVATION_PROVIDER", "epqs")
 OPENTOPODATA_URL = os.getenv("OPENTOPODATA_URL", "https://api.opentopodata.org/v1/ned10m")
 EPQS_URL = "https://epqs.nationalmap.gov/v1/json"
 OPENMETEO_URL = "https://api.open-meteo.com/v1/elevation"
