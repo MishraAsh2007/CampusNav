@@ -39,10 +39,15 @@ export function RouteSummary(p: Props) {
   if (!a) {
     return (
       <div className="rounded-3xl bg-stop-soft p-4 animate-rise" role="alert">
+        <div className="mb-2 flex justify-end">
+          <EngineBadge engine={p.engine} />
+        </div>
         <div className="flex items-start gap-3">
           <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-stop" />
           <div className="space-y-2 text-[13px] text-ink-2">
-            <p className="text-[15px] font-medium text-ink">No route that fits your needs</p>
+            <p className="text-[15px] font-medium text-ink">
+              {p.engine === 'remote' ? 'No step-free route available via Main routing engine' : 'No route that fits your needs'}
+            </p>
             <p>{p.failure ?? 'Try relaxing the slope limit.'}</p>
             <p>
               UMass runs an{' '}
@@ -76,6 +81,9 @@ export function RouteSummary(p: Props) {
 
   return (
     <div className="space-y-3">
+      <div className="flex justify-end">
+        <EngineBadge engine={p.engine} />
+      </div>
       {reroute && (
         <div
           className={cx('flex items-start gap-2.5 rounded-2xl bg-lift-soft px-3.5 py-3 text-[13px] text-lift-ink', p.justRerouted && 'animate-pop')}
@@ -184,5 +192,22 @@ export function RouteSummary(p: Props) {
         </span>
       </div>
     </div>
+  );
+}
+
+/** Which router produced this answer: the Role 1 engine (VITE_ROUTING_API_URL) or the fallback in this browser. */
+export function EngineBadge({ engine }: { engine: 'local' | 'remote' }) {
+  const remote = engine === 'remote';
+  return (
+    <span
+      className={cx(
+        'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold',
+        remote ? 'bg-go-soft text-go-ink' : 'bg-black/[0.05] text-ink-3'
+      )}
+      title={remote ? 'Route computed by the main routing engine (server)' : 'Main routing engine unreachable: route computed in this browser'}
+    >
+      <span className={cx('h-1.5 w-1.5 rounded-full', remote ? 'bg-go' : 'bg-ink-4')} aria-hidden="true" />
+      {remote ? 'Main routing engine' : 'In-browser router'}
+    </span>
   );
 }

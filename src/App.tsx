@@ -9,6 +9,7 @@ import {
   markClosureResolved,
   planRoutes,
   PlanResult,
+  type IndoorIntent,
   resetClosures,
   submitUserReport,
   addLocalOfficialNotice
@@ -34,6 +35,9 @@ import { JudgePanel, DemoLogEntry } from './components/JudgePanel';
 import { AboutSheet } from './components/AboutSheet';
 import { useMapProvider } from './components/map/MapsProvider';
 import { cx } from './components/ui';
+import IndoorFlow, { type ViewState } from './components/indoor/IndoorFlow';
+import { IndoorCatalogContext, useIndoorCatalog } from './components/indoor/indoorCatalog';
+import DestinationInput, { type DestinationTarget } from './components/indoor/DestinationInput';
 
 const POLL_MS = 5000;
 
@@ -47,7 +51,14 @@ export function App() {
   const { provider, reason } = useMapProvider();
 
   // ---------- data ----------
-  const [buildings, setBuildings] = useState<Building[]>(UMASS_BUILDINGS);
+  const [baseBuildings, setBuildings] = useState<Building[]>(UMASS_BUILDINGS);
+  // Indoor maps (API, data/indoor/*.json, built-in samples), matched to the outdoor buildings.
+  // Buildings that only exist as an indoor map are added to the map too.
+  const indoorCatalog = useIndoorCatalog(baseBuildings);
+  const buildings = useMemo(
+    () => (indoorCatalog.extraBuildings.length ? [...baseBuildings, ...indoorCatalog.extraBuildings] : baseBuildings),
+    [baseBuildings, indoorCatalog.extraBuildings]
+  );
   const [closures, setClosures] = useState<Closure[]>(INITIAL_CLOSURES);
   const [live, setLive] = useState(false);
   const [lastSync, setLastSync] = useState<number | null>(null);
@@ -102,11 +113,22 @@ export function App() {
   const lastPlanCtx = useRef<{ trip: string; sig: string; key: string; route: RouteResponse | null }>({ trip: '', sig: '', key: '', route: null });
   const onPlanned = useRef<((p: PlanResult) => void) | null>(null);
 
+  // Room / floor picked in the destination search bar, handed to the indoor flow on arrival
+  const [indoorTarget, setIndoorTarget] = useState<DestinationTarget | null>(null);
+  // Tell the routing engine what happens inside: a room on another floor means an elevator is needed,
+  // so it prefers the entrance closest to a working one
+  const destIndoorMap = indoorCatalog.forBuilding(destination?.building_id);
+  const indoorIntent = useMemo<IndoorIntent>(() => {
+    if (!destIndoorMap || !indoorTarget || indoorTarget.buildingId !== destination?.building_id) return {};
+    return { room: indoorTarget.label, needsElevator: !!indoorTarget.floorId && indoorTarget.floorId !== destIndoorMap.entryFloor };
+  }, [destIndoorMap, indoorTarget, destination?.building_id]);
+  const intentKey = `${indoorIntent.room ?? ''}|${indoorIntent.needsElevator ? 1 : 0}`;
+
   useEffect(() => {
     if (!origin || !destination || !graph) return;
     const seq = ++planSeq.current;
     setLoading(true);
-    planRoutes(origin, destination, prefs, closures, buildings).then((p) => {
+    planRoutes(origin, destination, prefs, closures, buildings, indoorIntent).then((p) => {
       if (seq !== planSeq.current) return;
       const trip = `${origin.lat},${origin.lng}>${destination.lat},${destination.lng}|${JSON.stringify(prefs)}`;
       const key = routeKey(p.accessible);
@@ -124,7 +146,9 @@ export function App() {
       onPlanned.current?.(p);
       onPlanned.current = null;
     });
-  }, [origin, destination, prefs, closures, buildings, graph]);
+    // indoorIntent is captured through intentKey
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [origin, destination, prefs, closures, buildings, graph, intentKey]);
 
   // ---------- selection & sheets ----------
   const [selectedBuilding, setSelectedBuilding] = useState<Building | null>(null);
@@ -279,6 +303,22 @@ export function App() {
     const e = destBuilding.entrances.find((x) => x.id === plan.endEndpointId);
     return e ? { building: destBuilding, name: e.name, door: e.door_type === 'push-button' ? 'push-button' : e.door_type } : null;
   }, [destBuilding, plan?.endEndpointId]);
+  // The door the outdoor route actually ends at (chosen by the routing engine when it answered).
+  // The indoor route starts from this point instead of the floor plan's default entrance.
+  const indoorEntrance = useMemo(() => {
+    const ap = plan?.accessible ? plan.arrivalPoint : undefined;
+    if (!ap) return null;
+    const e = destBuilding?.entrances.find((x) => x.id === ap.entranceId);
+    return {
+      id: ap.entranceId,
+      // Exactly the coordinate the engine returned; names come from our building data when the id matches
+      lat: ap.lat,
+      lng: ap.lng,
+      name: e?.name ?? 'Entrance',
+      door: (e?.door_type === 'manual' ? 'manual' : 'automatic') as 'manual' | 'automatic',
+      source: ap.source
+    };
+  }, [plan, destBuilding]);
   const chosenEntranceIds = useMemo(() => [plan?.endEndpointId, plan?.startEndpointId].filter(Boolean) as string[], [plan?.endEndpointId, plan?.startEndpointId]);
   const activeIssues = incidents.length;
   const highAlerts = incidents.filter((i) => i.severity === 'high').length;
@@ -299,7 +339,56 @@ export function App() {
     return notes;
   }, [origin, destination, incidents]);
 
-  const focusStep = (s: RouteStep) => s.at && setFocus({ lat: s.at[1], lng: s.at[0], key: Date.now() });
+  // ---------- indoor view state machine ----------
+  // 'outdoor' -> 'transition_modal' -> 'indoor_2d' <-> 'indoor_3d' -> 'outdoor'
+  // The outdoor map stays mounted underneath; indoor views render on top of it.
+  const indoorBuildingId = destIndoorMap ? destination?.building_id ?? null : null;
+  const [viewState, setViewState] = useState<ViewState>('outdoor');
+  // ?indoor=<building id or map id> jumps straight to the arrival modal (demo / testing).
+  // Waits for the catalog, since map files and the indoor API load after the first render.
+  const indoorParamDone = useRef(false);
+  useEffect(() => {
+    if (indoorParamDone.current) return;
+    const id = new URLSearchParams(location.search).get('indoor');
+    if (!id) {
+      indoorParamDone.current = true;
+      return;
+    }
+    const entry = indoorCatalog.entries.find((e) => e.buildingId === id || e.model.id === id);
+    const b = entry ? buildings.find((x) => x.id === entry.buildingId) : null;
+    if (b) {
+      indoorParamDone.current = true;
+      setDestination({ name: b.name, lat: b.location.lat, lng: b.location.lng, building_id: b.id });
+      setViewState('transition_modal');
+    } else if (!indoorCatalog.loading) indoorParamDone.current = true;
+  }, [indoorCatalog, buildings]);
+  // Changing to a destination without an indoor map closes any indoor view (not on first render)
+  const prevIndoorId = useRef(indoorBuildingId);
+  useEffect(() => {
+    if (prevIndoorId.current !== indoorBuildingId && !indoorBuildingId) setViewState('outdoor');
+    prevIndoorId.current = indoorBuildingId;
+  }, [indoorBuildingId]);
+  const arrivedAtIndoorBuilding = !!indoorBuildingId && !!plan?.accessible && viewState === 'outdoor';
+
+  // Picking a different destination elsewhere (the To field, a building pin) drops a stale room
+  useEffect(() => {
+    if (indoorTarget && destination?.building_id !== indoorTarget.buildingId) setIndoorTarget(null);
+  }, [destination?.building_id, indoorTarget]);
+  const onDestinationSearch = (t: DestinationTarget) => {
+    const b = buildings.find((x) => x.id === t.buildingId);
+    setDestination({ name: b?.name ?? t.buildingName, lat: b?.location.lat ?? t.lat, lng: b?.location.lng ?? t.lng, building_id: t.buildingId });
+    setIndoorTarget(t.type === 'building' ? null : t);
+    setTab('accessible');
+  };
+
+  const focusStep = (s: RouteStep) => {
+    // Tapping the last outdoor step ("Arrive at ...") at a supported building offers the indoor route
+    if (s.icon === 'destination' && indoorBuildingId) {
+      setViewState('transition_modal');
+      return;
+    }
+    if (s.at) setFocus({ lat: s.at[1], lng: s.at[0], key: Date.now() });
+  };
 
   const handleReportSubmit = async (p: UserReportPayload) => {
     await afterReport('user', p);
@@ -307,6 +396,7 @@ export function App() {
   };
 
   return (
+    <IndoorCatalogContext.Provider value={indoorCatalog}>
     <div className="fixed inset-0 overflow-hidden bg-canvas">
       <MapView
         buildings={buildings}
@@ -348,7 +438,7 @@ export function App() {
       />
 
       {picking && (
-        <div className="fixed left-1/2 top-20 z-40 -translate-x-1/2 rounded-full bg-ink px-4 py-2 text-[13px] text-white shadow-lift animate-pop" role="status">
+        <div className="fixed left-1/2 top-[120px] z-40 -translate-x-1/2 rounded-full bg-ink lg:top-[140px] px-4 py-2 text-[13px] text-white shadow-lift animate-pop" role="status">
           Tap the map to set {picking === 'report' ? 'the problem location' : picking === 'origin' ? 'your start' : 'your destination'} ·{' '}
           <button className="underline" onClick={() => setPicking(null)}>
             cancel
@@ -488,6 +578,33 @@ export function App() {
         onReset={demoReset}
         live={live}
       />
+
+      {arrivedAtIndoorBuilding && (
+        <button
+          type="button"
+          onClick={() => setViewState('transition_modal')}
+          className="fixed bottom-6 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 rounded-full bg-emerald-600 px-5 py-3 text-[15px] font-semibold text-white shadow-lift ring-4 ring-white/80 transition hover:bg-emerald-500 active:scale-95 max-lg:bottom-[calc(58vh+12px)] lg:left-[calc(50%+210px)]"
+        >
+          <span aria-hidden="true">🏛️</span> At {destination?.name}? Go inside{indoorTarget ? ` to ${indoorTarget.label.replace(/^\S+\s/, '')}` : ''}
+        </button>
+      )}
+
+      {/* Universal destination search (buildings, floors and rooms with indoor maps) */}
+      <div className="fixed inset-x-3 top-[64px] z-30 sm:inset-x-auto sm:left-1/2 sm:w-[380px] sm:-translate-x-1/2 lg:left-[432px] lg:top-[84px] lg:translate-x-0">
+        <DestinationInput onSelect={onDestinationSearch} value={indoorTarget ? indoorTarget.label : undefined} />
+      </div>
+
+      <IndoorFlow
+        viewState={viewState}
+        onViewStateChange={setViewState}
+        map={destIndoorMap}
+        buildingId={indoorBuildingId}
+        targetRoomId={indoorTarget?.buildingId === indoorBuildingId ? indoorTarget.roomId : null}
+        entrance={indoorEntrance}
+        closures={closures}
+        highContrast={hc}
+      />
     </div>
+    </IndoorCatalogContext.Provider>
   );
 }

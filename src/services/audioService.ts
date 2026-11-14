@@ -1,51 +1,30 @@
 /**
- * Browser Speech Synthesis Service for Hands-Free Accessible Navigation
+ * Outdoor "Read aloud". Uses the shared voice engine so indoor and outdoor directions sound the same.
  */
+import { speak as voiceSpeak, stop as voiceStop } from './voiceEngine';
 
 class AudioService {
-  private synth: SpeechSynthesis | null = null;
-  private isSpeaking = false;
-
-  constructor() {
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      this.synth = window.speechSynthesis;
-    }
-  }
+  private speaking = false;
 
   public speak(text: string, onEnd?: () => void): void {
-    if (!this.synth) return;
-
-    this.stop();
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 1.0;
-    utterance.pitch = 1.0;
-
-    utterance.onstart = () => {
-      this.isSpeaking = true;
-    };
-
-    utterance.onend = () => {
-      this.isSpeaking = false;
-      if (onEnd) onEnd();
-    };
-
-    utterance.onerror = () => {
-      this.isSpeaking = false;
-    };
-
-    this.synth.speak(utterance);
+    voiceSpeak(text, {
+      onStart: () => {
+        this.speaking = true;
+      },
+      onEnd: () => {
+        this.speaking = false;
+        onEnd?.();
+      }
+    });
   }
 
   public stop(): void {
-    if (this.synth) {
-      this.synth.cancel();
-      this.isSpeaking = false;
-    }
+    voiceStop();
+    this.speaking = false;
   }
 
   public getSpeaking(): boolean {
-    return this.isSpeaking;
+    return this.speaking;
   }
 }
 

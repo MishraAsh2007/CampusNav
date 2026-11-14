@@ -47,9 +47,17 @@ async function fetchJson<T>(url: string, init: RequestInit = {}, timeoutMs = 150
   }
 }
 
+/** Is the routing engine answering? Same as backendUp unless VITE_ROUTING_API_URL points elsewhere. */
+let routingUp = false;
+
 export async function checkBackendHealth(): Promise<boolean> {
-  const r = await fetchJson(`${API_BASE}/health`, {}, 900);
+  const separateEngine = ROUTING_BASE !== API_BASE;
+  const [r, engine] = await Promise.all([
+    fetchJson(`${API_BASE}/health`, {}, 900),
+    separateEngine ? fetchJson(`${ROUTING_BASE}/health`, {}, 900) : Promise.resolve(null)
+  ]);
   backendUp = r.ok;
+  routingUp = engine ? engine.ok : r.ok;
   return r.ok;
 }
 
@@ -146,16 +154,89 @@ export function closuresSignature(list: Closure[]): string {
 
 // ---------- buildings ----------
 
+/**
+ * A building as Role 4 stores it (backend/main.py `Building`): flat lat/lng, entrances with
+ * hasAutoDoorOpener / IsKeyCardRequired / isAccessibleToAllFloors, elevators and bathrooms as arrays.
+ * The older contract shape (location, door_type, step_free_entrances) is accepted too.
+ */
+export interface ApiBuilding {
+  id: string;
+  name: string;
+  code?: string;
+  category?: Building['category'];
+  lat?: number;
+  lng?: number;
+  location?: { lat: number; lng: number };
+  entrances?: (Partial<BuildingEntrance> & {
+    name: string;
+    lat: number;
+    lng: number;
+    step_free?: boolean | null;
+    hasAutoDoorOpener?: boolean;
+    automatic_door?: boolean;
+    IsKeyCardRequired?: boolean;
+    isAccessibleToAllFloors?: boolean;
+  })[];
+  step_free_entrances?: BuildingEntrance[];
+  elevator_count?: number;
+  elevators?: Building['elevators'] | unknown[];
+  bathrooms?: { transfer_type?: string | null }[];
+  accessible_restrooms?: boolean;
+  all_floors_accessible?: boolean;
+}
+
+const CATEGORIES: Building['category'][] = ['academic', 'student_services', 'dining', 'library', 'residential', 'recreation', 'administration'];
+
+/** Backend building -> the map UI's Building. Same mapping as the frontend-backend branch. */
+export function normalizeBuilding(raw: ApiBuilding): Building {
+  const local = UMASS_BUILDINGS.find((b) => b.id === raw.id);
+  const rawEntrances: NonNullable<ApiBuilding['entrances']> = raw.entrances ?? (raw.step_free_entrances ?? []).map((e) => ({ ...e, step_free: true }));
+  const entrances: BuildingEntrance[] = rawEntrances.map((e, i) => ({
+    ...(local?.entrances.find((x) => x.id === e.id) ?? {}),
+    ...e,
+    id: e.id ?? `${raw.id}-e${i}`,
+    step_free: e.step_free === true && e.IsKeyCardRequired !== true,
+    door_type: e.door_type ?? ((e.hasAutoDoorOpener ?? e.automatic_door) === true ? 'push-button' : 'manual'),
+    has_ramp: e.has_ramp ?? false
+  }));
+  const count = raw.elevator_count ?? (Array.isArray(raw.elevators) ? raw.elevators.length : 0);
+  const elevators: Building['elevators'] =
+    raw.elevators && !Array.isArray(raw.elevators)
+      ? raw.elevators
+      : // Outages arrive as closures, so with no report an elevator counts as working
+        local?.elevators ?? { total_count: count, working_count: count, floors_served: 'Unknown', status: count ? 'all_operational' : 'none', list: [] };
+  const usable = entrances.length ? entrances : local?.entrances ?? [];
+  return {
+    ...(local ?? {}),
+    id: raw.id,
+    name: raw.name,
+    code: raw.code ?? local?.code ?? raw.id.toUpperCase(),
+    category: raw.category && CATEGORIES.includes(raw.category) ? raw.category : local?.category ?? 'academic',
+    location: raw.location ?? { lat: Number(raw.lat), lng: Number(raw.lng) },
+    entrances: usable,
+    step_free_entrances: usable.filter((e) => e.step_free),
+    door_type: usable.some((e) => e.door_type !== 'manual') ? 'mixed' : 'manual',
+    elevators,
+    accessible_restrooms: raw.accessible_restrooms ?? raw.bathrooms?.some((b) => b.transfer_type != null) ?? local?.accessible_restrooms ?? false,
+    all_floors_accessible:
+      raw.all_floors_accessible ??
+      (raw.entrances?.some((e) => e.isAccessibleToAllFloors === true && e.IsKeyCardRequired !== true) || local?.all_floors_accessible || false)
+  };
+}
+
+/**
+ * Buildings from Role 4 (GET /buildings; older contract: /api/buildings). Anything added to the backend,
+ * dorms included, shows up on the map with no frontend change. Built-in buildings the backend doesn't
+ * have yet are kept so the offline demo still works.
+ */
 export async function getBuildings(): Promise<Building[]> {
-  const r = await fetchJson<Building[]>(`${API_BASE}/api/buildings`, {}, 1200);
+  let r = await fetchJson<ApiBuilding[]>(`${API_BASE}/buildings`, {}, 1500);
+  if (!r.ok && r.status === 404) r = await fetchJson<ApiBuilding[]>(`${API_BASE}/api/buildings`, {}, 1500);
   if (r.ok && Array.isArray(r.data) && r.data.length) {
-    return r.data.map((b) => {
-      const local = UMASS_BUILDINGS.find((x) => x.id === b.id);
-      const entrances: BuildingEntrance[] =
-        b.entrances ??
-        (b.step_free_entrances ?? []).map((e, i) => ({ ...e, id: e.id ?? `${b.id}-e${i}`, step_free: true }));
-      return { ...(local ?? {}), ...b, entrances: entrances.length ? entrances : local?.entrances ?? [], all_floors_accessible: b.all_floors_accessible ?? local?.all_floors_accessible ?? true };
-    });
+    const remote = r.data
+      .map(normalizeBuilding)
+      .filter((b) => Number.isFinite(b.location.lat) && Number.isFinite(b.location.lng));
+    return [...remote, ...UMASS_BUILDINGS.filter((b) => !remote.some((x) => x.id === b.id))];
   }
   return UMASS_BUILDINGS;
 }
@@ -219,6 +300,16 @@ export interface PlanResult extends RouteBundle {
   engine: 'local' | 'remote';
   ms: number;
   notes: string[];
+  /** Where the accessible route reaches the destination building. The indoor route starts here. */
+  arrivalPoint?: { entranceId: string | null; lat: number; lng: number; source: 'engine' | 'local' };
+}
+
+/** What the person is heading to inside the destination building (from the room search). */
+export interface IndoorIntent {
+  /** Room or floor label, echoed by the engine */
+  room?: string | null;
+  /** The room is on another floor than the entrance: the engine then prefers doors near a working elevator */
+  needsElevator?: boolean;
 }
 
 /** Response of the Role 1 engine's POST /api/route (routing/app/frontend_api.py). */
@@ -249,7 +340,8 @@ export async function planRoutes(
   destination: Place,
   prefs: UserPreferences,
   closures: Closure[],
-  buildings: Building[]
+  buildings: Building[],
+  indoor: IndoorIntent = {}
 ): Promise<PlanResult> {
   const t0 = performance.now();
   const G = await loadCampusGraph();
@@ -269,14 +361,18 @@ export async function planRoutes(
     landmarks
   });
   const notes = [o.note, d.note].filter(Boolean) as string[];
+  // The in-browser graph covers central campus only ([south, west, north, east], ~150 m margin)
+  const bb = G.meta.bbox;
+  const outside = (p: Place) => !!bb && (p.lat < bb[0] - 0.0014 || p.lat > bb[2] + 0.0014 || p.lng < bb[1] - 0.0018 || p.lng > bb[3] + 0.0018);
+  const offMap = [origin, destination].filter(outside);
 
-  if (ROUTING_MODE !== 'local' && (backendUp || ROUTING_MODE === 'remote')) {
+  if (ROUTING_MODE !== 'local' && (routingUp || ROUTING_MODE === 'remote')) {
     const start = o.accessible[0];
     const end = d.accessible.find((x) => x.id === local.endEndpointId) ?? d.accessible[0];
     // Let the Role 1 engine choose the destination entrance: it sees live elevator and closure status.
     const destBuilding = destination.building_id ? buildings.find((x) => x.id === destination.building_id) : undefined;
     const target = destBuilding && destBuilding.entrances.length
-      ? { destination: { building: destBuilding, needs_elevator: false } }
+      ? { destination: { building: destBuilding, needs_elevator: !!indoor.needsElevator, room: indoor.room ?? null } }
       : { end: { lat: end.lat, lng: end.lng } };
     // Same for the start building: the engine picks the exit by the cost of the whole trip.
     const startBuilding = origin.building_id ? buildings.find((x) => x.id === origin.building_id) : undefined;
@@ -323,6 +419,7 @@ export async function planRoutes(
           : ['The in-browser router found no step-free route here, but the main engine did. Check slopes as you go.'];
         return {
           ...base,
+          arrivalPoint: { entranceId: plan?.entrance_id ?? null, lat: accEnd.lat, lng: accEnd.lng, source: plan?.end ? 'engine' : 'local' },
           accessible: { ...remote, summary: { ...remote.summary, engine: 'remote', compute_ms: r.ms } },
           failure: undefined,
           notes: [...notes, ...second]
@@ -338,7 +435,26 @@ export async function planRoutes(
     }
     // Engine unreachable, errored, or sent something unusable: fall back to the in-browser router.
   }
-  return { ...local, engine: 'local', ms: Math.round(performance.now() - t0), notes };
+  if (offMap.length) {
+    // Snapping to the nearest mapped path would draw a misleading route. Say what is needed instead.
+    return {
+      ...local,
+      accessible: null,
+      standard: null,
+      failure: `${offMap.map((p) => p.name).join(' and ')} ${offMap.length > 1 ? 'are' : 'is'} outside the in-browser router's map, which covers central campus. Start the main routing engine (see README) to route there.`,
+      engine: 'local',
+      ms: Math.round(performance.now() - t0),
+      notes
+    };
+  }
+  const localEnd = d.accessible.find((x) => x.id === local.endEndpointId);
+  return {
+    ...local,
+    engine: 'local',
+    ms: Math.round(performance.now() - t0),
+    notes,
+    arrivalPoint: localEnd ? { entranceId: localEnd.id ?? null, lat: localEnd.lat, lng: localEnd.lng, source: 'local' } : undefined
+  };
 }
 
 // ---------- reports ----------

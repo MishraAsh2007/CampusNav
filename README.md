@@ -27,12 +27,35 @@ Reddit and Yik Yak were not searchable for this research (Reddit returned 403; Y
 
 ## Run
 
-Frontend (repo root):
+Open a terminal in VS Code (**Terminal → New Terminal**). It starts in the project folder.
 
-```bash
-npm install
-npm run dev          # http://localhost:5173
+### Laptop
+
+```powershell
+npm run dev
 ```
+
+Open http://localhost:5173/. Stop the server with `Ctrl + C`.
+
+Run `npm install` first if you haven't yet, or if you pulled teammates' changes that add packages.
+
+### Phone
+
+1. Connect the phone to the same Wi-Fi as the laptop.
+2. On the laptop, run:
+   ```powershell
+   npm run dev:phone
+   ```
+3. Open the `Network:` address that starts with `172.30.` on the phone, for example `https://172.30.231.238:5173/`. Skip the `192.168.56.1` one.
+4. Accept the certificate warning:
+   - **Android:** Advanced → Proceed.
+   - **iPhone:** Show Details → visit this website.
+
+If the page won't load on the phone, allow Node.js through Windows Firewall, or set your Wi-Fi network to Private.
+
+### Indoor shortcut
+
+Add `?indoor=ilc` to the address, for example `http://localhost:5173/?indoor=ilc`. It goes straight to the ILC room picker. `?indoor=dubois-library`, `?indoor=student-union` and `?indoor=campus-center` work too.
 
 Backend (optional, second terminal; full details in [backend/BACKEND.md](backend/BACKEND.md)):
 
@@ -45,11 +68,37 @@ python -m venv .venv
 
 The frontend finds the backend at `VITE_API_BASE_URL` (default `http://localhost:8000`), polls `GET /closures`, sends reports to `POST /reports`, and taps "Still a problem" to `POST /reports/{id}/confirm`. When the backend is off, the same features run from an in-browser store.
 
+Routing engine (optional, third terminal; Role 1's `routing/` folder on the `Ash_ver` branch):
+```powershell
+uvicorn app.main:app --port 8001      # run inside routing/
+```
+Add this to `.env` (already in `.env.example`), then restart `npm run dev`:
+```
+VITE_ROUTING_API_URL=http://localhost:8001
+```
+The frontend checks the engine's `GET /health` every 15 s and sends routes to `POST /api/route`. The route card shows a badge: **Main routing engine** when the engine answered, **In-browser router** when it was unreachable and the app routed locally. If the engine answers "no route", the card says *No step-free route available via Main routing engine* instead of swapping in a local route. The indoor directions start at the entrance the engine picked.
+
 The frontend works with no keys and no backend. Optional `.env` keys (see `.env.example`):
 
 - `VITE_GOOGLE_MAPS_API_KEY`: Google basemap, plus Google's wheelchair-entrance data in building sheets (enable *Maps JavaScript API* and *Places API (New)*). Without it, or if Google rejects the key, the app uses OpenStreetMap tiles.
 - `VITE_GEMINI_API_KEY`: Gemini route summaries (default model `gemini-3.8-flash`; 2.0 Flash has been shut down).
 - `VITE_ROUTING_ENGINE=local`: force the in-browser router during a live demo.
+- `VITE_INDOOR_API_URL`: optional live indoor maps from the campus_routing server (`GET /indoor/status`, `GET /indoor/maps/{id}`).
+- `VITE_INDOOR_SAMPLES`: `fallback` (default), `prefer` or `off` for the built-in sample floor plans.
+
+## Adding a building (dorms included): no frontend change
+
+**Outdoor (map pin, routing to its doors):** add the building to the Role 4 backend (`POST /buildings` with `id`, `name`, `lat`, `lng`, `entrances[]`). The app reads `GET /buildings` and shows it on the next load. Routing to buildings outside central campus needs the main routing engine; the in-browser fallback graph only covers central campus and says so instead of guessing.
+
+**Indoor (floor plans, room search, turn-by-turn, 2D/3D):** add one map file in the team's IndoorMap v1 format (`contracts/indoor-map.schema.json` on the `routing-scraper` branch) to `data/indoor/<building_id>.json`, or serve it from the indoor API. The app:
+- matches it to the outdoor building by `building_id`, then by name, then by position (so `library` matches `dubois-library`);
+- adds it as a destination by itself if the backend doesn't have the building yet (location and doors from entrances with `position`);
+- builds the room search from `nodes` of kind `room` (`label` and `aliases`) and the floor picker from `floors` (order from the floor `level`, or parsed from labels like "Lower Level" or "3rd Floor");
+- routes step-free over `edges` (no `steps`, nothing marked `step_free: false` or not public), avoids elevators that closures mark out of service (`asset_id`), and prefers automatic doors;
+- shows `image_url` when it is an image in the floor's pixel space, else draws a schematic from the corridors and rooms;
+- places GPS from the floor's `bounds` (`{ topLeft, bottomRight }` lat/lng of the image, optional) or from entrances and elevators that have coordinates.
+
+Maps with no entrance or no rooms and corridors (like the current Campus Center draft) are skipped, and the built-in sample is used if there is one. A `draft` map that can be routed is used, with a "Draft indoor map" note.
 
 ## Judge demo (60 seconds)
 

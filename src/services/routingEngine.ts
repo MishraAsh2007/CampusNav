@@ -37,7 +37,7 @@ export interface RawEdge {
 }
 
 export interface CampusGraph {
-  meta: { vertices: number; edges: number; staircases: number; total_steps: number; walkway_km: number; sources: string[] };
+  meta: { vertices: number; edges: number; staircases: number; total_steps: number; walkway_km: number; sources: string[]; bbox?: [number, number, number, number] };
   v: [number, number, number][]; // lat, lng, elevation m
   e: RawEdge[];
   adj: number[][]; // vertex -> edge indices

@@ -1,9 +1,12 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import basicSsl from '@vitejs/plugin-basic-ssl';
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react()],
+// `npm run dev:phone` (mode "https") serves over HTTPS with a self-signed certificate, because phones
+// only allow GPS (navigator.geolocation) on secure pages. Normal `npm run dev` is unchanged.
+export default defineConfig(({ mode }) => ({
+  plugins: [react(), ...(mode === 'https' ? [basicSsl()] : [])],
   resolve: {
     preserveSymlinks: true,
   },
@@ -38,4 +41,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));
