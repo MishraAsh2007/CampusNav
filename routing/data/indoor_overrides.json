@@ -32,8 +32,16 @@
     "ilc": {
       "aliases": ["Integrative Learning Center"],
       "entrance_floors": {
-        "_status": "pending",
-        "_note": "The team reports the ILC has step-free entrances on more than one level. The routing-scraper map puts both of its entrances (south, west) on floor 1; the frontend's mockBuildings.ts tags ilc-sw and ilc-se as level 2 (from OpenStreetMap). Record verified entrance -> floor pairs here, e.g. { \"ilc-sw\": \"2\" }."
+        "ilc-se": {
+          "floor": "2",
+          "verified": true,
+          "lat": 42.390887,
+          "lng": -72.525402,
+          "nearest_elevator": "ilc-elevator-east",
+          "source": "On-site check by the team, 2026-11-14: the door on North Pleasant St (you face west on entering, photo taken) opens straight onto floor 2, with an elevator immediately to the right. The ArcGIS east elevator is 2 m from this door."
+        },
+        "_pending": "A second door also opens straight onto floor 2 (you face southeast on entering). Not yet matched to an entrance: by facing direction it would be ilc-nw, but ilc-nw's ground is ~7 m lower than ilc-se and the frontend marks it as stepped; ilc-ne (same ground height as ilc-se) is the likelier match. Confirm before recording.",
+        "_note": "The routing-scraper map puts its two ILC entrances (south, west) on floor 1; this list overrides by location."
       }
     }
   }
