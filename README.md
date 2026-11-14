@@ -50,6 +50,8 @@ The frontend works with no keys and no backend. Optional `.env` keys (see `.env.
 - `VITE_GOOGLE_MAPS_API_KEY`: Google basemap, plus Google's wheelchair-entrance data in building sheets (enable *Maps JavaScript API* and *Places API (New)*). Without it, or if Google rejects the key, the app uses OpenStreetMap tiles.
 - `VITE_GEMINI_API_KEY`: Gemini route summaries (default model `gemini-3.8-flash`; 2.0 Flash has been shut down).
 - `VITE_ROUTING_ENGINE=local`: force the in-browser router during a live demo.
+- Buildings and closures are cached in the tab's `sessionStorage`. The app reads the cache on reload and fetches fresh data on opening and every five minutes. A successfully submitted community report is added immediately after the API accepts it. Ending the tab session clears the cache; browser session restoration may restore it.
+- With `VITE_ROUTING_ENGINE=auto`, routing runs in the browser until `VITE_ROUTING_API_URL` points to a server implementing `POST /api/route`. The data backend on port 8000 serves buildings and reports.
 
 ## Judge demo (60 seconds)
 

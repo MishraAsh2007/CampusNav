@@ -81,7 +81,7 @@ export interface Building {
     total_count: number;
     working_count: number;
     floors_served: string;
-    status: 'all_operational' | 'partial_outage' | 'all_down' | 'none';
+    status: 'all_operational' | 'partial_outage' | 'all_down' | 'none' | 'unknown';
     list: BuildingElevator[];
   };
   accessible_restrooms: boolean;

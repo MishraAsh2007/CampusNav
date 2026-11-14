@@ -35,11 +35,13 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
   const [details, setDetails] = useState('');
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (open) {
       setBuildingId(initialBuildingId ?? '');
       setDone(false);
+      setError(null);
     }
   }, [open, initialBuildingId]);
 
@@ -58,9 +60,11 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
   if (!open) return null;
 
   const submit = async () => {
-    if (!where) return;
+    if (!where || busy) return;
     setBusy(true);
-    await onSubmit({
+    setError(null);
+    try {
+      await onSubmit({
       lat: where.lat,
       lng: where.lng,
       type,
@@ -72,9 +76,13 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
       reporter_device_id: 'web',
       timestamp: new Date().toISOString()
     });
-    setBusy(false);
-    setDone(true);
-    setTimeout(onClose, 1400);
+      setDone(true);
+      setTimeout(onClose, 1400);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Unable to save report.');
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
@@ -96,11 +104,12 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
           <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-go-soft text-go">
             <Check className="h-7 w-7" />
           </div>
-          <p className="text-[17px] font-medium text-ink">Thanks. Routes are updating.</p>
-          <p className="mt-1 text-[13px] text-ink-3">Anyone heading this way is rerouted now.</p>
+          <p className="text-[17px] font-medium text-ink">Report saved. Thank you.</p>
+          <p className="mt-1 text-[13px] text-ink-3">Your route is updating.</p>
         </div>
       ) : (
         <div className="space-y-5">
+          {error && <p role="alert" className="text-sm text-stop">{error}</p>}
           <div className="grid grid-cols-2 gap-1.5">
             {TYPES.map((t) => (
               <button

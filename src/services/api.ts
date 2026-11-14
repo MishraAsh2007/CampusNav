@@ -9,13 +9,44 @@ import { Building, BuildingEntrance, Closure, Place, RouteResponse, UserPreferen
 import { INITIAL_CLOSURES } from '../data/mockClosures';
 import { UMASS_BUILDINGS } from '../data/mockBuildings';
 import { computeRoutes, Endpoint, getDistanceMeters, loadCampusGraph, RouteBundle } from './routingEngine';
+import { readSessionCache, writeSessionCache } from './sessionCache';
 
 const API_BASE: string = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '');
 const ROUTING_BASE: string = (import.meta.env.VITE_ROUTING_API_URL || API_BASE).replace(/\/$/, '');
 const ROUTING_MODE: 'auto' | 'local' | 'remote' = (import.meta.env.VITE_ROUTING_ENGINE as 'auto' | 'local' | 'remote') || 'auto';
 
-let store: Closure[] = INITIAL_CLOSURES.map((c) => ({ ...c }));
-let backendUp = false;
+const CLOSURES_CACHE = `campusnav:v1:${API_BASE}:closures`;
+const BUILDINGS_CACHE = `campusnav:v1:${API_BASE}:buildings`;
+
+function isCachedClosure(value: unknown): value is Closure {
+  const item = value as Closure | null;
+  return !!item && typeof item.id === 'string' && typeof item.title === 'string'
+    && Number.isFinite(item.lat) && Number.isFinite(item.lng)
+    && typeof item.last_confirmed === 'string' && typeof item.start_time === 'string';
+}
+
+function isCachedBuilding(value: unknown): value is Building {
+  const item = value as Building | null;
+  return !!item && typeof item.id === 'string' && typeof item.name === 'string'
+    && Number.isFinite(item.location?.lat) && Number.isFinite(item.location?.lng)
+    && Array.isArray(item.entrances) && Array.isArray(item.elevators?.list)
+    && item.entrances.every((entrance) => entrance && typeof entrance.name === 'string');
+}
+
+let store: Closure[] = readSessionCache(CLOSURES_CACHE, isCachedClosure)
+  ?? INITIAL_CLOSURES.map((c) => ({ ...c }));
+let buildingsStore: Building[] = readSessionCache(BUILDINGS_CACHE, isCachedBuilding) ?? UMASS_BUILDINGS;
+let closureRevision = 0;
+
+function saveClosures(closures: Closure[]): void {
+  store = closures;
+  closureRevision += 1;
+  writeSessionCache(CLOSURES_CACHE, store);
+}
+
+export function getLocalBuildings(): Building[] {
+  return [...buildingsStore];
+}
 /** Edits made in this browser (fixed / confirmed) win over a backend that has not caught up yet. */
 const overrides = new Map<string, Partial<Closure>>();
 
@@ -49,7 +80,6 @@ async function fetchJson<T>(url: string, init: RequestInit = {}, timeoutMs = 150
 
 export async function checkBackendHealth(): Promise<boolean> {
   const r = await fetchJson(`${API_BASE}/health`, {}, 900);
-  backendUp = r.ok;
   return r.ok;
 }
 
@@ -81,7 +111,7 @@ export function normalizeClosure(raw: Record<string, unknown>): Closure {
     reference: raw.reference ? String(raw.reference) : undefined,
     start_time: String(raw.start_time ?? raw.timestamp ?? now),
     end_time: raw.end_time ? String(raw.end_time) : undefined,
-    last_confirmed: String(raw.last_confirmed ?? raw.timestamp ?? now),
+    last_confirmed: String(raw.last_updated ?? raw.last_confirmed ?? raw.timestamp ?? now),
     confirmations_count: Number(raw.confirmations_count ?? 1)
   };
 }
@@ -119,8 +149,11 @@ const TYPE_TITLES: Record<string, string> = {
 };
 
 export async function getClosures(): Promise<ClosuresResult> {
+  const revision = closureRevision;
   const r = await fetchClosuresRaw();
   if (r.ok && Array.isArray(r.data)) {
+    // A GET started before a report was saved must not erase that new report.
+    if (revision !== closureRevision) return { closures: [...store], live: true, ms: r.ms };
     const remote = r.data
       .map((raw) => normalizeClosure({ ...raw, ...(reportMeta.get(String(raw.id)) ?? {}) }))
       .filter((c) => Number.isFinite(c.lat) && Number.isFinite(c.lng))
@@ -131,7 +164,7 @@ export async function getClosures(): Promise<ClosuresResult> {
       });
     // Keep local-only reports the server has not echoed yet
     const localOnly = store.filter((c) => c.id.startsWith('local-') && !remote.some((x) => x.id === c.id));
-    store = [...remote, ...localOnly];
+    saveClosures([...remote, ...localOnly]);
     return { closures: [...store], live: true, ms: r.ms };
   }
   return { closures: [...store], live: false, ms: r.ms };
@@ -146,18 +179,77 @@ export function closuresSignature(list: Closure[]): string {
 
 // ---------- buildings ----------
 
+interface ApiBuilding {
+  id: string;
+  name: string;
+  lat?: number;
+  lng?: number;
+  location?: Building['location'];
+  entrances: (Partial<BuildingEntrance> & {
+    lat: number;
+    lng: number;
+    name: string;
+    hasAutoDoorOpener?: boolean | null;
+    automatic_door?: boolean | null;
+    isAccessibleToAllFloors?: boolean | null;
+    IsKeyCardRequired?: boolean | null;
+  })[];
+  elevator_count?: number;
+  elevators?: { location: string }[] | Building['elevators'];
+  bathrooms?: { transfer_type: string | null }[];
+}
+
+export function normalizeBuilding(raw: ApiBuilding): Building {
+  const local = UMASS_BUILDINGS.find((building) => building.id === raw.id);
+  const entrances: BuildingEntrance[] = (raw.entrances ?? []).map((entrance, index) => ({
+    ...entrance,
+    id: entrance.id ?? `${raw.id}-e${index}`,
+    step_free: entrance.step_free === true && entrance.IsKeyCardRequired !== true,
+    door_type: entrance.door_type ?? (
+      (entrance.hasAutoDoorOpener ?? entrance.automatic_door) === true ? 'push-button' : 'manual'
+    ),
+    has_ramp: entrance.has_ramp ?? false,
+  }));
+  const count = raw.elevator_count ?? (Array.isArray(raw.elevators) ? raw.elevators.length : 0);
+  const elevators: Building['elevators'] = raw.elevators && !Array.isArray(raw.elevators)
+    ? raw.elevators
+    : {
+        total_count: count,
+        working_count: 0,
+        floors_served: 'Unknown',
+        status: count ? 'unknown' : 'none',
+        list: [],
+      };
+  return {
+    ...local,
+    id: raw.id,
+    name: raw.name,
+    code: local?.code ?? raw.id,
+    category: local?.category ?? 'academic',
+    location: raw.location ?? { lat: Number(raw.lat), lng: Number(raw.lng) },
+    entrances,
+    step_free_entrances: entrances.filter((entrance) => entrance.step_free),
+    door_type: entrances.some((entrance) => entrance.door_type !== 'manual') ? 'mixed' : 'manual',
+    elevators,
+    accessible_restrooms: raw.bathrooms?.some((bathroom) => bathroom.transfer_type != null) ?? false,
+    all_floors_accessible: raw.entrances?.some((entrance) =>
+      entrance.isAccessibleToAllFloors === true && entrance.IsKeyCardRequired !== true
+    ) ?? false,
+  };
+}
+
 export async function getBuildings(): Promise<Building[]> {
-  const r = await fetchJson<Building[]>(`${API_BASE}/api/buildings`, {}, 1200);
-  if (r.ok && Array.isArray(r.data) && r.data.length) {
-    return r.data.map((b) => {
-      const local = UMASS_BUILDINGS.find((x) => x.id === b.id);
-      const entrances: BuildingEntrance[] =
-        b.entrances ??
-        (b.step_free_entrances ?? []).map((e, i) => ({ ...e, id: e.id ?? `${b.id}-e${i}`, step_free: true }));
-      return { ...(local ?? {}), ...b, entrances: entrances.length ? entrances : local?.entrances ?? [], all_floors_accessible: b.all_floors_accessible ?? local?.all_floors_accessible ?? true };
-    });
+  let response = await fetchJson<ApiBuilding[]>(`${API_BASE}/buildings`, {}, 5000);
+  if (response.status === 404) {
+    response = await fetchJson<ApiBuilding[]>(`${API_BASE}/api/buildings`, {}, 5000);
   }
-  return UMASS_BUILDINGS;
+  if (response.ok && Array.isArray(response.data)) {
+    buildingsStore = response.data.map(normalizeBuilding).filter((building) =>
+      Number.isFinite(building.location.lat) && Number.isFinite(building.location.lng)
+    );
+    writeSessionCache(BUILDINGS_CACHE, buildingsStore);
+  }
+  return [...buildingsStore];
 }
 
 // ---------- routing ----------
@@ -256,7 +348,7 @@ export async function planRoutes(
   });
   const notes = [o.note, d.note].filter(Boolean) as string[];
 
-  if (ROUTING_MODE !== 'local' && (backendUp || ROUTING_MODE === 'remote')) {
+  if (ROUTING_MODE === 'remote' || (ROUTING_MODE === 'auto' && import.meta.env.VITE_ROUTING_API_URL)) {
     const start = o.accessible[0];
     const end = d.accessible.find((x) => x.id === local.endEndpointId) ?? d.accessible[0];
     const r = await fetchJson<{ step_free?: RouteResponse; shortest?: RouteResponse } & RouteResponse>(
@@ -301,6 +393,33 @@ export interface ReportResult {
   browserOnly?: boolean;
 }
 
+/** Submit the report form and update the map only after the API accepts it. */
+export async function postCommunityReport(report: UserReportPayload): Promise<Closure> {
+  if (report.status === 'working' || !BACKEND_TYPES.includes(report.type)) {
+    throw new Error('The backend currently accepts outages for elevators, ramps, paths, and construction.');
+  }
+  const response = await fetchJson<Record<string, unknown>>(
+    `${API_BASE}/community-reports`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        lat: report.lat, lng: report.lng, type: report.type,
+        radius: report.type === 'elevator' ? 12 : 16,
+      }),
+    },
+    10000,
+  );
+  if (!response.ok || !response.data?.id) {
+    throw new Error(response.status
+      ? `Report could not be saved (HTTP ${response.status}). Please try again.`
+      : 'Could not confirm the report was saved. Check your connection before retrying.');
+  }
+  const closure = normalizeClosure(response.data);
+  saveClosures([closure, ...store.filter((item) => item.id !== closure.id)]);
+  return closure;
+}
+
 export async function submitUserReport(report: UserReportPayload): Promise<ReportResult> {
   const now = new Date().toISOString();
   const status: Closure['status'] = report.status === 'working' ? 'repaired' : report.status === 'blocked' && report.type === 'path' ? 'degraded' : 'closed';
@@ -322,7 +441,7 @@ export async function submitUserReport(report: UserReportPayload): Promise<Repor
 
   // A "fixed" report for a known outage resolves it instead of adding a new pin
   if (status === 'repaired') {
-    store = store.map((c) => {
+    saveClosures(store.map((c) => {
       const match =
         c.status !== 'repaired' &&
         c.type === report.type &&
@@ -330,9 +449,9 @@ export async function submitUserReport(report: UserReportPayload): Promise<Repor
       if (!match) return c;
       override(c.id, { status: 'repaired', last_confirmed: now });
       return { ...c, status: 'repaired', last_confirmed: now };
-    });
+    }));
   } else {
-    store = [local, ...store];
+    saveClosures([local, ...store]);
   }
 
   // The team backend has no "fixed" endpoint and no automatic_door type: keep those in this browser.
@@ -367,7 +486,7 @@ export async function submitUserReport(report: UserReportPayload): Promise<Repor
     // The backend stores location only; remember the human details for this report
     reportMeta.set(id, { title: report.title, description: report.description || undefined, connector_id: report.connector_id });
     const server = normalizeClosure({ ...serverRaw, ...reportMeta.get(id) });
-    store = [server, ...store.filter((c) => c.id !== local.id)];
+    saveClosures([server, ...store.filter((c) => c.id !== local.id)]);
     return { closure: server, live: true, ms: r.ms };
   }
   return { closure: local, live: r.ok, ms: r.ms };
@@ -382,12 +501,12 @@ function confirmOnBackend(id: string) {
 /** "Still broken" tap: bump freshness and confirmation count. */
 export function confirmClosure(id: string): Closure[] {
   const now = new Date().toISOString();
-  store = store.map((c) => {
+  saveClosures(store.map((c) => {
     if (c.id !== id) return c;
     const next = { ...c, last_confirmed: now, confirmations_count: c.confirmations_count + 1 };
     override(id, { last_confirmed: now, confirmations_count: next.confirmations_count });
     return next;
-  });
+  }));
   confirmOnBackend(id);
   return [...store];
 }
@@ -395,7 +514,7 @@ export function confirmClosure(id: string): Closure[] {
 export function markClosureResolved(id: string): Closure[] {
   const now = new Date().toISOString();
   override(id, { status: 'repaired', last_confirmed: now });
-  store = store.map((c) => (c.id === id ? { ...c, status: 'repaired', last_confirmed: now } : c));
+  saveClosures(store.map((c) => (c.id === id ? { ...c, status: 'repaired', last_confirmed: now } : c)));
   return [...store];
 }
 
@@ -407,13 +526,13 @@ export function addLocalOfficialNotice(c: Closure): Closure[] {
   const now = new Date().toISOString();
   const notice: Closure = { ...c, id: `local-${c.id}`, start_time: now, last_confirmed: now, status: 'closed' };
   overrides.delete(notice.id);
-  store = [notice, ...store.filter((x) => x.id !== notice.id)];
+  saveClosures([notice, ...store.filter((x) => x.id !== notice.id)]);
   return [...store];
 }
 
 export function resetClosures(): Closure[] {
   overrides.clear();
-  store = INITIAL_CLOSURES.map((c) => ({ ...c, last_confirmed: new Date(Date.now() - 3600_000).toISOString() }));
+  saveClosures(INITIAL_CLOSURES.map((c) => ({ ...c, last_confirmed: new Date(Date.now() - 3600_000).toISOString() })));
   return [...store];
 }
 

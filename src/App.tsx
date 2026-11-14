@@ -6,17 +6,19 @@ import {
   confirmClosure,
   getBuildings,
   getClosures,
+  getLocalBuildings,
+  getLocalClosures,
   markClosureResolved,
   planRoutes,
   PlanResult,
   resetClosures,
   submitUserReport,
+  postCommunityReport,
   addLocalOfficialNotice
 } from './services/api';
 import { loadCampusGraph, CampusGraph, getDistanceMeters } from './services/routingEngine';
 import { BusRouteData, groupIncidents, Incident, loadBusRoutes } from './services/incidents';
-import { UMASS_BUILDINGS } from './data/mockBuildings';
-import { DEMO_ELEVATOR_OFFICIAL, DEMO_ELEVATOR_REPORT, INITIAL_CLOSURES } from './data/mockClosures';
+import { DEMO_ELEVATOR_OFFICIAL, DEMO_ELEVATOR_REPORT } from './data/mockClosures';
 import { DEFAULT_PREFERENCES } from './data/profiles';
 import { buildingPlaces, DEMO_TRIP, SPOTS } from './data/places';
 import { MapView } from './components/MapView';
@@ -35,7 +37,7 @@ import { AboutSheet } from './components/AboutSheet';
 import { useMapProvider } from './components/map/MapsProvider';
 import { cx } from './components/ui';
 
-const POLL_MS = 5000;
+const POLL_MS = 5 * 60 * 1000;
 
 function routeKey(r: RouteResponse | null): string {
   if (!r) return '';
@@ -47,15 +49,15 @@ export function App() {
   const { provider, reason } = useMapProvider();
 
   // ---------- data ----------
-  const [buildings, setBuildings] = useState<Building[]>(UMASS_BUILDINGS);
-  const [closures, setClosures] = useState<Closure[]>(INITIAL_CLOSURES);
+  const [buildings, setBuildings] = useState<Building[]>(getLocalBuildings);
+  const [closures, setClosures] = useState<Closure[]>(getLocalClosures);
   const [live, setLive] = useState(false);
   const [lastSync, setLastSync] = useState<number | null>(null);
   const [graph, setGraph] = useState<CampusGraph | null>(null);
   const [busData, setBusData] = useState<BusRouteData | null>(null);
   // Official notices + student reports of the same problem, merged and ranked
   const incidents = useMemo(() => groupIncidents(closures, busData), [closures, busData]);
-  const closuresSig = useRef(closuresSignature(INITIAL_CLOSURES));
+  const closuresSig = useRef(closuresSignature(closures));
 
   const applyClosures = useCallback((list: Closure[]) => {
     const sig = closuresSignature(list);
@@ -76,14 +78,17 @@ export function App() {
   useEffect(() => {
     loadCampusGraph().then(setGraph);
     loadBusRoutes().then(setBusData);
-    getBuildings().then(setBuildings);
-    checkBackendHealth().then(setLive);
-    syncClosures();
-    const poll = setInterval(syncClosures, POLL_MS);
-    const health = setInterval(() => checkBackendHealth().then(setLive), 15000);
+    const refresh = () => {
+      getBuildings().then(setBuildings);
+      checkBackendHealth();
+      void syncClosures();
+    };
+    // Deferring the initial fetch lets StrictMode clean up its first effect.
+    const initialFetch = setTimeout(refresh, 0);
+    const poll = setInterval(refresh, POLL_MS);
     return () => {
+      clearTimeout(initialFetch);
       clearInterval(poll);
-      clearInterval(health);
     };
   }, [syncClosures]);
 
@@ -302,7 +307,8 @@ export function App() {
   const focusStep = (s: RouteStep) => s.at && setFocus({ lat: s.at[1], lng: s.at[0], key: Date.now() });
 
   const handleReportSubmit = async (p: UserReportPayload) => {
-    await afterReport('user', p);
+    await postCommunityReport(p);
+    applyClosures(getLocalClosures());
     setReportPoint(null);
   };
 
