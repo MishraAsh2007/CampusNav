@@ -221,6 +221,19 @@ export interface PlanResult extends RouteBundle {
   notes: string[];
 }
 
+/** Response of the Role 1 engine's POST /api/route (routing/app/frontend_api.py). */
+type RemoteRoute = RouteResponse & { found?: boolean };
+interface RemotePlan {
+  step_free?: RemoteRoute;
+  shortest?: RemoteRoute | null;
+  destination?: {
+    entrance_id?: string | null;
+    end?: { lat: number; lng: number };
+    standard_entrance_id?: string | null;
+    standard_end?: { lat: number; lng: number };
+    warnings?: string[];
+  } | null;
+}
 function validRemote(r: unknown, end: { lat: number; lng: number }): r is RouteResponse {
   const x = r as RouteResponse | undefined;
   const coords = x?.features?.[0]?.geometry?.coordinates;
@@ -259,14 +272,19 @@ export async function planRoutes(
   if (ROUTING_MODE !== 'local' && (backendUp || ROUTING_MODE === 'remote')) {
     const start = o.accessible[0];
     const end = d.accessible.find((x) => x.id === local.endEndpointId) ?? d.accessible[0];
-    const r = await fetchJson<{ step_free?: RouteResponse; shortest?: RouteResponse } & RouteResponse>(
+    // Let the Role 1 engine choose the destination entrance: it sees live elevator and closure status.
+    const destBuilding = destination.building_id ? buildings.find((x) => x.id === destination.building_id) : undefined;
+    const target = destBuilding && destBuilding.entrances.length
+      ? { destination: { building: destBuilding, needs_elevator: false } }
+      : { end: { lat: end.lat, lng: end.lng } };
+    const r = await fetchJson<RemotePlan>(
       `${ROUTING_BASE}/api/route`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           start: { lat: start.lat, lng: start.lng },
-          end: { lat: end.lat, lng: end.lng },
+          ...target,
           preferences: {
             ...prefs,
             wheelchair_preset: prefs.mobility_preset === 'power_wheelchair' ? 'power' : prefs.mobility_preset === 'manual_wheelchair' ? 'manual' : 'none'
@@ -276,17 +294,42 @@ export async function planRoutes(
       },
       1800
     );
-    const remote = r.data?.step_free ?? r.data;
-    if (r.ok && validRemote(remote, end)) {
-      return {
+    if (r.ok && r.data) {
+      const plan = r.data.destination;
+      // Check each route against the entrance the engine chose for it, not the one guessed here.
+      const accEnd = plan?.end ?? end;
+      const stdEnd = plan?.standard_end ?? end;
+      const remote = r.data.step_free;
+      // Read these before validRemote() narrows `remote`.
+      const noRoute = remote?.found === false;
+      const why = remote?.summary?.warnings?.[0] ?? 'No step-free route matches your needs.';
+      const base = {
         ...local,
-        accessible: { ...remote, summary: { ...remote.summary, engine: 'remote', compute_ms: r.ms } },
-        standard: r.data?.shortest && validRemote(r.data.shortest, end) ? r.data.shortest : local.standard,
-        engine: 'remote',
-        ms: Math.round(performance.now() - t0),
-        notes
+        standard: r.data.shortest && validRemote(r.data.shortest, stdEnd) ? r.data.shortest : local.standard,
+        endEndpointId: plan?.entrance_id ?? local.endEndpointId,
+        engine: 'remote' as const,
+        ms: Math.round(performance.now() - t0)
       };
+      if (remote && validRemote(remote, accEnd)) {
+        const second = local.accessible
+          ? []
+          : ['The in-browser router found no step-free route here, but the main engine did. Check slopes as you go.'];
+        return {
+          ...base,
+          accessible: { ...remote, summary: { ...remote.summary, engine: 'remote', compute_ms: r.ms } },
+          failure: undefined,
+          notes: [...notes, ...second]
+        };
+      }
+      if (noRoute) {
+        // A real "no route" answer: show it instead of quietly swapping in the in-browser router's route.
+        const second = local.accessible
+          ? ' (The in-browser router, which uses different elevation data, did find a step-free route. It is not shown; it may cross a slope the main engine rejected.)'
+          : '';
+        return { ...base, accessible: null, failure: why + second, notes };
+      }
     }
+    // Engine unreachable, errored, or sent something unusable: fall back to the in-browser router.
   }
   return { ...local, engine: 'local', ms: Math.round(performance.now() - t0), notes };
 }

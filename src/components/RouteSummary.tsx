@@ -180,7 +180,7 @@ export function RouteSummary(p: Props) {
         </button>
         <span className="flex items-center gap-1 text-[11px] text-ink-4" title="Routing engine and graph size">
           <Info className="h-3 w-3" />
-          {p.engine === 'remote' ? 'Role 1 engine' : `${(a.summary.compute_ms ?? 0) < 1 ? '<1' : a.summary.compute_ms} ms`} · {p.graphEdges.toLocaleString()} paths
+          {p.engine === 'remote' ? 'Main routing engine' : `In-browser router · ${(a.summary.compute_ms ?? 0) < 1 ? '<1' : a.summary.compute_ms} ms`} · {p.graphEdges.toLocaleString()} paths
         </span>
       </div>
     </div>
