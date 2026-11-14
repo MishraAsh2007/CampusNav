@@ -1,0 +1,6 @@
+{
+  "_readme": "Ground-truth overrides from teammates who physically checked entrances/elevators. See app/graph/overrides.py for the schema. Rebuild the graph after editing: python scripts/build_graph.py",
+  "links": [],
+  "edge_tags": [],
+  "entrances": []
+}

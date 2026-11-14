@@ -1,1 +1,86 @@
 # CampusNav
+
+Step-free campus route planner for UMass Amherst that knows what is broken today: elevator outages,
+construction and blocked ramps. Routing is plain graph search (no LLM). Gemini only rewrites directions
+in the background and never sits on the critical path.
+
+```
+CampusNav/
+├── docs/contracts.md   # request/response + closure schema shared by all roles
+├── routing/            # Role 1: routing engine (this README section)
+├── frontend/           # Role 2
+├── services/           # Role 3: MongoDB Atlas + Gemini
+└── .env.example
+```
+
+## Routing engine (Role 1)
+
+OSMnx + NetworkX graph of central campus, USGS elevation for per-edge grade, A* search behind a stateless
+FastAPI `/route` endpoint. Closures arrive in each request body, so the engine needs no database.
+
+### Setup
+
+```powershell
+cd routing
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+### Build the graph (once)
+
+`data/graph.graphml` is committed, so teammates can skip this. To rebuild (needs internet, about 1 minute;
+elevations are cached in `data/elevation_cache.json`):
+
+```powershell
+python scripts/build_graph.py
+```
+
+Edit `data/ground_truth.json` (verified elevators, ramps, entrances; schema in `app/graph/overrides.py`)
+and rebuild to fold it in.
+
+### Demo: standard vs. accessible
+
+```powershell
+python scripts/demo_route.py                                   # ILC -> Campus Center
+python scripts/demo_route.py --closures mocks/closures.json    # ramp blocked: accessible route reroutes
+python scripts/demo_route.py --max-grade 8 --geojson out.geojson
+```
+
+### Run the API
+
+```powershell
+uvicorn app.main:app --reload --port 8000
+```
+
+`GET /health`, `POST /route` (see `docs/contracts.md`), Swagger UI at `/docs`.
+
+```powershell
+curl.exe -X POST localhost:8000/route -H "Content-Type: application/json" -d "@mocks/sample_request.json"
+```
+
+### Tests
+
+```powershell
+python -m pytest -q
+```
+
+### How it works
+
+| piece | file |
+|---|---|
+| Edge cost: stairs, grade, ground truth | `app/routing/weights.py` |
+| Closures -> blocked edges, expiry | `app/routing/closures.py` |
+| A* / Dijkstra | `app/routing/pathfinding.py` |
+| Path -> GeoJSON + template directions | `app/routing/serialize.py` |
+| OSM download, edge classification | `app/graph/build.py` |
+| Elevation + grade | `app/graph/elevation.py` |
+| Ground-truth overrides | `app/graph/overrides.py` |
+
+* **Standard route**: shortest distance, stairs and slope ignored.
+* **Accessible route**: stairs blocked, edges steeper than `max_grade_pct` (default 5%, ADA) blocked,
+  grades above 60% of the limit get a rising cost, closures removed.
+* Edges under 8 m with a steep computed grade are penalized, not blocked, because DEM noise on short edges
+  would otherwise cut the graph.
+* Grade comes from USGS NED 10 m elevation (OpenTopoData). Treat it as approximate, and verify key
+  slopes on site.
