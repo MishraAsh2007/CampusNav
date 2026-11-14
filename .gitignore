@@ -1,5 +1,7 @@
 .env
 .env.example
+services/scraper/data/raw/
+services/scraper/data/out/
 .venv/
 __pycache__/
 *.pyc
