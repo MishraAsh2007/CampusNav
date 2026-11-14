@@ -68,7 +68,14 @@ def _elevator_status(dest: Destination, active: list[Closure]) -> tuple[Elevator
             building_wide = True
             matched.append(c)
 
-    possibly_out = total if building_wide else min(total, len(out_located))
+    # Elevators the building data itself marks out of service (e.g. the map UI's status field).
+    flagged = [e for e in b.elevators if (e.status or "").lower() in ("out_of_service", "out", "down")]
+    flagged_located = {i for i, e in enumerate(e for e in b.elevators if e.lat is not None and e.lng is not None)
+                       if (e.status or "").lower() in ("out_of_service", "out", "down")}
+    out_located |= flagged_located
+    unlocated_flagged = len(flagged) - len(flagged_located)
+
+    possibly_out = total if building_wide else min(total, len(out_located) + unlocated_flagged)
     working = [] if building_wide else [p for i, p in enumerate(located) if i not in out_located]
     stamps = [_aware(c.confirmed_at or c.reported_at) for c in matched if (c.confirmed_at or c.reported_at)]
     status = ElevatorStatus(
@@ -80,6 +87,11 @@ def _elevator_status(dest: Destination, active: list[Closure]) -> tuple[Elevator
         last_confirmed_at=max(stamps) if stamps else None,
     )
     return status, working
+
+
+def _door_issue(e: DestinationEntrance, dest: Destination):
+    return next((d for d in dest.door_issues
+                 if haversine_m(d.lat, d.lng, e.lat, e.lng) <= max(15.0, d.radius_m)), None)
 
 
 def _entrance_blockers(e: DestinationEntrance, active: list[Closure]) -> list[Closure]:
@@ -124,10 +136,12 @@ def plan_destination(
         if nearest_any is None or straight < nearest_any[0]:
             nearest_any = (straight, node, snap)
 
+        issue = _door_issue(e, dest)
         opt = EntranceOption(
-            name=e.name, lat=e.lat, lon=e.lng, step_free=e.step_free, usable=False,
+            id=e.id, name=e.name, lat=e.lat, lon=e.lng, step_free=e.step_free, usable=False,
             auto_door=e.auto_door, key_card_required=e.IsKeyCardRequired,
             accessible_to_all_floors=e.isAccessibleToAllFloors,
+            door_issue=(issue.description or "door opener reported broken") if issue else None,
         )
         all_options.append(opt)
         if not e.step_free:
@@ -154,10 +168,22 @@ def plan_destination(
         if dest.needs_elevator and e.isAccessibleToAllFloors is False:
             opt.reasons.append("marked as not giving access to all floors")
 
+        # Door opener: with need_automatic_door, a door with a working opener always ranks first.
+        powered = e.auto_door is not False and not (issue and issue.closed)
+        door_penalty = 0.0
+        if issue:
+            door_penalty += config.DEST_DOOR_ISSUE_PENALTY_M if issue.closed else config.DEST_DOOR_DEGRADED_PENALTY_M
+            opt.reasons.append(f"door opener: {opt.door_issue}")
+        if dest.need_automatic_door and not powered:
+            opt.reasons.append("no working automatic door opener")
+        if dest.need_automatic_door and e.door_type == "push-button":
+            door_penalty += config.DEST_PUSH_BUTTON_PENALTY_M
+
         rank = (
             bool(e.IsKeyCardRequired),
+            dest.need_automatic_door and not powered,
             dest.needs_elevator and e.isAccessibleToAllFloors is False,
-            cost + config.DEST_INDOOR_WEIGHT * indoor,
+            cost + config.DEST_INDOOR_WEIGHT * indoor + door_penalty,
         )
         options.append((rank, opt, node, snap, path))
 
@@ -173,7 +199,16 @@ def plan_destination(
         return PlannedTarget(plan, node, snap, find_path(G, source, node, prefs, blocked), fallback, fallback_snap)
 
     if not options:
-        warnings.append(f"No usable step-free entrance to {b.name} right now. See `entrances` for reasons.")
+        candidates = [o for o in all_options if o.step_free and not any(r.startswith("closed") for r in o.reasons)]
+        if candidates and all(any(r.startswith("no step-free route") for r in o.reasons) for o in candidates):
+            # Every open step-free door is unreachable: the start, not the building, is usually the problem.
+            warnings.append(
+                f"No step-free route under {prefs.max_grade_pct:g}% grade from your starting point to any "
+                f"entrance of {b.name}. The start may be cut off by stairs or a steep path; try a "
+                "different starting point or a higher grade limit."
+            )
+        else:
+            warnings.append(f"No usable step-free entrance to {b.name} right now. See `entrances` for reasons.")
         plan = DestinationPlan(
             building_id=b.id, building_name=b.name, room=dest.room, needs_elevator=dest.needs_elevator,
             upper_floors_reachable=reachable, entrances=all_options, elevators=elevators, warnings=warnings,
@@ -186,7 +221,9 @@ def plan_destination(
 
     if chosen.key_card_required:
         warnings.append(f"{chosen.name} needs a key card; no other step-free entrance is usable.")
-    if chosen.auto_door is False:
+    if chosen.door_issue:
+        warnings.append(f"{chosen.name}: {chosen.door_issue}.")
+    elif chosen.auto_door is False:
         warnings.append(f"{chosen.name} has no automatic door opener.")
     if snap > config.DEST_ENTRANCE_SNAP_WARN_M:
         warnings.append(

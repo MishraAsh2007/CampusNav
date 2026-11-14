@@ -261,6 +261,57 @@ GeoJSON FeatureCollection: one LineString feature per segment (`grade`, `is_step
 
 Start or end outside the campus area returns 422.
 
+### Letting the engine pick the destination entrance
+
+Send `destination` instead of `end`. `building` is the map UI's `Building` object as-is (a
+backend `/buildings` item also works):
+
+```json
+{
+  "start": { "lat": 42.389702, "lng": -72.528172 },
+  "destination": { "building": { /* Building */ }, "needs_elevator": true, "room": "S331" },
+  "preferences": { /* UserPreferences */ },
+  "closures": [ /* all non-repaired Closures, including automatic_door */ ]
+}
+```
+
+The engine applies the same rules as the UI's `usableEntrances()`, plus live elevator status:
+- Entrances that aren't `step_free`, or are inside an active ramp, path or construction closure,
+  are out.
+- `automatic_door` closures near an entrance add cost (closed +120 m, degraded +40 m). With
+  `need_automatic_door`, entrances with a working opener always rank first, and push-button
+  doors cost +10 m.
+- Elevators: `elevators.list[].status = "out_of_service"`, `working_count`, `status = "all_down"`,
+  and active elevator closures near the building all count. If `needs_elevator` and none work,
+  the route still goes to the door, with a warning up front.
+- Among the rest: the cheapest step-free route from the start.
+
+The response adds `destination` (null when `end` was used):
+
+| field | use |
+|---|---|
+| `destination.end` | `{lat, lng}` of the chosen entrance. Compare the route's end to this, not to the building. |
+| `destination.entrance_id` | the UI's entrance `id` |
+| `destination.entrances[]` | every entrance with `usable`, `reasons`, `route_distance_m`, `door_issue` |
+| `destination.elevators` | `total`, `working`, `possibly_out`, `closure_ids` |
+| `destination.upper_floors_reachable` | false if no elevator works |
+| `destination.warnings` | also prepended to `step_free.summary.warnings` |
+
+Both routes end at the chosen entrance, and the last step reads "Arrive at <building>, <entrance>".
+
+**Frontend change needed** (in `role-2-map-ui`, `planRoutes()` in `src/services/api.ts`):
+
+```ts
+const destBuilding = destination.building_id ? buildings.find((x) => x.id === destination.building_id) : undefined;
+// request body: replace `end` with
+...(destBuilding ? { destination: { building: destBuilding, needs_elevator: false } } : { end: { lat: end.lat, lng: end.lng } }),
+// validation: check the route against the entrance the engine chose
+const endPoint = r.data?.destination?.end ?? end;
+if (r.ok && validRemote(remote, endPoint)) { ... }
+```
+
+`needs_elevator` stays `false` until the UI knows the room's floor.
+
 ### Errors
 
 | status | when |

@@ -79,6 +79,11 @@ DEST_ELEVATOR_MATCH_SLACK_M = 10.0
 DEST_ENTRANCE_SNAP_WARN_M = 30.0
 # Weight of the straight-line door-to-elevator distance when ranking entrances.
 DEST_INDOOR_WEIGHT = 1.0
+# Extra cost (meters) for an entrance with a reported door-opener problem
+# (same values the map UI's usableEntrances() used).
+DEST_DOOR_ISSUE_PENALTY_M = 120.0
+DEST_DOOR_DEGRADED_PENALTY_M = 40.0
+DEST_PUSH_BUTTON_PENALTY_M = 10.0
 
 # --------------------------------------------------------------------------
 # Closures

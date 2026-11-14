@@ -103,6 +103,7 @@ class _AcceptsLon(BaseModel):
 
 
 class DestinationEntrance(_AcceptsLon):
+    id: Optional[str] = None
     name: str
     lat: float = Field(ge=-90, le=90)
     lng: float = Field(ge=-180, le=180)
@@ -111,16 +112,35 @@ class DestinationEntrance(_AcceptsLon):
     isAccessibleToAllFloors: Optional[bool] = None
     IsKeyCardRequired: Optional[bool] = None
     automatic_door: Optional[bool] = None
+    door_type: Optional[str] = Field(default=None, description="automatic | push-button | manual (map UI)")
 
     @property
     def auto_door(self) -> Optional[bool]:
-        return self.hasAutoDoorOpener if self.hasAutoDoorOpener is not None else self.automatic_door
+        if self.hasAutoDoorOpener is not None:
+            return self.hasAutoDoorOpener
+        if self.automatic_door is not None:
+            return self.automatic_door
+        if self.door_type:
+            return self.door_type != "manual"
+        return None
 
 
 class DestinationElevator(_AcceptsLon):
     location: Optional[str] = None
     lat: Optional[float] = Field(default=None, ge=-90, le=90)
     lng: Optional[float] = Field(default=None, ge=-180, le=180)
+    status: Optional[str] = Field(default=None, description='"out_of_service" counts as out')
+
+
+class DoorIssue(BaseModel):
+    """A broken automatic door opener near an entrance (doesn't block walkways)."""
+
+    id: str
+    lat: float = Field(ge=-90, le=90)
+    lng: float = Field(ge=-180, le=180)
+    radius_m: float = Field(default=15.0, gt=0)
+    closed: bool = Field(default=True, description="False = degraded (works intermittently)")
+    description: Optional[str] = None
 
 
 class DestinationBuilding(_AcceptsLon):
@@ -145,6 +165,8 @@ class Destination(BaseModel):
         default=False, description="True if the room is on a floor the user can only reach by elevator"
     )
     room: Optional[str] = Field(default=None, description="Echoed back; used by the indoor stage later")
+    need_automatic_door: bool = Field(default=False, description="Prefer entrances with a working door opener")
+    door_issues: list[DoorIssue] = Field(default_factory=list)
 
 
 class RouteRequest(BaseModel):
@@ -224,6 +246,7 @@ class RouteMeta(BaseModel):
 
 
 class EntranceOption(BaseModel):
+    id: Optional[str] = None
     name: str
     lat: float
     lon: float
@@ -236,6 +259,7 @@ class EntranceOption(BaseModel):
         default=None, description="Straight-line estimate from this door to the nearest working elevator"
     )
     auto_door: Optional[bool] = None
+    door_issue: Optional[str] = Field(default=None, description="Reported door-opener problem at this entrance")
     key_card_required: Optional[bool] = None
     accessible_to_all_floors: Optional[bool] = None
 

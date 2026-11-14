@@ -32,7 +32,7 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_valida
 
 from . import config
 from .routing.pathfinding import plan_routes
-from .schemas import Closure, RouteRequest, RouteResult
+from .schemas import Closure, Destination, RouteRequest, RouteResult
 from .utils.geo import haversine_m
 
 router = APIRouter()
@@ -55,12 +55,28 @@ class Point(BaseModel):
         return d
 
 
+class FrontendDestination(BaseModel):
+    """The destination building as the map UI holds it (its `Building` type), sent as-is."""
+
+    model_config = ConfigDict(extra="ignore")
+    building: dict[str, Any]
+    needs_elevator: bool = False
+    room: Optional[str] = None
+
+
 class FrontendRouteRequest(BaseModel):
     model_config = ConfigDict(extra="ignore")
     start: Point
-    end: Point
+    end: Optional[Point] = None
+    destination: Optional[FrontendDestination] = None
     preferences: dict[str, Any] = Field(default_factory=dict)
     closures: list[dict[str, Any]] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def _target(self) -> "FrontendRouteRequest":
+        if self.end is None and self.destination is None:
+            raise ValueError("give `end` or `destination`")
+        return self
 
 
 # ------------------------------------------------------------------ inputs
@@ -83,7 +99,8 @@ def map_closures(raw: list[dict[str, Any]]) -> tuple[list[Closure], list[dict[st
         if c.get("status") == "repaired":
             continue
         if c.get("type") in DROPPED_TYPES:
-            skipped.append({"id": cid, "reason": f"type {c.get('type')} does not block walkways"})
+            skipped.append({"id": cid, "reason": f"type {c.get('type')} doesn't block walkways "
+                                                  "(used only to choose a destination entrance)"})
             continue
         if c.get("affects") == "road":
             skipped.append({"id": cid, "reason": "affects roads only"})
@@ -99,6 +116,69 @@ def map_closures(raw: list[dict[str, Any]]) -> tuple[list[Closure], list[dict[st
         except ValidationError as exc:
             skipped.append({"id": cid, "reason": exc.errors()[0].get("msg", "invalid")})
     return kept, skipped
+
+
+def map_building(fb: dict[str, Any]) -> dict[str, Any]:
+    """Map UI `Building` -> engine DestinationBuilding (backend `/buildings` items also work as-is)."""
+    if "location" not in fb or "entrances" not in fb:
+        return fb  # already in the backend / engine shape
+    loc = fb.get("location") or {}
+    entrances = [
+        {
+            "id": e.get("id"),
+            "name": e.get("name") or e.get("id") or "Entrance",
+            "lat": e.get("lat"),
+            "lng": e.get("lng", e.get("lon")),
+            "step_free": bool(e.get("step_free")),
+            "door_type": e.get("door_type"),
+        }
+        for e in fb.get("entrances") or []
+    ]
+    el = fb.get("elevators") or {}
+    if isinstance(el, list):  # backend shape inside a UI object
+        el = {"list": el, "total_count": len(el)}
+    items = [{"location": x.get("name") or x.get("id"), "status": x.get("status")} for x in el.get("list") or []]
+    total = el.get("total_count")
+    total = max(int(total) if isinstance(total, (int, float)) else 0, len(items))
+    # Unlisted elevators (count says more than the list names) start as working.
+    items += [{"location": "unspecified elevator", "status": None} for _ in range(total - len(items))]
+    working = el.get("working_count")
+    if el.get("status") == "all_down":
+        working = 0
+    if isinstance(working, (int, float)):
+        # The counts can say more are down than the list marks; we can't tell which, so mark
+        # unmarked ones out until the counts agree (only the number matters for routing).
+        missing_out = (total - int(working)) - sum(1 for x in items if x["status"] == "out_of_service")
+        for x in items:
+            if missing_out <= 0:
+                break
+            if x["status"] != "out_of_service":
+                x["status"] = "out_of_service"
+                missing_out -= 1
+    return {
+        "id": str(fb.get("id") or fb.get("code") or "building"),
+        "name": fb.get("name") or "Destination",
+        "lat": loc.get("lat"),
+        "lng": loc.get("lng", loc.get("lon")),
+        "entrances": entrances,
+        "elevator_count": total,
+        "elevators": items,
+    }
+
+
+def door_issues(raw: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Map UI `automatic_door` closures -> engine door issues (they don't block walkways)."""
+    out = []
+    for c in raw:
+        if c.get("type") != "automatic_door" or c.get("status") == "repaired":
+            continue
+        try:
+            out.append({"id": str(c.get("id", "?")), "lat": float(c["lat"]), "lng": float(c["lng"]),
+                        "radius_m": float(c.get("radius") or 15), "closed": c.get("status") != "degraded",
+                        "description": c.get("title") or c.get("description")})
+        except (KeyError, TypeError, ValueError):
+            continue
+    return out
 
 
 # ----------------------------------------------------------------- outputs
@@ -130,7 +210,8 @@ def _icon(kind: str, instruction: str, grade: float, first: bool) -> str:
     return "straight"
 
 
-def to_frontend(G, r: RouteResult, closures: list[Closure], end: Point, grade_limit: float) -> dict[str, Any]:
+def to_frontend(G, r: RouteResult, closures: list[Closure], end: Point, grade_limit: float,
+                arrive: Optional[str] = None) -> dict[str, Any]:
     """Engine RouteResult -> frontend RouteResponse (GeoJSON FeatureCollection)."""
     if not r.found:
         return {
@@ -194,7 +275,7 @@ def to_frontend(G, r: RouteResult, closures: list[Closure], end: Point, grade_li
             gain += max(0.0, zv - zu)
 
     last = features[-1]["geometry"]["coordinates"][-1]
-    steps.append({"instruction": "Arrive at your destination", "distance_m": 0, "grade_pct": 0,
+    steps.append({"instruction": arrive or "Arrive at your destination", "distance_m": 0, "grade_pct": 0,
                   "icon": "destination", "at": last})
 
     by_id = {c.id: c for c in closures}
@@ -249,25 +330,69 @@ def frontend_route(body: FrontendRouteRequest, request: Request) -> dict[str, An
     G = request.app.state.graph
     if G is None:
         raise HTTPException(503, detail=f"graph not loaded: {request.app.state.graph_error}")
-    b, pad = config.BBOX, 0.002
-    for label, p in (("start", body.start), ("end", body.end)):
-        if not (b["south"] - pad <= p.lat <= b["north"] + pad and b["west"] - pad <= p.lng <= b["east"] + pad):
-            raise HTTPException(422, detail=f"{label} is outside the supported campus area")
-
     grade, avoid_steps, ignored = map_preferences(body.preferences)
     closures, skipped = map_closures(body.closures)
+
+    destination = None
+    if body.destination is not None:
+        try:
+            destination = Destination.model_validate({
+                "building": map_building(body.destination.building),
+                "needs_elevator": body.destination.needs_elevator,
+                "room": body.destination.room,
+                "need_automatic_door": bool(body.preferences.get("need_automatic_door", False)),
+                "door_issues": door_issues(body.closures),
+            })
+        except ValidationError as exc:
+            raise HTTPException(422, detail=f"destination building: {exc.errors()[0].get('msg')}")
+        ignored = [p for p in ignored if p != "need_automatic_door"]  # used for the entrance choice
+
+    b, pad = config.BBOX, 0.002
+    points = [("start", body.start.lat, body.start.lng)]
+    if body.end is not None:
+        points.append(("end", body.end.lat, body.end.lng))
+    if destination is not None:
+        points.append(("destination", destination.building.lat, destination.building.lng))
+    for label, lat, lng in points:
+        if not (b["south"] - pad <= lat <= b["north"] + pad and b["west"] - pad <= lng <= b["east"] + pad):
+            raise HTTPException(422, detail=f"{label} is outside the supported campus area")
+
     req = RouteRequest(
         start={"lat": body.start.lat, "lon": body.start.lng},
-        end={"lat": body.end.lat, "lon": body.end.lng},
+        end=None if destination else {"lat": body.end.lat, "lon": body.end.lng},
+        destination=destination,
         max_grade_pct=grade,
         avoid_steps=avoid_steps,
         include_standard=True,
         closures=closures,
     )
     resp = plan_routes(G, req)
+
+    plan = resp.destination
+    if plan is not None and plan.entrance is not None:
+        target = Point(lat=plan.entrance.lat, lng=plan.entrance.lon)
+    elif body.end is not None:
+        target = body.end
+    else:
+        target = Point(lat=destination.building.lat, lng=destination.building.lng)
+    arrive = f"Arrive at {plan.building_name}, {plan.entrance.name}" if plan and plan.entrance else None
+
+    step_free = to_frontend(G, resp.accessible, closures, target, grade, arrive)
+    shortest = to_frontend(G, resp.standard, closures, target, grade, arrive) if resp.standard else None
+    if plan is not None:
+        # Elevator and door notes belong to the step-free trip; show them before the user sets off.
+        merged = plan.warnings + step_free["summary"]["warnings"]
+        if not step_free["found"] and plan.warnings:
+            merged = plan.warnings  # the plan already explains why; skip the generic reason
+        step_free["summary"]["warnings"] = list(dict.fromkeys(merged))
     return {
-        "step_free": to_frontend(G, resp.accessible, closures, body.end, grade),
-        "shortest": to_frontend(G, resp.standard, closures, body.end, grade) if resp.standard else None,
+        "step_free": step_free,
+        "shortest": shortest,
+        "destination": None if plan is None else {
+            **plan.model_dump(mode="json"),
+            "entrance_id": plan.entrance.id if plan.entrance else None,
+            "end": {"lat": target.lat, "lng": target.lng},
+        },
         "meta": {
             **resp.meta.model_dump(mode="json"),
             "max_grade_pct": grade,
