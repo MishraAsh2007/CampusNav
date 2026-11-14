@@ -276,8 +276,11 @@ backend `/buildings` item also works):
 ```
 
 The engine applies the same rules as the UI's `usableEntrances()`, plus live elevator status:
-- Entrances that aren't `step_free`, or are inside an active ramp, path or construction closure,
-  are out.
+- Entrances that aren't `step_free` are out **only if** the user needs step-free access
+  (`no_stairs` or `wheelchair_required`). Entrances inside an active ramp, path or construction
+  closure are always out.
+- The `shortest` route picks its own entrance: the nearest one not closed to everyone, steps
+  allowed, door openers ignored (`destination.standard_entrance_id` / `standard_end`).
 - `automatic_door` closures near an entrance add cost (closed +120 m, degraded +40 m). With
   `need_automatic_door`, entrances with a working opener always rank first, and push-button
   doors cost +10 m.
@@ -297,7 +300,8 @@ The response adds `destination` (null when `end` was used):
 | `destination.upper_floors_reachable` | false if no elevator works |
 | `destination.warnings` | also prepended to `step_free.summary.warnings` |
 
-Both routes end at the chosen entrance, and the last step reads "Arrive at <building>, <entrance>".
+Each route ends at its own entrance (`end` for `step_free`, `standard_end` for `shortest`), and
+the last step reads "Arrive at <building>, <entrance>".
 
 **Frontend change needed** (in `role-2-map-ui`, `planRoutes()` in `src/services/api.ts`):
 
@@ -305,9 +309,11 @@ Both routes end at the chosen entrance, and the last step reads "Arrive at <buil
 const destBuilding = destination.building_id ? buildings.find((x) => x.id === destination.building_id) : undefined;
 // request body: replace `end` with
 ...(destBuilding ? { destination: { building: destBuilding, needs_elevator: false } } : { end: { lat: end.lat, lng: end.lng } }),
-// validation: check the route against the entrance the engine chose
+// validation: check each route against the entrance the engine chose for it
 const endPoint = r.data?.destination?.end ?? end;
-if (r.ok && validRemote(remote, endPoint)) { ... }
+const stdEndPoint = r.data?.destination?.standard_end ?? end;
+if (r.ok && validRemote(remote, endPoint)) { ... }          // step_free
+// shortest: validRemote(r.data.shortest, stdEndPoint)
 ```
 
 `needs_elevator` stays `false` until the UI knows the room's floor.

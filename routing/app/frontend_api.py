@@ -376,9 +376,13 @@ def frontend_route(body: FrontendRouteRequest, request: Request) -> dict[str, An
     else:
         target = Point(lat=destination.building.lat, lng=destination.building.lng)
     arrive = f"Arrive at {plan.building_name}, {plan.entrance.name}" if plan and plan.entrance else None
+    std_target, std_arrive = target, arrive
+    if plan is not None and plan.standard_entrance is not None:
+        std_target = Point(lat=plan.standard_entrance.lat, lng=plan.standard_entrance.lon)
+        std_arrive = f"Arrive at {plan.building_name}, {plan.standard_entrance.name}"
 
     step_free = to_frontend(G, resp.accessible, closures, target, grade, arrive)
-    shortest = to_frontend(G, resp.standard, closures, target, grade, arrive) if resp.standard else None
+    shortest = to_frontend(G, resp.standard, closures, std_target, grade, std_arrive) if resp.standard else None
     if plan is not None:
         # Elevator and door notes belong to the step-free trip; show them before the user sets off.
         merged = plan.warnings + step_free["summary"]["warnings"]
@@ -392,6 +396,8 @@ def frontend_route(body: FrontendRouteRequest, request: Request) -> dict[str, An
             **plan.model_dump(mode="json"),
             "entrance_id": plan.entrance.id if plan.entrance else None,
             "end": {"lat": target.lat, "lng": target.lng},
+            "standard_entrance_id": plan.standard_entrance.id if plan.standard_entrance else None,
+            "standard_end": {"lat": std_target.lat, "lng": std_target.lng},
         },
         "meta": {
             **resp.meta.model_dump(mode="json"),

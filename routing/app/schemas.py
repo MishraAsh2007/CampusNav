@@ -279,7 +279,10 @@ class DestinationPlan(BaseModel):
     room: Optional[str] = None
     needs_elevator: bool
     upper_floors_reachable: bool = Field(description="A working elevator exists (by current closures)")
-    entrance: Optional[EntranceOption] = Field(default=None, description="The entrance both routes end at")
+    entrance: Optional[EntranceOption] = Field(default=None, description="Where the accessible route ends")
+    standard_entrance: Optional[EntranceOption] = Field(
+        default=None, description="Where the standard route ends: nearest open entrance, steps allowed"
+    )
     entrances: list[EntranceOption] = Field(default_factory=list)
     elevators: ElevatorStatus
     warnings: list[str] = Field(default_factory=list, description="Plain-language notes for the user")

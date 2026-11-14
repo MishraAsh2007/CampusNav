@@ -29,7 +29,7 @@ from ..schemas import (
     EntranceOption,
 )
 from ..utils.geo import haversine_m, m_to_ft, nearest_node
-from .closures import _aware, is_active
+from .closures import AFFECTS_STANDARD, _aware, is_active
 from .pathfinding import find_path, path_cost
 from .weights import EdgeKey, Prefs
 
@@ -42,6 +42,10 @@ class PlannedTarget:
     accessible_path: Optional[list[int]] = None  # already computed for the chosen entrance
     fallback_node: Optional[int] = None  # for the standard route when no entrance is usable
     fallback_snap_m: float = 0.0
+    # The standard (shortest) route picks its own entrance: nearest open door, steps allowed.
+    standard_node: Optional[int] = None
+    standard_snap_m: float = 0.0
+    standard_path: Optional[list[int]] = None
 
 
 def _near(c: Closure, lat: float, lon: float, slack: float = 0.0) -> bool:
@@ -106,8 +110,12 @@ def plan_destination(
     source: int,
     prefs: Prefs,
     blocked: Mapping[EdgeKey, object],
+    std_prefs: Optional[Prefs] = None,
+    std_blocked: Optional[Mapping[EdgeKey, object]] = None,
 ) -> PlannedTarget:
     b = dest.building
+    step_free = prefs.avoid_steps  # only exclude doors with steps if the user asked for step-free
+    route_word = "step-free route" if step_free else "route"
     active = [c for c in closures if is_active(c, now)]
     elevators, working_elevators = _elevator_status(dest, active)
     reachable = elevators.working > 0
@@ -144,7 +152,7 @@ def plan_destination(
             door_issue=(issue.description or "door opener reported broken") if issue else None,
         )
         all_options.append(opt)
-        if not e.step_free:
+        if not e.step_free and step_free:
             opt.reasons.append("not step-free")
         for c in _entrance_blockers(e, active):
             opt.reasons.append(f"closed: {c.description or c.type.value} ({c.id})")
@@ -153,7 +161,7 @@ def plan_destination(
 
         path = find_path(G, source, node, prefs, blocked)
         if path is None:
-            opt.reasons.append(f"no step-free route under {prefs.max_grade_pct:g}% grade with current closures")
+            opt.reasons.append(f"no {route_word} under {prefs.max_grade_pct:g}% grade with current closures")
             continue
         cost, length = path_cost(G, path, prefs, blocked)
         opt.usable = True
@@ -199,31 +207,34 @@ def plan_destination(
         return PlannedTarget(plan, node, snap, find_path(G, source, node, prefs, blocked), fallback, fallback_snap)
 
     if not options:
-        candidates = [o for o in all_options if o.step_free and not any(r.startswith("closed") for r in o.reasons)]
-        if candidates and all(any(r.startswith("no step-free route") for r in o.reasons) for o in candidates):
-            # Every open step-free door is unreachable: the start, not the building, is usually the problem.
+        candidates = [o for o in all_options
+                      if (o.step_free or not step_free) and not any(r.startswith("closed") for r in o.reasons)]
+        if candidates and all(any(r.startswith(f"no {route_word}") for r in o.reasons) for o in candidates):
+            # Every open door is unreachable: the start, not the building, is usually the problem.
             warnings.append(
-                f"No step-free route under {prefs.max_grade_pct:g}% grade from your starting point to any "
+                f"No {route_word} under {prefs.max_grade_pct:g}% grade from your starting point to any "
                 f"entrance of {b.name}. The start may be cut off by stairs or a steep path; try a "
                 "different starting point or a higher grade limit."
             )
         else:
-            warnings.append(f"No usable step-free entrance to {b.name} right now. See `entrances` for reasons.")
+            kind = "step-free entrance" if step_free else "entrance"
+            warnings.append(f"No usable {kind} to {b.name} right now. See `entrances` for reasons.")
         plan = DestinationPlan(
             building_id=b.id, building_name=b.name, room=dest.room, needs_elevator=dest.needs_elevator,
             upper_floors_reachable=reachable, entrances=all_options, elevators=elevators, warnings=warnings,
         )
-        return PlannedTarget(plan, fallback_node=fallback, fallback_snap_m=fallback_snap)
+        return _with_standard(PlannedTarget(plan, fallback_node=fallback, fallback_snap_m=fallback_snap),
+                              G, dest, active, source, std_prefs, std_blocked)
 
     options.sort(key=lambda o: o[0])
     _, chosen, node, snap, path = options[0]
     chosen.chosen = True
 
     if chosen.key_card_required:
-        warnings.append(f"{chosen.name} needs a key card; no other step-free entrance is usable.")
+        warnings.append(f"{chosen.name} needs a key card; no other {'step-free ' if step_free else ''}entrance is usable.")
     if chosen.door_issue:
         warnings.append(f"{chosen.name}: {chosen.door_issue}.")
-    elif chosen.auto_door is False:
+    elif chosen.auto_door is False and (step_free or dest.need_automatic_door):
         warnings.append(f"{chosen.name} has no automatic door opener.")
     if snap > config.DEST_ENTRANCE_SNAP_WARN_M:
         warnings.append(
@@ -241,4 +252,33 @@ def plan_destination(
         upper_floors_reachable=reachable, entrance=chosen, entrances=all_options,
         elevators=elevators, warnings=warnings,
     )
-    return PlannedTarget(plan, node, snap, path, fallback, fallback_snap)
+    return _with_standard(PlannedTarget(plan, node, snap, path, fallback, fallback_snap),
+                          G, dest, active, source, std_prefs, std_blocked)
+
+
+def _with_standard(target: PlannedTarget, G, dest: Destination, active: list[Closure], source: int,
+                   std_prefs: Optional[Prefs], std_blocked: Optional[Mapping[EdgeKey, object]]) -> PlannedTarget:
+    """Shortest route: nearest entrance that isn't closed to everyone (stairs and doors don't matter)."""
+    if std_prefs is None or not dest.building.entrances:
+        return target
+    best = None
+    for e in dest.building.entrances:
+        if any(c.type in AFFECTS_STANDARD and _near(c, e.lat, e.lng) for c in active):
+            continue
+        node, snap = nearest_node(G, e.lat, e.lng)
+        path = find_path(G, source, node, std_prefs, std_blocked or {})
+        if path is None:
+            continue
+        length = path_cost(G, path, std_prefs, std_blocked or {})[1]
+        if best is None or length < best[0]:
+            best = (length, e, node, snap, path)
+    if best is None:
+        return target
+    length, e, node, snap, path = best
+    target.standard_node, target.standard_snap_m, target.standard_path = node, snap, path
+    target.plan.standard_entrance = EntranceOption(
+        id=e.id, name=e.name, lat=e.lat, lon=e.lng, step_free=e.step_free, usable=True, chosen=True,
+        route_distance_m=round(length, 1), auto_door=e.auto_door, key_card_required=e.IsKeyCardRequired,
+        accessible_to_all_floors=e.isAccessibleToAllFloors,
+    )
+    return target

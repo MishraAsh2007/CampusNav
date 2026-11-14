@@ -87,7 +87,8 @@ def plan_routes(G, req: RouteRequest, now: Optional[datetime] = None) -> RouteRe
     if req.destination is not None:
         # Look ahead: pick the entrance that suits the indoor leg; both routes end there.
         target = plan_destination(
-            G, req.destination, req.closures, now, src, acc_prefs, idx.blocked_for(ACCESSIBLE)
+            G, req.destination, req.closures, now, src, acc_prefs, idx.blocked_for(ACCESSIBLE),
+            std_prefs=std_prefs, std_blocked=idx.blocked_for(STANDARD),
         )
         plan = target.plan
         acc_path = target.accessible_path
@@ -102,7 +103,10 @@ def plan_routes(G, req: RouteRequest, now: Optional[datetime] = None) -> RouteRe
 
     standard = None
     if req.include_standard:
-        standard = _route_one(G, src, dst, std_prefs, idx, "")
+        if req.destination is not None and target.standard_node is not None:
+            standard = _route_one(G, src, target.standard_node, std_prefs, idx, "", path=target.standard_path)
+        else:
+            standard = _route_one(G, src, dst, std_prefs, idx, "")
 
     def snap(n: int, d: float) -> SnapInfo:
         lat, lon = node_latlon(G, n)
