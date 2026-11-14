@@ -1,0 +1,848 @@
+{
+  "status": "route_ready",
+  "journey": {
+    "legs": [
+      {
+        "kind": "outdoor",
+        "route": {
+          "type": "Feature",
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -72.528,
+                42.391000000000005
+              ],
+              [
+                -72.528,
+                42.391000000000005
+              ]
+            ]
+          },
+          "properties": {
+            "total_distance": 0.0,
+            "max_grade": 0.0,
+            "warnings": [
+              "Synthetic demo graph: paths, elevators, and grades are not campus facts.",
+              "An active elevator closure at 42.391000, -72.528050 could not be matched within 4 m; its effect on the route is unknown."
+            ],
+            "directions": [
+              "Arrive at the destination on the mapped path."
+            ],
+            "graph_source": "synthetic-demo",
+            "uses_stairs": false,
+            "uses_elevator": false,
+            "snapped_start": {
+              "lat": 42.391000000000005,
+              "lng": -72.528
+            },
+            "snapped_end": {
+              "lat": 42.391000000000005,
+              "lng": -72.528
+            },
+            "start_snap_distance": 0.0,
+            "end_snap_distance": 0.0,
+            "routing_cost": 0.0
+          }
+        }
+      },
+      {
+        "kind": "portal",
+        "portal_id": "ilc-entrance",
+        "building_id": "ilc",
+        "floor_id": "1",
+        "indoor_node_id": "entrance",
+        "entrance_label": "Demo entrance",
+        "direction": "enter",
+        "instruction": "Enter via Demo entrance.",
+        "coordinate_system": "WGS84",
+        "total_distance": 4.2,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              -72.528,
+              42.391
+            ],
+            [
+              -72.52805,
+              42.391
+            ]
+          ]
+        },
+        "source_id": "synthetic-fixture",
+        "degraded": false,
+        "max_grade": 0.0
+      },
+      {
+        "kind": "indoor",
+        "building_id": "ilc",
+        "synthetic": true,
+        "node_path": [
+          "entrance",
+          "hall1",
+          "b1",
+          "b2",
+          "hall2",
+          "room-201"
+        ],
+        "floor_sequence": [
+          "1",
+          "2"
+        ],
+        "segments": [
+          {
+            "edge_id": "entrance-hall",
+            "kind": "corridor",
+            "asset_id": "ilc-hall",
+            "distance_m": 2.0,
+            "from_floor": "1",
+            "to_floor": "1",
+            "from_node_id": "entrance",
+            "to_node_id": "hall1",
+            "from_label": "Demo entrance",
+            "to_label": "HALL landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "1",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  2.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 2 m to HALL landing on Floor 1."
+          },
+          {
+            "edge_id": "hall-b1",
+            "kind": "corridor",
+            "asset_id": null,
+            "distance_m": 13.0,
+            "from_floor": "1",
+            "to_floor": "1",
+            "from_node_id": "hall1",
+            "to_node_id": "b1",
+            "from_label": "HALL landing",
+            "to_label": "Demo elevator B landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "1",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  2.0,
+                  0.0
+                ],
+                [
+                  15.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 13 m to Demo elevator B landing on Floor 1."
+          },
+          {
+            "edge_id": "hall-b2",
+            "kind": "corridor",
+            "asset_id": null,
+            "distance_m": 13.0,
+            "from_floor": "2",
+            "to_floor": "2",
+            "from_node_id": "b2",
+            "to_node_id": "hall2",
+            "from_label": "Demo elevator B landing",
+            "to_label": "HALL landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "2",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  15.0,
+                  0.0
+                ],
+                [
+                  2.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 13 m to HALL landing on Floor 2."
+          },
+          {
+            "edge_id": "hall-room",
+            "kind": "corridor",
+            "asset_id": "ilc-hall",
+            "distance_m": 2.0,
+            "from_floor": "2",
+            "to_floor": "2",
+            "from_node_id": "hall2",
+            "to_node_id": "room-201",
+            "from_label": "HALL landing",
+            "to_label": "Demo room N211",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "2",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  2.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 2 m to Demo room N211 on Floor 2."
+          }
+        ],
+        "steps": [
+          {
+            "edge_id": "entrance-hall",
+            "kind": "corridor",
+            "asset_id": "ilc-hall",
+            "distance_m": 2.0,
+            "from_floor": "1",
+            "to_floor": "1",
+            "from_node_id": "entrance",
+            "to_node_id": "hall1",
+            "from_label": "Demo entrance",
+            "to_label": "HALL landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "1",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  2.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 2 m to HALL landing on Floor 1."
+          },
+          {
+            "edge_id": "hall-b1",
+            "kind": "corridor",
+            "asset_id": null,
+            "distance_m": 13.0,
+            "from_floor": "1",
+            "to_floor": "1",
+            "from_node_id": "hall1",
+            "to_node_id": "b1",
+            "from_label": "HALL landing",
+            "to_label": "Demo elevator B landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "1",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  2.0,
+                  0.0
+                ],
+                [
+                  15.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 13 m to Demo elevator B landing on Floor 1."
+          },
+          {
+            "edge_id": "lift-b",
+            "kind": "elevator",
+            "asset_id": "ilc-lift-b",
+            "distance_m": 4.0,
+            "from_floor": "1",
+            "to_floor": "2",
+            "from_node_id": "b1",
+            "to_node_id": "b2",
+            "from_label": "Demo elevator B landing",
+            "to_label": "Demo elevator B landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "from_position": [
+              15.0,
+              0.0
+            ],
+            "to_position": [
+              15.0,
+              0.0
+            ],
+            "instruction": "Use ilc-lift-b from Floor 1 to Floor 2."
+          },
+          {
+            "edge_id": "hall-b2",
+            "kind": "corridor",
+            "asset_id": null,
+            "distance_m": 13.0,
+            "from_floor": "2",
+            "to_floor": "2",
+            "from_node_id": "b2",
+            "to_node_id": "hall2",
+            "from_label": "Demo elevator B landing",
+            "to_label": "HALL landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "2",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  15.0,
+                  0.0
+                ],
+                [
+                  2.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 13 m to HALL landing on Floor 2."
+          },
+          {
+            "edge_id": "hall-room",
+            "kind": "corridor",
+            "asset_id": "ilc-hall",
+            "distance_m": 2.0,
+            "from_floor": "2",
+            "to_floor": "2",
+            "from_node_id": "hall2",
+            "to_node_id": "room-201",
+            "from_label": "HALL landing",
+            "to_label": "Demo room N211",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "2",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  2.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 2 m to Demo room N211 on Floor 2."
+          }
+        ],
+        "transitions": [
+          {
+            "edge_id": "lift-b",
+            "kind": "elevator",
+            "asset_id": "ilc-lift-b",
+            "distance_m": 4.0,
+            "from_floor": "1",
+            "to_floor": "2",
+            "from_node_id": "b1",
+            "to_node_id": "b2",
+            "from_label": "Demo elevator B landing",
+            "to_label": "Demo elevator B landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "from_position": [
+              15.0,
+              0.0
+            ],
+            "to_position": [
+              15.0,
+              0.0
+            ],
+            "instruction": "Use ilc-lift-b from Floor 1 to Floor 2."
+          }
+        ],
+        "directions": [
+          "Continue 2 m to HALL landing on Floor 1.",
+          "Continue 13 m to Demo elevator B landing on Floor 1.",
+          "Use ilc-lift-b from Floor 1 to Floor 2.",
+          "Continue 13 m to HALL landing on Floor 2.",
+          "Continue 2 m to Demo room N211 on Floor 2."
+        ],
+        "total_distance": 34.0,
+        "routing_cost": 34.0,
+        "max_grade": 0.0,
+        "uses_stairs": false,
+        "uses_elevator": true,
+        "warnings": [
+          "Synthetic indoor demonstration; this is not a campus floor plan.",
+          "Indoor routing uses the published map review; current access can change.",
+          "This route relies on an elevator; absence of an outage is not operating confirmation."
+        ],
+        "reviewed_at": "2026-11-14T12:00:00+00:00"
+      }
+    ],
+    "total_distance": 38.2,
+    "routing_cost": 38.2,
+    "warnings": [
+      "Synthetic demo graph: paths, elevators, and grades are not campus facts.",
+      "An active elevator closure at 42.391000, -72.528050 could not be matched within 4 m; its effect on the route is unknown.",
+      "Synthetic indoor demonstration; this is not a campus floor plan.",
+      "Indoor routing uses the published map review; current access can change.",
+      "This route relies on an elevator; absence of an outage is not operating confirmation."
+    ],
+    "synthetic": true,
+    "complete": true
+  },
+  "stages": [
+    {
+      "id": "stage-1",
+      "phase": "outdoor",
+      "instructions": [
+        "Arrive at the destination on the mapped path."
+      ],
+      "leg": {
+        "kind": "outdoor",
+        "route": {
+          "type": "Feature",
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -72.528,
+                42.391000000000005
+              ],
+              [
+                -72.528,
+                42.391000000000005
+              ]
+            ]
+          },
+          "properties": {
+            "total_distance": 0.0,
+            "max_grade": 0.0,
+            "warnings": [
+              "Synthetic demo graph: paths, elevators, and grades are not campus facts.",
+              "An active elevator closure at 42.391000, -72.528050 could not be matched within 4 m; its effect on the route is unknown."
+            ],
+            "directions": [
+              "Arrive at the destination on the mapped path."
+            ],
+            "graph_source": "synthetic-demo",
+            "uses_stairs": false,
+            "uses_elevator": false,
+            "snapped_start": {
+              "lat": 42.391000000000005,
+              "lng": -72.528
+            },
+            "snapped_end": {
+              "lat": 42.391000000000005,
+              "lng": -72.528
+            },
+            "start_snap_distance": 0.0,
+            "end_snap_distance": 0.0,
+            "routing_cost": 0.0
+          }
+        }
+      }
+    },
+    {
+      "id": "stage-2",
+      "phase": "enter_building",
+      "instructions": [
+        "Enter via Demo entrance."
+      ],
+      "leg": {
+        "kind": "portal",
+        "portal_id": "ilc-entrance",
+        "building_id": "ilc",
+        "floor_id": "1",
+        "indoor_node_id": "entrance",
+        "entrance_label": "Demo entrance",
+        "direction": "enter",
+        "instruction": "Enter via Demo entrance.",
+        "coordinate_system": "WGS84",
+        "total_distance": 4.2,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              -72.528,
+              42.391
+            ],
+            [
+              -72.52805,
+              42.391
+            ]
+          ]
+        },
+        "source_id": "synthetic-fixture",
+        "degraded": false,
+        "max_grade": 0.0
+      }
+    },
+    {
+      "id": "stage-3",
+      "phase": "inside_destination",
+      "instructions": [
+        "Continue 2 m to HALL landing on Floor 1.",
+        "Continue 13 m to Demo elevator B landing on Floor 1.",
+        "Use ilc-lift-b from Floor 1 to Floor 2.",
+        "Continue 13 m to HALL landing on Floor 2.",
+        "Continue 2 m to Demo room N211 on Floor 2."
+      ],
+      "leg": {
+        "kind": "indoor",
+        "building_id": "ilc",
+        "synthetic": true,
+        "node_path": [
+          "entrance",
+          "hall1",
+          "b1",
+          "b2",
+          "hall2",
+          "room-201"
+        ],
+        "floor_sequence": [
+          "1",
+          "2"
+        ],
+        "segments": [
+          {
+            "edge_id": "entrance-hall",
+            "kind": "corridor",
+            "asset_id": "ilc-hall",
+            "distance_m": 2.0,
+            "from_floor": "1",
+            "to_floor": "1",
+            "from_node_id": "entrance",
+            "to_node_id": "hall1",
+            "from_label": "Demo entrance",
+            "to_label": "HALL landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "1",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  2.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 2 m to HALL landing on Floor 1."
+          },
+          {
+            "edge_id": "hall-b1",
+            "kind": "corridor",
+            "asset_id": null,
+            "distance_m": 13.0,
+            "from_floor": "1",
+            "to_floor": "1",
+            "from_node_id": "hall1",
+            "to_node_id": "b1",
+            "from_label": "HALL landing",
+            "to_label": "Demo elevator B landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "1",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  2.0,
+                  0.0
+                ],
+                [
+                  15.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 13 m to Demo elevator B landing on Floor 1."
+          },
+          {
+            "edge_id": "hall-b2",
+            "kind": "corridor",
+            "asset_id": null,
+            "distance_m": 13.0,
+            "from_floor": "2",
+            "to_floor": "2",
+            "from_node_id": "b2",
+            "to_node_id": "hall2",
+            "from_label": "Demo elevator B landing",
+            "to_label": "HALL landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "2",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  15.0,
+                  0.0
+                ],
+                [
+                  2.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 13 m to HALL landing on Floor 2."
+          },
+          {
+            "edge_id": "hall-room",
+            "kind": "corridor",
+            "asset_id": "ilc-hall",
+            "distance_m": 2.0,
+            "from_floor": "2",
+            "to_floor": "2",
+            "from_node_id": "hall2",
+            "to_node_id": "room-201",
+            "from_label": "HALL landing",
+            "to_label": "Demo room N211",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "2",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  2.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 2 m to Demo room N211 on Floor 2."
+          }
+        ],
+        "steps": [
+          {
+            "edge_id": "entrance-hall",
+            "kind": "corridor",
+            "asset_id": "ilc-hall",
+            "distance_m": 2.0,
+            "from_floor": "1",
+            "to_floor": "1",
+            "from_node_id": "entrance",
+            "to_node_id": "hall1",
+            "from_label": "Demo entrance",
+            "to_label": "HALL landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "1",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  2.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 2 m to HALL landing on Floor 1."
+          },
+          {
+            "edge_id": "hall-b1",
+            "kind": "corridor",
+            "asset_id": null,
+            "distance_m": 13.0,
+            "from_floor": "1",
+            "to_floor": "1",
+            "from_node_id": "hall1",
+            "to_node_id": "b1",
+            "from_label": "HALL landing",
+            "to_label": "Demo elevator B landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "1",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  2.0,
+                  0.0
+                ],
+                [
+                  15.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 13 m to Demo elevator B landing on Floor 1."
+          },
+          {
+            "edge_id": "lift-b",
+            "kind": "elevator",
+            "asset_id": "ilc-lift-b",
+            "distance_m": 4.0,
+            "from_floor": "1",
+            "to_floor": "2",
+            "from_node_id": "b1",
+            "to_node_id": "b2",
+            "from_label": "Demo elevator B landing",
+            "to_label": "Demo elevator B landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "from_position": [
+              15.0,
+              0.0
+            ],
+            "to_position": [
+              15.0,
+              0.0
+            ],
+            "instruction": "Use ilc-lift-b from Floor 1 to Floor 2."
+          },
+          {
+            "edge_id": "hall-b2",
+            "kind": "corridor",
+            "asset_id": null,
+            "distance_m": 13.0,
+            "from_floor": "2",
+            "to_floor": "2",
+            "from_node_id": "b2",
+            "to_node_id": "hall2",
+            "from_label": "Demo elevator B landing",
+            "to_label": "HALL landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "2",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  15.0,
+                  0.0
+                ],
+                [
+                  2.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 13 m to HALL landing on Floor 2."
+          },
+          {
+            "edge_id": "hall-room",
+            "kind": "corridor",
+            "asset_id": "ilc-hall",
+            "distance_m": 2.0,
+            "from_floor": "2",
+            "to_floor": "2",
+            "from_node_id": "hall2",
+            "to_node_id": "room-201",
+            "from_label": "HALL landing",
+            "to_label": "Demo room N211",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "2",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  2.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 2 m to Demo room N211 on Floor 2."
+          }
+        ],
+        "transitions": [
+          {
+            "edge_id": "lift-b",
+            "kind": "elevator",
+            "asset_id": "ilc-lift-b",
+            "distance_m": 4.0,
+            "from_floor": "1",
+            "to_floor": "2",
+            "from_node_id": "b1",
+            "to_node_id": "b2",
+            "from_label": "Demo elevator B landing",
+            "to_label": "Demo elevator B landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "from_position": [
+              15.0,
+              0.0
+            ],
+            "to_position": [
+              15.0,
+              0.0
+            ],
+            "instruction": "Use ilc-lift-b from Floor 1 to Floor 2."
+          }
+        ],
+        "directions": [
+          "Continue 2 m to HALL landing on Floor 1.",
+          "Continue 13 m to Demo elevator B landing on Floor 1.",
+          "Use ilc-lift-b from Floor 1 to Floor 2.",
+          "Continue 13 m to HALL landing on Floor 2.",
+          "Continue 2 m to Demo room N211 on Floor 2."
+        ],
+        "total_distance": 34.0,
+        "routing_cost": 34.0,
+        "max_grade": 0.0,
+        "uses_stairs": false,
+        "uses_elevator": true,
+        "warnings": [
+          "Synthetic indoor demonstration; this is not a campus floor plan.",
+          "Indoor routing uses the published map review; current access can change.",
+          "This route relies on an elevator; absence of an outage is not operating confirmation."
+        ],
+        "reviewed_at": "2026-11-14T12:00:00+00:00"
+      }
+    }
+  ],
+  "closure_context": {
+    "mode": "request",
+    "count": 1
+  },
+  "position_tracking": "User-confirmed locations; no indoor GPS."
+}

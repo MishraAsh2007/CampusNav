@@ -1,0 +1,15 @@
+[
+  {
+    "id": "demo-elevator",
+    "name": "Synthetic east elevator",
+    "lat": 42.391425,
+    "lng": -72.5276,
+    "radius": 8,
+    "type": "elevator",
+    "building_aliases": ["Demo Center"],
+    "asset_phrases": ["east elevator"],
+    "reviewed": true,
+    "synthetic": true,
+    "evidence": "Synthetic connector in data/demo.graph.json; not a real UMass elevator."
+  }
+]

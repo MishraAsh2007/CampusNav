@@ -1,0 +1,59 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "LineString",
+    "coordinates": [
+      [
+        -72.528,
+        42.391000000000005
+      ],
+      [
+        -72.5276,
+        42.391
+      ],
+      [
+        -72.5276,
+        42.39139999999999
+      ],
+      [
+        -72.5276,
+        42.39144999999999
+      ],
+      [
+        -72.5276,
+        42.39200000000001
+      ],
+      [
+        -72.528,
+        42.392
+      ]
+    ]
+  },
+  "properties": {
+    "total_distance": 176.95,
+    "max_grade": 2.0,
+    "warnings": [
+      "Synthetic demo graph: paths, elevators, and grades are not campus facts.",
+      "This route relies on an elevator; check its current operating status."
+    ],
+    "directions": [
+      "Continue 77 m along Demo east approach.",
+      "Use the mapped elevator connection.",
+      "Continue 94 m along Demo east approach.",
+      "Arrive at the destination on the mapped path."
+    ],
+    "graph_source": "synthetic-demo",
+    "uses_stairs": false,
+    "uses_elevator": true,
+    "snapped_start": {
+      "lat": 42.391000000000005,
+      "lng": -72.528
+    },
+    "snapped_end": {
+      "lat": 42.392,
+      "lng": -72.528
+    },
+    "start_snap_distance": 0.0,
+    "end_snap_distance": 0.0
+  }
+}

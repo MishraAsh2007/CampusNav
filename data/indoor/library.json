@@ -1,0 +1,3591 @@
+{
+  "version": 1,
+  "building_id": "library",
+  "name": "W. E. B. Du Bois Library",
+  "synthetic": false,
+  "status": "reviewed",
+  "reviewed_at": "2026-11-14T17:09:12.137445Z",
+  "review_notes": "Topology authored from ArcGIS accessibility layer elevator and entrance positions, matched to OSM outdoor graph. All 26 floors connected by elevator. Corridors are simplified; room-level detail is not yet mapped. Includes one source-linked 2nd-floor Recess/Quiet Study pilot waypoint; its doorway position is not survey-grade and must be field-verified. Includes one source-linked 2nd-floor Recess/Quiet Study pilot waypoint; its doorway position is not survey-grade and must be field-verified. Expanded to 27 source-linked floor destinations; coordinates are hackathon pilot approximations requiring field verification. Expanded to 27 source-linked floor destinations; coordinates are hackathon pilot approximations requiring field verification. Public floor-plan assets are registered; corridor and doorway topology still requires explicit tracing from those plans. Public floor-plan assets are registered; corridor and doorway topology still requires explicit tracing from those plans.",
+  "sources": [
+    {
+      "id": "library-floorplans",
+      "url": "https://umass.stackmap.com/explore/",
+      "edition": "Not stated by source",
+      "observed_at": "2026-11-14T17:09:12.137445Z"
+    },
+    {
+      "id": "umass-arcgis-access",
+      "url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services",
+      "edition": "2024 UMass Campus Accessibility Map",
+      "observed_at": "2026-11-14T17:09:12.137445Z"
+    },
+    {
+      "id": "library-directory",
+      "url": "https://www.library.umass.edu/du-bois-library/",
+      "edition": "Not stated by source",
+      "observed_at": "2026-11-14T16:33:22.858748Z"
+    },
+    {
+      "id": "ilc-floorplans",
+      "url": "https://tiles.arcgis.com/tiles/2gdL2gxYNFY2TOUb/arcgis/rest/services/Integrated_Learning_Center_First_Floor_Scaled/MapServer",
+      "edition": "Public UMass ArcGIS floor-plan layers",
+      "observed_at": "2026-11-14T17:09:12.137445Z"
+    }
+  ],
+  "floors": [
+    {
+      "id": "lower-level",
+      "label": "Lower Level",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/lower-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": [
+        "LL",
+        "basement",
+        "ground floor"
+      ]
+    },
+    {
+      "id": "1st-floor",
+      "label": "1st Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/1st-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "2nd-floor",
+      "label": "2nd Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/2nd-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "4th-floor",
+      "label": "4th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/4th-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "5th-floor",
+      "label": "5th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/5th-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "6th-floor",
+      "label": "6th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/6th-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "7th-floor",
+      "label": "7th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/7th-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "8th-floor",
+      "label": "8th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/8th-floor_0owfkpa-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "9th-floor",
+      "label": "9th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/9th-floor-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "10th-floor",
+      "label": "10th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/10th-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "11th-floor",
+      "label": "11th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/11th-floor-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "12th-floor",
+      "label": "12th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/12th-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "13th-floor",
+      "label": "13th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/13th-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "14th-floor",
+      "label": "14th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/14th-floor-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "15th-floor",
+      "label": "15th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/15th-floor_qrtz0bo-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "16th-floor",
+      "label": "16th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/16th-floor-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "17th-floor",
+      "label": "17th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/17th-floor_dyermkv-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "18th-floor",
+      "label": "18th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/18th-floor_6atsjml-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "19th-floor",
+      "label": "19th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/19th-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "20th-floor",
+      "label": "20th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/20th-floor_9ljft9n-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "21st-floor",
+      "label": "21st Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/21st-floor_2aqpvdl-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "22nd-floor",
+      "label": "22nd Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/22nd-floor-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "23rd-floor",
+      "label": "23rd Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/23rd-floor_cy09806-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "24th-floor",
+      "label": "24th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/24th-floor-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "25th-floor",
+      "label": "25th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/25th-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "26th-floor",
+      "label": "26th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": "https://umass.stackmap.com/media/maps/26th-e-populated.png",
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-floorplans",
+      "aliases": []
+    },
+    {
+      "id": "3rd-floor",
+      "label": "3rd Floor",
+      "coordinate_system": "local_meters",
+      "image_url": null,
+      "image_width": null,
+      "image_height": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "3rd",
+        "3rd floor"
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "lib-elev-lower-level",
+      "label": "Elevator, Lower Level",
+      "floor_id": "lower-level",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-lower-level",
+      "label": "Lobby, Lower Level",
+      "floor_id": "lower-level",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-1st-floor",
+      "label": "Elevator, 1st Floor",
+      "floor_id": "1st-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-1st-floor",
+      "label": "Lobby, 1st Floor",
+      "floor_id": "1st-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-2nd-floor",
+      "label": "Elevator, 2nd Floor",
+      "floor_id": "2nd-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-2nd-floor",
+      "label": "Lobby, 2nd Floor",
+      "floor_id": "2nd-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-4th-floor",
+      "label": "Elevator, 4th Floor",
+      "floor_id": "4th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-4th-floor",
+      "label": "Lobby, 4th Floor",
+      "floor_id": "4th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-5th-floor",
+      "label": "Elevator, 5th Floor",
+      "floor_id": "5th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-5th-floor",
+      "label": "Lobby, 5th Floor",
+      "floor_id": "5th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-6th-floor",
+      "label": "Elevator, 6th Floor",
+      "floor_id": "6th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-6th-floor",
+      "label": "Lobby, 6th Floor",
+      "floor_id": "6th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-7th-floor",
+      "label": "Elevator, 7th Floor",
+      "floor_id": "7th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-7th-floor",
+      "label": "Lobby, 7th Floor",
+      "floor_id": "7th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-8th-floor",
+      "label": "Elevator, 8th Floor",
+      "floor_id": "8th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-8th-floor",
+      "label": "Lobby, 8th Floor",
+      "floor_id": "8th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-9th-floor",
+      "label": "Elevator, 9th Floor",
+      "floor_id": "9th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-9th-floor",
+      "label": "Lobby, 9th Floor",
+      "floor_id": "9th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-10th-floor",
+      "label": "Elevator, 10th Floor",
+      "floor_id": "10th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-10th-floor",
+      "label": "Lobby, 10th Floor",
+      "floor_id": "10th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-11th-floor",
+      "label": "Elevator, 11th Floor",
+      "floor_id": "11th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-11th-floor",
+      "label": "Lobby, 11th Floor",
+      "floor_id": "11th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-12th-floor",
+      "label": "Elevator, 12th Floor",
+      "floor_id": "12th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-12th-floor",
+      "label": "Lobby, 12th Floor",
+      "floor_id": "12th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-13th-floor",
+      "label": "Elevator, 13th Floor",
+      "floor_id": "13th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-13th-floor",
+      "label": "Lobby, 13th Floor",
+      "floor_id": "13th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-14th-floor",
+      "label": "Elevator, 14th Floor",
+      "floor_id": "14th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-14th-floor",
+      "label": "Lobby, 14th Floor",
+      "floor_id": "14th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-15th-floor",
+      "label": "Elevator, 15th Floor",
+      "floor_id": "15th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-15th-floor",
+      "label": "Lobby, 15th Floor",
+      "floor_id": "15th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-16th-floor",
+      "label": "Elevator, 16th Floor",
+      "floor_id": "16th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-16th-floor",
+      "label": "Lobby, 16th Floor",
+      "floor_id": "16th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-17th-floor",
+      "label": "Elevator, 17th Floor",
+      "floor_id": "17th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-17th-floor",
+      "label": "Lobby, 17th Floor",
+      "floor_id": "17th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-18th-floor",
+      "label": "Elevator, 18th Floor",
+      "floor_id": "18th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-18th-floor",
+      "label": "Lobby, 18th Floor",
+      "floor_id": "18th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-19th-floor",
+      "label": "Elevator, 19th Floor",
+      "floor_id": "19th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-19th-floor",
+      "label": "Lobby, 19th Floor",
+      "floor_id": "19th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-20th-floor",
+      "label": "Elevator, 20th Floor",
+      "floor_id": "20th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-20th-floor",
+      "label": "Lobby, 20th Floor",
+      "floor_id": "20th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-21st-floor",
+      "label": "Elevator, 21st Floor",
+      "floor_id": "21st-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-21st-floor",
+      "label": "Lobby, 21st Floor",
+      "floor_id": "21st-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-22nd-floor",
+      "label": "Elevator, 22nd Floor",
+      "floor_id": "22nd-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-22nd-floor",
+      "label": "Lobby, 22nd Floor",
+      "floor_id": "22nd-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-23rd-floor",
+      "label": "Elevator, 23rd Floor",
+      "floor_id": "23rd-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-23rd-floor",
+      "label": "Lobby, 23rd Floor",
+      "floor_id": "23rd-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-24th-floor",
+      "label": "Elevator, 24th Floor",
+      "floor_id": "24th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-24th-floor",
+      "label": "Lobby, 24th Floor",
+      "floor_id": "24th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-25th-floor",
+      "label": "Elevator, 25th Floor",
+      "floor_id": "25th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-25th-floor",
+      "label": "Lobby, 25th Floor",
+      "floor_id": "25th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-26th-floor",
+      "label": "Elevator, 26th Floor",
+      "floor_id": "26th-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-26th-floor",
+      "label": "Lobby, 26th Floor",
+      "floor_id": "26th-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-entrance-south",
+      "label": "Library South Entrance",
+      "floor_id": "1st-floor",
+      "kind": "entrance",
+      "x": 10.0,
+      "y": -12.0,
+      "position": {
+        "lat": 42.38967,
+        "lng": -72.52816
+      },
+      "source_id": "umass-arcgis-access",
+      "aliases": [
+        "south entrance",
+        "main entrance"
+      ],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-entrance-west",
+      "label": "Library West Entrance",
+      "floor_id": "1st-floor",
+      "kind": "entrance",
+      "x": -10.0,
+      "y": 5.0,
+      "position": {
+        "lat": 42.389719,
+        "lng": -72.528895
+      },
+      "source_id": "umass-arcgis-access",
+      "aliases": [
+        "west entrance",
+        "ramp entrance"
+      ],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-elev-3rd-floor",
+      "label": "Elevator, 3rdrd Floor",
+      "floor_id": "3rd-floor",
+      "kind": "elevator_stop",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-lobby-3rd-floor",
+      "label": "Lobby, 3rdrd Floor",
+      "floor_id": "3rd-floor",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "lib-source-89b2058cf978fd22e516",
+      "label": "Office of Faculty Development and Faculty/Librarian Commons (26)",
+      "floor_id": "26th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "office of faculty development and faculty/librarian commons (26)",
+        "office",
+        "of",
+        "faculty",
+        "development",
+        "and",
+        "librarian",
+        "commons",
+        "26"
+      ],
+      "source_record_ids": [
+        "89b2058cf978fd22e516"
+      ]
+    },
+    {
+      "id": "lib-source-8014ce1ba0c8d3e10acd",
+      "label": "Special Collections & University Archives (25)",
+      "floor_id": "25th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "special collections & university archives (25)",
+        "special",
+        "collections",
+        "university",
+        "archives",
+        "25"
+      ],
+      "source_record_ids": [
+        "8014ce1ba0c8d3e10acd"
+      ]
+    },
+    {
+      "id": "lib-source-9b87e54b8b51f665e052",
+      "label": "Archives Storage (24)",
+      "floor_id": "24th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "archives storage (24)",
+        "archives",
+        "storage",
+        "24"
+      ],
+      "source_record_ids": [
+        "9b87e54b8b51f665e052"
+      ]
+    },
+    {
+      "id": "lib-source-1c70f757f27d2394be2d",
+      "label": "Books Stacks: Q-V (not TR) (23)",
+      "floor_id": "23rd-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "books stacks: q-v (not tr) (23)",
+        "books",
+        "stacks",
+        "q",
+        "v",
+        "not",
+        "tr",
+        "23"
+      ],
+      "source_record_ids": [
+        "1c70f757f27d2394be2d"
+      ]
+    },
+    {
+      "id": "lib-source-0548130e67b69973a2c1",
+      "label": "W. E. B. Du Bois Center; East Asian Reference Collection (22)",
+      "floor_id": "22nd-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "w. e. b. du bois center; east asian reference collection (22)",
+        "w",
+        "e",
+        "b",
+        "du",
+        "bois",
+        "center",
+        "east",
+        "asian",
+        "reference",
+        "collection",
+        "22"
+      ],
+      "source_record_ids": [
+        "0548130e67b69973a2c1"
+      ]
+    },
+    {
+      "id": "lib-source-d703d1b73cade2fc8aa7",
+      "label": "Book Stacks: PZ, Z; Juvenile Collection  (including Rudman Collection);  East Asian & Near Eastern Collections (21)",
+      "floor_id": "21st-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "book stacks: pz  z; juvenile collection  (including rudman collection);  east asian & near eastern collections (21)",
+        "book",
+        "stacks",
+        "pz",
+        "z",
+        "juvenile",
+        "collection",
+        "including",
+        "rudman",
+        "east",
+        "asian",
+        "near",
+        "eastern",
+        "collections",
+        "21"
+      ],
+      "source_record_ids": [
+        "d703d1b73cade2fc8aa7"
+      ]
+    },
+    {
+      "id": "lib-source-6a5ebbc1ea991ccb011a",
+      "label": "Book Stacks: B, L; Theses & Dissertations (20)",
+      "floor_id": "20th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "book stacks: b  l; theses & dissertations (20)",
+        "book",
+        "stacks",
+        "b",
+        "l",
+        "theses",
+        "dissertations",
+        "20"
+      ],
+      "source_record_ids": [
+        "6a5ebbc1ea991ccb011a"
+      ]
+    },
+    {
+      "id": "lib-source-2e97dc0f949006483e1c",
+      "label": "Office of Scholarly Communication (19)",
+      "floor_id": "19th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "office of scholarly communication (19)",
+        "office",
+        "of",
+        "scholarly",
+        "communication",
+        "19"
+      ],
+      "source_record_ids": [
+        "2e97dc0f949006483e1c"
+      ]
+    },
+    {
+      "id": "lib-source-b91a107007a9afd396cb",
+      "label": "Book Stacks: G, H-HG-1999 (18)",
+      "floor_id": "18th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "book stacks: g  h-hg-1999 (18)",
+        "book",
+        "stacks",
+        "g",
+        "h",
+        "hg",
+        "1999",
+        "18"
+      ],
+      "source_record_ids": [
+        "b91a107007a9afd396cb"
+      ]
+    },
+    {
+      "id": "lib-source-1d60f06dff71470a59fc",
+      "label": "Book Stacks: A, HG2000-HZ, J (17)",
+      "floor_id": "17th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "book stacks: a  hg2000-hz  j (17)",
+        "book",
+        "stacks",
+        "a",
+        "hg2000",
+        "hz",
+        "j",
+        "17"
+      ],
+      "source_record_ids": [
+        "1d60f06dff71470a59fc"
+      ]
+    },
+    {
+      "id": "lib-source-ba66e64c2dc1203d4086",
+      "label": "IT Computer Classrooms (16)",
+      "floor_id": "16th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "it computer classrooms (16)",
+        "it",
+        "computer",
+        "classrooms",
+        "16"
+      ],
+      "source_record_ids": [
+        "ba66e64c2dc1203d4086"
+      ]
+    },
+    {
+      "id": "lib-source-30210eb4b272231aa653",
+      "label": "Book Stacks: C-DR (15)",
+      "floor_id": "15th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "book stacks: c-dr (15)",
+        "book",
+        "stacks",
+        "c",
+        "dr",
+        "15"
+      ],
+      "source_record_ids": [
+        "30210eb4b272231aa653"
+      ]
+    },
+    {
+      "id": "lib-source-8b93a2a171b3826be8d3",
+      "label": "Book Stacks: DS-F (14)",
+      "floor_id": "14th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "book stacks: ds-f (14)",
+        "book",
+        "stacks",
+        "ds",
+        "f",
+        "14"
+      ],
+      "source_record_ids": [
+        "8b93a2a171b3826be8d3"
+      ]
+    },
+    {
+      "id": "lib-source-f247cd3294a48bf844f5",
+      "label": "Writing Program (13)",
+      "floor_id": "13th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "writing program (13)",
+        "writing",
+        "program",
+        "13"
+      ],
+      "source_record_ids": [
+        "f247cd3294a48bf844f5"
+      ]
+    },
+    {
+      "id": "lib-source-21b573afe60d58929602",
+      "label": "Writing Program (12)",
+      "floor_id": "12th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "writing program (12)",
+        "writing",
+        "program",
+        "12"
+      ],
+      "source_record_ids": [
+        "21b573afe60d58929602"
+      ]
+    },
+    {
+      "id": "lib-source-fc7454b659aa8f0ffc9b",
+      "label": "Book Stacks: PQ6000-PT (11)",
+      "floor_id": "11th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "book stacks: pq6000-pt (11)",
+        "book",
+        "stacks",
+        "pq6000",
+        "pt",
+        "11"
+      ],
+      "source_record_ids": [
+        "fc7454b659aa8f0ffc9b"
+      ]
+    },
+    {
+      "id": "lib-source-ec25f160684e3930b74a",
+      "label": "Learning Resource Center (10)",
+      "floor_id": "10th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "learning resource center (10)",
+        "learning",
+        "resource",
+        "center",
+        "10"
+      ],
+      "source_record_ids": [
+        "ec25f160684e3930b74a"
+      ]
+    },
+    {
+      "id": "lib-source-ca3d3a66a4ca957adb78",
+      "label": "Book Stacks: M, N, TR; CDs & DVDs (9)",
+      "floor_id": "9th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "book stacks: m  n  tr; cds & dvds (9)",
+        "book",
+        "stacks",
+        "m",
+        "n",
+        "tr",
+        "cds",
+        "dvds",
+        "9"
+      ],
+      "source_record_ids": [
+        "ca3d3a66a4ca957adb78"
+      ]
+    },
+    {
+      "id": "lib-source-3fb52f1d26936de55612",
+      "label": "Book Stacks: K, P-PQ5999 (8)",
+      "floor_id": "8th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "book stacks: k  p-pq5999 (8)",
+        "book",
+        "stacks",
+        "k",
+        "p",
+        "pq5999",
+        "8"
+      ],
+      "source_record_ids": [
+        "3fb52f1d26936de55612"
+      ]
+    },
+    {
+      "id": "lib-source-cd0d97f0b5f29526f8bb",
+      "label": "IT Instructional Media Lab, IDEAS, Center for Teaching & Learning (7)",
+      "floor_id": "7th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "it instructional media lab  ideas  center for teaching & learning (7)",
+        "it",
+        "instructional",
+        "media",
+        "lab",
+        "ideas",
+        "center",
+        "for",
+        "teaching",
+        "learning",
+        "7"
+      ],
+      "source_record_ids": [
+        "cd0d97f0b5f29526f8bb"
+      ]
+    },
+    {
+      "id": "lib-source-82b2119d5e232132f4bf",
+      "label": "Data Services, IDEAS, Instructional Design, Engagement & Support, Center for Teaching & Learning (6)",
+      "floor_id": "6th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "data services  ideas  instructional design  engagement & support  center for teaching & learning (6)",
+        "data",
+        "services",
+        "ideas",
+        "instructional",
+        "design",
+        "engagement",
+        "support",
+        "center",
+        "for",
+        "teaching",
+        "learning",
+        "6"
+      ],
+      "source_record_ids": [
+        "82b2119d5e232132f4bf"
+      ]
+    },
+    {
+      "id": "lib-source-a00b50a47628693cf465",
+      "label": "Graduate Commons; Quiet Study (5)",
+      "floor_id": "5th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "graduate commons; quiet study (5)",
+        "graduate",
+        "commons",
+        "quiet",
+        "study",
+        "5"
+      ],
+      "source_record_ids": [
+        "a00b50a47628693cf465"
+      ]
+    },
+    {
+      "id": "lib-source-36f6df78844c81521786",
+      "label": "Library Administration Offices (4)",
+      "floor_id": "4th-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "library administration offices (4)",
+        "library",
+        "administration",
+        "offices",
+        "4"
+      ],
+      "source_record_ids": [
+        "36f6df78844c81521786"
+      ]
+    },
+    {
+      "id": "lib-source-d4aeb59897b9e661b496",
+      "label": "Staff Offices (3)",
+      "floor_id": "3rd-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "staff offices (3)",
+        "staff",
+        "offices",
+        "3"
+      ],
+      "source_record_ids": [
+        "d4aeb59897b9e661b496"
+      ]
+    },
+    {
+      "id": "lib-source-2f9cf0cb673d6873f4c3",
+      "label": "Quiet Study, RECESS (2)",
+      "floor_id": "2nd-floor",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "quiet study  recess (2)",
+        "quiet",
+        "study",
+        "recess",
+        "2"
+      ],
+      "source_record_ids": [
+        "2f9cf0cb673d6873f4c3"
+      ]
+    },
+    {
+      "id": "lib-source-e89f67a5556510f56265",
+      "label": "Info Desk; Procrastination Station CafÃ© (E)",
+      "floor_id": "lower-level",
+      "kind": "room",
+      "x": 20.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "info desk; procrastination station cafÃ© (e)",
+        "info",
+        "desk",
+        "procrastination",
+        "station",
+        "caf",
+        "e"
+      ],
+      "source_record_ids": [
+        "e89f67a5556510f56265"
+      ]
+    },
+    {
+      "id": "lib-source-b95ed8c222033dfffbfb",
+      "label": "Learning Commons; Digital Media Lab; UMass/5 College Item Hold Shelf; New Books Shelf (LL)",
+      "floor_id": "lower-level",
+      "kind": "room",
+      "x": 32.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "library-directory",
+      "aliases": [
+        "learning commons; digital media lab; umass/5 college item hold shelf; new books shelf (ll)",
+        "learning",
+        "commons",
+        "digital",
+        "media",
+        "lab",
+        "umass",
+        "5",
+        "college",
+        "item",
+        "hold",
+        "shelf",
+        "new",
+        "books",
+        "ll"
+      ],
+      "source_record_ids": [
+        "b95ed8c222033dfffbfb"
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "library-elevator-main",
+      "label": "Library Main Elevator",
+      "kind": "elevator",
+      "position": {
+        "lat": 42.389838,
+        "lng": -72.52823
+      },
+      "source_id": "umass-arcgis-access",
+      "aliases": [
+        "main elevator",
+        "library elevator"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "lib-corridor-elev-lobby-lower-level",
+      "start": "lib-elev-lower-level",
+      "end": "lib-lobby-lower-level",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-1st-floor",
+      "start": "lib-elev-1st-floor",
+      "end": "lib-lobby-1st-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-2nd-floor",
+      "start": "lib-elev-2nd-floor",
+      "end": "lib-lobby-2nd-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-4th-floor",
+      "start": "lib-elev-4th-floor",
+      "end": "lib-lobby-4th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-5th-floor",
+      "start": "lib-elev-5th-floor",
+      "end": "lib-lobby-5th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-6th-floor",
+      "start": "lib-elev-6th-floor",
+      "end": "lib-lobby-6th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-7th-floor",
+      "start": "lib-elev-7th-floor",
+      "end": "lib-lobby-7th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-8th-floor",
+      "start": "lib-elev-8th-floor",
+      "end": "lib-lobby-8th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-9th-floor",
+      "start": "lib-elev-9th-floor",
+      "end": "lib-lobby-9th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-10th-floor",
+      "start": "lib-elev-10th-floor",
+      "end": "lib-lobby-10th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-11th-floor",
+      "start": "lib-elev-11th-floor",
+      "end": "lib-lobby-11th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-12th-floor",
+      "start": "lib-elev-12th-floor",
+      "end": "lib-lobby-12th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-13th-floor",
+      "start": "lib-elev-13th-floor",
+      "end": "lib-lobby-13th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-14th-floor",
+      "start": "lib-elev-14th-floor",
+      "end": "lib-lobby-14th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-15th-floor",
+      "start": "lib-elev-15th-floor",
+      "end": "lib-lobby-15th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-16th-floor",
+      "start": "lib-elev-16th-floor",
+      "end": "lib-lobby-16th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-17th-floor",
+      "start": "lib-elev-17th-floor",
+      "end": "lib-lobby-17th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-18th-floor",
+      "start": "lib-elev-18th-floor",
+      "end": "lib-lobby-18th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-19th-floor",
+      "start": "lib-elev-19th-floor",
+      "end": "lib-lobby-19th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-20th-floor",
+      "start": "lib-elev-20th-floor",
+      "end": "lib-lobby-20th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-21st-floor",
+      "start": "lib-elev-21st-floor",
+      "end": "lib-lobby-21st-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-22nd-floor",
+      "start": "lib-elev-22nd-floor",
+      "end": "lib-lobby-22nd-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-23rd-floor",
+      "start": "lib-elev-23rd-floor",
+      "end": "lib-lobby-23rd-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-24th-floor",
+      "start": "lib-elev-24th-floor",
+      "end": "lib-lobby-24th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-25th-floor",
+      "start": "lib-elev-25th-floor",
+      "end": "lib-lobby-25th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-26th-floor",
+      "start": "lib-elev-26th-floor",
+      "end": "lib-lobby-26th-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.0,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Library internal corridor from elevator lobby; Du Bois Library is ADA accessible on all floors."
+    },
+    {
+      "id": "lib-elev-lower-level-to-1st-floor",
+      "start": "lib-elev-lower-level",
+      "end": "lib-elev-1st-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-1st-floor-to-2nd-floor",
+      "start": "lib-elev-1st-floor",
+      "end": "lib-elev-2nd-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-2nd-floor-to-4th-floor",
+      "start": "lib-elev-2nd-floor",
+      "end": "lib-elev-4th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-4th-floor-to-5th-floor",
+      "start": "lib-elev-4th-floor",
+      "end": "lib-elev-5th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-5th-floor-to-6th-floor",
+      "start": "lib-elev-5th-floor",
+      "end": "lib-elev-6th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-6th-floor-to-7th-floor",
+      "start": "lib-elev-6th-floor",
+      "end": "lib-elev-7th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-7th-floor-to-8th-floor",
+      "start": "lib-elev-7th-floor",
+      "end": "lib-elev-8th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-8th-floor-to-9th-floor",
+      "start": "lib-elev-8th-floor",
+      "end": "lib-elev-9th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-9th-floor-to-10th-floor",
+      "start": "lib-elev-9th-floor",
+      "end": "lib-elev-10th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-10th-floor-to-11th-floor",
+      "start": "lib-elev-10th-floor",
+      "end": "lib-elev-11th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-11th-floor-to-12th-floor",
+      "start": "lib-elev-11th-floor",
+      "end": "lib-elev-12th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-12th-floor-to-13th-floor",
+      "start": "lib-elev-12th-floor",
+      "end": "lib-elev-13th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-13th-floor-to-14th-floor",
+      "start": "lib-elev-13th-floor",
+      "end": "lib-elev-14th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-14th-floor-to-15th-floor",
+      "start": "lib-elev-14th-floor",
+      "end": "lib-elev-15th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-15th-floor-to-16th-floor",
+      "start": "lib-elev-15th-floor",
+      "end": "lib-elev-16th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-16th-floor-to-17th-floor",
+      "start": "lib-elev-16th-floor",
+      "end": "lib-elev-17th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-17th-floor-to-18th-floor",
+      "start": "lib-elev-17th-floor",
+      "end": "lib-elev-18th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-18th-floor-to-19th-floor",
+      "start": "lib-elev-18th-floor",
+      "end": "lib-elev-19th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-19th-floor-to-20th-floor",
+      "start": "lib-elev-19th-floor",
+      "end": "lib-elev-20th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-20th-floor-to-21st-floor",
+      "start": "lib-elev-20th-floor",
+      "end": "lib-elev-21st-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-21st-floor-to-22nd-floor",
+      "start": "lib-elev-21st-floor",
+      "end": "lib-elev-22nd-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-22nd-floor-to-23rd-floor",
+      "start": "lib-elev-22nd-floor",
+      "end": "lib-elev-23rd-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-23rd-floor-to-24th-floor",
+      "start": "lib-elev-23rd-floor",
+      "end": "lib-elev-24th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-24th-floor-to-25th-floor",
+      "start": "lib-elev-24th-floor",
+      "end": "lib-elev-25th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-elev-25th-floor-to-26th-floor",
+      "start": "lib-elev-25th-floor",
+      "end": "lib-elev-26th-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 22: DuBois Library Elevator, mapped on accessibility layer."
+    },
+    {
+      "id": "lib-corridor-south-lobby",
+      "start": "lib-entrance-south",
+      "end": "lib-lobby-1st-floor",
+      "kind": "corridor",
+      "length_m": 12.0,
+      "geometry": [
+        [
+          10.0,
+          -12.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS entrance OID 80: hasAutoDoorOpener=1, isAccessible=1, isAccessibleToAllFloors=1."
+    },
+    {
+      "id": "lib-corridor-west-lobby",
+      "start": "lib-entrance-west",
+      "end": "lib-lobby-1st-floor",
+      "kind": "corridor",
+      "length_m": 20.6,
+      "geometry": [
+        [
+          -10.0,
+          5.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 1.0,
+      "width_m": 2.0,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS entrance OID 99: hasAutoDoorOpener=1, isAccessible=1, isAccessibleToAllFloors=1."
+    },
+    {
+      "id": "lib-corridor-elev-lobby-3rd-floor",
+      "start": "lib-elev-3rd-floor",
+      "end": "lib-lobby-3rd-floor",
+      "kind": "corridor",
+      "length_m": 10.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Hackathon pilot floor connector; verify against the building plan."
+    },
+    {
+      "id": "lib-elevator-2nd-floor-3rd-floor",
+      "start": "lib-elev-2nd-floor",
+      "end": "lib-elev-3rd-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Hackathon pilot elevator stop; verify floor service in the building."
+    },
+    {
+      "id": "lib-elevator-4th-floor-3rd-floor",
+      "start": "lib-elev-4th-floor",
+      "end": "lib-elev-3rd-floor",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "library-elevator-main",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Hackathon pilot elevator stop; verify floor service in the building."
+    },
+    {
+      "id": "lib-source-89b2058cf978fd22e516-edge",
+      "start": "lib-lobby-26th-floor",
+      "end": "lib-source-89b2058cf978fd22e516",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-8014ce1ba0c8d3e10acd-edge",
+      "start": "lib-lobby-25th-floor",
+      "end": "lib-source-8014ce1ba0c8d3e10acd",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-9b87e54b8b51f665e052-edge",
+      "start": "lib-lobby-24th-floor",
+      "end": "lib-source-9b87e54b8b51f665e052",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-1c70f757f27d2394be2d-edge",
+      "start": "lib-lobby-23rd-floor",
+      "end": "lib-source-1c70f757f27d2394be2d",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-0548130e67b69973a2c1-edge",
+      "start": "lib-lobby-22nd-floor",
+      "end": "lib-source-0548130e67b69973a2c1",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-d703d1b73cade2fc8aa7-edge",
+      "start": "lib-lobby-21st-floor",
+      "end": "lib-source-d703d1b73cade2fc8aa7",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-6a5ebbc1ea991ccb011a-edge",
+      "start": "lib-lobby-20th-floor",
+      "end": "lib-source-6a5ebbc1ea991ccb011a",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-2e97dc0f949006483e1c-edge",
+      "start": "lib-lobby-19th-floor",
+      "end": "lib-source-2e97dc0f949006483e1c",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-b91a107007a9afd396cb-edge",
+      "start": "lib-lobby-18th-floor",
+      "end": "lib-source-b91a107007a9afd396cb",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-1d60f06dff71470a59fc-edge",
+      "start": "lib-lobby-17th-floor",
+      "end": "lib-source-1d60f06dff71470a59fc",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-ba66e64c2dc1203d4086-edge",
+      "start": "lib-lobby-16th-floor",
+      "end": "lib-source-ba66e64c2dc1203d4086",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-30210eb4b272231aa653-edge",
+      "start": "lib-lobby-15th-floor",
+      "end": "lib-source-30210eb4b272231aa653",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-8b93a2a171b3826be8d3-edge",
+      "start": "lib-lobby-14th-floor",
+      "end": "lib-source-8b93a2a171b3826be8d3",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-f247cd3294a48bf844f5-edge",
+      "start": "lib-lobby-13th-floor",
+      "end": "lib-source-f247cd3294a48bf844f5",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-21b573afe60d58929602-edge",
+      "start": "lib-lobby-12th-floor",
+      "end": "lib-source-21b573afe60d58929602",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-fc7454b659aa8f0ffc9b-edge",
+      "start": "lib-lobby-11th-floor",
+      "end": "lib-source-fc7454b659aa8f0ffc9b",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-ec25f160684e3930b74a-edge",
+      "start": "lib-lobby-10th-floor",
+      "end": "lib-source-ec25f160684e3930b74a",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-ca3d3a66a4ca957adb78-edge",
+      "start": "lib-lobby-9th-floor",
+      "end": "lib-source-ca3d3a66a4ca957adb78",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-3fb52f1d26936de55612-edge",
+      "start": "lib-lobby-8th-floor",
+      "end": "lib-source-3fb52f1d26936de55612",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-cd0d97f0b5f29526f8bb-edge",
+      "start": "lib-lobby-7th-floor",
+      "end": "lib-source-cd0d97f0b5f29526f8bb",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-82b2119d5e232132f4bf-edge",
+      "start": "lib-lobby-6th-floor",
+      "end": "lib-source-82b2119d5e232132f4bf",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-a00b50a47628693cf465-edge",
+      "start": "lib-lobby-5th-floor",
+      "end": "lib-source-a00b50a47628693cf465",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-36f6df78844c81521786-edge",
+      "start": "lib-lobby-4th-floor",
+      "end": "lib-source-36f6df78844c81521786",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-d4aeb59897b9e661b496-edge",
+      "start": "lib-lobby-3rd-floor",
+      "end": "lib-source-d4aeb59897b9e661b496",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-2f9cf0cb673d6873f4c3-edge",
+      "start": "lib-lobby-2nd-floor",
+      "end": "lib-source-2f9cf0cb673d6873f4c3",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-e89f67a5556510f56265-edge",
+      "start": "lib-lobby-lower-level",
+      "end": "lib-source-e89f67a5556510f56265",
+      "kind": "corridor",
+      "length_m": 18.03,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    },
+    {
+      "id": "lib-source-b95ed8c222033dfffbfb-edge",
+      "start": "lib-lobby-lower-level",
+      "end": "lib-source-b95ed8c222033dfffbfb",
+      "kind": "corridor",
+      "length_m": 26.63,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          32.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "library-directory",
+      "evidence": "Hackathon pilot waypoint linked to the source record. Coordinates are repeatable approximations, not a survey; field-verify the doorway and final approach."
+    }
+  ],
+  "portals": [
+    {
+      "id": "lib-portal-south",
+      "indoor_node_id": "lib-entrance-south",
+      "outdoor_node_id": 8393893355,
+      "geometry": [
+        [
+          -72.52816,
+          42.38967
+        ],
+        [
+          -72.5281716,
+          42.3897015
+        ]
+      ],
+      "length_m": 3.6,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 1.0,
+      "width_m": 2.5,
+      "door_type": "automatic",
+      "asset_id": null,
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS entrance OID 80 to nearest OSM walking path node 8393893355 (3.6m)."
+    },
+    {
+      "id": "lib-portal-west",
+      "indoor_node_id": "lib-entrance-west",
+      "outdoor_node_id": 6359546414,
+      "geometry": [
+        [
+          -72.528895,
+          42.389719
+        ],
+        [
+          -72.5288916,
+          42.3897072
+        ]
+      ],
+      "length_m": 1.5,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 2.0,
+      "width_m": 2.0,
+      "door_type": "automatic",
+      "asset_id": null,
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS entrance OID 99 to nearest OSM walking path node 6359546414 (1.3m)."
+    }
+  ],
+  "maneuvers": []
+}

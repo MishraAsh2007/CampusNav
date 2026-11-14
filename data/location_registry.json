@@ -1,0 +1,143 @@
+[
+  {
+    "id": "umass-elevator-141",
+    "name": "Lincoln Campus Center mapped elevator location",
+    "type": "elevator",
+    "lat": 42.39164704619488,
+    "lng": -72.52708074887958,
+    "radius": 4,
+    "building_aliases": [
+      "Campus Center",
+      "Lincoln Campus Center"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/141; point lies in Lincoln Campus Center's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-187",
+    "name": "Integrative Learning Center mapped elevator location",
+    "type": "elevator",
+    "lat": 42.390892431451576,
+    "lng": -72.52542160205012,
+    "radius": 4,
+    "building_aliases": [
+      "ILC",
+      "Integrative Learning Center"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/187; point lies in Integrative Learning Center's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-188",
+    "name": "Integrative Learning Center mapped elevator location",
+    "type": "elevator",
+    "lat": 42.39088281968076,
+    "lng": -72.52592187860468,
+    "radius": 4,
+    "building_aliases": [
+      "ILC",
+      "Integrative Learning Center"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/188; point lies in Integrative Learning Center's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-122",
+    "name": "Student Union mapped elevator location",
+    "type": "elevator",
+    "lat": 42.39094553070591,
+    "lng": -72.52775463191782,
+    "radius": 4,
+    "building_aliases": [
+      "Student Union"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/122; point lies in Student Union's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-121",
+    "name": "W.E.B. Du Bois Library mapped elevator location",
+    "type": "elevator",
+    "lat": 42.389838144417546,
+    "lng": -72.52822985896846,
+    "radius": 4,
+    "building_aliases": [
+      "DuBois",
+      "Du Bois",
+      "Library"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/121; point lies in W.E.B. Du Bois Library's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-120",
+    "name": "Goodell Hall mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38863120368139,
+    "lng": -72.52920106940996,
+    "radius": 4,
+    "building_aliases": [
+      "Goodell"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/120; point lies in Goodell Hall's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-100",
+    "name": "Patterson House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38158465162623,
+    "lng": -72.52831354306397,
+    "radius": 4,
+    "building_aliases": [
+      "Patterson"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/100; point lies in Patterson House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-109",
+    "name": "Grayson House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.39223408704256,
+    "lng": -72.51887171255531,
+    "radius": 4,
+    "building_aliases": [
+      "Grayson"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/109; point lies in Grayson House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  }
+]

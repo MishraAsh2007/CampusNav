@@ -1,0 +1,236 @@
+{
+  "version": 1,
+  "sources": {
+    "library-floorplans": "https://umass.stackmap.com/explore/",
+    "ilc-floorplans": "https://www.arcgis.com/sharing/rest/search?q=%22Integrative%20Learning%20Center%22&f=pjson"
+  },
+  "plans": [
+    {
+      "building_id": "library",
+      "floor_label": "Lower Level",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/lower-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "1st Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/1st-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "2nd Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/2nd-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "4th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/4th-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "5th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/5th-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "6th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/6th-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "7th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/7th-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "8th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/8th-floor_0owfkpa-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "9th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/9th-floor-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "10th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/10th-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "11th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/11th-floor-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "12th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/12th-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "13th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/13th-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "14th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/14th-floor-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "15th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/15th-floor_qrtz0bo-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "16th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/16th-floor-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "17th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/17th-floor_dyermkv-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "18th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/18th-floor_6atsjml-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "19th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/19th-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "20th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/20th-floor_9ljft9n-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "21st Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/21st-floor_2aqpvdl-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "22nd Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/22nd-floor-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "23rd Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/23rd-floor_cy09806-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "24th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/24th-floor-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "25th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/25th-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "library",
+      "floor_label": "26th Floor",
+      "source_id": "library-floorplans",
+      "url": "https://umass.stackmap.com/media/maps/26th-e-populated.png",
+      "format": "PNG floor-plan image",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "ilc",
+      "floor_id": "1",
+      "floor_label": "1st Floor",
+      "source_id": "ilc-floorplans",
+      "url": "https://tiles.arcgis.com/tiles/2gdL2gxYNFY2TOUb/arcgis/rest/services/Integrated_Learning_Center_First_Floor_Scaled/MapServer",
+      "format": "ArcGIS tiled map service",
+      "geometry_status": "source plan available; topology not traced"
+    },
+    {
+      "building_id": "ilc",
+      "floor_id": "2",
+      "floor_label": "2nd Floor",
+      "source_id": "ilc-floorplans",
+      "url": "https://tiles.arcgis.com/tiles/2gdL2gxYNFY2TOUb/arcgis/rest/services/Integrated_Learning_Center_Second_Floor_Reup/MapServer",
+      "format": "ArcGIS tiled map service",
+      "geometry_status": "source plan available; topology not traced"
+    }
+  ],
+  "note": "These are authoritative public plan assets. They are intentionally not treated as routable geometry until corridors, doorways, and vertical connections are traced and reviewed."
+}
