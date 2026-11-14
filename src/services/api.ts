@@ -135,7 +135,7 @@ async function fetchClosuresRaw() {
       closuresPath = p;
       return r;
     }
-    if (closuresPath) return r;
+    if (closuresPath || r.status !== 404) return r;
   }
   return { ok: false, ms: 0 } as Awaited<ReturnType<typeof fetchJson<Record<string, unknown>[]>>>;
 }

@@ -2,20 +2,19 @@ import json
 import os
 from contextlib import asynccontextmanager
 from datetime import UTC, datetime, timedelta
-from hmac import compare_digest
 from pathlib import Path
 from threading import Lock
 from typing import TYPE_CHECKING, Annotated, Literal
 from uuid import uuid4
 
-from fastapi import Depends, FastAPI, HTTPException, Request, Security, status
+from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import APIKeyHeader
 from pydantic import (
     AwareDatetime,
     BaseModel,
     ConfigDict,
     Field,
+    StringConstraints,
     computed_field,
     model_validator,
 )
@@ -35,11 +34,28 @@ class MapPoint(BaseModel):
     lng: Annotated[float, Field(ge=-180, le=180)]
 
 
+ReferenceId = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
+BuildingId = Annotated[str, Field(pattern=r"^[a-z0-9]+([-_][a-z0-9]+)*$")]
+
+
+class IndoorReferences(BaseModel):
+    building_id: ReferenceId | None = None
+    asset_id: ReferenceId | None = None
+    floor_id: ReferenceId | None = None
+
+    @model_validator(mode="after")
+    def require_building_for_floor(self) -> "IndoorReferences":
+        if self.floor_id is not None and self.building_id is None:
+            raise ValueError("building_id is required when floor_id is set")
+        return self
+
+
 class Entrance(MapPoint):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
 
+    id: ReferenceId | None = None
     name: Annotated[str, Field(min_length=1)]
-    step_free: bool
+    step_free: bool | None
     hasAutoDoorOpener: bool | None = None
     isAccessibleToAllFloors: bool | None = None
     IsKeyCardRequired: bool | None = None
@@ -55,7 +71,7 @@ class Entrance(MapPoint):
         return self
 
 
-class IndoorLocation(BaseModel):
+class IndoorLocation(IndoorReferences):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
 
     location: Annotated[str, Field(min_length=1)]
@@ -70,7 +86,7 @@ class Bathroom(IndoorLocation):
 class Building(MapPoint):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
 
-    id: Annotated[str, Field(pattern=r"^[a-z0-9]+(-[a-z0-9]+)*$")]
+    id: BuildingId
     name: Annotated[str, Field(min_length=1)]
     entrances: list[Entrance]
     elevator_count: Annotated[int, Field(ge=0)] | None = None
@@ -86,7 +102,33 @@ class Building(MapPoint):
         return self
 
 
-class ClosureLocation(MapPoint):
+class EntranceWrite(Entrance):
+    id: ReferenceId
+
+
+class ElevatorWrite(IndoorLocation):
+    asset_id: ReferenceId
+
+
+class BuildingWrite(Building):
+    entrances: list[EntranceWrite]
+    elevators: list[ElevatorWrite] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_asset_references(self) -> "BuildingWrite":
+        if len({entrance.id for entrance in self.entrances}) != len(self.entrances):
+            raise ValueError("Entrance IDs must be unique within a building")
+        if len({elevator.asset_id for elevator in self.elevators}) != len(self.elevators):
+            raise ValueError("Elevator asset IDs must be unique within a building")
+        if any(
+            item.building_id is not None and item.building_id != self.id
+            for item in [*self.elevators, *self.bathrooms]
+        ):
+            raise ValueError("Indoor location building_id must match the building ID")
+        return self
+
+
+class ClosureLocation(MapPoint, IndoorReferences):
     radius: Annotated[float, Field(gt=0, allow_inf_nan=False)] = 10.0
     type: Literal["elevator", "ramp", "path", "construction"]
 
@@ -94,14 +136,32 @@ class ClosureLocation(MapPoint):
 class ReportCreate(ClosureLocation):
     model_config = ConfigDict(extra="forbid")
 
+    title: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)] | None = None
 
-class Closure(ClosureLocation):
+
+class SnapshotObservation(BaseModel):
+    snapshot_observed_at: AwareDatetime | None = None
+    snapshot_fallback: bool | None = None
+
+
+class NoticeProvenance(SnapshotObservation):
+    source_ref: str | None = None
+    source_id: str | None = None
+    confirmation_kind: str | None = None
+    published_at: AwareDatetime | None = None
+
+
+ClosureStatus = Literal["closed", "degraded"]
+
+
+class Closure(ClosureLocation, NoticeProvenance):
     id: str
-    status: Literal["closed"] = "closed"
+    status: ClosureStatus = "closed"
     source: Literal["community", "demo", "official"] = "community"
     start_time: AwareDatetime
     end_time: AwareDatetime | None
-    last_confirmed: AwareDatetime
+    last_confirmed: AwareDatetime | None
+    ingested_at: AwareDatetime | None = None
     title: str | None = None
     details: str | None = None
     description: str | None = None
@@ -114,7 +174,7 @@ class Closure(ClosureLocation):
 
     @computed_field
     @property
-    def last_updated(self) -> datetime:
+    def last_updated(self) -> datetime | None:
         return self.last_confirmed
 
     @computed_field
@@ -123,10 +183,11 @@ class Closure(ClosureLocation):
         return MapPoint(lat=self.lat, lng=self.lng)
 
 
-class OfficialNotice(BaseModel):
+class OfficialNotice(IndoorReferences, NoticeProvenance):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
 
     id: Annotated[str, Field(min_length=1)]
+    status: ClosureStatus = "closed"
     type: Literal["elevator", "ramp", "path", "construction"]
     radius: Annotated[float, Field(gt=0, allow_inf_nan=False)] = 10.0
     location: MapPoint | None = None
@@ -137,6 +198,7 @@ class OfficialNotice(BaseModel):
     details: str | None = None
     start_time: AwareDatetime | None = None
     end_time: AwareDatetime | None = None
+    last_confirmed: AwareDatetime | None = None
 
     @model_validator(mode="after")
     def validate_notice(self) -> "OfficialNotice":
@@ -158,7 +220,7 @@ class OfficialNotice(BaseModel):
         return self
 
 
-class OfficialSnapshot(BaseModel):
+class OfficialSnapshot(SnapshotObservation):
     model_config = ConfigDict(extra="forbid")
 
     closures: list[OfficialNotice]
@@ -223,9 +285,9 @@ class MemoryClosures:
         with self.lock:
             return list(self.buildings.values())
 
-    def add_building(self, building: Building) -> None:
+    def add_building(self, building: Building, *, replace: bool = False) -> None:
         with self.lock:
-            if building.id in self.buildings:
+            if not replace and building.id in self.buildings:
                 raise HTTPException(status_code=409, detail="Building ID already exists")
             self.buildings[building.id] = building
 
@@ -320,13 +382,16 @@ class MongoClosures:
         except PyMongoError as error:
             raise HTTPException(status_code=503, detail="Building storage is unavailable") from error
 
-    def add_building(self, building: Building) -> None:
+    def add_building(self, building: Building, *, replace: bool = False) -> None:
         from pymongo.errors import DuplicateKeyError, PyMongoError
 
         document = building.model_dump()
         document["_id"] = document.pop("id")
         try:
-            self.buildings.insert_one(document)
+            if replace:
+                self.buildings.replace_one({"_id": building.id}, document, upsert=True)
+            else:
+                self.buildings.insert_one(document)
         except DuplicateKeyError as error:
             raise HTTPException(status_code=409, detail="Building ID already exists") from error
         except PyMongoError as error:
@@ -388,18 +453,9 @@ origins = [
     if origin.strip()
 ]
 app.add_middleware(
-    CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST"],
-    allow_headers=["Content-Type", "X-Admin-Key"],
+    CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST", "PUT"],
+    allow_headers=["Content-Type"],
 )
-admin_header = APIKeyHeader(name="X-Admin-Key", auto_error=False)
-
-
-def require_admin(key: Annotated[str | None, Security(admin_header)]) -> None:
-    expected = os.environ.get("CAMPUSNAV_ADMIN_KEY")
-    if not expected:
-        raise HTTPException(status_code=503, detail="Admin writes are disabled")
-    if key is None or not compare_digest(key.encode(), expected.encode()):
-        raise HTTPException(status_code=403, detail="Invalid admin key")
 
 
 @app.get("/health")
@@ -417,7 +473,11 @@ def get_closures(request: Request) -> list[Closure]:
         notice for notice in store.list_official()
         if notice.start_time <= now and (notice.end_time is None or now < notice.end_time)
     )
-    return sorted(closures, key=lambda closure: (closure.last_confirmed, closure.id), reverse=True)
+    return sorted(
+        closures,
+        key=lambda closure: (closure.last_confirmed is not None, closure.last_confirmed, closure.id),
+        reverse=True,
+    )
 
 
 @app.get("/buildings")
@@ -425,9 +485,17 @@ def get_buildings(request: Request) -> list[Building]:
     return sorted(request.app.state.closures.list_buildings(), key=lambda building: building.id)
 
 
-@app.post("/buildings", status_code=status.HTTP_201_CREATED, dependencies=[Depends(require_admin)])
-def create_building(building: Building, request: Request) -> Building:
+@app.post("/buildings", status_code=status.HTTP_201_CREATED)
+def create_building(building: BuildingWrite, request: Request) -> Building:
     request.app.state.closures.add_building(building)
+    return building
+
+
+@app.put("/buildings/{building_id}")
+def replace_building(building_id: BuildingId, building: BuildingWrite, request: Request) -> Building:
+    if building_id != building.id:
+        raise HTTPException(status_code=422, detail="Building ID must match the URL")
+    request.app.state.closures.add_building(building, replace=True)
     return building
 
 
@@ -437,7 +505,7 @@ def get_official_closures(request: Request) -> list[Closure]:
     return request.app.state.closures.list_official()
 
 
-@app.post("/official-reports", dependencies=[Depends(require_admin)])
+@app.post("/official-reports")
 def replace_official_closures(snapshot: OfficialSnapshot, request: Request) -> list[Closure]:
     """Replace the complete current official snapshot."""
     now = utc_now()
@@ -448,10 +516,16 @@ def replace_official_closures(snapshot: OfficialSnapshot, request: Request) -> l
         raise HTTPException(status_code=422, detail="An end time before posting requires an earlier start time")
     closures = [
         Closure(
-            **notice.model_dump(exclude={"start_time", "location"}),
+            **notice.model_dump(exclude={
+                "start_time", "location", "snapshot_observed_at", "snapshot_fallback",
+            }),
             source="official",
             start_time=notice.start_time or now,
-            last_confirmed=now,
+            ingested_at=now,
+            snapshot_observed_at=notice.snapshot_observed_at or snapshot.snapshot_observed_at,
+            snapshot_fallback=(
+                notice.snapshot_fallback if notice.snapshot_fallback is not None else snapshot.snapshot_fallback
+            ),
         )
         for notice in snapshot.closures
     ]
