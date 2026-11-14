@@ -230,6 +230,10 @@ class SnapInfo(BaseModel):
     lat: float
     lon: float
     snap_distance_m: float
+    moved: bool = Field(
+        default=False, description="Nearest junction was a dead end for this user; moved to a usable one"
+    )
+    original_snap_distance_m: Optional[float] = None
 
 
 class RouteMeta(BaseModel):

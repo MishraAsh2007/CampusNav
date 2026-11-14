@@ -383,6 +383,12 @@ def frontend_route(body: FrontendRouteRequest, request: Request) -> dict[str, An
 
     step_free = to_frontend(G, resp.accessible, closures, target, grade, arrive)
     shortest = to_frontend(G, resp.standard, closures, std_target, grade, std_arrive) if resp.standard else None
+    moved_notes = []
+    for label, s in (("Starting", resp.meta.start), ("Ending", resp.meta.end)):
+        if s.moved and step_free["found"]:
+            moved_notes.append(f"{label} from the nearest path you can use, about "
+                               f"{round(s.snap_distance_m)} m from the point you chose.")
+    step_free["summary"]["warnings"] = moved_notes + step_free["summary"]["warnings"]
     if plan is not None:
         # Elevator and door notes belong to the step-free trip; show them before the user sets off.
         merged = plan.warnings + step_free["summary"]["warnings"]

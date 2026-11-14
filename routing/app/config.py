@@ -77,6 +77,14 @@ DEST_BUILDING_MATCH_M = _float("DEST_BUILDING_MATCH_M", 60.0)
 DEST_ELEVATOR_MATCH_SLACK_M = 10.0
 # Warn if an entrance is this far from the nearest walkable graph node.
 DEST_ENTRANCE_SNAP_WARN_M = 30.0
+
+# --------------------------------------------------------------------------
+# Snapping start/end points to the graph (see app/routing/snapping.py)
+# --------------------------------------------------------------------------
+# Points at least this far from their nearest node may be moved out of a dead end.
+SNAP_RESNAP_MIN_M = _float("SNAP_RESNAP_MIN_M", 15.0)
+# ...to a usable node at most this much farther away than the original snap.
+SNAP_MAX_EXTRA_M = _float("SNAP_MAX_EXTRA_M", 40.0)
 # Weight of the straight-line door-to-elevator distance when ranking entrances.
 DEST_INDOOR_WEIGHT = 1.0
 # Extra cost (meters) for an entrance with a reported door-opener problem

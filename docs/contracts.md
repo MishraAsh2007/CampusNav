@@ -261,6 +261,15 @@ GeoJSON FeatureCollection: one LineString feature per segment (`grade`, `is_step
 
 Start or end outside the campus area returns 422.
 
+**Snapping.** Points are matched to the nearest walking-network junction. For the step-free
+route, a point at least 15 m from any path (a building center, GPS fix or map tap) whose nearest
+junction is a dead end for this user (only stairs or a too-steep path lead out) is moved to the
+nearest usable junction, at most 40 m farther. This only happens when the start and end couldn't
+otherwise reach each other. Points on a path or at a door are never moved, so an inaccessible
+door still reports "no route". Moved points show `meta.start.moved` / `meta.end.moved` (also in
+`/route`), and the step-free route gets a warning such as "Starting from the nearest path you
+can use, about 41 m from the point you chose."
+
 ### Letting the engine pick the destination entrance
 
 Send `destination` instead of `end`. `building` is the map UI's `Building` object as-is (a

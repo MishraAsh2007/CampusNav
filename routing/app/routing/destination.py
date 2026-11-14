@@ -112,6 +112,7 @@ def plan_destination(
     blocked: Mapping[EdgeKey, object],
     std_prefs: Optional[Prefs] = None,
     std_blocked: Optional[Mapping[EdgeKey, object]] = None,
+    std_source: Optional[int] = None,
 ) -> PlannedTarget:
     b = dest.building
     step_free = prefs.avoid_steps  # only exclude doors with steps if the user asked for step-free
@@ -224,7 +225,7 @@ def plan_destination(
             upper_floors_reachable=reachable, entrances=all_options, elevators=elevators, warnings=warnings,
         )
         return _with_standard(PlannedTarget(plan, fallback_node=fallback, fallback_snap_m=fallback_snap),
-                              G, dest, active, source, std_prefs, std_blocked)
+                              G, dest, active, std_source if std_source is not None else source, std_prefs, std_blocked)
 
     options.sort(key=lambda o: o[0])
     _, chosen, node, snap, path = options[0]
@@ -253,7 +254,7 @@ def plan_destination(
         elevators=elevators, warnings=warnings,
     )
     return _with_standard(PlannedTarget(plan, node, snap, path, fallback, fallback_snap),
-                          G, dest, active, source, std_prefs, std_blocked)
+                          G, dest, active, std_source if std_source is not None else source, std_prefs, std_blocked)
 
 
 def _with_standard(target: PlannedTarget, G, dest: Destination, active: list[Closure], source: int,

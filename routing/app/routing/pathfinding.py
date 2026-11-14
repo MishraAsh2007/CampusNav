@@ -11,6 +11,7 @@ from ..schemas import RouteMeta, RouteRequest, RouteResponse, RouteResult, SnapI
 from ..utils.geo import haversine_m, nearest_node, node_latlon
 from .closures import ClosureIndex, resolve_closures
 from .serialize import not_found, serialize_path
+from .snapping import Snap, snap_points
 from .weights import ACCESSIBLE, STANDARD, EdgeKey, Prefs, best_parallel_edge, make_weight_fn
 
 
@@ -74,7 +75,6 @@ def plan_routes(G, req: RouteRequest, now: Optional[datetime] = None) -> RouteRe
     t0 = time.perf_counter()
     now = now or datetime.now(timezone.utc)
 
-    src, src_d = nearest_node(G, req.start.lat, req.start.lon)
     idx = resolve_closures(G, req.closures, now)
     acc_prefs = Prefs(ACCESSIBLE, req.max_grade_pct, req.avoid_steps)
     std_prefs = Prefs(STANDARD, req.max_grade_pct, False)
@@ -82,13 +82,19 @@ def plan_routes(G, req: RouteRequest, now: Optional[datetime] = None) -> RouteRe
     if not req.avoid_steps:
         note = " under the grade limit"
 
+    # Standard route: plain nearest junction. Accessible route: avoid dead-end junctions.
+    src, src_d = nearest_node(G, req.start.lat, req.start.lon)
+    end_pt = (req.end.lat, req.end.lon) if req.end is not None else None
+    acc_s, acc_e = snap_points(G, (req.start.lat, req.start.lon), end_pt, acc_prefs, idx.blocked_for(ACCESSIBLE))
+    acc_src = acc_s.node
+
     plan = None
     acc_path = None
     if req.destination is not None:
-        # Look ahead: pick the entrance that suits the indoor leg; both routes end there.
+        # Look ahead: pick the entrance that suits the indoor leg.
         target = plan_destination(
-            G, req.destination, req.closures, now, src, acc_prefs, idx.blocked_for(ACCESSIBLE),
-            std_prefs=std_prefs, std_blocked=idx.blocked_for(STANDARD),
+            G, req.destination, req.closures, now, acc_src, acc_prefs, idx.blocked_for(ACCESSIBLE),
+            std_prefs=std_prefs, std_blocked=idx.blocked_for(STANDARD), std_source=src,
         )
         plan = target.plan
         acc_path = target.accessible_path
@@ -96,10 +102,11 @@ def plan_routes(G, req: RouteRequest, now: Optional[datetime] = None) -> RouteRe
         if target.node is None:
             accessible = not_found(acc_prefs, idx, f"No usable step-free entrance to {plan.building_name}")
         else:
-            accessible = _route_one(G, src, dst, acc_prefs, idx, note, path=acc_path)
+            accessible = _route_one(G, acc_src, dst, acc_prefs, idx, note, path=acc_path)
+        acc_e = Snap(dst, dst_d)
     else:
         dst, dst_d = nearest_node(G, req.end.lat, req.end.lon)
-        accessible = _route_one(G, src, dst, acc_prefs, idx, note)
+        accessible = _route_one(G, acc_src, acc_e.node, acc_prefs, idx, note)
 
     standard = None
     if req.include_standard:
@@ -108,9 +115,12 @@ def plan_routes(G, req: RouteRequest, now: Optional[datetime] = None) -> RouteRe
         else:
             standard = _route_one(G, src, dst, std_prefs, idx, "")
 
-    def snap(n: int, d: float) -> SnapInfo:
-        lat, lon = node_latlon(G, n)
-        return SnapInfo(node_id=n, lat=lat, lon=lon, snap_distance_m=round(d, 1))
+    def snap(s: Snap) -> SnapInfo:
+        lat, lon = node_latlon(G, s.node)
+        return SnapInfo(
+            node_id=s.node, lat=lat, lon=lon, snap_distance_m=round(s.distance_m, 1), moved=s.moved,
+            original_snap_distance_m=round(s.original_distance_m, 1) if s.moved else None,
+        )
 
     meta = RouteMeta(
         compute_ms=round((time.perf_counter() - t0) * 1000, 1),
@@ -121,7 +131,7 @@ def plan_routes(G, req: RouteRequest, now: Optional[datetime] = None) -> RouteRe
         closures_active=idx.active_count,
         closures_expired=idx.expired_count,
         closures_pending=idx.pending_count,
-        start=snap(src, src_d),
-        end=snap(dst, dst_d),
+        start=snap(acc_s),
+        end=snap(acc_e),
     )
     return RouteResponse(accessible=accessible, standard=standard, destination=plan, meta=meta)
