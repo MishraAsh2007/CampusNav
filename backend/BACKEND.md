@@ -1,68 +1,143 @@
-# CampusNav
+# CampusNav Backend
 
-## Backend API
+## Start the API
 
-From the repo root in PowerShell with Python 3.11 or later:
-
-```powershell
-Set-Location backend
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe -m uvicorn main:app --reload
-```
-
-Open [interactive API docs](http://127.0.0.1:8000/docs). The default local server stores reports in memory until it restarts. Set `$env:CAMPUSNAV_DEMO = '1'` before starting it to load one sample ramp closure from `backend/closures.json`.
-
-| Method | Path | Response |
-| --- | --- | --- |
-| GET | `/health` | Process liveness |
-| GET | `/closures` | Active closures, most recently confirmed first |
-| POST | `/reports` | Created closure with HTTP 201 |
-| POST | `/reports/{report_id}/confirm` | Active community closure with a renewed expiry, or HTTP 404 |
-
-Submit a report from a second PowerShell window:
+From the repo root in PowerShell with Python 3.11 or later, create the virtual environment and install the dependencies once:
 
 ```powershell
-$report = @{
-    lat = 42.3912
-    lng = -72.5267
-    type = 'elevator'
-    radius = 10
-} | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri http://127.0.0.1:8000/reports -ContentType application/json -Body $report
-Invoke-RestMethod -Uri http://127.0.0.1:8000/closures
+python -m venv backend/.venv
+.\backend\.venv\Scripts\python.exe -m pip install -r backend\requirements.txt
 ```
 
-`lat` and `lng` are decimal degrees. `type` accepts `elevator`, `ramp`, `path`, or `construction`. `radius` is in meters and defaults to 10. Community reports expire exactly 48 hours after submission or their most recent confirmation. The backend sets `end_time`. Send a POST with no body to `/reports/{report_id}/confirm` using the report's `id`. Confirmation applies to active community reports. The endpoint is anonymous and does not verify whether the confirmer is a different user.
+For local testing, start the API in memory mode. Data is cleared when the server restarts.
 
-Set `CORS_ORIGINS` to a comma-separated list of frontend origins if your frontend runs somewhere other than `http://localhost:5173` or `http://127.0.0.1:5173`.
+```powershell
+$env:CAMPUSNAV_ADMIN_KEY = 'local-test-key'
+.\backend\.venv\Scripts\python.exe -m uvicorn backend.main:app --reload
+```
 
-## MongoDB Atlas
+Open [Swagger UI](http://127.0.0.1:8000/docs). Expand an endpoint, click **Try it out**, and click **Execute**. For a POST request, paste the JSON example into the request body first.
 
-Set `MONGODB_URI` in `backend/.env` and keep the file local. `MONGODB_DB` defaults to `campusnav`. From the repo root, start the API with:
+Building and official report writes require an `X-Admin-Key` header. In Swagger, click **Authorize** and enter the configured key. The key above is for local testing. Use a separate secret for shared deployments and keep it out of frontend code.
 
-```cmd
+## Which endpoint should I use?
+
+| Endpoint | Returns |
+| --- | --- |
+| `GET /buildings` | Building locations, entrances, automatic doors, and elevator counts |
+| `GET /official-reports` | The latest official notices, including scheduled closures |
+| `GET /community-reports` | Active community reports |
+| `GET /closures` | The combined feed of active official and community closures for routing |
+| `GET /health` | `{"status":"ok"}` when the API is responding |
+
+Fetch **`GET /buildings`** for building and entrance data and **`GET /closures`** for current routing obstructions. The closure feed is sorted by newest `last_confirmed` first. If both sources report the same obstruction, both entries can appear. Each entry has a `source` field.
+
+## Buildings
+
+**`POST /buildings`** creates one building and returns HTTP 201. Use a unique lowercase ID such as `example-building`. A duplicate ID returns HTTP 409. Use verified coordinates and accessibility attributes when adding real buildings.
+
+```json
+{
+  "id": "example-building",
+  "name": "Example Building",
+  "lat": 42.3912,
+  "lng": -72.5267,
+  "elevators": [
+    { "location": "Ground floor, across from the main entrance" }
+  ],
+  "bathrooms": [
+    { "location": "Ground floor, room 102", "transfer_type": "left" }
+  ],
+  "entrances": [
+    {
+      "name": "Main entrance",
+      "lat": 42.3911,
+      "lng": -72.5267,
+      "step_free": true,
+      "hasAutoDoorOpener": true,
+      "isAccessibleToAllFloors": true,
+      "IsKeyCardRequired": false
+    }
+  ]
+}
+```
+
+**`GET /buildings`** lists the saved buildings. [Try the GET request](http://127.0.0.1:8000/buildings).
+
+Use a room, floor, or landmark for an indoor `location`. Add `lat` and `lng` when available. Use `null` for an unknown bathroom transfer type or entrance flag. The API counts the listed elevators unless you supply `elevator_count` for a building with only some elevator locations recorded. It also accepts the older `automatic_door` field.
+
+## Official reports
+
+**`POST /official-reports`** replaces the full official list and returns it with HTTP 200. Use the sample below on a local test server. In the live integration, Role 3 should send the complete list after a successful retrieval from UMass SharePoint. An empty `closures` array clears the list. [UMass Current Interruptions](https://umass.sharepoint.com/sites/impactnotices/Lists/Service%20Interruption%20Notices/Current%20Interruptions.aspx?viewid=49a9fec0-8dcc-47f9-a618-92f4c4aba861)
+
+```json
+{
+  "closures": [
+    {
+      "id": "umass-123",
+      "description": "Example elevator interruption near the main entrance",
+      "type": "elevator",
+      "location": { "lat": 42.3912, "lng": -72.5267 },
+      "start_time": "2026-11-14T14:00:00Z",
+      "end_time": "2026-11-14T18:00:00Z"
+    }
+  ]
+}
+```
+
+Use a stable ID for each notice and ISO 8601 timestamps with a timezone. The start time defaults to when the list is posted. Use `null` for an open-ended notice. The routing feed shows a notice from its start until its end or until a refresh omits it. Official reports are retained in the snapshot until the next replacement. They have no TTL.
+
+**`GET /official-reports`** lists the saved notices, including future ones. [Try the GET request](http://127.0.0.1:8000/official-reports).
+
+## Community reports
+
+**`POST /community-reports`** creates one report and returns HTTP 201. Use `elevator`, `ramp`, `path`, or `construction` for `type`. Coordinates are in decimal degrees. The optional `radius` defaults to 10 meters and also applies to official reports.
+
+```json
+{
+  "lat": 42.3912,
+  "lng": -72.5267,
+  "type": "ramp",
+  "radius": 10
+}
+```
+
+**`GET /community-reports`** lists reports that are still active. [Try the GET request](http://127.0.0.1:8000/community-reports).
+
+The server generates `id`, `start_time`, `end_time`, `source` (always `community`), and `last_updated`. Each submission creates a new report that expires after 48 hours. To renew an existing one, copy its `id` and call **`POST /community-reports/{report_id}/confirm`** with an empty body. Confirmation updates `last_updated` and extends expiry by 48 hours from the confirmation time. `last_confirmed` is still available for existing clients. A missing or expired report returns HTTP 404.
+
+## Use MongoDB Atlas
+
+Set `MONGODB_URI` in `backend/.env` to the Atlas connection string. The database name defaults to `campusnav` and can be set with `MONGODB_DB`. Set `CAMPUSNAV_ADMIN_KEY` in the same file to enable protected writes. Keep the file local.
+
+```powershell
 .\backend\.venv\Scripts\python.exe -m uvicorn backend.main:app --env-file backend\.env
 ```
 
-The Atlas database user needs read/write access to `campusnav`. The backend initializes the `closures` collection and its expiration index on startup. Each successful `POST /reports` creates one document in that collection.
+The Atlas database user needs read/write access. The backend initializes these collections on startup:
 
-| Stored fields | BSON type | Meaning |
-| --- | --- | --- |
-| `_id` | String | UUID returned by the API as `id` |
-| `lat`, `lng` | Double | Coordinates in decimal degrees |
-| `radius` | Double | Affected area radius in meters |
-| `type` | String | `elevator`, `ramp`, `path`, or `construction` |
-| `status`, `source` | String | New reports use `closed` and `community` |
-| `start_time`, `end_time`, `last_confirmed` | Date | UTC activation, expiration, and last confirmation timestamps |
+| Collection | Storage |
+| --- | --- |
+| `Buildings` | One document per building, keyed by the building ID |
+| `OfficialClosures` | One document with `_id` set to `umass-service-interruptions` and a `closures` array |
+| `CommunityReports` | One document per report, with dates stored in UTC and a TTL index on `end_time` |
 
-MongoDB uses a unique index on `_id` and a TTL index on `end_time` to delete expired reports. The API filters out expired reports as soon as their end time passes.
-On startup, the backend updates still-active older community reports to expire 48 hours after their last confirmation. Reports that have already expired stay expired.
+In Atlas Data Explorer, a community report's MongoDB `_id` matches the API response's `id`. The API hides a report when it expires, and MongoDB removes it during TTL cleanup.
 
-After `POST /reports` returns HTTP 201, open **Data Explorer → campusnav → closures → Documents** in Atlas and look for the document with the returned `id` as its `_id`.
+### MongoDB schema validation
 
-### Official maintenance notices
+MongoDB validators check coordinates and building accessibility fields, official notice snapshots, and the community report dates used for TTL. Official `end_time` accepts a BSON Date or `null`. The validators accept older records that predate the new fields.
 
-Role 3 owns retrieval from the UMass [Current Interruptions SharePoint view](https://umass.sharepoint.com/sites/impactnotices/Lists/Service%20Interruption%20Notices/Current%20Interruptions.aspx?viewid=49a9fec0-8dcc-47f9-a618-92f4c4aba861). The MongoDB backend reads a document in `official_snapshots` with `_id: "umass-service-interruptions"` and a `closures` array. Each entry follows the API closure schema with a string `id`, `source: "official"`, `end_time: null`, and BSON dates for `start_time` and `last_confirmed`.
+From the repo root, check the configured database or install the validators:
 
-Replace the array after successfully retrieving the complete current view. `GET /closures` serves entries once their start time has arrived. Official notices have no TTL and disappear from the API when omitted from the next successful refresh.
+```powershell
+.\backend\.venv\Scripts\python.exe -m backend.mongo_schema
+.\backend\.venv\Scripts\python.exe -m backend.mongo_schema --apply
+```
+
+Both commands check existing documents first. Installing the validators requires MongoDB's `collMod` permission. The API's normal startup does not need this permission.
+
+## Local options
+
+- Set `CAMPUSNAV_DEMO=1` before starting in memory mode to load the sample ramp closure from `backend/closures.json`.
+- Set `CORS_ORIGINS` to a comma-separated list of frontend origins. The defaults are `http://localhost:5173` and `http://127.0.0.1:5173`.
