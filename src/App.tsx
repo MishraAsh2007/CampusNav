@@ -10,11 +10,13 @@ import {
   planRoutes,
   PlanResult,
   resetClosures,
-  submitUserReport
+  submitUserReport,
+  addLocalOfficialNotice
 } from './services/api';
-import { loadCampusGraph, CampusGraph } from './services/routingEngine';
+import { loadCampusGraph, CampusGraph, getDistanceMeters } from './services/routingEngine';
+import { BusRouteData, groupIncidents, Incident, loadBusRoutes } from './services/incidents';
 import { UMASS_BUILDINGS } from './data/mockBuildings';
-import { DEMO_ELEVATOR_REPORT, INITIAL_CLOSURES } from './data/mockClosures';
+import { DEMO_ELEVATOR_OFFICIAL, DEMO_ELEVATOR_REPORT, INITIAL_CLOSURES } from './data/mockClosures';
 import { DEFAULT_PREFERENCES } from './data/profiles';
 import { buildingPlaces, DEMO_TRIP, SPOTS } from './data/places';
 import { MapView } from './components/MapView';
@@ -50,6 +52,9 @@ export function App() {
   const [live, setLive] = useState(false);
   const [lastSync, setLastSync] = useState<number | null>(null);
   const [graph, setGraph] = useState<CampusGraph | null>(null);
+  const [busData, setBusData] = useState<BusRouteData | null>(null);
+  // Official notices + student reports of the same problem, merged and ranked
+  const incidents = useMemo(() => groupIncidents(closures, busData), [closures, busData]);
   const closuresSig = useRef(closuresSignature(INITIAL_CLOSURES));
 
   const applyClosures = useCallback((list: Closure[]) => {
@@ -70,6 +75,7 @@ export function App() {
 
   useEffect(() => {
     loadCampusGraph().then(setGraph);
+    loadBusRoutes().then(setBusData);
     getBuildings().then(setBuildings);
     checkBackendHealth().then(setLive);
     syncClosures();
@@ -123,7 +129,12 @@ export function App() {
   // ---------- selection & sheets ----------
   const [selectedBuilding, setSelectedBuilding] = useState<Building | null>(null);
   const [focusEntranceId, setFocusEntranceId] = useState<string | null>(null);
-  const [selectedClosure, setSelectedClosure] = useState<Closure | null>(null);
+  // Keep the id, not the object, so the open sheet updates when new reports arrive
+  const [selectedIncidentId, setSelectedIncidentId] = useState<string | null>(null);
+  const selectedIncident = useMemo(
+    () => (selectedIncidentId ? incidents.find((i) => i.id === selectedIncidentId || i.all.some((c) => c.id === selectedIncidentId)) ?? null : null),
+    [incidents, selectedIncidentId]
+  );
   const [picking, setPicking] = useState<'origin' | 'destination' | 'report' | null>(null);
   const [reportOpen, setReportOpen] = useState(false);
   const [reportBuildingId, setReportBuildingId] = useState<string | null>(null);
@@ -139,7 +150,7 @@ export function App() {
     setSelectedBuilding(b);
     setFocusEntranceId(e.id);
   }, []);
-  const onSelectClosure = useCallback((c: Closure) => setSelectedClosure(c), []);
+  const onSelectIncident = useCallback((inc: Incident) => setSelectedIncidentId(inc.id), []);
 
   const onMapClick = useCallback(
     (lat: number, lng: number) => {
@@ -168,6 +179,14 @@ export function App() {
   const [demoBusy, setDemoBusy] = useState(false);
   const log = (label: string, detail: string, tone: DemoLogEntry['tone']) => setDemoLog((l) => [...l, { t: Date.now(), label, detail, tone }]);
   const elevatorBroken = closures.some((c) => c.status === 'closed' && c.connector_id === DEMO_ELEVATOR_REPORT.connector_id);
+  const officialConfirmed = closures.some(
+    (c) => c.status === 'closed' && c.source === 'official' && c.connector_id === DEMO_ELEVATOR_REPORT.connector_id
+  );
+
+  const demoConfirmOfficial = () => {
+    applyClosures(addLocalOfficialNotice(DEMO_ELEVATOR_OFFICIAL));
+    log('official', 'Facilities posts a matching notice (simulated) · ranked High alert', 'warn');
+  };
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -261,7 +280,24 @@ export function App() {
     return e ? { building: destBuilding, name: e.name, door: e.door_type === 'push-button' ? 'push-button' : e.door_type } : null;
   }, [destBuilding, plan?.endEndpointId]);
   const chosenEntranceIds = useMemo(() => [plan?.endEndpointId, plan?.startEndpointId].filter(Boolean) as string[], [plan?.endEndpointId, plan?.startEndpointId]);
-  const activeIssues = closures.filter((c) => c.status !== 'repaired').length;
+  const activeIssues = incidents.length;
+  const highAlerts = incidents.filter((i) => i.severity === 'high').length;
+
+  // Starting or ending at a bus stop on a closed road: warn that buses may skip it
+  const busStopNotes = useMemo(() => {
+    const notes: string[] = [];
+    for (const p of [origin, destination]) {
+      const spot = p && SPOTS.find((s) => s.kind === 'bus' && s.name === p.name);
+      if (!spot) continue;
+      for (const inc of incidents) {
+        if (!inc.bus?.certain) continue;
+        if (getDistanceMeters(spot.lat, spot.lng, inc.primary.lat, inc.primary.lng) <= Math.max(60, inc.primary.radius + 40)) {
+          notes.push(`${spot.name}: routes ${inc.bus.routes.join(', ')} are detoured (${inc.primary.title}). Buses may skip this stop.`);
+        }
+      }
+    }
+    return notes;
+  }, [origin, destination, incidents]);
 
   const focusStep = (s: RouteStep) => s.at && setFocus({ lat: s.at[1], lng: s.at[0], key: Date.now() });
 
@@ -287,13 +323,15 @@ export function App() {
         pickMode={!!picking}
         focus={focus}
         onSelectBuilding={onSelectBuilding}
-        onSelectClosure={onSelectClosure}
+        incidents={incidents}
+        onSelectIncident={onSelectIncident}
         onSelectEntrance={onSelectEntrance}
         onMapClick={onMapClick}
       />
 
       <TopBar
         activeIssues={activeIssues}
+        highAlerts={highAlerts}
         live={live}
         lastSync={lastSync}
         onReport={() => {
@@ -347,7 +385,7 @@ export function App() {
               accessible={plan?.accessible ?? null}
               standard={plan?.standard ?? null}
               failure={plan?.failure}
-              notes={plan?.notes ?? []}
+              notes={[...(plan?.notes ?? []), ...busStopNotes]}
               tab={tab}
               onTab={setTab}
               showStandard={showStandard}
@@ -365,7 +403,7 @@ export function App() {
             <Narrator route={plan.accessible} originName={origin.name} destinationName={destination.name} prefs={prefs} />
           )}
           {activeRoute && <Directions steps={activeRoute.steps} onFocusStep={focusStep} />}
-          <OutageList closures={closures} onSelect={setSelectedClosure} live={live} lastSync={lastSync} />
+          <OutageList incidents={incidents} onSelect={onSelectIncident} live={live} lastSync={lastSync} />
           {provider === 'osm' && reason && (
             <p className="px-1 text-[11px] text-ink-4">
               Basemap: OpenStreetMap ({reason.toLowerCase()}). Add VITE_GOOGLE_MAPS_API_KEY to use Google Maps.
@@ -395,15 +433,19 @@ export function App() {
       />
 
       <ClosureSheet
-        closure={selectedClosure}
-        onClose={() => setSelectedClosure(null)}
+        incident={selectedIncident}
+        onClose={() => setSelectedIncidentId(null)}
         onConfirm={(c) => {
           applyClosures(confirmClosure(c.id));
-          setSelectedClosure(null);
+          setSelectedIncidentId(null);
         }}
-        onResolve={async (c) => {
-          applyClosures(markClosureResolved(c.id));
-          setSelectedClosure(null);
+        onResolve={async (inc) => {
+          // Fixed means every report of this problem is fixed, official and student alike
+          let list: Closure[] = [];
+          for (const c of inc.all) list = markClosureResolved(c.id);
+          applyClosures(list);
+          setSelectedIncidentId(null);
+          const c = inc.primary;
           await submitUserReport({
             lat: c.lat,
             lng: c.lng,
@@ -440,6 +482,8 @@ export function App() {
         log={demoLog}
         onLoadTrip={demoLoadTrip}
         onBreak={demoBreak}
+        onConfirmOfficial={demoConfirmOfficial}
+        officialConfirmed={officialConfirmed}
         onFix={demoFix}
         onReset={demoReset}
         live={live}

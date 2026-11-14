@@ -20,6 +20,19 @@ export interface Closure {
   building_name?: string;
   /** Graph connector this closure disables directly (e.g. an elevator). */
   connector_id?: string;
+  /**
+   * Who is blocked. 'road' = vehicles and buses only (sidewalks stay open), 'both' = road and sidewalk.
+   * Default: pedestrians.
+   */
+  affects?: 'pedestrians' | 'road' | 'both';
+  /** Closed road, for road work notices */
+  road_name?: string;
+  /** Bus routes the notice says are detoured. If absent, the UI works them out from OpenStreetMap routes. */
+  bus_routes?: string[];
+  /** Link to the original notice */
+  source_url?: string;
+  /** Notice number, e.g. a Facilities service interruption id */
+  reference?: string;
   start_time: string;
   end_time?: string;
   last_confirmed: string; // ISO timestamp

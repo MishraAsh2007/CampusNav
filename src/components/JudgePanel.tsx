@@ -1,4 +1,4 @@
-import { Play, RotateCcw, Wrench, X, Zap } from 'lucide-react';
+import { Play, RotateCcw, ShieldCheck, Wrench, X, Zap } from 'lucide-react';
 import { cx } from './ui';
 
 export interface DemoLogEntry {
@@ -16,16 +16,18 @@ interface Props {
   log: DemoLogEntry[];
   onLoadTrip: () => void;
   onBreak: () => void;
+  onConfirmOfficial: () => void;
+  officialConfirmed: boolean;
   onFix: () => void;
   onReset: () => void;
   live: boolean;
 }
 
-export function JudgePanel({ open, onClose, elevatorBroken, busy, log, onLoadTrip, onBreak, onFix, onReset, live }: Props) {
+export function JudgePanel({ open, onClose, elevatorBroken, busy, log, onLoadTrip, onBreak, onConfirmOfficial, officialConfirmed, onFix, onReset, live }: Props) {
   if (!open) return null;
   return (
     <div
-      className="fixed bottom-4 left-1/2 z-40 w-[min(560px,calc(100vw-2rem))] -translate-x-1/2 rounded-4xl bg-ink/95 p-4 text-white shadow-lift backdrop-blur-xl animate-rise lg:left-auto lg:right-4 lg:translate-x-0"
+      className="fixed bottom-4 left-1/2 z-40 w-[min(640px,calc(100vw-2rem))] -translate-x-1/2 rounded-4xl bg-ink/95 p-4 text-white shadow-lift backdrop-blur-xl animate-rise lg:left-auto lg:right-4 lg:translate-x-0"
       role="dialog"
       aria-label="Judge demo controls"
     >
@@ -39,7 +41,7 @@ export function JudgePanel({ open, onClose, elevatorBroken, busy, log, onLoadTri
         </button>
       </div>
 
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         <button onClick={onLoadTrip} className="flex flex-col items-start gap-1 rounded-2xl bg-white/10 p-3 text-left transition hover:bg-white/15">
           <Play className="h-4 w-4 text-white/70" />
           <span className="text-[13px] font-medium">1 · Load trip</span>
@@ -58,12 +60,21 @@ export function JudgePanel({ open, onClose, elevatorBroken, busy, log, onLoadTri
           <span className="text-[11px] leading-snug text-white/80">POSTs a fake student report</span>
         </button>
         <button
+          onClick={onConfirmOfficial}
+          disabled={busy || !elevatorBroken || officialConfirmed}
+          className="flex flex-col items-start gap-1 rounded-2xl bg-sky p-3 text-left transition hover:brightness-110 disabled:opacity-40"
+        >
+          <ShieldCheck className="h-4 w-4" />
+          <span className="text-[13px] font-medium">3 · Facilities confirms</span>
+          <span className="text-[11px] leading-snug text-white/80">Official notice → High alert</span>
+        </button>
+        <button
           onClick={onFix}
           disabled={busy || !elevatorBroken}
           className="flex flex-col items-start gap-1 rounded-2xl bg-go p-3 text-left transition hover:brightness-110 disabled:opacity-40"
         >
           <Wrench className="h-4 w-4" />
-          <span className="text-[13px] font-medium">3 · Fix it</span>
+          <span className="text-[13px] font-medium">4 · Fix it</span>
           <span className="text-[11px] leading-snug text-white/80">Report it working again</span>
         </button>
       </div>

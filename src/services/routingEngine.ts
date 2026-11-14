@@ -154,6 +154,8 @@ function indexClosures(G: CampusGraph, closures: Closure[]): ClosureIndex {
   const degraded = new Map<number, Closure>();
   for (const c of closures) {
     if (c.status === 'repaired') continue;
+    // Road work that leaves the sidewalk open affects buses, not walkers
+    if (c.affects === 'road') continue;
     const target = c.status === 'closed' ? blocked : degraded;
     if (c.connector_id) {
       G.e.forEach((e, i) => {

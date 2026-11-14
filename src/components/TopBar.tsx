@@ -5,6 +5,7 @@ import { formatFreshness } from '../data/mockClosures';
 
 interface Props {
   activeIssues: number;
+  highAlerts: number;
   live: boolean;
   lastSync: number | null;
   onReport: () => void;
@@ -55,6 +56,11 @@ export function TopBar(p: Props) {
             {p.activeIssues} issue{p.activeIssues === 1 ? '' : 's'} today
             {p.lastSync ? ` · ${formatFreshness(new Date(p.lastSync).toISOString())}` : ''}
           </span>
+          {p.highAlerts > 0 && (
+            <span className="rounded-full bg-stop px-2 py-0.5 text-[11px] font-semibold text-white" title="Reported by both UMass Facilities and students">
+              {p.highAlerts} high alert{p.highAlerts === 1 ? '' : 's'}
+            </span>
+          )}
         </div>
 
         <div ref={ref} className="relative">

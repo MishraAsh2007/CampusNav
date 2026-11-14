@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import type { Building, BuildingEntrance, Closure, Place, RouteResponse } from '../types';
 import { buildScene } from './map/scene';
+import type { Incident } from '../services/incidents';
 import { useMapProvider } from './map/MapsProvider';
 import GoogleMapView from './map/GoogleMapView';
 import LeafletMapView from './map/LeafletMapView';
@@ -20,7 +21,8 @@ interface MapViewProps {
   pickMode: boolean;
   focus: { lat: number; lng: number; key: number } | null;
   onSelectBuilding: (b: Building) => void;
-  onSelectClosure: (c: Closure) => void;
+  incidents: Incident[];
+  onSelectIncident: (inc: Incident) => void;
   onSelectEntrance: (b: Building, e: BuildingEntrance) => void;
   onMapClick: (lat: number, lng: number) => void;
 }
@@ -34,6 +36,7 @@ export function MapView(props: MapViewProps) {
     [
       props.buildings,
       props.closures,
+      props.incidents,
       props.accessible,
       props.standard,
       props.ghost,

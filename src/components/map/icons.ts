@@ -9,6 +9,8 @@ export const ICONS = {
   cone: svg('<path d="M9.3 6.2 12 2l2.7 4.2"/><path d="M7 11h10"/><path d="M5.5 16h13"/><path d="M3 21h18L14.7 6.2H9.3Z"/>'),
   path: svg('<path d="M3 17c3-2 5-2 8 0s5 2 8 0"/><path d="M3 11c3-2 5-2 8 0s5 2 8 0"/>'),
   check: svg('<path d="m5 12 5 5L20 7"/>'),
+  bus: svg('<rect x="4" y="3" width="16" height="15" rx="3"/><path d="M4 11h16"/><path d="M8 21v-3"/><path d="M16 21v-3"/><path d="M8 7h8"/>'),
+  shield: svg('<path d="M12 3 5 6v5c0 4.5 3 8.2 7 10 4-1.8 7-5.5 7-10V6Z"/><path d="m9 12 2 2 4-4"/>'),
   slope: svg('<path d="M3 20 21 6"/><path d="M3 20h18"/>')
 };
 

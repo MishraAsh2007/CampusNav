@@ -23,6 +23,9 @@ function override(id: string, patch: Partial<Closure>) {
   overrides.set(id, { ...(overrides.get(id) ?? {}), ...patch });
 }
 
+/** Community report endpoint; falls back to '/reports' (backend on main) on the first 404. */
+let reportsPath: '/community-reports' | '/reports' = '/community-reports';
+
 /** Barrier types backend/main.py accepts. */
 const BACKEND_TYPES: string[] = ['elevator', 'ramp', 'path', 'construction'];
 /** Title/description/connector for reports this browser sent (the backend stores location only). */
@@ -65,11 +68,17 @@ export function normalizeClosure(raw: Record<string, unknown>): Closure {
     radius: Number(raw.radius ?? 15),
     type: (raw.type as Closure['type']) ?? 'path',
     status,
-    source: (raw.source as Closure['source']) ?? 'community',
+    // Backend sources: official | community | demo. Role 3's file also uses reddit.
+    source: raw.source === 'official' || raw.source === 'verified' ? (raw.source as Closure['source']) : 'community',
     title: String(raw.title ?? TYPE_TITLES[String(raw.type)] ?? 'Reported barrier'),
     description: raw.description ? String(raw.description) : raw.details ? String(raw.details) : undefined,
     building_name: raw.building_name ? String(raw.building_name) : undefined,
     connector_id: raw.connector_id ? String(raw.connector_id) : undefined,
+    affects: raw.affects === 'road' || raw.affects === 'both' || raw.affects === 'pedestrians' ? raw.affects : undefined,
+    road_name: raw.road_name ? String(raw.road_name) : undefined,
+    bus_routes: Array.isArray(raw.bus_routes) ? raw.bus_routes.map(String) : undefined,
+    source_url: raw.source_url ? String(raw.source_url) : undefined,
+    reference: raw.reference ? String(raw.reference) : undefined,
     start_time: String(raw.start_time ?? raw.timestamp ?? now),
     end_time: raw.end_time ? String(raw.end_time) : undefined,
     last_confirmed: String(raw.last_confirmed ?? raw.timestamp ?? now),
@@ -84,7 +93,8 @@ export interface ClosuresResult {
 }
 
 /**
- * The team backend (backend/main.py) serves /closures and /reports; the older contract used /api/*.
+ * The team backend (backend/main.py) serves /closures: official notices and community reports in one
+ * feed, told apart by `source`. The older contract used /api/*.
  * Try the backend's paths first and remember which one answered.
  */
 let closuresPath: string | null = null;
@@ -330,12 +340,18 @@ export async function submitUserReport(report: UserReportPayload): Promise<Repor
     return { closure: local, live: false, ms: 0, browserOnly: true };
   }
 
-  // backend/main.py: POST /reports accepts exactly {lat, lng, type, radius} and returns the closure (201)
+  // backend/main.py accepts exactly {lat, lng, type, radius} and returns the closure (201).
+  // Newer backend: POST /community-reports. Backend on main: POST /reports.
+  const minimal = JSON.stringify({ lat: report.lat, lng: report.lng, type: report.type, radius: local.radius });
   let r = await fetchJson<Record<string, unknown>>(
-    `${API_BASE}/reports`,
-    { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ lat: report.lat, lng: report.lng, type: report.type, radius: local.radius }) },
+    `${API_BASE}${reportsPath}`,
+    { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: minimal },
     1500
   );
+  if (!r.ok && (r.status === 404 || r.status === 405) && reportsPath === '/community-reports') {
+    r = await fetchJson<Record<string, unknown>>(`${API_BASE}/reports`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: minimal }, 1500);
+    if (r.ok) reportsPath = '/reports';
+  }
   let serverRaw: Record<string, unknown> | undefined = r.ok ? r.data : undefined;
   if (!r.ok && (r.status === 404 || r.status === 405)) {
     // Older contract: POST /api/report returning { closure }
@@ -360,7 +376,7 @@ export async function submitUserReport(report: UserReportPayload): Promise<Repor
 /** Tell the backend a community report is still accurate (renews its 48 h expiry). Fire and forget. */
 function confirmOnBackend(id: string) {
   if (id.startsWith('local-')) return;
-  void fetchJson(`${API_BASE}/reports/${encodeURIComponent(id)}/confirm`, { method: 'POST' }, 1500);
+  void fetchJson(`${API_BASE}${reportsPath}/${encodeURIComponent(id)}/confirm`, { method: 'POST' }, 1500);
 }
 
 /** "Still broken" tap: bump freshness and confirmation count. */
@@ -380,6 +396,18 @@ export function markClosureResolved(id: string): Closure[] {
   const now = new Date().toISOString();
   override(id, { status: 'repaired', last_confirmed: now });
   store = store.map((c) => (c.id === id ? { ...c, status: 'repaired', last_confirmed: now } : c));
+  return [...store];
+}
+
+/**
+ * Adds an official notice in this browser only (judge demo). Real official notices come from Role 3's
+ * pipeline via the backend; the admin key they need must never ship in frontend code.
+ */
+export function addLocalOfficialNotice(c: Closure): Closure[] {
+  const now = new Date().toISOString();
+  const notice: Closure = { ...c, id: `local-${c.id}`, start_time: now, last_confirmed: now, status: 'closed' };
+  overrides.delete(notice.id);
+  store = [notice, ...store.filter((x) => x.id !== notice.id)];
   return [...store];
 }
 

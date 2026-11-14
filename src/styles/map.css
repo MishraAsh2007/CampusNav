@@ -138,6 +138,57 @@ html.hc .leaflet-tile-pane {
 .au-closure.degraded.live::after {
   color: #f0a020;
 }
+/* Ranks: high alert (Facilities + students) is larger with a double ring */
+.au-closure.sev-high {
+  width: 36px;
+  height: 36px;
+  background: #c4262b;
+  box-shadow: 0 0 0 4px rgba(229, 72, 77, 0.28), 0 6px 18px rgba(196, 38, 43, 0.5);
+}
+.au-closure.sev-reported:not(.road) {
+  background: #f2777a;
+}
+.au-closure.road {
+  background: #5b6b8c;
+  box-shadow: 0 4px 14px rgba(91, 107, 140, 0.45);
+}
+.au-closure.road.live::after {
+  color: #5b6b8c;
+}
+.au-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 3px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 700 10px/1 Inter, system-ui, sans-serif;
+  color: #fff;
+}
+.au-badge.high {
+  background: #1d1d1f;
+}
+.au-badge.official {
+  background: #0a84ff;
+}
+.au-badge .au-svg {
+  width: 9px;
+  height: 9px;
+  stroke-width: 3;
+}
+.au-closure > svg {
+  position: relative;
+}
+.au-tag.bus {
+  background: #eef1f7;
+  color: #33405c;
+  cursor: pointer;
+}
 @keyframes au-ping {
   0% {
     transform: scale(1);
