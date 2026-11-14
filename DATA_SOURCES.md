@@ -39,7 +39,7 @@ separately after review, and located asset IDs can be exported into the notice r
 | [UMass Facilities service interruption notices](https://umass.sharepoint.com/sites/impactnotices/Lists/Service%20Interruption%20Notices/Current%20Interruptions.aspx) | Notice ID, building, category, description, effective start/end date and time, source reference | Official closed/degraded closures after rules or optional Gemini parsing and a unique mapped asset match | Live authenticated scraper works with the operator's saved session. Raw notices stay private. Students use the backend without a UMass login. |
 | [PVTA service alerts](https://www.pvta.com/bus_service/service_alerts___detours.php), [alert embed](https://pvta.us/swiftly/RevizeAlerts2.php) | Alert title/body, affected route badges, source URL, publication time when available | Discover nearby detours or disruptions for review | Fetched live. Filters configured UMass routes. A bus detour alone does **not** close a pedestrian edge. |
 | [Massachusetts Daily Collegian RSS](https://dailycollegian.com/feed/) | Article title, snippet, URL, publication time | Discover recent accessibility/construction/transit reports for review | Fetched live. A successful fetch can yield zero relevant recent items. Articles can be old or imprecise. |
-| [r/umass](https://www.reddit.com/r/umass/) via authorized Reddit API | Recent posts/comments, text, permalink, publication time | Potential community complaints for review | Adapter implemented, **not configured**. Requires an authorized access token. Currently contributes no reports. |
+| [r/umass](https://www.reddit.com/r/umass/) | Recent posts and, via the authorized API, comments; text, permalink, and publication time | Potential community complaints for review | Uses the public feed when no API token is configured. Uses the authorized API when credentials are configured. |
 | Facebook Page Graph API | Configured Page posts, text, permalink, publication time | Potential community complaints for review | Adapter implemented, **not configured**. No Page selected or authorized token. Arbitrary groups/private profiles are not scraped. |
 | CampusNav's Report button | User-selected location or mapped elevator, issue type, broken/working state, timestamp, optional description | Community closures and confirmations | Implemented with a local file for integration testing. Active reports expire after 24 hours; confirmation extends expiry. MongoDB Atlas storage is still Role 4's handoff. |
 | Downloaded UMass spreadsheet | Exported notice fields, when live and saved scrape are both unavailable | Last-resort fallback for the official notice pipeline | Not the primary source. Default `~/Downloads/Book1.xlsx`; override with `--fallback-spreadsheet PATH`. Explicitly labeled as fallback. |
@@ -104,6 +104,7 @@ Run from the project root in PowerShell:
 | Build walking graph and elevation cache | `.\build-campus.cmd` | `data/umass.graph.json`, `.cache/osm/`, `.cache/`; `/route` and `/plan` |
 | Import official map + cached OSM entrances | `.\.venv\Scripts\python.exe -m scripts.sync_campus_access` | `data/buildings.json`, `data/location_registry.json`; `/buildings` and `/buildings/status` |
 | Save authorized UMass session | `.\login-notices.cmd` | Private `data/private/sharepoint-session.json`; ingestion worker only |
+| Refresh official and public sources together | `.\refresh-scrapers.cmd --rules-only` (add `--watch` for hourly refresh) | Both snapshots below, kept separate |
 | Scrape official notices once | `.\refresh-notices.cmd --rules-only` | Private raw scrape, official snapshot, reviewed closure output, unresolved-review output |
 | Keep official notices current hourly | `.\refresh-notices.cmd --rules-only --watch` | Same snapshot; keep this worker running in a separate terminal |
 | Scrape public feeds once | `.\refresh-reports.cmd --rules-only` | `data/private/external_reports.json`; `/external-reports` and `/external-reports/status` |
@@ -130,8 +131,7 @@ The latest successful live SharePoint check was **November 14, 2026 at 1:17 a.m.
 An earlier expired-session HTTP 401 correctly used the last successful scrape, not the
 spreadsheet. The operator then saved a new verified session into this workspace and live
 ingestion resumed. Helper v5 checks actual item access with both the browser and restored
-session before reporting success. PVTA and Collegian were also refreshed live; the two
-social adapters remain unconfigured.
+session before reporting success. PVTA and Collegian were also refreshed live at that check.
 
 ## What we still need from better coverage
 

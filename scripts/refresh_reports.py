@@ -27,7 +27,6 @@ def main():
     args = parser.parse_args()
     if args.interval < 600:
         parser.error("Use an interval of at least 600 seconds")
-    sources = json.loads(args.sources.read_text(encoding="utf-8"))["sources"]
     output = ROOT / "data/private/external_reports.json"
     if args.demo:
         sources = [
@@ -39,6 +38,8 @@ def main():
             }
         ]
         output = ROOT / "data/private/demo_external_reports.json"
+    else:
+        sources = json.loads(args.sources.read_text(encoding="utf-8"))["sources"]
     while True:
         extractor = None
         try:

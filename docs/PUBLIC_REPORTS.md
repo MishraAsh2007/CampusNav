@@ -32,7 +32,7 @@ Configure `data/public_sources.json` or pass `--sources PATH`.
 | --- | --- |
 | PVTA | Official HTML alert embed; filters UMass route badges. Successfully fetched. |
 | Daily Collegian | Public RSS; recent accessibility/transit keyword matches. Successfully fetched. |
-| Reddit | Latest r/umass posts and comments through the API. Needs authorized app credentials. |
+| Reddit | Recent r/umass posts and comments through the authorized API, or posts only from the public feed when no API token is set. |
 | Facebook | Configured Page feed through the Graph API. Needs a Page ID and authorized token. |
 | Other sources | RSS/Atom feeds and public HTML with per-report selectors. |
 
@@ -51,11 +51,12 @@ FACEBOOK_PAGE_ACCESS_TOKEN=your-authorized-page-token
 ```
 
 Set Facebook's `page_id` in the source configuration. Access depends on the app/token's
-permissions for that Page; arbitrary groups and private profiles are not supported. Reddit
-requires approved API access. Tokens travel in authorization headers, never URL parameters.
-Token issuance/renewal and app registration are not implemented. HTTP 401/403/429 results
-in explicit source failure and cache fallback, without repeated retries or alternate scraping
-to get around access restrictions.
+permissions for that Page; arbitrary groups and private profiles are not supported. To read
+Reddit comments, configure both authorized API credentials above. With no Reddit token,
+`"public_feed": true` in the Reddit source selects the public r/umass feed. Set it to `false`
+for API-only operation. Feed update times are never substituted for publication times.
+Tokens travel in authorization headers. HTTP 401/403/429 on either source preserves cached
+reports when available; the worker does not switch transports after a denied or rate-limited request.
 
 References: [Reddit data access](https://support.reddithelp.com/hc/en-us/articles/14945211791892-Developer-Platform-Accessing-Reddit-Data),
 [Reddit API](https://www.reddit.com/dev/api/), and

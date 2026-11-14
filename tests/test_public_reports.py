@@ -3,13 +3,13 @@ from datetime import UTC, datetime, timedelta
 
 import httpx
 import pytest
-from fastapi.testclient import TestClient
 
 from campus_notices.models import Extraction, Impact
 from campus_notices.public_sources import (
     NotConfigured,
     PublicPost,
     download,
+    fetch_posts,
     read_facebook,
     read_feed,
     read_html,
@@ -18,9 +18,6 @@ from campus_notices.public_sources import (
 )
 from campus_notices.reports import refresh_reports, reports_status
 from campus_notices.sources import SourceError
-from campus_routing.api import create_app
-from campus_routing.engine import RoutingEngine
-from scripts.make_demo import make_demo_graph
 
 NOW = datetime(2026, 11, 14, 12, tzinfo=UTC)
 SPEC = {"id": "public", "kind": "rss", "authority": "community"}
@@ -148,6 +145,67 @@ def test_reddit_needs_config_and_uses_header_auth(monkeypatch):
         posts = read_reddit(client, {})
     assert len(calls) == 2 and len(posts) == 2
     assert posts[0].published_at == NOW
+
+
+def test_reddit_public_feed_preserves_review_identity_when_switching_to_api(tmp_path, monkeypatch):
+    monkeypatch.delenv("REDDIT_ACCESS_TOKEN", raising=False)
+    spec = SPEC | {"kind": "reddit", "public_feed": True, "include_comments": False}
+    feed = b"""<feed xmlns="http://www.w3.org/2005/Atom"><entry>
+      <id>t3_1</id><title>Elevator is broken</title>
+      <link href="https://www.reddit.com/r/umass/comments/1/test?ref=rss"/>
+      <summary>Elevator unavailable.</summary><updated>2026-11-14T12:00:00Z</updated>
+      </entry></feed>"""
+
+    def handle(request):
+        if request.url.host == "www.reddit.com":
+            assert request.url.path == "/r/umass/new/.rss"
+            assert "Authorization" not in request.headers
+            return httpx.Response(200, content=feed)
+        assert request.url.host == "oauth.reddit.com"
+        return httpx.Response(
+            200,
+            json={
+                "kind": "Listing",
+                "data": {
+                    "children": [
+                        {
+                            "data": {
+                                "name": "t3_1",
+                                "permalink": "/r/umass/comments/1/test/",
+                                "title": "Elevator is broken",
+                                "created_utc": NOW.timestamp(),
+                            }
+                        }
+                    ]
+                },
+            },
+        )
+
+    with httpx.Client(transport=httpx.MockTransport(handle)) as client:
+        options = {"client": client, "sources": [spec], "fetcher": fetch_posts}
+        first = refresh(tmp_path, **options).reports[0]
+        assert first.published_at is None and not first.routing_eligible
+        monkeypatch.setenv("REDDIT_ACCESS_TOKEN", "test-secret")
+        monkeypatch.setenv("REDDIT_USER_AGENT", "test-app")
+        later = refresh(tmp_path, **options, now=NOW + timedelta(hours=1)).reports[0]
+        assert later.id == first.id and later.expires_at == first.expires_at
+        assert later.published_at == NOW and later.review_status == "needs_review"
+
+
+@pytest.mark.parametrize("status", [403, 429])
+def test_reddit_api_denial_does_not_switch_to_public_feed(monkeypatch, status):
+    monkeypatch.setenv("REDDIT_ACCESS_TOKEN", "test-secret")
+    monkeypatch.setenv("REDDIT_USER_AGENT", "test-app")
+
+    def handle(request):
+        assert request.url.host == "oauth.reddit.com"
+        return httpx.Response(status)
+
+    with (
+        httpx.Client(transport=httpx.MockTransport(handle)) as client,
+        pytest.raises(SourceError, match=str(status)),
+    ):
+        read_reddit(client, {"public_feed": True})
 
 
 def test_facebook_requires_page_config_and_keeps_token_off_url(monkeypatch):
@@ -285,6 +343,12 @@ def test_unverified_gemini_location_is_rejected(tmp_path):
 
 
 def test_cached_api_filters_expired_reports_and_reports_unavailable(tmp_path):
+    from fastapi.testclient import TestClient
+
+    from campus_routing.api import create_app
+    from campus_routing.engine import RoutingEngine
+    from scripts.make_demo import make_demo_graph
+
     clock = datetime.now(UTC)
     path = tmp_path / "reports.json"
     app = create_app(engine=RoutingEngine(make_demo_graph()), reports_path=path)

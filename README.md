@@ -58,11 +58,16 @@ The integrated map currently calls the outdoor `/plan` flow. Indoor `/journey` a
 
 **The scraper implementation is `campus_notices/`; runnable workers are in `scripts/`.**
 
+Run `.\refresh-scrapers.cmd --rules-only` to refresh official notices and public reports
+together. The public worker uses the merged scraper's Reddit feed when no Reddit API token is
+configured. Public reports stay in a separate review queue and cannot close routes. The original
+contributed scraper is preserved in `role-3-web-scraper/` for reference.
+
 | Source/work | Implementation | Run from the repository root |
 | --- | --- | --- |
 | Official UMass service interruptions | `campus_notices/sharepoint.py`, `sources.py`, `pipeline.py` | `.\refresh-notices.cmd --rules-only` |
 | Deterministic parsing and optional Gemini fallback | `campus_notices/rules.py`, `gemini.py`, `pipeline.py` | Rules run first; omit `--rules-only` to permit configured fallback |
-| Public transit/news and authorized social adapters | `campus_notices/reports.py` and associated source adapters | `.\refresh-reports.cmd --rules-only` |
+| Public transit, news and social reports | `campus_notices/reports.py` and source adapters | `.\refresh-reports.cmd --rules-only` |
 | Public indoor floor references and room directories | `campus_notices/indoor_sources.py`, `indoor_arcgis.py` | `.\refresh-indoor.cmd` |
 | Authenticated residence-plan PDFs | `campus_notices/residence_plans.py` | `.\.venv\Scripts\python.exe -m scripts.refresh_residence_plans` |
 | All-dorm drawing/review preparation | `campus_notices/residence_workspace.py` | `.\.venv\Scripts\python.exe -m scripts.prepare_all_residences` |
@@ -72,19 +77,22 @@ For the official SharePoint notices, install the browser runtime once:
 ```powershell
 .\.venv\Scripts\python.exe -m playwright install chromium
 .\login-notices.cmd
-.\refresh-notices.cmd --rules-only
+.\refresh-scrapers.cmd --rules-only
 ```
 
 Complete UMass sign-in/MFA yourself in the helper's browser and follow the terminal prompts.
 The helper stores a local session under ignored `data/private/`. Each teammate/operator
 must use their own authorized session; do not distribute session files or passwords.
 
-Run workers hourly in separate terminals:
+Run both workers hourly in one terminal. An official worker failure still lets the public
+worker run; each worker keeps its own snapshot and source status:
 
 ```powershell
-.\refresh-notices.cmd --rules-only --watch
-.\refresh-reports.cmd --rules-only --watch
+.\refresh-scrapers.cmd --rules-only --watch
 ```
+
+Use `.\refresh-scrapers.cmd --demo` to exercise both pipelines offline with synthetic
+data. It writes separate demo snapshots that the live map does not read.
 
 The normal official source is the authenticated scraper. A previously downloaded spreadsheet
 is a last-resort fallback, not a required shared asset. A failed scrape preserves prior

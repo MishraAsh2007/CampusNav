@@ -1,5 +1,9 @@
 # Role 3: web scraper
 
+This is the original standalone contribution. For the combined CampusNav scraper, use
+[`refresh-scrapers.cmd`](../README.md#where-the-web-scraper-is) from the repository root.
+The combined worker keeps scraped public reports in review instead of posting them to the backend.
+
 Watches r/umass and a UMass facilities alert page for broken elevators, blocked ramps and closed paths, uses Gemini to turn each post into a closure, and appends it to `closures.json`.
 
 ## Status for the Role 3 team (Nov 14, 2026)

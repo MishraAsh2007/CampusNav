@@ -250,16 +250,33 @@ def read_pvta(data, routes):
     return posts[:MAX_ITEMS]
 
 
+def reddit_permalink(value):
+    url = urlparse(public_url(value, base="https://www.reddit.com"))
+    if url.hostname != "www.reddit.com":
+        raise SourceError("Unexpected Reddit permalink host")
+    return urlunparse(url._replace(path=url.path.rstrip("/") + "/", params="", query=""))
+
+
+def read_reddit_feed(client, subreddit):
+    url = f"https://www.reddit.com/r/{subreddit}/new/.rss"
+    posts = read_feed(download(client, url), url)
+    for item in posts:
+        item.url = reddit_permalink(item.url)
+    return posts
+
+
 def read_reddit(client, spec):
+    subreddit = spec.get("subreddit", "umass")
+    if not re.fullmatch(r"[A-Za-z0-9_]{2,40}", subreddit):
+        raise SourceError("Invalid subreddit name")
     token = os.getenv(spec.get("token_env", "REDDIT_ACCESS_TOKEN"))
     agent = os.getenv("REDDIT_USER_AGENT")
+    if not token and spec.get("public_feed", False):
+        return read_reddit_feed(client, subreddit)
     if not token or not agent:
         raise NotConfigured(
             "Reddit needs an approved app's REDDIT_ACCESS_TOKEN and REDDIT_USER_AGENT"
         )
-    subreddit = spec.get("subreddit", "umass")
-    if not re.fullmatch(r"[A-Za-z0-9_]{2,40}", subreddit):
-        raise SourceError("Invalid subreddit name")
     output = []
     for listing in ("new", "comments") if spec.get("include_comments", True) else ("new",):
         payload = json.loads(
@@ -282,11 +299,14 @@ def read_reddit(client, spec):
             ident, link = item.get("name"), item.get("permalink")
             if not ident or not link:
                 raise SourceError("Reddit item is missing its ID or permalink")
-            url = public_url(link, base="https://www.reddit.com")
-            if urlparse(url).hostname != "www.reddit.com":
-                raise SourceError("Unexpected Reddit permalink host")
             output.append(
-                post(ident, url, item.get("title", "Reddit comment"), body, item.get("created_utc"))
+                post(
+                    ident,
+                    reddit_permalink(link),
+                    item.get("title", "Reddit comment"),
+                    body,
+                    item.get("created_utc"),
+                )
             )
     return output
 
