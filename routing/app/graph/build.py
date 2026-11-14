@@ -11,7 +11,7 @@ from . import elevation as elevation_mod
 from . import overrides as overrides_mod
 
 # OSM tags whose change along a path must start a new graph segment.
-SEGMENT_SPLIT_ATTRS = ["highway", "footway", "ramp", "step_count"]
+SEGMENT_SPLIT_ATTRS = ["highway", "footway", "ramp", "step_count", "bridge", "tunnel"]
 # OSMnx drops most way tags by default; keep the ones classify_edge() reads.
 EXTRA_WAY_TAGS = ["footway", "ramp", "ramp:wheelchair", "step_count"]
 
@@ -57,6 +57,8 @@ def _slim_edges(G) -> None:
         }
         if steps and str(steps).isdigit():
             slim["step_count"] = int(steps)
+        if any(str(_first(data.get(t)) or "no").lower() not in ("no", "false") for t in ("bridge", "tunnel")):
+            slim["level_structure"] = True  # grade forced to 0; removed before saving
         if "geometry" in data:
             slim["geometry"] = data["geometry"]
         data.clear()
@@ -77,6 +79,34 @@ def build_graph(
     ground_truth_path: Path = config.GROUND_TRUTH_PATH,
 ):
     """Build the cached campus graph. Needs internet (OSM + elevation API) unless cached."""
+    G = download_graph(bbox)
+
+    if with_elevation:
+        elevation_mod.add_elevation(G)
+    else:
+        print("[build] skipping elevation; all grades = 0")
+        for n in G.nodes:
+            G.nodes[n]["elevation"] = 0.0
+        elevation_mod.compute_edge_grades(G)
+
+    levels = 0
+    for _u, _v, d in G.edges(data=True):
+        levels += bool(d.pop("level_structure", False))
+    print(f"[build] {levels} bridge/tunnel edges set level")
+
+    overrides_mod.apply_ground_truth(G, ground_truth_path)
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    ox.save_graphml(G, out_path)
+    kinds: dict[str, int] = {}
+    for _u, _v, d in G.edges(data=True):
+        kinds[d["kind"]] = kinds.get(d["kind"], 0) + 1
+    print(f"[build] saved {out_path} | nodes={G.number_of_nodes()} edges={G.number_of_edges()} kinds={kinds}")
+    return G
+
+
+def download_graph(bbox: Optional[dict] = None):
+    """OSM walk network for the bbox, simplified and slimmed, before elevation (uses OSMnx's cache)."""
     b = bbox or config.BBOX
     ox.settings.useful_tags_way = list(dict.fromkeys([*ox.settings.useful_tags_way, *EXTRA_WAY_TAGS]))
     print(f"[build] downloading OSM walk network for bbox {b}")
@@ -94,21 +124,4 @@ def build_graph(
     G = ox.truncate.largest_component(G, strongly=False) if len(G) else G
     _slim_nodes(G)
     _slim_edges(G)
-
-    if with_elevation:
-        elevation_mod.add_elevation(G)
-    else:
-        print("[build] skipping elevation; all grades = 0")
-        for n in G.nodes:
-            G.nodes[n]["elevation"] = 0.0
-        elevation_mod.compute_edge_grades(G)
-
-    overrides_mod.apply_ground_truth(G, ground_truth_path)
-
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    ox.save_graphml(G, out_path)
-    kinds: dict[str, int] = {}
-    for _u, _v, d in G.edges(data=True):
-        kinds[d["kind"]] = kinds.get(d["kind"], 0) + 1
-    print(f"[build] saved {out_path} | nodes={G.number_of_nodes()} edges={G.number_of_edges()} kinds={kinds}")
     return G

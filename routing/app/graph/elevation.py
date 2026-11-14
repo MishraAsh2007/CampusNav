@@ -1,12 +1,17 @@
 """Fetch node elevations and compute signed per-edge grade (percent).
 
 Providers (set ELEVATION_PROVIDER):
-  opentopodata  USGS NED 10 m via the public OpenTopoData API (default, batches of 100)
-  epqs          USGS 3DEP Elevation Point Query Service (one request per point)
+  epqs          USGS 3DEP via the Elevation Point Query Service: 1 m lidar on campus (default).
+                One slow request per point; prefill with scripts/fetch_3dep.py.
+  opentopodata  USGS NED 10 m via OpenTopoData (fast, batches of 100, but blurs short slopes)
   openmeteo     Copernicus 90 m DEM (coarse; only a fallback, grades will be noisy)
 
-Elevations are cached in data/elevation_cache.json keyed by OSM node id, so a
-rebuild of the same area never hits the network again.
+Elevations are cached per provider, keyed by OSM node id (data/elevation_cache.json for
+opentopodata, data/elevation_cache_<provider>.json otherwise), so a rebuild of the same area
+never hits the network again.
+
+Bridges and tunnels are treated as level: the DEMs are bare-earth, so a footbridge would
+otherwise appear to dip into whatever is below it.
 """
 from __future__ import annotations
 
@@ -64,9 +69,17 @@ def _epqs_one(coord: LatLon) -> Optional[float]:
     return float(val)
 
 
+def epqs_point(coord: LatLon) -> Optional[float]:
+    """One EPQS lookup that never raises (the service is slow and times out now and then)."""
+    try:
+        return _epqs_one(coord)
+    except RuntimeError:
+        return None
+
+
 def _epqs(coords: Sequence[LatLon]) -> list[Optional[float]]:
     with ThreadPoolExecutor(max_workers=8) as pool:
-        return list(pool.map(_epqs_one, coords))
+        return list(pool.map(epqs_point, coords))
 
 
 def _openmeteo(coords: Sequence[LatLon]) -> list[Optional[float]]:
@@ -93,6 +106,20 @@ def fetch_elevations(coords: Sequence[LatLon], provider: Optional[str] = None) -
     if name not in PROVIDERS:
         raise ValueError(f"unknown elevation provider {name!r}; choose from {sorted(PROVIDERS)}")
     return PROVIDERS[name](coords)
+
+
+def cache_path_for(provider: Optional[str] = None) -> Path:
+    name = provider or config.ELEVATION_PROVIDER
+    if name == "opentopodata":
+        return config.ELEVATION_CACHE_PATH
+    return config.DATA_DIR / f"elevation_cache_{name}.json"
+
+
+def write_cache(path: Path, cache: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(cache), encoding="utf-8")
+    tmp.replace(path)
 
 
 def _load_cache(path: Path) -> dict[str, float]:
@@ -124,6 +151,8 @@ def compute_edge_grades(G) -> None:
         length = float(data.get("length") or 0.0)
         if length <= 0:
             grade = 0.0
+        elif data.get("level_structure"):
+            grade = 0.0  # bridge or tunnel: the bare-earth DEM doesn't see the deck
         else:
             rise = G.nodes[v]["elevation"] - G.nodes[u]["elevation"]
             grade = max(-clamp, min(clamp, rise / length * 100.0))
@@ -131,8 +160,9 @@ def compute_edge_grades(G) -> None:
         data["grade_abs"] = round(abs(grade), 2)
 
 
-def add_elevation(G, cache_path: Path = config.ELEVATION_CACHE_PATH, provider: Optional[str] = None):
+def add_elevation(G, cache_path: Optional[Path] = None, provider: Optional[str] = None):
     """Attach ``elevation`` to nodes and ``grade``/``grade_abs`` to edges (in place)."""
+    cache_path = cache_path or cache_path_for(provider)
     cache = _load_cache(cache_path)
     todo = [n for n in G.nodes if str(n) not in cache]
     if todo:
@@ -141,8 +171,7 @@ def add_elevation(G, cache_path: Path = config.ELEVATION_CACHE_PATH, provider: O
         for n, elev in zip(todo, fetch_elevations(coords, provider)):
             if elev is not None:
                 cache[str(n)] = float(elev)
-        cache_path.parent.mkdir(parents=True, exist_ok=True)
-        cache_path.write_text(json.dumps(cache), encoding="utf-8")
+        write_cache(cache_path, cache)
 
     for n in G.nodes:
         G.nodes[n]["elevation"] = cache.get(str(n))
