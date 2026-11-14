@@ -88,13 +88,79 @@ class Closure(BaseModel):
         return self
 
 
+# ---------------------------------------------------------------------------
+# Destination building (same shape as the backend's GET /buildings items)
+# ---------------------------------------------------------------------------
+class _AcceptsLon(BaseModel):
+    """Backend uses `lng`; also accept `lon` so routing-style payloads work."""
+
+    @model_validator(mode="before")
+    @classmethod
+    def _lon_to_lng(cls, data):
+        if isinstance(data, dict) and "lng" not in data and "lon" in data:
+            data = {**data, "lng": data["lon"]}
+        return data
+
+
+class DestinationEntrance(_AcceptsLon):
+    name: str
+    lat: float = Field(ge=-90, le=90)
+    lng: float = Field(ge=-180, le=180)
+    step_free: bool
+    hasAutoDoorOpener: Optional[bool] = None
+    isAccessibleToAllFloors: Optional[bool] = None
+    IsKeyCardRequired: Optional[bool] = None
+    automatic_door: Optional[bool] = None
+
+    @property
+    def auto_door(self) -> Optional[bool]:
+        return self.hasAutoDoorOpener if self.hasAutoDoorOpener is not None else self.automatic_door
+
+
+class DestinationElevator(_AcceptsLon):
+    location: Optional[str] = None
+    lat: Optional[float] = Field(default=None, ge=-90, le=90)
+    lng: Optional[float] = Field(default=None, ge=-180, le=180)
+
+
+class DestinationBuilding(_AcceptsLon):
+    id: str
+    name: str
+    lat: float = Field(ge=-90, le=90)
+    lng: float = Field(ge=-180, le=180)
+    entrances: list[DestinationEntrance] = Field(default_factory=list)
+    elevator_count: Optional[int] = Field(default=None, ge=0)
+    elevators: list[DestinationElevator] = Field(default_factory=list)
+
+    @property
+    def total_elevators(self) -> int:
+        return self.elevator_count if self.elevator_count is not None else len(self.elevators)
+
+
+class Destination(BaseModel):
+    """Route to the best entrance of this building instead of a fixed `end` point."""
+
+    building: DestinationBuilding
+    needs_elevator: bool = Field(
+        default=False, description="True if the room is on a floor the user can only reach by elevator"
+    )
+    room: Optional[str] = Field(default=None, description="Echoed back; used by the indoor stage later")
+
+
 class RouteRequest(BaseModel):
     start: LatLon
-    end: LatLon
+    end: Optional[LatLon] = Field(default=None, description="Required unless `destination` is given")
+    destination: Optional[Destination] = None
     max_grade_pct: float = Field(default=config.DEFAULT_MAX_GRADE_PCT, ge=0, le=config.MAX_GRADE_PCT_LIMIT)
     avoid_steps: bool = True
     include_standard: bool = True
     closures: list[Closure] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def _needs_target(self) -> "RouteRequest":
+        if self.end is None and self.destination is None:
+            raise ValueError("give `end` or `destination`")
+        return self
 
 
 class Segment(BaseModel):
@@ -157,9 +223,48 @@ class RouteMeta(BaseModel):
     end: SnapInfo
 
 
+class EntranceOption(BaseModel):
+    name: str
+    lat: float
+    lon: float
+    step_free: bool
+    usable: bool = Field(description="Step-free, not closed, and reachable under the grade limit")
+    chosen: bool = False
+    reasons: list[str] = Field(default_factory=list, description="Why it is unusable or ranked lower")
+    route_distance_m: Optional[float] = None
+    to_working_elevator_m: Optional[float] = Field(
+        default=None, description="Straight-line estimate from this door to the nearest working elevator"
+    )
+    auto_door: Optional[bool] = None
+    key_card_required: Optional[bool] = None
+    accessible_to_all_floors: Optional[bool] = None
+
+
+class ElevatorStatus(BaseModel):
+    total: int
+    possibly_out: int = Field(description="Elevators covered by an active elevator_out closure")
+    working: int
+    located: int = Field(description="How many elevators have coordinates")
+    closure_ids: list[str] = Field(default_factory=list)
+    last_confirmed_at: Optional[datetime] = None
+
+
+class DestinationPlan(BaseModel):
+    building_id: str
+    building_name: str
+    room: Optional[str] = None
+    needs_elevator: bool
+    upper_floors_reachable: bool = Field(description="A working elevator exists (by current closures)")
+    entrance: Optional[EntranceOption] = Field(default=None, description="The entrance both routes end at")
+    entrances: list[EntranceOption] = Field(default_factory=list)
+    elevators: ElevatorStatus
+    warnings: list[str] = Field(default_factory=list, description="Plain-language notes for the user")
+
+
 class RouteResponse(BaseModel):
     accessible: RouteResult
     standard: Optional[RouteResult] = None
+    destination: Optional[DestinationPlan] = None
     meta: RouteMeta
 
 

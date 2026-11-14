@@ -35,6 +35,76 @@ Base URL (local): `http://localhost:8000`. Interactive docs: `/docs`.
 | `include_standard` | bool | `true` | Also return the shortest route that ignores stairs/grade (for the demo comparison). |
 | `closures` | `Closure[]` | `[]` | Active problems. Expired ones are ignored and counted in `meta.closures_expired`. |
 
+### Destination building (look-ahead)
+
+Instead of `end`, a request can name a destination building. The engine then picks the
+entrance that suits the indoor leg, and both routes end at that entrance. Send exactly one of
+`end` or `destination` (422 if neither).
+
+```json
+{
+  "start": { "lat": 42.38970, "lon": -72.52790 },
+  "destination": {
+    "needs_elevator": true,
+    "room": "ILC S331",
+    "building": { /* one item from the backend's GET /buildings, as-is */ }
+  },
+  "closures": [ /* items from GET /closures, as-is */ ]
+}
+```
+
+| field | notes |
+|---|---|
+| `destination.building` | Backend `/buildings` shape: `id`, `name`, `lat`, `lng`, `entrances[]` (`name`, `lat`, `lng`, `step_free`, `hasAutoDoorOpener`, `isAccessibleToAllFloors`, `IsKeyCardRequired`), `elevator_count`, `elevators[]` (`location`, optional `lat`/`lng`). `lon` is accepted for `lng`. |
+| `destination.needs_elevator` | `true` if the room is on a floor only reachable by elevator. The frontend decides this until the indoor stage exists. |
+| `destination.room` | Optional, echoed back. |
+
+How the entrance is chosen:
+1. **Unusable** entrances: not `step_free`, within the radius of an active non-elevator closure,
+   or no step-free route under the grade limit.
+2. **Elevator status**: an active `elevator_out` closure counts against an elevator within
+   `radius_m + 10 m` of its coordinates. If the elevators have no coordinates, a closure within
+   60 m of the building center marks **all** of them as possibly out (conservative, same policy as
+   "may be unavailable" notices).
+3. **Ranking** among usable entrances: no key card first, then (if `needs_elevator`) entrances
+   not marked `isAccessibleToAllFloors: false`, then lowest outdoor route cost plus the
+   straight-line distance from the door to the nearest working elevator.
+
+The response gets a `destination` object (null when `end` was used):
+
+```json
+"destination": {
+  "building_id": "integrative-learning-center",
+  "building_name": "Integrative Learning Center",
+  "room": "ILC S331",
+  "needs_elevator": true,
+  "upper_floors_reachable": true,
+  "entrance": { /* the chosen EntranceOption */ },
+  "entrances": [
+    {
+      "name": "South entrance", "lat": 42.39065, "lon": -72.5257,
+      "step_free": true, "usable": true, "chosen": true, "reasons": [],
+      "route_distance_m": 440.4, "to_working_elevator_m": 31.7,
+      "auto_door": false, "key_card_required": false, "accessible_to_all_floors": true
+    }
+  ],
+  "elevators": {
+    "total": 2, "possibly_out": 1, "working": 1, "located": 2,
+    "closure_ids": ["sin-1751-ilc-e188"], "last_confirmed_at": "2026-11-13T22:00:00-05:00"
+  },
+  "warnings": ["1 of 2 elevator(s) at Integrative Learning Center may be out of service."]
+}
+```
+
+* Show `warnings` before the user starts walking. They are plain-language strings.
+* `upper_floors_reachable: false` means no working elevator. The outdoor route is still given
+  (the entrance level is reachable), with a warning.
+* No usable entrance: `accessible.found` is false and `entrances[].reasons` explain why. The
+  standard route goes to the nearest entrance.
+* No entrance data: both routes go to the building center, with a warning.
+* `elevators.last_confirmed_at` drives "last confirmed X ago" for elevator problems, which
+  don't block outdoor edges and so don't appear in `accessible.last_confirmed_at`.
+
 ### Closure
 
 ```json

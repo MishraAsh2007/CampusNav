@@ -60,6 +60,18 @@ def main() -> None:
         _print_route("STANDARD (shortest)", resp.standard)
     _print_route("ACCESSIBLE", resp.accessible)
 
+    if resp.destination:
+        d = resp.destination
+        ev = d.elevators
+        print(f"\n=== DESTINATION: {d.building_name} ===")
+        print(f"  entrance: {d.entrance.name if d.entrance else 'none usable'} | elevators working "
+              f"{ev.working}/{ev.total} | upper floors reachable: {d.upper_floors_reachable}")
+        for e in d.entrances:
+            mark = "*" if e.chosen else " "
+            print(f"  {mark} {e.name}: usable={e.usable} route={e.route_distance_m} m {'; '.join(e.reasons)}")
+        for w in d.warnings:
+            print(f"  ! {w}")
+
     if resp.standard and resp.standard.found and resp.accessible.found:
         same = resp.standard.geometry == resp.accessible.geometry
         print(f"\nroutes identical: {same}")

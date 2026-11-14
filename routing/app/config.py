@@ -68,6 +68,19 @@ STEP_PENALTY_MULTIPLIER = 25.0  # used only if avoid_steps is false in accessibl
 CROSSING_PENALTY_MULTIPLIER = 1.0
 
 # --------------------------------------------------------------------------
+# Destination look-ahead (choosing which entrance to route to)
+# --------------------------------------------------------------------------
+# An elevator_out closure with no elevator coordinates to match counts for a building
+# if it lies within this distance of the building's center point.
+DEST_BUILDING_MATCH_M = _float("DEST_BUILDING_MATCH_M", 60.0)
+# Extra slack when matching an elevator_out closure to an elevator's coordinates.
+DEST_ELEVATOR_MATCH_SLACK_M = 10.0
+# Warn if an entrance is this far from the nearest walkable graph node.
+DEST_ENTRANCE_SNAP_WARN_M = 30.0
+# Weight of the straight-line door-to-elevator distance when ranking entrances.
+DEST_INDOOR_WEIGHT = 1.0
+
+# --------------------------------------------------------------------------
 # Closures
 # --------------------------------------------------------------------------
 DEFAULT_CLOSURE_RADIUS_M = _float("DEFAULT_CLOSURE_RADIUS_M", 25.0)

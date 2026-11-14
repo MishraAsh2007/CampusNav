@@ -56,9 +56,15 @@ def route(req: RouteRequest) -> RouteResponse:
         raise HTTPException(503, detail=f"graph not loaded: {app.state.graph_error}")
 
     # Reject points far outside the covered area rather than snapping across campus.
-    for label, p in (("start", req.start), ("end", req.end)):
-        lat_ok = config.BBOX["south"] - 0.002 <= p.lat <= config.BBOX["north"] + 0.002
-        lon_ok = config.BBOX["west"] - 0.002 <= p.lon <= config.BBOX["east"] + 0.002
+    points = [("start", req.start.lat, req.start.lon)]
+    if req.end is not None:
+        points.append(("end", req.end.lat, req.end.lon))
+    if req.destination is not None:
+        b = req.destination.building
+        points.append((f"destination {b.name}", b.lat, b.lng))
+    for label, lat, lon in points:
+        lat_ok = config.BBOX["south"] - 0.002 <= lat <= config.BBOX["north"] + 0.002
+        lon_ok = config.BBOX["west"] - 0.002 <= lon <= config.BBOX["east"] + 0.002
         if not (lat_ok and lon_ok):
             raise HTTPException(422, detail=f"{label} is outside the supported campus area")
 

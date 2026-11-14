@@ -45,7 +45,13 @@ and rebuild to fold it in.
 python scripts/demo_route.py                                   # ILC -> Campus Center
 python scripts/demo_route.py --closures mocks/closures.json    # ramp blocked: accessible route reroutes
 python scripts/demo_route.py --max-grade 8 --geojson out.geojson
+python scripts/demo_route.py --request mocks/sample_request_destination.json   # route to a building's best entrance
 ```
+
+Routing to a building (`destination` instead of `end`) checks elevator closures and entrance
+accessibility first, picks the entrance that suits the indoor leg, and returns plain-language
+warnings. See `docs/contracts.md`. The entrances in `mocks/sample_request_destination.json`
+are placeholders.
 
 ### Run the API
 
