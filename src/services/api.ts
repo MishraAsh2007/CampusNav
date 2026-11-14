@@ -226,6 +226,7 @@ type RemoteRoute = RouteResponse & { found?: boolean };
 interface RemotePlan {
   step_free?: RemoteRoute;
   shortest?: RemoteRoute | null;
+  origin?: { exit_id?: string | null; standard_exit_id?: string | null } | null;
   destination?: {
     entrance_id?: string | null;
     end?: { lat: number; lng: number };
@@ -277,13 +278,18 @@ export async function planRoutes(
     const target = destBuilding && destBuilding.entrances.length
       ? { destination: { building: destBuilding, needs_elevator: false } }
       : { end: { lat: end.lat, lng: end.lng } };
+    // Same for the start building: the engine picks the exit by the cost of the whole trip.
+    const startBuilding = origin.building_id ? buildings.find((x) => x.id === origin.building_id) : undefined;
+    const from = startBuilding && startBuilding.entrances.length
+      ? { origin: { building: startBuilding, needs_elevator: false } }
+      : { start: { lat: start.lat, lng: start.lng } };
     const r = await fetchJson<RemotePlan>(
       `${ROUTING_BASE}/api/route`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          start: { lat: start.lat, lng: start.lng },
+          ...from,
           ...target,
           preferences: {
             ...prefs,
@@ -307,6 +313,7 @@ export async function planRoutes(
         ...local,
         standard: r.data.shortest && validRemote(r.data.shortest, stdEnd) ? r.data.shortest : local.standard,
         endEndpointId: plan?.entrance_id ?? local.endEndpointId,
+        startEndpointId: r.data.origin?.exit_id ?? local.startEndpointId,
         engine: 'remote' as const,
         ms: Math.round(performance.now() - t0)
       };
