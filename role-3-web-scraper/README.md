@@ -14,6 +14,7 @@ Started by Atharva (Role 2) to help out. Everything is in `scraper.py`; nothing 
   - `backend` branch (newest): Reddit incidents were stored as community reports, and the facilities notice was stored as an official notice with its title and start time. A wrong admin key is rejected (403).
   - `main`: community reports go through the older `/reports` endpoint; the official list is skipped with a clear warning, because `main` has no `/official-reports` yet.
   - A failed facilities fetch leaves the backend's official list untouched.
+  - Merge safety, tested against the latest backend on `main` (in memory, no MongoDB): entries from other sources (`sin-...`, hand-entered) stayed exactly the same after every run; when a notice left the facilities page, only this scraper's entry was removed; and when the official list couldn't be read, nothing was sent.
 - Not tested: a real Gemini call. No API key was available on the machine it was written on.
 
 **Where it differs from the original spec**
@@ -96,7 +97,12 @@ A JSON array; each run appends new objects:
 | `status: "degraded"` | not sent | the backend only has `closed` |
 
 - **Configuration**: the backend URL comes from `CAMPUSNAV_API_URL` (default `http://127.0.0.1:8000`), or pass it as `--post-to-backend URL`. Official notices need `CAMPUSNAV_ADMIN_KEY` in `.env`, the same value as the backend's.
-- **The official list is replaced, not appended.** `POST /official-reports` overwrites the backend's whole official list. So the scraper sends every notice currently on the facilities page, including ones parsed on earlier runs (remembered in `.official_cache.json`). It sends nothing if the page could not be fetched, so a network failure never wipes the list.
+- **Official notices are merged, never replacing the database.** The backend's `POST /official-reports` overwrites its whole list, so the scraper never sends only its own notices. Instead it:
+  1. reads the current list with `GET /official-reports`
+  2. keeps every entry it did not create (ids not starting with `official:`) exactly as it is, including `sin-` entries from `services/scraper/sync_backend.py`
+  3. swaps in its own entries for the notices currently on the facilities page
+  4. sends the merged list
+- **It sends nothing at all** if the current list can't be read, an existing entry can't be re-sent unchanged, the merge would drop any other source's entry, or the facilities page failed to load. Only this scraper's own entries are ever added or removed.
 - **Ids are stable.** Each notice's `id` is built from the notice text, so re-sending updates notices instead of duplicating them.
 - **Each Reddit post is sent once**, because processed posts are remembered in `.seen_ids.json`.
 

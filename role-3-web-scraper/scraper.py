@@ -466,12 +466,20 @@ def append_closures(path: Path, closures: list[Closure]) -> int:
 # closures.json keeps the exact Role 3 contract. The backend's API is stricter, so this maps onto it:
 #   reddit   -> POST /community-reports {lat, lng, type, radius}   (backend sets id, times, status=closed)
 #              falls back to POST /reports on the older backend that is on main
-#   official -> POST /official-reports {"closures": [...]} with X-Admin-Key. This REPLACES the whole
-#              official list, so it is only sent after a successful facilities fetch, and it always
-#              contains every notice currently on the page (cached in .official_cache.json).
+#   official -> MERGED into the backend's official list, never replacing it:
+#                 1. GET /official-reports (the whole current list, from every scraper)
+#                 2. keep every entry this script did not create (id not starting with "official:")
+#                 3. swap in this script's own entries
+#                 4. POST /official-reports with the merged list (X-Admin-Key)
+#              If the current list cannot be read, or any existing entry would be lost, nothing is sent.
 #   degraded -> not sent: the backend only has "closed", and the router would treat it as impassable.
 
 OFFICIAL_CACHE = HERE / ".official_cache.json"
+# Entries this script owns in the backend's official list. Everything else belongs to someone else
+# (e.g. services/scraper/sync_backend.py uses "sin-") and is always kept exactly as it is.
+OWN_PREFIX = "official:"
+# Fields the backend's OfficialNotice accepts (it rejects unknown fields)
+NOTICE_FIELDS = ("id", "title", "details", "lat", "lng", "radius", "type", "start_time")
 
 
 def _post(url: str, body, headers: dict | None = None) -> requests.Response | None:
@@ -520,15 +528,68 @@ def official_entries(item: RawItem, parsed: list[Parsed]) -> list[dict]:
     return entries
 
 
+def _as_notice(saved: dict) -> dict | None:
+    """Turn a GET /official-reports item back into the POST shape, unchanged. None if it can't be."""
+    d = {k: saved[k] for k in NOTICE_FIELDS if saved.get(k) is not None}
+    if ("lat" not in d or "lng" not in d) and isinstance(saved.get("location"), dict):
+        d["lat"], d["lng"] = saved["location"].get("lat"), saved["location"].get("lng")
+    if not d.get("id") or not d.get("title") or d.get("lat") is None or d.get("lng") is None or not d.get("type"):
+        return None
+    return d
+
+
+def merge_official(current: list, ours: list[dict]) -> list[dict] | None:
+    """Everyone else's entries untouched, plus ours. None (= do not send) if anything would be lost."""
+    others = [c for c in current if not str(c.get("id", "")).startswith(OWN_PREFIX)]
+    kept = []
+    for c in others:
+        n = _as_notice(c)
+        if n is None:
+            log.warning("Backend: cannot safely re-send official entry %r; not posting anything", c.get("id"))
+            return None
+        kept.append(n)
+    merged = kept + [e for e in ours if str(e["id"]).startswith(OWN_PREFIX)]
+    # Final safety check: every entry we do not own must still be in what we send
+    sent_ids = {e["id"] for e in merged}
+    if any(str(c.get("id")) not in sent_ids for c in others):
+        log.error("Backend: merge would drop another source's entry; not posting anything")
+        return None
+    return merged
+
+
 def post_official(base: str, admin_key: str, entries: list[dict]) -> bool:
-    resp = _post(f"{base}/official-reports", {"closures": entries}, headers={"X-Admin-Key": admin_key})
-    if resp is not None and resp.status_code == 200:
+    """Merge this script's notices into the backend's official list. Never replaces other entries."""
+    try:
+        resp = requests.get(f"{base}/official-reports", headers={"User-Agent": USER_AGENT}, timeout=15)
+    except requests.RequestException as exc:
+        log.warning("Backend: could not read the current official list (%s); not posting anything", exc)
+        return False
+    if resp.status_code != 200:
+        hint = " (this backend has no /official-reports)" if resp.status_code == 404 else ""
+        log.warning("Backend: could not read the current official list: %s%s; not posting anything", _describe(resp), hint)
+        return False
+    try:
+        current = resp.json()
+    except ValueError:
+        current = None
+    if not isinstance(current, list):
+        log.warning("Backend: official list is not a JSON array; not posting anything")
+        return False
+
+    merged = merge_official(current, entries)
+    if merged is None:
+        return False
+    if {e["id"]: e for e in merged} == {e["id"]: e for e in (_as_notice(c) or {} for c in current) if e}:
+        log.info("Backend: official list already up to date; nothing to send")
         return True
-    hint = ""
-    if resp is not None and resp.status_code == 404:
-        hint = " (this backend has no /official-reports yet; it is on the 'backend' branch)"
-    elif resp is not None and resp.status_code in (403, 503):
-        hint = " (check CAMPUSNAV_ADMIN_KEY matches the backend's)"
+
+    resp = _post(f"{base}/official-reports", {"closures": merged}, headers={"X-Admin-Key": admin_key})
+    if resp is not None and resp.status_code == 200:
+        log.info("Backend: official list now %d entries (%d from other sources kept, %d from this scraper)",
+                 len(merged), len(merged) - sum(1 for e in merged if e["id"].startswith(OWN_PREFIX)),
+                 sum(1 for e in merged if e["id"].startswith(OWN_PREFIX)))
+        return True
+    hint = " (check CAMPUSNAV_ADMIN_KEY matches the backend's)" if resp is not None and resp.status_code in (403, 503) else ""
     log.warning("Backend rejected official list: %s%s", _describe(resp), hint)
     return False
 
@@ -608,8 +669,8 @@ def run_once(args) -> int:
             admin_key = os.environ.get("CAMPUSNAV_ADMIN_KEY", "")
             if not admin_key:
                 log.warning("Backend: CAMPUSNAV_ADMIN_KEY not set; skipping the official list")
-            elif post_official(base, admin_key, entries):
-                log.info("Backend: replaced official list with %d notice(s)", len(entries))
+            else:
+                post_official(base, admin_key, entries)
             if not args.sample:
                 _write_json_atomic(OFFICIAL_CACHE, {uid: official_cache[uid] for uid in on_page if uid in official_cache})
         else:
