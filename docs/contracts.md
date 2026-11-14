@@ -233,6 +233,34 @@ Consecutive edges with the same kind/name and no turn over 30 degrees are merged
 * `instruction` is template text, instant and deterministic. Role 3 can pass it to Gemini to rephrase; cache by
   `edge_ids`, and fall back to this string after ~2 s.
 
+## `POST /api/route` (map UI contract)
+
+Same pathfinding as `/route`, in the request and response shapes the map UI
+(`role-2-map-ui`, `src/services/api.ts` and `contracts/route.contract.json`) already uses.
+
+Request: `{start: {lat, lng}, end: {lat, lng}, preferences: UserPreferences, closures: Closure[]}`
+(the frontend's own types, sent as-is).
+
+Response: `{step_free: RouteResponse, shortest: RouteResponse, meta}`. Each `RouteResponse` is a
+GeoJSON FeatureCollection: one LineString feature per segment (`grade`, `is_step`, `is_ramp`,
+`is_elevator`, `step_count`, `segment_name`), plus `summary`, `steps` (with `icon` and `at`),
+`profile` (cumulative distance and elevation), and `avoided` (closures routed around). An extra
+`found` field is `false` when there's no route, with the reason in `summary.warnings`.
+
+| frontend input | engine behavior |
+|---|---|
+| `preferences.max_grade_pct` | max grade, clamped to 0–30 |
+| `preferences.no_stairs` or `wheelchair_required` | stairs blocked |
+| other preferences | not used yet; listed in `meta.ignored_preferences` |
+| closure `status: "repaired"` | dropped |
+| closure `status: "closed"` or `"degraded"` | blocks (block-by-default policy) |
+| closure `type: "automatic_door"` | dropped (affects entrances, not walkways) |
+| closure `affects: "road"` | dropped (vehicles only) |
+| closure `radius` | clamped to 500 m |
+| unreadable closure | skipped, listed in `meta.skipped_closures`; never fails the request |
+
+Start or end outside the campus area returns 422.
+
 ### Errors
 
 | status | when |

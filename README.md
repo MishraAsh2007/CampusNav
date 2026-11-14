@@ -61,6 +61,20 @@ uvicorn app.main:app --reload --port 8000
 
 `GET /health`, `POST /route` (see `docs/contracts.md`), Swagger UI at `/docs`.
 
+**With the map UI:** the backend also defaults to port 8000, so run routing on 8001 and point the
+frontend at it. The frontend calls `POST /api/route`, which this engine serves.
+
+```powershell
+uvicorn app.main:app --port 8001                       # in routing/
+# frontend .env (role-2-map-ui):
+#   VITE_ROUTING_API_URL=http://localhost:8001
+#   VITE_ROUTING_ENGINE=remote    # call this engine even when the backend (port 8000) is down
+```
+
+In the default `auto` mode the frontend only calls this engine while the backend is reachable.
+In both modes, if a response is missing or unusable (including "no route found"), it falls back to
+its in-browser router.
+
 ```powershell
 curl.exe -X POST localhost:8000/route -H "Content-Type: application/json" -d "@mocks/sample_request.json"
 ```

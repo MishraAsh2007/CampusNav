@@ -10,6 +10,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from . import config
+from .frontend_api import router as frontend_router
 from .graph.load import load_graph
 from .routing.pathfinding import plan_routes
 from .schemas import HealthResponse, RouteRequest, RouteResponse
@@ -35,6 +36,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(frontend_router)  # POST /api/route for the map UI
 
 
 @app.get("/health", response_model=HealthResponse)
