@@ -40,7 +40,24 @@
           "nearest_elevator": "ilc-elevator-east",
           "source": "On-site check by the team, 2026-11-14: the door on North Pleasant St (you face west on entering, photo taken) opens straight onto floor 2, with an elevator immediately to the right. The ArcGIS east elevator is 2 m from this door."
         },
-        "_pending": "A second door also opens straight onto floor 2 (you face southeast on entering). Not yet matched to an entrance: by facing direction it would be ilc-nw, but ilc-nw's ground is ~7 m lower than ilc-se and the frontend marks it as stepped; ilc-ne (same ground height as ilc-se) is the likelier match. Confirm before recording.",
+        "ilc-sw": {
+          "floor": "2",
+          "verified": true,
+          "lat": 42.390829,
+          "lng": -72.526256,
+          "step_free_approach": true,
+          "source": "On-site check by the team, 2026-11-14 (photo): glass door onto the paved plaza between the ILC and Du Bois (the Du Bois tower is reflected behind the photographer). No stairs; opens onto floor 2."
+        },
+        "ilc-nw": {
+          "floor": "2",
+          "verified": true,
+          "lat": 42.391339,
+          "lng": -72.526436,
+          "step_free_approach": false,
+          "approach": "footbridge from the Campus Center / Hotel UMass side",
+          "source": "On-site check by the team, 2026-11-14 (photo): you face southeast on entering; reached by a footbridge from the Campus Center / Hotel UMass, spanning ground ~7 m below. The door is level with floor 2, but a wheelchair user can only reach the bridge through Hotel UMass, so it is not a practical step-free entrance from outdoors."
+        },
+        "_unverified": "ilc-ne (push-button, same ground height as ilc-se) was not among the doors checked; its floor is unknown. The routing-scraper map's floor-1 entrances (south, west) are also unchecked.",
         "_note": "The routing-scraper map puts its two ILC entrances (south, west) on floor 1; this list overrides by location."
       }
     }
