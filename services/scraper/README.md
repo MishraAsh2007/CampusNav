@@ -45,3 +45,25 @@ centroid if the GIS data has no elevator there. Extra fields (`source`, `notice_
 
 The contract has no start time, so only closures active at `--at` are written. Upcoming
 notices are in `sin_notices.json`.
+
+## Send to the backend (merge, don't overwrite)
+
+```powershell
+$env:CAMPUSNAV_API_URL = "http://127.0.0.1:8000"
+$env:CAMPUSNAV_ADMIN_KEY = "<same key as the backend>"
+python sync_backend.py --dry-run   # show what would change
+python sync_backend.py             # merge into POST /official-reports
+```
+
+`POST /official-reports` replaces the whole official list, and other scrapers write to it too.
+`sync_backend.py` reads the current list, keeps every entry whose `id` doesn't start with `sin-`,
+replaces its own `sin-` entries with every notice in the CSV that hasn't ended yet, and posts the
+merged list. Future notices are sent with their `start_time`; the backend only shows them in
+`/closures` once they start. If the current list can't be read, nothing is posted.
+
+Known limits:
+- Every other writer must also merge (keep entries it doesn't own), or it will erase the `sin-`
+  entries on its next run.
+- The backend sets `last_confirmed` to the post time on every entry, so reposting another
+  source's entries refreshes their "last confirmed" time.
+- A writer posting between this script's read and write loses its update until its next run.
