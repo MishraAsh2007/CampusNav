@@ -1,5 +1,16 @@
 # CampusNav: routing, maps and live disruption sources
 
+Expanded indoor pilots: [Oak, Campus Center and Student Union](docs/EXPANDED_INDOOR_PILOTS.md).
+Run `start-indoor-pilots.cmd` for their source-based wayfinding API on port 8004.
+
+For the new Honors College shared-hall pilot, run `start-oak-pilot.cmd` and read
+[Oak elevator wayfinding](docs/OAK_HONORS_PILOT.md). This is a private, opt-in drawing-based
+backend pilot with explicit outage handling; it does not claim verified physical access.
+
+The expanded residence outdoor configuration is available through `start-residences.cmd`.
+Read [all-residence route verification](docs/ALL_RESIDENCE_ROUTES.md) for its 51-building
+catalog, sourced-door versus outdoor-meeting-point distinctions, and remaining indoor gaps.
+
 CampusNav is a UMass Amherst walking-route planner. It combines a saved walking graph,
 stairs/slope preferences, mapped building entrances and reported disruptions to calculate
 routes. This branch packages the current Role 1 routing and Role 3 ingestion work alongside
@@ -7,7 +18,8 @@ the existing map UI. The Role 4 data service remains in `backend/`.
 
 **Indoor coverage is a pilot.** ILC and Du Bois have computable indoor graphs with
 approximate connections that still need physical verification. Dorm drawings are acquired
-through authenticated SharePoint, but dorm routing is not enabled. Do not interpret a
+through authenticated SharePoint; Oak has a separate drawing-based wayfinding pilot with
+documented gaps. Do not interpret a
 successful route calculation or a map's `reviewed` status as facilities certification.
 
 ## Run the integrated local map
@@ -58,6 +70,11 @@ The integrated map currently calls the outdoor `/plan` flow. Indoor `/journey` a
 
 **The scraper implementation is `campus_notices/`; runnable workers are in `scripts/`.**
 
+Run **`.\scrape-all.cmd --rules-only`** to collect all source families together.
+It creates `data/collected_data.json`, a per-source `data/scrape_status.json`, and
+an ignored private bundle. Use `--offline` to combine existing data without fetching.
+See the [unified scraper guide](docs/UNIFIED_SCRAPER.md) for source coverage and fallback behavior.
+
 | Source/work | Implementation | Run from the repository root |
 | --- | --- | --- |
 | Official UMass service interruptions | `campus_notices/sharepoint.py`, `sources.py`, `pipeline.py` | `.\refresh-notices.cmd --rules-only` |
@@ -79,11 +96,10 @@ Complete UMass sign-in/MFA yourself in the helper's browser and follow the termi
 The helper stores a local session under ignored `data/private/`. Each teammate/operator
 must use their own authorized session; do not distribute session files or passwords.
 
-Run workers hourly in separate terminals:
+Run the unified collector hourly in one terminal:
 
 ```powershell
-.\refresh-notices.cmd --rules-only --watch
-.\refresh-reports.cmd --rules-only --watch
+.\scrape-all.cmd --rules-only --watch
 ```
 
 The normal official source is the authenticated scraper. A previously downloaded spreadsheet

@@ -42,7 +42,31 @@ def extract_pages(path, render_dir):
             image_path.parent.mkdir(parents=True, exist_ok=True)
             page.get_pixmap(matrix=pymupdf.Matrix(1.5, 1.5), alpha=False).save(image_path)
             candidates = []
+            circulation, dimensions = [], []
             for x0, y0, x1, y1, word, *_ in page.get_text("words"):
+                if word.upper().strip(".:()") in {
+                    "UP",
+                    "DN",
+                    "STAIR",
+                    "STAIRS",
+                    "ELEVATOR",
+                    "LIFT",
+                }:
+                    circulation.append(
+                        dict(
+                            label=word,
+                            bounds=[x0, y0, x1, y1],
+                            review_status="symbol_context_required",
+                        )
+                    )
+                if re.search(r"\d+[′'\"]", word):
+                    dimensions.append(
+                        dict(
+                            label=word,
+                            bounds=[x0, y0, x1, y1],
+                            review_status="dimension_endpoints_required",
+                        )
+                    )
                 # Unlike the older block extraction, two labels in a block keep
                 # distinct positions. The reviewer still excludes legends/title blocks.
                 if re.fullmatch(r"(?:-\d{2}[A-Z]?|\d{3,4}[A-Z]?)", word.upper()):
@@ -65,6 +89,8 @@ def extract_pages(path, render_dir):
                     rendered_path=str(image_path),
                     render_scale=1.5,
                     room_label_candidates=candidates,
+                    circulation_labels=circulation,
+                    dimension_candidates=dimensions,
                     explicit_elevator_text=bool(re.search(r"\b(?:ELEVATOR|LIFT)\b", text, re.I)),
                     marked_not_to_scale=bool(re.search(r"not\s+to\s+scale", text, re.I)),
                 )

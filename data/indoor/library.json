@@ -1607,7 +1607,7 @@
   "assets": [
     {
       "id": "library-elevator-main",
-      "label": "Library Main Elevator",
+      "label": "Library elevator group (individual cars not mapped)",
       "kind": "elevator",
       "position": {
         "lat": 42.389838,

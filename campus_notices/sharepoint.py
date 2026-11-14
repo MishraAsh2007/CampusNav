@@ -139,8 +139,9 @@ def read_session(path: Path, now: datetime):
 class BrowserSessionTransport(httpx.BaseTransport):
     """Adapter for Playwright's own request context; no manual cookie copying."""
 
-    def __init__(self, request_context, *, prefix, diagnostics=None):
+    def __init__(self, request_context=None, *, prefix, diagnostics=None, context_factory=None):
         self.request_context = request_context
+        self.context_factory = context_factory
         self.prefix = prefix
         self.diagnostics = diagnostics if diagnostics is not None else []
 
@@ -149,38 +150,44 @@ class BrowserSessionTransport(httpx.BaseTransport):
         _safe_endpoint(url, self.prefix)
         if request.method != "GET":
             raise SourceError("The notice scraper only permits read-only GET requests")
+        context = self.context_factory() if self.context_factory else self.request_context
         try:
-            result = self.request_context.get(
-                url,
-                headers={"Accept": request.headers.get("accept", "application/json;odata=verbose")},
-                max_redirects=0,
-                timeout=30000,
-                fail_on_status_code=False,
-            )
-        except Exception as exc:
-            self.diagnostics.append(
-                {"stage": urlparse(url).path.rsplit("/", 1)[-1], "error_type": type(exc).__name__}
-            )
-            raise SourceError(
-                f"The SharePoint request could not complete ({type(exc).__name__}). "
-                "Check the connection; this does not establish a sign-in failure."
-            ) from None
-        try:
-            self.diagnostics.append(
-                {
-                    "stage": urlparse(url).path.rsplit("/", 1)[-1],
-                    "http_status": result.status,
-                }
-            )
-            body = result.body()
-            if len(body) > MAX_BYTES:
-                raise SourceError("SharePoint response exceeds 15 MB")
-            # Playwright's body is already decompressed. Copy only headers used by
-            # the scraper, never Set-Cookie or other authentication response headers.
-            headers = {"Content-Type": result.headers.get("content-type", "")}
-            return httpx.Response(result.status, content=body, headers=headers, request=request)
+            try:
+                result = context.get(
+                    url,
+                    headers={
+                        "Accept": request.headers.get("accept", "application/json;odata=verbose")
+                    },
+                    max_redirects=0,
+                    timeout=30000,
+                    fail_on_status_code=False,
+                )
+            except Exception as exc:
+                self.diagnostics.append(
+                    {
+                        "stage": urlparse(url).path.rsplit("/", 1)[-1],
+                        "error_type": type(exc).__name__,
+                    }
+                )
+                raise SourceError(
+                    f"The SharePoint request could not complete ({type(exc).__name__}). "
+                    "Check the connection; this does not establish a sign-in failure."
+                ) from None
+            try:
+                self.diagnostics.append(
+                    {"stage": urlparse(url).path.rsplit("/", 1)[-1], "http_status": result.status}
+                )
+                body = result.body()
+                if len(body) > MAX_BYTES:
+                    raise SourceError("SharePoint response exceeds 15 MB")
+                # Never copy Set-Cookie or other authentication response headers.
+                headers = {"Content-Type": result.headers.get("content-type", "")}
+                return httpx.Response(result.status, content=body, headers=headers, request=request)
+            finally:
+                result.dispose()
         finally:
-            result.dispose()
+            if self.context_factory:
+                context.dispose()
 
 
 def _safe_endpoint(url, prefix):
@@ -375,17 +382,18 @@ def fetch_live(spec, *, base, now, client=None):
     except ImportError:
         raise SourceError('Install scraper support with pip install -e ".[scraper]".') from None
     with sync_playwright() as playwright:
-        request_context = playwright.request.new_context(storage_state=state, user_agent=user_agent)
-        try:
-            with httpx.Client(
-                transport=BrowserSessionTransport(
-                    request_context,
-                    prefix=endpoints(spec)[1],
-                )
-            ) as session:
-                return scrape(spec, now=now, client=session)
-        finally:
-            request_context.dispose()
+        # This tenant can reject later pages after mutating a reused request
+        # context. Start each read with the same saved session, as the plan
+        # importer does; every page still passes endpoint and pagination checks.
+        with httpx.Client(
+            transport=BrowserSessionTransport(
+                prefix=endpoints(spec)[1],
+                context_factory=lambda: playwright.request.new_context(
+                    storage_state=state, user_agent=user_agent
+                ),
+            )
+        ) as session:
+            return scrape(spec, now=now, client=session)
 
 
 def load_sharepoint(spec, *, base: Path, now: datetime, client=None) -> SourceBatch:

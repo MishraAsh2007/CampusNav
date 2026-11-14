@@ -168,6 +168,26 @@ def test_browser_request_preserves_context_and_disables_redirects():
     assert requests.responses[0].disposed
 
 
+def test_scraper_can_use_fresh_saved_context_for_every_page_and_disposes_them():
+    contexts = []
+
+    def factory():
+        context = FakeRequests()
+        contexts.append(context)
+        return context
+
+    with httpx.Client(
+        transport=BrowserSessionTransport(prefix=PREFIX, context_factory=factory)
+    ) as client:
+        assert client.get(PREFIX + "/fields").status_code == 200
+        assert client.get(PREFIX + "/items").status_code == 200
+        with pytest.raises(SourceError):
+            client.get("https://other.sharepoint.com/fields")
+    assert len(contexts) == 2
+    assert all(len(c.calls) == 1 and c.disposed for c in contexts)
+    assert all(c.responses[0].disposed for c in contexts)
+
+
 @pytest.mark.parametrize(
     "method,url", [("POST", PREFIX + "/items"), ("GET", "https://other.sharepoint.com/fields")]
 )

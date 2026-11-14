@@ -99,12 +99,18 @@ def covered(p):
     return WEST <= p.x <= EAST and SOUTH <= p.y <= NORTH
 
 
-def normalize(data, osm, now):
+def normalize(data, osm, now, *, building_specs=None, bbox=None):
+    specs = BUILDINGS if building_specs is None else building_specs
+    west, south, east, north = bbox or (WEST, SOUTH, EAST, NORTH)
+
+    def in_area(p):
+        return west <= p.x <= east and south <= p.y <= north
+
     footprints, records = {}, {}
     for row in data["buildings"]:
         key = str(row["attributes"]["BuildingID"])
         group = EXTRA_PARTS.get(key, key)
-        if group not in BUILDINGS:
+        if group not in specs:
             continue
         poly = unary_union([Polygon(r).buffer(0) for r in row["geometry"]["rings"]])
         footprints[group] = unary_union([footprints.get(group, poly), poly])
@@ -112,7 +118,7 @@ def normalize(data, osm, now):
             records[group] = row["attributes"]
     metric = {key: transform(p, PROJECT, interleaved=False) for key, p in footprints.items()}
     buildings, assets = [], []
-    for key, (ident, name, code, category, aliases) in BUILDINGS.items():
+    for key, (ident, name, code, category, aliases) in specs.items():
         if key not in records:
             raise ValueError(f"Source building missing: {name}")
         poly, attrs = footprints[key], records[key]
@@ -163,7 +169,7 @@ def normalize(data, osm, now):
                         "Source says not all floors are accessible; "
                         "step-free access to this door is unverified."
                     ),
-                    "in_routing_area": covered(p),
+                    "in_routing_area": in_area(p),
                 }
             )
         for row in osm.get("elements", []):
@@ -212,7 +218,7 @@ def normalize(data, osm, now):
                         "Entrance position from OpenStreetMap; "
                         "door access and operation have not been field verified."
                     ),
-                    "in_routing_area": covered(p),
+                    "in_routing_area": in_area(p),
                 }
             )
         for row in data["elevators"]:
@@ -280,7 +286,7 @@ def normalize(data, osm, now):
                 "access_level": attrs.get("AccessLevel"),
                 "source_url": MAP_URL,
                 "source_as_of": "August 2022",
-                "in_routing_area": covered(center),
+                "in_routing_area": in_area(center),
                 "notes": (
                     "UMass accessibility map with supplemental OSM entrance positions. "
                     "Routing covers outdoor paths; indoor elevator travel is not modeled."
@@ -298,14 +304,21 @@ def normalize(data, osm, now):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--osm-cache", type=Path)
+    parser.add_argument("--gis-cache", type=Path, help="Reuse this run's public GIS collection")
+    parser.add_argument("--allow-no-osm", action="store_true")
     args = parser.parse_args()
     osm_path = args.osm_cache or next((ROOT / ".cache/osm").glob("*.json"), None)
-    if not osm_path:
+    if not osm_path and not args.allow_no_osm:
         parser.error("Build the campus graph first to populate the OSM cache")
-    with httpx.Client(timeout=40, follow_redirects=False) as client:
-        data = {key: fetch_layer(client, *spec) for key, spec in SOURCES.items()}
+    if args.gis_cache:
+        data = json.loads(args.gis_cache.read_text(encoding="utf-8"))
+    else:
+        with httpx.Client(timeout=40, follow_redirects=False) as client:
+            data = {key: fetch_layer(client, *spec) for key, spec in SOURCES.items()}
     catalog, assets = normalize(
-        data, json.loads(osm_path.read_text(encoding="utf-8")), datetime.now(UTC)
+        data,
+        json.loads(osm_path.read_text(encoding="utf-8")) if osm_path else {"elements": []},
+        datetime.now(UTC),
     )
     atomic_json(ROOT / "data/buildings.json", catalog)
     # Keep manually reviewed assets. Only update this importer's own IDs.

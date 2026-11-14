@@ -3,6 +3,7 @@
 from pathlib import Path
 
 from campus_notices.cache import atomic_json
+from campus_routing.buildings import TripRequest
 from campus_routing.indoor import IndoorMap, IndoorRouteRequest
 from campus_routing.journey import JourneyRequest
 from campus_routing.models import Closure, RouteRequest
@@ -22,6 +23,7 @@ def main():
         ("resolve-location-request", ResolveRequest),
         ("closure", Closure),
         ("route-request", RouteRequest),
+        ("plan-request", TripRequest),
     ):
         path = ROOT / "contracts" / (name + ".schema.json")
         atomic_json(path, model.model_json_schema())

@@ -24,6 +24,7 @@ from .journey import JourneyRequest, plan_journey
 from .models import Closure, RouteRequest, RouteResponse
 from .navigation import ArrivalRequest, NavigationRequest, NavigationService
 from .places import PILOT_BUILDINGS, PlaceResolver, ResolveRequest
+from .plan_wayfinding import PlanWayfindingMap, PlanWayfindingRequest, plan_directions
 
 ROOT = Path(__file__).resolve().parents[1]
 logger = logging.getLogger(__name__)
@@ -38,6 +39,7 @@ def create_app(
     community_path: Path | None = None,
     indoor_dir: Path | None = None,
     indoor_sources_path: Path | None = None,
+    plan_wayfinding_dir: Path | None = None,
 ) -> FastAPI:
     path = graph_path or Path(os.getenv("ROUTING_GRAPH", ROOT / "data" / "umass.graph.json"))
     official = official_path or Path(
@@ -49,10 +51,29 @@ def create_app(
             ROOT / "data/private/external_reports.json",
         )
     )
-    building_file = buildings_path or ROOT / "data/buildings.json"
+    building_file = buildings_path or Path(
+        os.getenv("BUILDINGS_PATH", ROOT / "data/buildings.json")
+    )
     community = ReportStore(community_path or ROOT / "data/private/community_reports.json")
     indoor_maps = indoor_dir or Path(os.getenv("INDOOR_MAPS_DIR", ROOT / "data/indoor"))
     indoor_sources = indoor_sources_path or ROOT / "data/indoor_sources.json"
+    plan_dir = plan_wayfinding_dir or os.getenv("PLAN_WAYFINDING_DIR")
+
+    def source_plan(building_id):
+        if not re.fullmatch(r"[a-z0-9][a-z0-9_-]{0,79}", building_id):
+            raise HTTPException(422, detail="Invalid building ID")
+        if not plan_dir:
+            raise HTTPException(503, detail="Drawing wayfinding is not configured for this server.")
+        try:
+            return PlanWayfindingMap.model_validate_json(
+                (Path(plan_dir) / (building_id + ".json")).read_text(encoding="utf-8")
+            )
+        except FileNotFoundError as error:
+            raise HTTPException(
+                404, detail="No drawing wayfinding pilot for this building."
+            ) from error
+        except (OSError, ValueError) as error:
+            raise HTTPException(503, detail="Drawing wayfinding map failed validation.") from error
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
@@ -415,6 +436,44 @@ def create_app(
             raise HTTPException(
                 503, detail={"message": "Run refresh-indoor.cmd to fetch floor directories."}
             ) from exc
+
+    @app.get("/plan-wayfinding", tags=["Drawing wayfinding pilot"])
+    def wayfinding_catalog():
+        if not plan_dir:
+            return dict(buildings=[], status="not_configured")
+        buildings = []
+        for path in sorted(Path(plan_dir).glob("*.json")):
+            try:
+                data = PlanWayfindingMap.model_validate_json(path.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                continue
+            if data.building_id != path.stem:
+                continue
+            buildings.append(
+                dict(
+                    building_id=data.building_id,
+                    floors=sorted({n.floor_id or data.floor_id for n in data.nodes}),
+                    coordinate_system=data.coordinate_system,
+                    landmark_count=len(data.nodes),
+                    resident_access_required=data.resident_access_required,
+                    physical_verification=False,
+                    source_warnings=data.source_warnings,
+                )
+            )
+        return dict(buildings=buildings, status="drawing_wayfinding_only")
+
+    @app.get("/plan-wayfinding/{building_id}", tags=["Drawing wayfinding pilot"])
+    def get_plan_wayfinding(building_id: str):
+        return source_plan(building_id)
+
+    @app.post("/plan-wayfinding/{building_id}", tags=["Drawing wayfinding pilot"])
+    def drawing_directions(building_id: str, request: PlanWayfindingRequest):
+        try:
+            return plan_directions(source_plan(building_id), request)
+        except RoutingError as error:
+            raise HTTPException(
+                error.status, detail=dict(code=error.code, message=error.message)
+            ) from error
 
     @app.get("/indoor/status", tags=["Indoor navigation"])
     def indoor_status():

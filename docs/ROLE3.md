@@ -1,5 +1,10 @@
 # Official notices pipeline
 
+Run `.\scrape-all.cmd --rules-only` for the unified workflow across all current
+source families. See [the unified scraper guide](UNIFIED_SCRAPER.md) for combined
+outputs, authentication, source status and the one-terminal refresh loop. The
+individual notice and indoor commands below remain available for focused work.
+
 This implements Role 3's ingestion, parsing, and caching. The parser uses a finite set of
 regex-recognized phrases and explicit service states. It abstains on ambiguity and can ask
 Gemini for a structured extraction. Routing and cached-data endpoints never wait for Gemini.

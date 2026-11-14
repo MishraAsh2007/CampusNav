@@ -21,6 +21,7 @@ class TripRequest(ContractModel):
     max_grade: float = Field(default=5, ge=0, le=100)
     no_stairs: bool = True
     need_automatic_door: bool = False
+    allow_keycard_entrance_approach: bool = False
     closures: list[Closure] = Field(default_factory=list, max_length=500)
 
 
@@ -31,7 +32,7 @@ def read_buildings(path: Path):
     return payload
 
 
-def choices(place, catalog, *, step_free, automatic):
+def choices(place, catalog, *, step_free, automatic, allow_keycard_approach=False):
     if not place.building_id:
         return [{"id": None, "name": place.name, "lat": place.lat, "lng": place.lng}]
     building = next((b for b in catalog["buildings"] if b["id"] == place.building_id), None)
@@ -51,7 +52,7 @@ def choices(place, catalog, *, step_free, automatic):
     usable = [
         e
         for e in entrances
-        if not e.get("keycard_required")
+        if (allow_keycard_approach or not e.get("keycard_required"))
         and e.get("in_routing_area", True)
         and (not step_free or e["step_free"] is not False)
         and (not automatic or e["door_type"] in ("automatic", "push-button"))
@@ -71,6 +72,12 @@ def plan_trip(engine, catalog, request, *, now=None):
         "Indoor floors and elevator connections are not mapped.",
         "UMass entrance records are labeled August 2022; current door access may differ.",
     ]
+    if request.allow_keycard_entrance_approach:
+        notes.append(
+            "Keycard entrance approaches are allowed for this outdoor trip. "
+            "The route ends outside; resident access and permission to enter "
+            "have not been established."
+        )
 
     def best(step_free):
         starts = choices(
@@ -78,12 +85,14 @@ def plan_trip(engine, catalog, request, *, now=None):
             catalog,
             step_free=step_free and request.no_stairs,
             automatic=step_free and request.need_automatic_door,
+            allow_keycard_approach=request.allow_keycard_entrance_approach,
         )
         ends = choices(
             request.destination,
             catalog,
             step_free=step_free and request.no_stairs,
             automatic=step_free and request.need_automatic_door,
+            allow_keycard_approach=request.allow_keycard_entrance_approach,
         )
         a = [Coordinate(lat=p["lat"], lng=p["lng"]) for p in starts]
         b = [Coordinate(lat=p["lat"], lng=p["lng"]) for p in ends]
@@ -125,6 +134,12 @@ def plan_trip(engine, catalog, request, *, now=None):
         standard = None
     if accessible:
         for label, entrance in zip(("Start", "Destination"), accessible[1:], strict=True):
+            if entrance.get("approach_only"):
+                notes.append(
+                    f"{label}: outdoor meeting point only; the building entrance "
+                    "and final door connection are not mapped."
+                )
+                continue
             if entrance.get("step_free") is None and entrance["id"]:
                 notes.append(
                     f"{label}: {entrance['name']} has a mapped position, "

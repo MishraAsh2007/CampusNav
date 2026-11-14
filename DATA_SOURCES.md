@@ -8,6 +8,18 @@ gaps. Refresh times indicate when our code read a source, not when somebody insp
 
 ## What each source contributes
 
+Use **`.\scrape-all.cmd --rules-only`** to collect these families in one workflow.
+The [unified scraper guide](docs/UNIFIED_SCRAPER.md) explains the combined public/private
+outputs, per-source freshness and unchanged-PDF reuse. This replaces running several
+workers manually; their individual commands remain available.
+
+Additional source investigation resolved the Campus Center concourse-to-bank gap
+using a 2026 annotated conference plan and current Hotel UMass directions. See
+[remaining indoor coverage and evidence](docs/INDOOR_COVERAGE_GAPS.md) for those links,
+the alternate Oak drawing comparison and the Student Union search results. These
+documents are collected as references; only explicitly authored, reviewed connections
+enter the indoor wayfinding graph.
+
 **Indoor mapping update:** [Role 1/Role 3 indoor handoff](docs/INDOOR_MAPPING.md) documents the
 new floor-aware router, combined journeys and topology-review workflow. Run
 `.\refresh-indoor.cmd` to refresh the public sources below. The latest fetch produced 155
