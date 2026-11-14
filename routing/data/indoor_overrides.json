@@ -1,0 +1,40 @@
+{
+  "_readme": "Indoor ground truth: corrections applied on top of the indoor maps from routing-scraper (data/indoor/*.json, contracts/indoor-map.schema.json) when they are loaded, so updates to those maps don't erase on-site findings. Remove an entry once the source map has it. Keys are the indoor map's building_id; `aliases` lists the same building's ids elsewhere (frontend, backend, GIS).",
+  "buildings": {
+    "library": {
+      "aliases": ["dubois-library", "DuBois Library", "W.E.B. Du Bois Library"],
+      "elevators": {
+        "replace_assets": true,
+        "cars": [
+          { "id": "library-elevator-1", "number": 1, "label": "Elevator 1" },
+          { "id": "library-elevator-2", "number": 2, "label": "Elevator 2" },
+          { "id": "library-elevator-3", "number": 3, "label": "Elevator 3" },
+          { "id": "library-elevator-4", "number": 4, "label": "Elevator 4" },
+          { "id": "library-elevator-5", "number": 5, "label": "Elevator 5" }
+        ],
+        "position": { "lat": 42.389838, "lng": -72.52823 },
+        "serves": "all_floors",
+        "verified": true,
+        "source": "On-site check by the team, 2026-11-14: five cars in the same lobby, numbered 1-5, all serving every floor. Consistent with UMass SIN #813 ('State elevator inspection (#5)'). The ArcGIS layer and the routing-scraper map show a single marker for the lobby."
+      },
+      "non_public_floors": {
+        "3rd-floor": "Staff offices; no student-facing destination. Elevators may still stop here."
+      }
+    },
+    "student-union": {
+      "aliases": ["Student Union"],
+      "elevators": {
+        "car_count": 1,
+        "verified": false,
+        "source": "Team believes the Student Union has one elevator. Not yet checked on site."
+      }
+    },
+    "ilc": {
+      "aliases": ["Integrative Learning Center"],
+      "entrance_floors": {
+        "_status": "pending",
+        "_note": "The team reports the ILC has step-free entrances on more than one level. The routing-scraper map puts both of its entrances (south, west) on floor 1; the frontend's mockBuildings.ts tags ilc-sw and ilc-se as level 2 (from OpenStreetMap). Record verified entrance -> floor pairs here, e.g. { \"ilc-sw\": \"2\" }."
+      }
+    }
+  }
+}
