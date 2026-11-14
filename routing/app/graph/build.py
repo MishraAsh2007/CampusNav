@@ -10,6 +10,11 @@ from .. import config
 from . import elevation as elevation_mod
 from . import overrides as overrides_mod
 
+# OSM tags whose change along a path must start a new graph segment.
+SEGMENT_SPLIT_ATTRS = ["highway", "footway", "ramp", "step_count"]
+# OSMnx drops most way tags by default; keep the ones classify_edge() reads.
+EXTRA_WAY_TAGS = ["footway", "ramp", "ramp:wheelchair", "step_count"]
+
 
 def _first(value) -> Optional[str]:
     """OSM tags may be lists after simplification; take the first meaningful value."""
@@ -27,7 +32,8 @@ def classify_edge(data: dict) -> str:
     if "elevator" in highways:
         return "elevator"
     ramp = str(_first(data.get("ramp")) or "").lower()
-    if ramp in ("yes", "true", "wheelchair"):
+    ramp_wc = str(_first(data.get("ramp:wheelchair")) or "").lower()
+    if ramp in ("yes", "true", "wheelchair") or ramp_wc == "yes":
         return "ramp"
     footway = data.get("footway")
     footway = footway if isinstance(footway, (list, tuple)) else [footway]
@@ -72,14 +78,19 @@ def build_graph(
 ):
     """Build the cached campus graph. Needs internet (OSM + elevation API) unless cached."""
     b = bbox or config.BBOX
+    ox.settings.useful_tags_way = list(dict.fromkeys([*ox.settings.useful_tags_way, *EXTRA_WAY_TAGS]))
     print(f"[build] downloading OSM walk network for bbox {b}")
     # osmnx >= 2: bbox is (left, bottom, right, top)
     G = ox.graph_from_bbox(
         (b["west"], b["south"], b["east"], b["north"]),
         network_type="walk",
-        simplify=True,
+        simplify=False,
         retain_all=False,
     )
+    # Simplify ourselves so a segment never mixes path types. Default simplification would
+    # merge "sidewalk + a short flight of steps" into one edge that is entirely classed as
+    # steps, which blocks long flat stretches for step-free routes.
+    G = ox.simplify_graph(G, edge_attrs_differ=SEGMENT_SPLIT_ATTRS)
     G = ox.truncate.largest_component(G, strongly=False) if len(G) else G
     _slim_nodes(G)
     _slim_edges(G)
