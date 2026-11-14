@@ -22,8 +22,29 @@ class ClosureType(str, Enum):
     path_closed = "path_closed"
 
 
+# Backend (/closures, /official-reports, /community-reports) type names -> routing types.
+BACKEND_TYPES = {
+    "elevator": ClosureType.elevator_out.value,
+    "ramp": ClosureType.ramp_blocked.value,
+    "path": ClosureType.path_closed.value,
+    "construction": ClosureType.construction.value,
+}
+# Backend field -> routing field. Routing names win if a payload has both.
+BACKEND_FIELDS = {
+    "lng": "lon",
+    "radius": "radius_m",
+    "start_time": "starts_at",
+    "end_time": "expires_at",
+    "last_confirmed": "confirmed_at",
+}
+
+
 class Closure(BaseModel):
-    """An active problem reported on campus. Locate it by lat/lon (+ radius) or by edge_ids."""
+    """An active problem reported on campus. Locate it by lat/lon (+ radius) or by edge_ids.
+
+    Also accepts the backend's closure format (lat/lng, radius, type "elevator", start_time,
+    end_time, last_confirmed, nested location). Unknown fields are ignored.
+    """
 
     id: str
     type: ClosureType
@@ -36,7 +57,28 @@ class Closure(BaseModel):
     description: Optional[str] = None
     reported_at: Optional[datetime] = None
     confirmed_at: Optional[datetime] = None
+    starts_at: Optional[datetime] = Field(default=None, description="Not active before this time")
     expires_at: Optional[datetime] = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def _from_backend_format(cls, data):
+        if not isinstance(data, dict):
+            return data
+        d = dict(data)
+        loc = d.get("location")
+        if isinstance(loc, dict):
+            d.setdefault("lat", loc.get("lat"))
+            d.setdefault("lng", loc.get("lng", loc.get("lon")))
+        for src, dst in BACKEND_FIELDS.items():
+            if src in d:
+                value = d.pop(src)
+                d.setdefault(dst, value)
+        if isinstance(d.get("type"), str):
+            d["type"] = BACKEND_TYPES.get(d["type"], d["type"])
+        if not d.get("description"):
+            d["description"] = d.get("details") or d.get("title")
+        return d
 
     @model_validator(mode="after")
     def _needs_location(self) -> "Closure":
@@ -110,6 +152,7 @@ class RouteMeta(BaseModel):
     closures_received: int
     closures_active: int
     closures_expired: int
+    closures_pending: int = 0
     start: SnapInfo
     end: SnapInfo
 

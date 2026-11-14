@@ -61,6 +61,26 @@ Base URL (local): `http://localhost:8000`. Interactive docs: `/docs`.
 
 At least one of (`lat` + `lon`) or `edge_ids` is required.
 
+`starts_at` (optional): a closure is not applied before this time and is counted in
+`meta.closures_pending`.
+
+**Backend format is accepted as-is.** Items from the backend's `GET /closures`,
+`/official-reports` or `/community-reports` can be passed straight into `closures`. They're
+translated on input:
+
+| backend | routing |
+|---|---|
+| `lng` (or `location.lng`) | `lon` |
+| `radius` | `radius_m` |
+| `type`: `elevator` / `ramp` / `path` / `construction` | `elevator_out` / `ramp_blocked` / `path_closed` / `construction` |
+| `start_time` | `starts_at` |
+| `end_time` | `expires_at` |
+| `last_confirmed` | `confirmed_at` |
+| `details` or `title` (if `description` is empty) | `description` |
+
+Other fields (`status`, `source`, `last_updated`, ...) are ignored. If a payload has both
+names for a field, the routing name wins.
+
 What each type blocks:
 
 | type | accessible route | standard route |
@@ -81,7 +101,7 @@ Check `closures_applied[].edges_blocked`: **0 means the closure matched nothing*
   "standard":   { /* RouteResult | null */ },
   "meta": {
     "compute_ms": 3.2, "graph_nodes": 2564, "graph_edges": 7288, "max_grade_pct": 5.0,
-    "closures_received": 2, "closures_active": 1, "closures_expired": 1,
+    "closures_received": 2, "closures_active": 1, "closures_expired": 1, "closures_pending": 0,
     "start": { "node_id": 1443766504, "lat": 42.3907, "lon": -72.5252, "snap_distance_m": 8.1 },
     "end":   { "node_id": 8393893319, "lat": 42.3918, "lon": -72.5262, "snap_distance_m": 4.0 }
   }

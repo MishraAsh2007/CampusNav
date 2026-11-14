@@ -25,10 +25,17 @@ def _aware(dt: Optional[datetime]) -> Optional[datetime]:
     return dt
 
 
+def is_pending(closure: Closure, now: Optional[datetime] = None) -> bool:
+    """Scheduled for later (e.g. an official notice posted ahead of time)."""
+    now = now or datetime.now(timezone.utc)
+    start = _aware(closure.starts_at)
+    return start is not None and start > now
+
+
 def is_active(closure: Closure, now: Optional[datetime] = None) -> bool:
     now = now or datetime.now(timezone.utc)
     exp = _aware(closure.expires_at)
-    return exp is None or exp > now
+    return (exp is None or exp > now) and not is_pending(closure, now)
 
 
 @dataclass
@@ -43,6 +50,7 @@ class ClosureIndex:
     )
     active_count: int = 0
     expired_count: int = 0
+    pending_count: int = 0
 
     def blocked_for(self, mode: str) -> dict[EdgeKey, set[str]]:
         return self.blocked[mode]
@@ -106,7 +114,11 @@ def _matching_edges(G, c: Closure) -> list[EdgeKey]:
 def resolve_closures(G, closures: Iterable[Closure], now: Optional[datetime] = None) -> ClosureIndex:
     """Turn a stateless list of closures into per-mode blocked-edge sets."""
     idx = ClosureIndex()
+    now = now or datetime.now(timezone.utc)
     for c in closures:
+        if is_pending(c, now):
+            idx.pending_count += 1
+            continue
         if not is_active(c, now):
             idx.expired_count += 1
             continue

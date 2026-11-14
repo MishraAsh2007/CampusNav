@@ -79,6 +79,7 @@ def plan_routes(G, req: RouteRequest, now: Optional[datetime] = None) -> RouteRe
         closures_received=len(req.closures),
         closures_active=idx.active_count,
         closures_expired=idx.expired_count,
+        closures_pending=idx.pending_count,
         start=snap(src, src_d),
         end=snap(dst, dst_d),
     )
