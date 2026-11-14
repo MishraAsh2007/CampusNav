@@ -30,7 +30,7 @@ Building and official report writes require an `X-Admin-Key` header. In Swagger,
 | `GET /closures` | The combined feed of active official and community closures for routing |
 | `GET /health` | `{"status":"ok"}` when the API is responding |
 
-Fetch **`GET /buildings`** for building and entrance data and **`GET /closures`** for current routing obstructions. The closure feed is sorted by newest `last_confirmed` first. If both sources report the same obstruction, both entries can appear. Each entry has a `source` field.
+Fetch **`GET /buildings`** for building and entrance data and **`GET /closures`** for current routing obstructions. The closure feed is sorted by newest `last_confirmed` first. If both sources report the same obstruction, both entries can appear. Each entry has a `source` field. List endpoints return `[]` when there are no matching records.
 
 ## Buildings
 
@@ -64,6 +64,45 @@ Fetch **`GET /buildings`** for building and entrance data and **`GET /closures`*
 
 **`GET /buildings`** lists the saved buildings. [Try the GET request](http://127.0.0.1:8000/buildings).
 
+```json
+[
+  {
+    "lat": 42.3912,
+    "lng": -72.5267,
+    "id": "example-building",
+    "name": "Example Building",
+    "entrances": [
+      {
+        "lat": 42.3911,
+        "lng": -72.5267,
+        "name": "Main entrance",
+        "step_free": true,
+        "hasAutoDoorOpener": true,
+        "isAccessibleToAllFloors": true,
+        "IsKeyCardRequired": false,
+        "automatic_door": true
+      }
+    ],
+    "elevator_count": 1,
+    "elevators": [
+      {
+        "location": "Ground floor, across from the main entrance",
+        "lat": null,
+        "lng": null
+      }
+    ],
+    "bathrooms": [
+      {
+        "location": "Ground floor, room 102",
+        "lat": null,
+        "lng": null,
+        "transfer_type": "left"
+      }
+    ]
+  }
+]
+```
+
 Use a room, floor, or landmark for an indoor `location`. Add `lat` and `lng` when available. Use `null` for an unknown bathroom transfer type or entrance flag. The API counts the listed elevators unless you supply `elevator_count` for a building with only some elevator locations recorded. It also accepts the older `automatic_door` field.
 
 ## Official reports
@@ -89,6 +128,31 @@ Use a stable ID for each notice and ISO 8601 timestamps with a timezone. The sta
 
 **`GET /official-reports`** lists the saved notices, including future ones. [Try the GET request](http://127.0.0.1:8000/official-reports).
 
+```json
+[
+  {
+    "lat": 42.3912,
+    "lng": -72.5267,
+    "radius": 10.0,
+    "type": "elevator",
+    "id": "umass-123",
+    "status": "closed",
+    "source": "official",
+    "start_time": "2026-11-14T14:00:00Z",
+    "end_time": "2026-11-14T18:00:00Z",
+    "last_confirmed": "2026-11-14T15:00:00Z",
+    "title": "Example elevator interruption near the main entrance",
+    "details": null,
+    "description": "Example elevator interruption near the main entrance",
+    "last_updated": "2026-11-14T15:00:00Z",
+    "location": {
+      "lat": 42.3912,
+      "lng": -72.5267
+    }
+  }
+]
+```
+
 ## Community reports
 
 **`POST /community-reports`** creates one report and returns HTTP 201. Use `elevator`, `ramp`, `path`, or `construction` for `type`. Coordinates are in decimal degrees. The optional `radius` defaults to 10 meters and also applies to official reports.
@@ -104,7 +168,91 @@ Use a stable ID for each notice and ISO 8601 timestamps with a timezone. The sta
 
 **`GET /community-reports`** lists reports that are still active. [Try the GET request](http://127.0.0.1:8000/community-reports).
 
+```json
+[
+  {
+    "lat": 42.3912,
+    "lng": -72.5267,
+    "radius": 10.0,
+    "type": "ramp",
+    "id": "2bcb2b35-865c-4b1e-b7cb-f4a4360016c3",
+    "status": "closed",
+    "source": "community",
+    "start_time": "2026-11-14T15:00:00Z",
+    "end_time": "2026-11-16T15:00:00Z",
+    "last_confirmed": "2026-11-14T15:00:00Z",
+    "title": null,
+    "details": null,
+    "description": null,
+    "last_updated": "2026-11-14T15:00:00Z",
+    "location": {
+      "lat": 42.3912,
+      "lng": -72.5267
+    }
+  }
+]
+```
+
 The server generates `id`, `start_time`, `end_time`, `source` (always `community`), and `last_updated`. Each submission creates a new report that expires after 48 hours. To renew an existing one, copy its `id` and call **`POST /community-reports/{report_id}/confirm`** with an empty body. Confirmation updates `last_updated` and extends expiry by 48 hours from the confirmation time. `last_confirmed` is still available for existing clients. A missing or expired report returns HTTP 404.
+
+## Combined closures
+
+**`GET /closures`** combines active official and community reports. In memory demo mode, the sample ramp can also appear with `source: "demo"`. [Try the GET request](http://127.0.0.1:8000/closures).
+
+```json
+[
+  {
+    "lat": 42.3912,
+    "lng": -72.5267,
+    "radius": 10.0,
+    "type": "elevator",
+    "id": "umass-123",
+    "status": "closed",
+    "source": "official",
+    "start_time": "2026-11-14T14:00:00Z",
+    "end_time": "2026-11-14T18:00:00Z",
+    "last_confirmed": "2026-11-14T15:00:00Z",
+    "title": "Example elevator interruption near the main entrance",
+    "details": null,
+    "description": "Example elevator interruption near the main entrance",
+    "last_updated": "2026-11-14T15:00:00Z",
+    "location": {
+      "lat": 42.3912,
+      "lng": -72.5267
+    }
+  },
+  {
+    "lat": 42.3912,
+    "lng": -72.5267,
+    "radius": 10.0,
+    "type": "ramp",
+    "id": "2bcb2b35-865c-4b1e-b7cb-f4a4360016c3",
+    "status": "closed",
+    "source": "community",
+    "start_time": "2026-11-14T15:00:00Z",
+    "end_time": "2026-11-16T15:00:00Z",
+    "last_confirmed": "2026-11-14T15:00:00Z",
+    "title": null,
+    "details": null,
+    "description": null,
+    "last_updated": "2026-11-14T15:00:00Z",
+    "location": {
+      "lat": 42.3912,
+      "lng": -72.5267
+    }
+  }
+]
+```
+
+## Health
+
+**`GET /health`** returns the API liveness status. [Try the GET request](http://127.0.0.1:8000/health).
+
+```json
+{
+  "status": "ok"
+}
+```
 
 ## Use MongoDB Atlas
 
