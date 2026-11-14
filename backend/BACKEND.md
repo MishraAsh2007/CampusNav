@@ -42,20 +42,29 @@ Fetch **`GET /buildings`** for building and entrance data and **`GET /closures`*
   "name": "Example Building",
   "lat": 42.3912,
   "lng": -72.5267,
-  "elevator_count": 1,
+  "elevators": [
+    { "location": "Ground floor, across from the main entrance" }
+  ],
+  "bathrooms": [
+    { "location": "Ground floor, room 102", "transfer_type": "left" }
+  ],
   "entrances": [
     {
       "name": "Main entrance",
       "lat": 42.3911,
       "lng": -72.5267,
       "step_free": true,
-      "automatic_door": true
+      "hasAutoDoorOpener": true,
+      "isAccessibleToAllFloors": true,
+      "IsKeyCardRequired": false
     }
   ]
 }
 ```
 
 **`GET /buildings`** lists the saved buildings. [Try the GET request](http://127.0.0.1:8000/buildings).
+
+Use a room, floor, or landmark for an indoor `location`. Add `lat` and `lng` when available. Use `null` for an unknown bathroom transfer type or entrance flag. The API counts the listed elevators unless you supply `elevator_count` for a building with only some elevator locations recorded. It also accepts the older `automatic_door` field.
 
 ## Official reports
 
@@ -66,16 +75,17 @@ Fetch **`GET /buildings`** for building and entrance data and **`GET /closures`*
   "closures": [
     {
       "id": "umass-123",
-      "title": "Example elevator interruption",
+      "description": "Example elevator interruption near the main entrance",
       "type": "elevator",
-      "lat": 42.3912,
-      "lng": -72.5267
+      "location": { "lat": 42.3912, "lng": -72.5267 },
+      "start_time": "2026-11-14T14:00:00Z",
+      "end_time": "2026-11-14T18:00:00Z"
     }
   ]
 }
 ```
 
-Use a stable ID for each notice. You can include `details` and an ISO 8601 `start_time` with a timezone. The start time defaults to when the list is posted. A notice enters the routing feed when its start time arrives and stays there until a refresh omits it.
+Use a stable ID for each notice and ISO 8601 timestamps with a timezone. The start time defaults to when the list is posted. Use `null` for an open-ended notice. The routing feed shows a notice from its start until its end or until a refresh omits it. Official reports are retained in the snapshot until the next replacement. They have no TTL.
 
 **`GET /official-reports`** lists the saved notices, including future ones. [Try the GET request](http://127.0.0.1:8000/official-reports).
 
@@ -94,7 +104,7 @@ Use a stable ID for each notice. You can include `details` and an ISO 8601 `star
 
 **`GET /community-reports`** lists reports that are still active. [Try the GET request](http://127.0.0.1:8000/community-reports).
 
-The API generates the report `id`, sets `last_confirmed`, and sets expiry 48 hours ahead. Each submission creates a new report. To renew an existing one, copy its `id` and call **`POST /community-reports/{report_id}/confirm`** with an empty body. Confirmation is anonymous and extends expiry to 48 hours from the confirmation. A missing or expired report returns HTTP 404.
+The server generates `id`, `start_time`, `end_time`, `source` (always `community`), and `last_updated`. Each submission creates a new report that expires after 48 hours. To renew an existing one, copy its `id` and call **`POST /community-reports/{report_id}/confirm`** with an empty body. Confirmation updates `last_updated` and extends expiry by 48 hours from the confirmation time. `last_confirmed` is still available for existing clients. A missing or expired report returns HTTP 404.
 
 ## Use MongoDB Atlas
 
@@ -113,6 +123,19 @@ The Atlas database user needs read/write access. The backend initializes these c
 | `CommunityReports` | One document per report, with dates stored in UTC and a TTL index on `end_time` |
 
 In Atlas Data Explorer, a community report's MongoDB `_id` matches the API response's `id`. The API hides a report when it expires, and MongoDB removes it during TTL cleanup.
+
+### MongoDB schema validation
+
+MongoDB validators check coordinates and building accessibility fields, official notice snapshots, and the community report dates used for TTL. Official `end_time` accepts a BSON Date or `null`. The validators accept older records that predate the new fields.
+
+From the repo root, check the configured database or install the validators:
+
+```powershell
+.\backend\.venv\Scripts\python.exe -m backend.mongo_schema
+.\backend\.venv\Scripts\python.exe -m backend.mongo_schema --apply
+```
+
+Both commands check existing documents first. Installing the validators requires MongoDB's `collMod` permission. The API's normal startup does not need this permission.
 
 ## Local options
 

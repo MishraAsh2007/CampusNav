@@ -11,7 +11,14 @@ from uuid import uuid4
 from fastapi import Depends, FastAPI, HTTPException, Request, Security, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import APIKeyHeader
-from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, model_validator
+from pydantic import (
+    AwareDatetime,
+    BaseModel,
+    ConfigDict,
+    Field,
+    computed_field,
+    model_validator,
+)
 
 if TYPE_CHECKING:
     from pymongo.collection import Collection
@@ -33,7 +40,31 @@ class Entrance(MapPoint):
 
     name: Annotated[str, Field(min_length=1)]
     step_free: bool
-    automatic_door: bool
+    hasAutoDoorOpener: bool | None = None
+    isAccessibleToAllFloors: bool | None = None
+    IsKeyCardRequired: bool | None = None
+    automatic_door: bool | None = None
+
+    @model_validator(mode="after")
+    def normalize_door_opener(self) -> "Entrance":
+        if self.hasAutoDoorOpener is None:
+            self.hasAutoDoorOpener = self.automatic_door
+        elif self.automatic_door is not None and self.hasAutoDoorOpener != self.automatic_door:
+            raise ValueError("Door opener fields disagree")
+        self.automatic_door = self.hasAutoDoorOpener
+        return self
+
+
+class IndoorLocation(BaseModel):
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
+    location: Annotated[str, Field(min_length=1)]
+    lat: Annotated[float, Field(ge=-90, le=90)] | None = None
+    lng: Annotated[float, Field(ge=-180, le=180)] | None = None
+
+
+class Bathroom(IndoorLocation):
+    transfer_type: Annotated[str, Field(min_length=1)] | None
 
 
 class Building(MapPoint):
@@ -42,7 +73,17 @@ class Building(MapPoint):
     id: Annotated[str, Field(pattern=r"^[a-z0-9]+(-[a-z0-9]+)*$")]
     name: Annotated[str, Field(min_length=1)]
     entrances: list[Entrance]
-    elevator_count: Annotated[int, Field(ge=0)]
+    elevator_count: Annotated[int, Field(ge=0)] | None = None
+    elevators: list[IndoorLocation] = Field(default_factory=list)
+    bathrooms: list[Bathroom] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def set_elevator_count(self) -> "Building":
+        if self.elevator_count is None:
+            self.elevator_count = len(self.elevators)
+        elif self.elevator_count < len(self.elevators):
+            raise ValueError("Elevator count cannot be smaller than the list of elevator locations")
+        return self
 
 
 class ClosureLocation(MapPoint):
@@ -63,15 +104,58 @@ class Closure(ClosureLocation):
     last_confirmed: AwareDatetime
     title: str | None = None
     details: str | None = None
+    description: str | None = None
+
+    @model_validator(mode="after")
+    def fill_official_description(self) -> "Closure":
+        if self.source == "official" and self.description is None:
+            self.description = self.details or self.title
+        return self
+
+    @computed_field
+    @property
+    def last_updated(self) -> datetime:
+        return self.last_confirmed
+
+    @computed_field
+    @property
+    def location(self) -> MapPoint:
+        return MapPoint(lat=self.lat, lng=self.lng)
 
 
-class OfficialNotice(ClosureLocation):
+class OfficialNotice(BaseModel):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
 
     id: Annotated[str, Field(min_length=1)]
-    title: Annotated[str, Field(min_length=1)]
+    type: Literal["elevator", "ramp", "path", "construction"]
+    radius: Annotated[float, Field(gt=0, allow_inf_nan=False)] = 10.0
+    location: MapPoint | None = None
+    lat: Annotated[float, Field(ge=-90, le=90)] | None = None
+    lng: Annotated[float, Field(ge=-180, le=180)] | None = None
+    title: Annotated[str, Field(min_length=1)] | None = None
+    description: Annotated[str, Field(min_length=1)] | None = None
     details: str | None = None
     start_time: AwareDatetime | None = None
+    end_time: AwareDatetime | None = None
+
+    @model_validator(mode="after")
+    def validate_notice(self) -> "OfficialNotice":
+        if self.location is not None:
+            if (
+                (self.lat is not None and self.lat != self.location.lat)
+                or (self.lng is not None and self.lng != self.location.lng)
+            ):
+                raise ValueError("Location disagrees with top-level coordinates")
+            self.lat, self.lng = self.location.lat, self.location.lng
+        if self.lat is None or self.lng is None:
+            raise ValueError("Location coordinates are required")
+        self.description = self.description or self.details or self.title
+        if not self.description:
+            raise ValueError("A description is required")
+        self.title = self.title or self.description
+        if self.start_time is not None and self.end_time is not None and self.end_time <= self.start_time:
+            raise ValueError("End time must be after start time")
+        return self
 
 
 class OfficialSnapshot(BaseModel):
@@ -190,7 +274,10 @@ class MongoClosures:
                 },
                 [
                     {"$set": {"last_confirmed": {"$max": ["$$NOW", "$last_confirmed"]}}},
-                    {"$set": {"end_time": {"$add": ["$last_confirmed", REPORT_LIFETIME_MS]}}},
+                    {"$set": {
+                        "end_time": {"$add": ["$last_confirmed", REPORT_LIFETIME_MS]},
+                        "last_updated": "$last_confirmed",
+                    }},
                 ],
                 return_document=ReturnDocument.AFTER,
             )
@@ -326,7 +413,10 @@ def get_closures(request: Request) -> list[Closure]:
     now = utc_now()
     store = request.app.state.closures
     closures = store.active(now)
-    closures.extend(notice for notice in store.list_official() if notice.start_time <= now)
+    closures.extend(
+        notice for notice in store.list_official()
+        if notice.start_time <= now and (notice.end_time is None or now < notice.end_time)
+    )
     return sorted(closures, key=lambda closure: (closure.last_confirmed, closure.id), reverse=True)
 
 
@@ -351,12 +441,16 @@ def get_official_closures(request: Request) -> list[Closure]:
 def replace_official_closures(snapshot: OfficialSnapshot, request: Request) -> list[Closure]:
     """Replace the complete current official snapshot."""
     now = utc_now()
+    if any(
+        notice.start_time is None and notice.end_time is not None and notice.end_time <= now
+        for notice in snapshot.closures
+    ):
+        raise HTTPException(status_code=422, detail="An end time before posting requires an earlier start time")
     closures = [
         Closure(
-            **notice.model_dump(exclude={"start_time"}),
+            **notice.model_dump(exclude={"start_time", "location"}),
             source="official",
             start_time=notice.start_time or now,
-            end_time=None,
             last_confirmed=now,
         )
         for notice in snapshot.closures
