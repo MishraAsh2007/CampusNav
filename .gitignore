@@ -1,4 +1,5 @@
 .venv/
+.vite/
 __pycache__/
 *.py[cod]
 *.egg-info/
@@ -15,6 +16,7 @@ data/official_closures.json
 data/official_status.json
 data/notice_review.json
 data/*.lock
+dist/
 tmp/
 
 frontend/node_modules/
