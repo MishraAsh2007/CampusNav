@@ -20,6 +20,10 @@ from pydantic import (
     model_validator,
 )
 
+from campus_notices.models import ExternalReport
+
+from .scraper_imports import MemoryScraperImports, MongoScraperImports, ScraperSnapshot
+
 if TYPE_CHECKING:
     from pymongo.collection import Collection
 
@@ -39,7 +43,7 @@ class Entrance(MapPoint):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
 
     name: Annotated[str, Field(min_length=1)]
-    step_free: bool
+    step_free: bool | None
     hasAutoDoorOpener: bool | None = None
     isAccessibleToAllFloors: bool | None = None
     IsKeyCardRequired: bool | None = None
@@ -79,9 +83,9 @@ class Building(MapPoint):
 
     @model_validator(mode="after")
     def set_elevator_count(self) -> "Building":
-        if self.elevator_count is None:
+        if self.elevator_count is None and "elevator_count" not in self.model_fields_set:
             self.elevator_count = len(self.elevators)
-        elif self.elevator_count < len(self.elevators):
+        elif self.elevator_count is not None and self.elevator_count < len(self.elevators):
             raise ValueError("Elevator count cannot be smaller than the list of elevator locations")
         return self
 
@@ -97,7 +101,7 @@ class ReportCreate(ClosureLocation):
 
 class Closure(ClosureLocation):
     id: str
-    status: Literal["closed"] = "closed"
+    status: Literal["closed", "degraded"] = "closed"
     source: Literal["community", "demo", "official"] = "community"
     start_time: AwareDatetime
     end_time: AwareDatetime | None
@@ -105,6 +109,9 @@ class Closure(ClosureLocation):
     title: str | None = None
     details: str | None = None
     description: str | None = None
+    asset_id: str | None = None
+    building_id: str | None = None
+    floor_id: str | None = None
 
     @model_validator(mode="after")
     def fill_official_description(self) -> "Closure":
@@ -330,6 +337,8 @@ class MongoClosures:
         except DuplicateKeyError as error:
             raise HTTPException(status_code=409, detail="Building ID already exists") from error
         except PyMongoError as error:
+            if getattr(error, "code", None) == 121:
+                raise HTTPException(409, "Database rejected the building document schema") from error
             raise HTTPException(status_code=503, detail="Building storage is unavailable") from error
 
 
@@ -372,12 +381,14 @@ async def lifespan(app: FastAPI):
             )
             collection.create_index("end_time", expireAfterSeconds=0)
             app.state.closures = MongoClosures(collection, db["OfficialClosures"], db["Buildings"])
+            app.state.scraper_imports = MongoScraperImports(db["OfficialClosures"], collection)
             yield
     else:
         store = MemoryClosures()
         if os.environ.get("CAMPUSNAV_DEMO") == "1":
             seed_demo(store)
         app.state.closures = store
+        app.state.scraper_imports = MemoryScraperImports()
         yield
 
 
@@ -407,6 +418,41 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
+@app.post("/scraper-imports", dependencies=[Depends(require_admin)])
+def import_scraper_snapshot(snapshot: ScraperSnapshot, request: Request) -> dict[str, bool | str]:
+    if snapshot.observed_at > utc_now() + timedelta(minutes=5):
+        raise HTTPException(422, "Source observation time is in the future")
+    return {
+        "applied": request.app.state.scraper_imports.save(snapshot),
+        "collection": snapshot.collection_name,
+    }
+
+
+@app.get("/external-reports")
+def get_external_reports(request: Request) -> list[ExternalReport]:
+    now = utc_now()
+    return [
+        report
+        for snapshot in request.app.state.scraper_imports.list("public")
+        for report in snapshot.records
+        if report.expires_at > now
+    ]
+
+
+def list_all_official(request: Request) -> list[Closure]:
+    saved = request.app.state.closures.list_official()
+    by_id = {closure.id: closure for closure in saved}
+    for snapshot in request.app.state.scraper_imports.list("official"):
+        for record in snapshot.records:
+            # The scraper's private source reference remains in the database record.
+            description = f"UMass Facilities {record.type} interruption"
+            by_id.setdefault(
+                record.id,
+                Closure.model_validate(record.model_dump() | {"title": description}),
+            )
+    return list(by_id.values())
+
+
 @app.get("/closures")
 def get_closures(request: Request) -> list[Closure]:
     """Return currently active closures, most recently confirmed first."""
@@ -414,7 +460,7 @@ def get_closures(request: Request) -> list[Closure]:
     store = request.app.state.closures
     closures = store.active(now)
     closures.extend(
-        notice for notice in store.list_official()
+        notice for notice in list_all_official(request)
         if notice.start_time <= now and (notice.end_time is None or now < notice.end_time)
     )
     return sorted(closures, key=lambda closure: (closure.last_confirmed, closure.id), reverse=True)
@@ -434,7 +480,7 @@ def create_building(building: Building, request: Request) -> Building:
 @app.get("/official-reports")
 def get_official_closures(request: Request) -> list[Closure]:
     """Return the current official snapshot, including any scheduled notices."""
-    return request.app.state.closures.list_official()
+    return list_all_official(request)
 
 
 @app.post("/official-reports", dependencies=[Depends(require_admin)])

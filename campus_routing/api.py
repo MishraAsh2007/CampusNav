@@ -15,7 +15,8 @@ from fastapi.staticfiles import StaticFiles
 
 from campus_notices.cache import active_closures, read_snapshot, snapshot_status
 from campus_notices.community import ReportStore, UserReport
-from campus_notices.reports import ExternalReport, active_reports, read_reports, reports_status
+from campus_notices.models import ExternalReport
+from campus_notices.reports import active_reports, read_reports, reports_status
 
 from .buildings import TripRequest, plan_trip, read_buildings
 from .engine import RoutingEngine, RoutingError

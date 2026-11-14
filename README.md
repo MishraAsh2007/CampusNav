@@ -59,9 +59,8 @@ The integrated map currently calls the outdoor `/plan` flow. Indoor `/journey` a
 **The scraper implementation is `campus_notices/`; runnable workers are in `scripts/`.**
 
 Run `.\refresh-scrapers.cmd --rules-only` to refresh official notices and public reports
-together. The public worker uses the merged scraper's Reddit feed when no Reddit API token is
-configured. Public reports stay in a separate review queue and cannot close routes. The original
-contributed scraper is preserved in `role-3-web-scraper/` for reference.
+together. The public worker uses Reddit's public feed when no Reddit API token is configured.
+Public reports stay in a separate review queue and cannot close routes.
 
 | Source/work | Implementation | Run from the repository root |
 | --- | --- | --- |

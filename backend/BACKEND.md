@@ -27,6 +27,7 @@ Building and official report writes require an `X-Admin-Key` header. In Swagger,
 | `GET /buildings` | Building locations, entrances, automatic doors, and elevator counts |
 | `GET /official-reports` | The latest official notices, including scheduled closures |
 | `GET /community-reports` | Active community reports |
+| `GET /external-reports` | Unexpired scraped public reports awaiting review |
 | `GET /closures` | The combined feed of active official and community closures for routing |
 | `GET /health` | `{"status":"ok"}` when the API is responding |
 
@@ -103,11 +104,11 @@ Fetch **`GET /buildings`** for building and entrance data and **`GET /closures`*
 ]
 ```
 
-Use a room, floor, or landmark for an indoor `location`. Add `lat` and `lng` when available. Use `null` for an unknown bathroom transfer type or entrance flag. The API counts the listed elevators unless you supply `elevator_count` for a building with only some elevator locations recorded. It also accepts the older `automatic_door` field.
+Use a room, floor, or landmark for an indoor `location`. Add `lat` and `lng` when available. Use `null` for an unknown bathroom transfer type or entrance flag. If you omit `elevator_count`, the API counts the listed elevators. Use `null` if the physical elevator count is unknown. The API also accepts the older `automatic_door` field.
 
 ## Official reports
 
-**`POST /official-reports`** replaces the full official list and returns it with HTTP 200. Use the sample below on a local test server. In the live integration, Role 3 should send the complete list after a successful retrieval from UMass SharePoint. An empty `closures` array clears the list. [UMass Current Interruptions](https://umass.sharepoint.com/sites/impactnotices/Lists/Service%20Interruption%20Notices/Current%20Interruptions.aspx?viewid=49a9fec0-8dcc-47f9-a618-92f4c4aba861)
+**`POST /official-reports`** replaces the manually managed official list and returns it with HTTP 200. An empty `closures` array clears that list. The scraper importer updates its own entries within the same collection. **`GET /official-reports`** includes both. [UMass Current Interruptions](https://umass.sharepoint.com/sites/impactnotices/Lists/Service%20Interruption%20Notices/Current%20Interruptions.aspx?viewid=49a9fec0-8dcc-47f9-a618-92f4c4aba861)
 
 ```json
 {
@@ -262,15 +263,54 @@ Set `MONGODB_URI` in `backend/.env` to the Atlas connection string. The database
 .\backend\.venv\Scripts\python.exe -m uvicorn backend.main:app --env-file backend\.env
 ```
 
-The Atlas database user needs read/write access. The backend initializes these collections on startup:
+The Atlas database user needs read/write access. The backend uses these collections:
 
 | Collection | Storage |
 | --- | --- |
 | `Buildings` | One document per building, keyed by the building ID |
-| `OfficialClosures` | One document with `_id` set to `umass-service-interruptions` and a `closures` array |
-| `CommunityReports` | One document per report, with dates stored in UTC and a TTL index on `end_time` |
+| `OfficialClosures` | The manually managed official list and one capture per official scraper source |
+| `CommunityReports` | One document per user report with a TTL index on `end_time`, and one review capture per public scraper source |
 
 In Atlas Data Explorer, a community report's MongoDB `_id` matches the API response's `id`. The API hides a report when it expires, and MongoDB removes it during TTL cleanup.
+
+### Import scraped data
+
+Start the Data API with the Atlas settings above:
+
+```powershell
+.\backend\.venv\Scripts\python.exe -m uvicorn backend.main:app --env-file backend\.env --port 8001
+```
+
+From another terminal at the repository root, use the Python environment you set up for the
+combined scraper:
+
+```powershell
+.\refresh-scrapers.cmd --rules-only
+.\.venv\Scripts\python.exe -m scripts.post_scraped_data
+.\.venv\Scripts\python.exe -m scripts.post_scraped_data --apply
+```
+
+The first upload command previews the destination and record counts. `--apply` sends the
+processed data using `CAMPUSNAV_ADMIN_KEY` from the environment or `backend/.env`. Pass
+`--api-url` to target a different Data API, or use `--only buildings`, `--only official`, or
+`--only public` to sync one kind of data.
+
+| Input | Destination | Read back from |
+| --- | --- | --- |
+| Saved ArcGIS building catalog | `Buildings` by building ID. Existing IDs retain their records. | `/buildings` |
+| Resolved SharePoint notices | `OfficialClosures` in a document such as `official:umass-maintenance`. | `/official-reports`, or `/closures` for current closures |
+| Public reports from PVTA, Reddit, Collegian, or Facebook | `CommunityReports` in a document such as `public:umass-reddit`. Each item keeps its source, review flag, and expiry. | `/external-reports` |
+
+Each successful scrape replaces its own capture. An empty success clears that source's records.
+A failed refresh leaves the previous records available. The importer skips older and duplicate
+captures. An unverified public report is available for review until expiry and has no effect on
+routing. If your database has MongoDB validators for the earlier record shapes, extend the
+installed rules before uploading:
+
+```powershell
+.\backend\.venv\Scripts\python.exe -m backend.mongo_schema --scraper-imports
+.\backend\.venv\Scripts\python.exe -m backend.mongo_schema --scraper-imports --apply
+```
 
 ### MongoDB schema validation
 

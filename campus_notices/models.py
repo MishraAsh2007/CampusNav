@@ -73,6 +73,27 @@ class PublishedClosure(Closure):
     confirmation_kind: Literal["source_observed"] = "source_observed"
 
 
+class ExternalReport(ContractModel):
+    id: str
+    source_id: str
+    source_name: str
+    source: Literal["official", "community", "publisher"]
+    url: str
+    title: str
+    text: str
+    published_at: AwareDatetime | None
+    first_seen_at: AwareDatetime
+    last_seen_at: AwareDatetime
+    expires_at: AwareDatetime
+    topics: list[str]
+    location_candidates: list[str]
+    parser: Literal["rules", "gemini", "unresolved"]
+    extraction: Extraction | None
+    review_reasons: list[str]
+    review_status: Literal["needs_review"] = "needs_review"
+    routing_eligible: Literal[False] = False
+
+
 class SourceState(ContractModel):
     mode: Literal["live", "cache", "spreadsheet_fallback", "file"]
     observed_at: AwareDatetime

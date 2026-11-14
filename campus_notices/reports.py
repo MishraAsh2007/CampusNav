@@ -13,7 +13,7 @@ from pydantic import AwareDatetime, Field
 from campus_routing.models import ContractModel
 
 from .cache import atomic_json, writer_lock
-from .models import Extraction, Location, Notice
+from .models import ExternalReport, Location, Notice
 from .pipeline import candidate_locations
 from .public_sources import NotConfigured, PublicPost, fetch_posts
 from .rules import parse_rules
@@ -26,27 +26,6 @@ TOPICS = {
     "accessibility": r"\b(?:accessibility|wheelchair|step.free|accessible entrance)\b",
     "transit": r"\b(?:buses?|bus stops?|transit|pvta|detours?|paratransit)\b",
 }
-
-
-class ExternalReport(ContractModel):
-    id: str
-    source_id: str
-    source_name: str
-    source: Literal["official", "community", "publisher"]
-    url: str
-    title: str
-    text: str
-    published_at: AwareDatetime | None
-    first_seen_at: AwareDatetime
-    last_seen_at: AwareDatetime
-    expires_at: AwareDatetime
-    topics: list[str]
-    location_candidates: list[str]
-    parser: Literal["rules", "gemini", "unresolved"]
-    extraction: Extraction | None
-    review_reasons: list[str]
-    review_status: Literal["needs_review"] = "needs_review"
-    routing_eligible: Literal[False] = False
 
 
 class FeedStatus(ContractModel):
