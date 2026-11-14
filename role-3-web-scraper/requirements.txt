@@ -1,6 +1,0 @@
-requests>=2.31,<3
-beautifulsoup4>=4.12,<5
-lxml>=5,<7
-google-genai>=1.0,<2
-pydantic>=2,<3
-python-dotenv>=1,<2
