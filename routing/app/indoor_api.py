@@ -19,10 +19,11 @@ from __future__ import annotations
 
 from typing import Any, Literal, Optional
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException, Request
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-from . import backend_client
+from . import backend_client, config
 from .frontend_api import map_building, map_closures
 from .indoor import overrides
 from .indoor import router as ir
@@ -164,6 +165,8 @@ def indoor_route(body: IndoorRouteRequest) -> dict[str, Any]:
         "total_ft": round(m_to_ft(found.total_m)),
         "steps": steps,
         "legs": legs,
+        "node_path": found.path,
+        "edge_ids": [ir.edge_id(model, a, b) for a, b in zip(found.path, found.path[1:])],
         "elevators": _elevators_json(model),
         "warnings": warnings,
         "meta": {"closures_source": closures_source, "direction": body.direction, "map_status": m.get("status"), "approximate": True, "step_free": avoid_steps,
@@ -174,3 +177,41 @@ def indoor_route(body: IndoorRouteRequest) -> dict[str, Any]:
 def _dest_json(model: ir.Model, n: dict[str, Any]) -> dict[str, Any]:
     return {"id": n["id"], "label": n["label"], "floor": n["floor_id"],
             "floor_label": ir._floor_label(model, n["floor_id"])}
+
+# ------------------------------------------------------------------ map export for viewers
+# The map UI's indoor viewer loads maps from GET /indoor/status and GET /indoor/maps/{id} (the
+# campus_routing contract). Serving the same paths lets it show this engine's map (traced floors,
+# real plan images) and draw the routes POST /api/indoor-route returns, matched by node and edge id.
+
+def _plan_file(key: str, floor_id: str):
+    p = config.INDOOR_PLANS_DIR / key / f"{floor_id}.png"
+    return p if p.is_file() else None
+
+
+@router.get("/api/indoor-plan/{building_id}/{floor_id}.png")
+def indoor_plan(building_id: str, floor_id: str):
+    key, m = ir.find_map(building_id)
+    p = _plan_file(key, floor_id) if key else None
+    if p is None:
+        raise HTTPException(404, detail="No floor-plan image for that building and floor.")
+    return FileResponse(p, media_type="image/png", headers={"Cache-Control": "public, max-age=86400"})
+
+
+@router.get("/indoor/status")
+def indoor_status() -> dict[str, Any]:
+    out = []
+    for key, m in ir.load_maps().items():
+        model = ir.build_model(key, m, [], False, None)
+        routable = bool(model.doors) and any(n["kind"] == "room" for n in model.nodes.values())
+        out.append({"building_id": key, "name": m.get("name", key), "routable": routable, "status": "engine",
+                    "floors": len(model.floors)})
+    return {"buildings": out, "router": "campusnav-routing"}
+
+
+@router.get("/indoor/maps/{building_id}")
+def indoor_map(building_id: str, request: Request) -> dict[str, Any]:
+    key, m = ir.find_map(building_id)
+    if m is None:
+        raise HTTPException(404, detail="No indoor map for this building.")
+    return ir.export_map(ir.build_model(key, m, [], False, None), str(request.base_url).rstrip("/"),
+                         lambda fid: _plan_file(key, fid) is not None)
