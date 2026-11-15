@@ -2,6 +2,7 @@ import { AlertTriangle, Bus, CheckCircle2, DoorOpen, Eye, EyeOff, Footprints, In
 import type { Building, RouteResponse, UserPreferences } from '../types';
 import { ElevationProfile } from './ElevationProfile';
 import { cx } from './ui';
+import { formatDistance } from '../services/displayUnits';
 
 interface Props {
   accessible: RouteResponse | null;
@@ -29,11 +30,12 @@ export function RouteSummary(p: Props) {
   const a = p.accessible;
   const s = p.standard;
 
-  if (p.loading && !a && !s) {
+  if (p.loading) {
     return (
-      <div className="space-y-2" aria-busy>
-        <div className="h-16 rounded-3xl bg-gradient-to-r from-black/[0.03] via-black/[0.06] to-black/[0.03] bg-[length:200%_100%] animate-shimmer" />
-        <div className="h-10 rounded-2xl bg-black/[0.03]" />
+      <div className="space-y-3 rounded-3xl bg-white p-4 shadow-ring" role="status" aria-live="polite" aria-busy="true">
+        <p className="flex items-center gap-2 text-[15px] font-semibold text-ink"><RefreshCw className="h-4 w-4 animate-spin" aria-hidden="true" />Finding a route…</p>
+        <p className="text-[13px] text-ink-3">Checking paths, entrances, and current closures.</p>
+        <div aria-hidden="true" className="h-10 rounded-2xl bg-gradient-to-r from-black/[0.03] via-black/[0.06] to-black/[0.03] bg-[length:200%_100%] animate-shimmer" />
       </div>
     );
   }
@@ -123,7 +125,7 @@ export function RouteSummary(p: Props) {
             <span className="ml-0.5 text-[15px] font-medium text-ink-3"> min</span>
           </span>
           <span className="mt-1.5 block text-[12px] text-ink-3 tabular-nums">
-            {a.summary.total_distance_m} m · {a.summary.max_grade_pct === null ? 'slope unknown' : `max ${a.summary.max_grade_pct}%`}
+            {formatDistance(a.summary.total_distance_m)} · {a.summary.max_grade_pct === null ? 'slope unknown' : `max ${a.summary.max_grade_pct}%`}
           </span>
         </button>
         {s && p.showStandard && (
@@ -161,7 +163,7 @@ export function RouteSummary(p: Props) {
                 {steepAvoided.length} slope{steepAvoided.length > 1 ? 's' : ''} over {p.prefs.max_grade_pct}%
               </strong>
             )}{' '}
-            that a regular map would use{extra > 5 ? `, for ${extra} m more walking.` : extra < -5 ? '.' : ', at about the same distance.'}
+            that a regular map would use{extra > 5 ? `, for ${formatDistance(extra)} more walking.` : extra < -5 ? '.' : ', at about the same distance.'}
           </p>
           <ul className="mt-1.5 space-y-0.5 text-[12px] text-ink-3">
             {a.avoided

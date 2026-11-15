@@ -1,6 +1,7 @@
 /** Display adapters for the Python engines. No pathfinding or distance inference here. */
 import { apiJSON, INDOOR_API_BASE, simulatedClosures } from '../../services/api';
 import { normalizeIndoorMap } from './indoorModel';
+import ilcDisplayTrace from '../../../../data/plan_wayfinding/sources/ilc/display-trace.json';
 
 export function drawingDisplayMap(raw, portals = []) {
   const elevatorNodes = new Set(raw.connections.filter(e => e.kind === 'elevator').flatMap(e => [e.start, e.end]));
@@ -13,7 +14,7 @@ export function drawingDisplayMap(raw, portals = []) {
   });
   const nodes = raw.nodes.map((n, i) => ({...n, floor_id: n.floor_id || raw.floor_id,
     x: n.x ?? 100 + (i % 5) * 150, y: n.y ?? 150 + Math.floor(i / 5) * 100,
-    kind: entryNodes.has(n.id) ? 'entrance' : elevatorNodes.has(n.id) ? 'elevator_stop' : 'room'}));
+    kind: entryNodes.has(n.id) ? 'entrance' : elevatorNodes.has(n.id) ? 'elevator_stop' : n.kind || 'room'}));
   const byId = new Map(nodes.map(n => [n.id, n]));
   const edges = raw.connections.map(e => ({...e, length_m: null, bidirectional: true,
     geometry: e.kind === 'elevator' ? null : [e.start, e.end].map(id => [byId.get(id).x, byId.get(id).y])}));
@@ -23,9 +24,17 @@ export function drawingDisplayMap(raw, portals = []) {
   // Normalizer is shared with measured maps. Its display-scale guesses are never
   // accepted as lengths/georeferences for a drawing graph.
   for (const floor of model.floors) {floor.georef = null; floor.pxPerM = null;}
+  for (const floor of model.floors) {
+    floor.routeAligned = raw.floor_sources[floor.id]?.route_overlay === 'original_mosaic_pixels';
+    const trace = raw.building_id === ilcDisplayTrace.building_id ? ilcDisplayTrace.floors[floor.id] : null;
+    if (floor.routeAligned && trace?.source_sha256 === raw.floor_sources[floor.id]?.source_sha256) {
+      floor.vectorPlan = trace;
+    }
+  }
   for (const edge of model.edges) edge.lengthM = null;
   for (const room of model.rooms) room.door = 'unknown';
   model.routingKind = 'drawing'; model.raw = raw; model.residentAccessRequired = raw.resident_access_required;
+  if (raw.building_id === 'ilc') model.name = 'Integrative Learning Center';
   model.sourceWarnings = raw.source_warnings || []; model.indoorGpsAvailable = false;
   return model;
 }
@@ -79,12 +88,12 @@ export function adaptIndoorDirections(model, wire, targetId) {
     floors: Object.keys(paths), paths, steps, warnings: wire.warnings || [], backend: true};
 }
 
-export async function requestIndoorDirections(model, startId, targetId, closures, consent) {
+export async function requestIndoorDirections(model, startId, targetId, closures, consent = {}) {
   const start = targetNode(model, startId), end = targetNode(model, targetId);
   const body = {start_node_id: start, end_node_id: end, closures: simulatedClosures(closures)};
   const wire = model.routingKind === 'drawing'
     ? await apiJSON(`/plan-wayfinding/${encodeURIComponent(model.id)}`, {method: 'POST', headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({...body, accept_drawing_only: consent.drawing, resident_access_confirmed: consent.resident})})
+        body: JSON.stringify({...body, accept_drawing_only: true, resident_access_confirmed: consent.resident})})
     : await apiJSON('/indoor/route', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({
         ...body, building_id: model.id, max_grade: consent.preferences?.max_grade_pct ?? 5,
         no_stairs: true, need_automatic_door: !!consent.preferences?.need_automatic_door})});

@@ -1,4 +1,22 @@
-import type { RouteStep, StepIcon } from '../types';
+import type { RouteResponse, RouteStep, StepIcon } from '../types';
+
+export interface RouteStepPosition {
+  lat: number;
+  lng: number;
+  index: number;
+  instruction: string;
+}
+
+/** Use the maneuver's real coordinate; never interpolate a missing turn location. */
+export function routeStepPosition(route: RouteResponse | null, index: number): RouteStepPosition | null {
+  const step = route?.steps[index];
+  if (!route || !step) return null;
+  const first = route.features[0]?.geometry.coordinates;
+  const last = route.features[route.features.length - 1]?.geometry.coordinates;
+  const point = step.at ?? (step.icon === 'destination' ? last?.[last.length - 1] : index === 0 ? first?.[0] : null);
+  if (!point || !Number.isFinite(point[0]) || !Number.isFinite(point[1]) || Math.abs(point[0]) > 180 || Math.abs(point[1]) > 90) return null;
+  return {lng: point[0], lat: point[1], index, instruction: step.instruction};
+}
 
 export interface WireManeuver {
   instruction: string;

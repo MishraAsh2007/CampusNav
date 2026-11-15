@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "portals": [
+    {
+      "id": "ilc-southwest-floor-2",
+      "building_id": "ilc",
+      "indoor_node_id": "ilc-entrance-south",
+      "floor_id": "2",
+      "outdoor_node_id": 6382267406,
+      "outdoor_approach_node_id": 12878112838,
+      "position": {
+        "lat": 42.3908286,
+        "lng": -72.5262556
+      },
+      "entrance_id": "osm-entrance-6382267406",
+      "plan_source_sha256": "c08ff754d00360fe3e3bb367ed84bf6b336ce7bbeda42d948ffe01f24cb0295c",
+      "source_urls": [
+        "https://tiles.arcgis.com/tiles/2gdL2gxYNFY2TOUb/arcgis/rest/services/Integrated_Learning_Center_Second_Floor_Reup/MapServer",
+        "https://www.openstreetmap.org/node/6382267406",
+        "https://www.openstreetmap.org/way/1559381819"
+      ],
+      "evidence": "Published floor-2 southwest threshold aligns within 0.85 m of OSM entrance 6382267406, explicitly tagged level=2 and terminating footway 1559381819. User also reports this southwest doorway enters floor 2. Use the existing outdoor node as the transition; do not draw a connector from historical GIS point 56. Current access and doorway operation are unverified. Opener presence at this doorway was peer-confirmed, relayed 2026-11-15.",
+      "keycard_required": false,
+      "step_free": true,
+      "door_type": "push-button",
+      "door_evidence": {
+        "id": "ilc-southwest-opener-2026-11-15",
+        "building_id": "ilc",
+        "entrance_id": "osm-entrance-6382267406",
+        "floor_id": "2",
+        "position": {
+          "lat": 42.3908286,
+          "lng": -72.5262556
+        },
+        "door_type": "push-button",
+        "source": "community_peer_report",
+        "reported_on": "2026-11-15",
+        "observed_on": null,
+        "current_operation_verified": false,
+        "note": "The user confirmed their friend saw or used a push-button opener at the southwest doorway entering floor 2. The observation date and an operating test were not specified. This confirms opener presence at this doorway; it does not measure approach grade, door clearance, or interior access."
+      },
+      "physical_verification": false,
+      "connection_type": "coincident_source_threshold"
+    }
+  ],
+  "unresolved": [],
+  "generated_at": null,
+  "source_observed_at": null,
+  "source_fingerprints": {}
+}

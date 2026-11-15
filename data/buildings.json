@@ -183,15 +183,32 @@
           "lat": 42.3908286,
           "lng": -72.5262556,
           "step_free": null,
-          "door_type": "unknown",
+          "door_type": "push-button",
           "keycard_required": false,
           "has_ramp": null,
           "level": "2",
           "osm_id": 6382267406,
           "source": "OpenStreetMap",
           "source_url": "https://www.openstreetmap.org/node/6382267406",
-          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
-          "in_routing_area": true
+          "notes": "Door equipment confirmed by a peer, relayed 2026-11-15: The user confirmed their friend saw or used a push-button opener at the southwest doorway entering floor 2. The observation date and an operating test were not specified. This confirms opener presence at this doorway; it does not measure approach grade, door clearance, or interior access.",
+          "in_routing_area": true,
+          "door_evidence": {
+            "id": "ilc-southwest-opener-2026-11-15",
+            "building_id": "ilc",
+            "entrance_id": "osm-entrance-6382267406",
+            "floor_id": "2",
+            "position": {
+              "lat": 42.3908286,
+              "lng": -72.5262556
+            },
+            "door_type": "push-button",
+            "source": "community_peer_report",
+            "reported_on": "2026-11-15",
+            "observed_on": null,
+            "current_operation_verified": false,
+            "note": "The user confirmed their friend saw or used a push-button opener at the southwest doorway entering floor 2. The observation date and an operating test were not specified. This confirms opener presence at this doorway; it does not measure approach grade, door clearance, or interior access."
+          },
+          "current_operation_verified": false
         },
         {
           "id": "osm-entrance-8393893332",

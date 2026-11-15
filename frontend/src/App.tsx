@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { displayInstruction, formatDistance } from './services/displayUnits';
+import { routeStepPosition } from './services/routeSteps';
 import type { Building, BuildingEntrance, Closure, Place, RouteResponse, RouteStep, UserPreferences, UserReportPayload } from './types';
 import {
   closuresSignature,
@@ -25,6 +27,7 @@ import { buildingPlaces, DEMO_TRIP, SPOTS } from './data/places';
 import { MapView } from './components/MapView';
 import { TopBar } from './components/TopBar';
 import { TripPlanner } from './components/TripPlanner';
+import { MobileTripSheet } from './components/MobileTripSheet';
 import { NeedsMenu } from './components/NeedsMenu';
 import { RouteSummary } from './components/RouteSummary';
 import { Narrator } from './components/Narrator';
@@ -120,21 +123,18 @@ export function App() {
   const [origin, setOrigin] = useState<Place | null>(DEMO_TRIP.origin);
   const [destination, setDestination] = useState<Place | null>(DEMO_TRIP.destination);
   const [prefs, setPrefs] = useState<UserPreferences>(DEFAULT_PREFERENCES);
-  const [plan, setPlan] = useState<PlanResult | null>(null);
-  const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<'accessible' | 'standard'>('accessible');
   const [showStandard, setShowStandard] = useState(false);
+  const [mobilePanel, setMobilePanel] = useState<'directions' | 'trip'>('directions');
   const [needsOpen, setNeedsOpen] = useState(false);
   const [ghost, setGhost] = useState<RouteResponse | null>(null);
   const [justRerouted, setJustRerouted] = useState(false);
-  const planSeq = useRef(0);
   const lastPlanCtx = useRef<{ trip: string; sig: string; key: string; route: RouteResponse | null }>({ trip: '', sig: '', key: '', route: null });
   const onPlanned = useRef<((p: PlanResult) => void) | null>(null);
 
   // Room / floor picked in the destination search bar, handed to the indoor flow on arrival
   const [indoorTarget, setIndoorTarget] = useState<DestinationTarget | null>(null);
   const [originTarget, setOriginTarget] = useState<DestinationTarget | null>(null);
-  const [acceptDrawing, setAcceptDrawing] = useState(false);
   const [residentAccess, setResidentAccess] = useState(false);
   const [inspectedLeg, setInspectedLeg] = useState<JourneyLeg | null>(null);
   // Tell the routing engine what happens inside: a room on another floor means an elevator is needed,
@@ -154,16 +154,22 @@ export function App() {
       return {reviewedBuildingId: destIndoorMap.id, nodeId: to && to.kind !== 'outdoor' ? to.node_id : undefined};
     }
     return {origin: from, destination: to,
-      acceptDrawing, residentAccess};
-  }, [indoorCatalog, originTarget, indoorTarget, origin?.building_id, destination?.building_id, acceptDrawing, residentAccess]);
+      residentAccess, preferIndoorEntrance: destIndoorMap?.routingKind === 'drawing'};
+  }, [indoorCatalog, originTarget, indoorTarget, origin?.building_id, destination?.building_id, residentAccess]);
   const intentKey = JSON.stringify(indoorIntent);
+  // Match results to all inputs during render, before the next effect starts.
+  // A previous trip's failure (or successful route) is not the new trip's result.
+  const planRequest = useMemo(() => ({origin, destination, prefs, closures, buildings, graph, intentKey}),
+    [origin, destination, prefs, closures, buildings, graph, intentKey]);
+  const [completedPlan, setCompletedPlan] = useState<{request: typeof planRequest; result: PlanResult} | null>(null);
+  const plan = completedPlan?.request === planRequest ? completedPlan.result : null;
+  const loading = !!origin && !!destination && !plan;
 
   useEffect(() => {
     if (!origin || !destination || (DEMO_MODE && !graph)) return;
-    const seq = ++planSeq.current;
-    setLoading(true);
+    let cancelled = false;
     planRoutes(origin, destination, prefs, closures, buildings, indoorIntent).then((p) => {
-      if (seq !== planSeq.current) return;
+      if (cancelled) return;
       const trip = `${origin.lat},${origin.lng}>${destination.lat},${destination.lng}|${JSON.stringify(prefs)}`;
       const key = routeKey(p.accessible);
       const prev = lastPlanCtx.current;
@@ -175,19 +181,19 @@ export function App() {
         setTimeout(() => setJustRerouted(false), 1200);
       }
       lastPlanCtx.current = { trip, sig: closuresSig.current, key, route: p.accessible };
-      setPlan(p);
-      setLoading(false);
+      setCompletedPlan({request: planRequest, result: p});
       onPlanned.current?.(p);
       onPlanned.current = null;
     }).catch(error => {
-      if (seq !== planSeq.current) return;
-      setPlan({accessible: null, standard: null, engine: 'remote', ms: 0, notes: [],
-        failure: error instanceof Error ? error.message : 'Could not calculate this journey.'});
-      setLoading(false);
+      if (cancelled) return;
+      setCompletedPlan({request: planRequest, result: {accessible: null, standard: null, engine: 'remote', ms: 0, notes: [],
+        failure: error instanceof Error ? error.message : 'Could not calculate this journey.'}});
     });
-    // indoorIntent is captured through intentKey
+    // Also ignore in-flight results when either endpoint is cleared or on unmount.
+    return () => {cancelled = true;};
+    // All planning inputs, including indoorIntent via intentKey, are in planRequest.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [origin, destination, prefs, closures, buildings, graph, intentKey]);
+  }, [planRequest]);
 
   // ---------- selection & sheets ----------
   const [selectedBuilding, setSelectedBuilding] = useState<Building | null>(null);
@@ -333,6 +339,9 @@ export function App() {
   // ---------- derived ----------
   const pickOptions = useMemo(() => [...buildingPlaces(buildings), ...SPOTS], [buildings]);
   const activeRoute = tab === 'accessible' ? plan?.accessible ?? null : plan?.standard ?? null;
+  const [routeProgress, setRouteProgress] = useState<{route: RouteResponse; index: number} | null>(null);
+  const activeStep = routeProgress?.route === activeRoute ? routeProgress?.index ?? 0 : 0;
+  const stepPosition = useMemo(() => routeStepPosition(activeRoute, activeStep), [activeRoute, activeStep]);
   const destBuilding = destination?.building_id ? buildings.find((b) => b.id === destination.building_id) ?? null : null;
   const arrival = useMemo(() => {
     if (!destBuilding || !plan?.endEndpointId) return null;
@@ -349,6 +358,7 @@ export function App() {
       id: ap.entranceId,
       portalId: ap.portalId,
       indoorNodeId: ap.indoorNodeId,
+      handoffMessage: ap.handoffMessage,
       // Exactly the coordinate the engine returned; names come from our building data when the id matches
       lat: ap.lat,
       lng: ap.lng,
@@ -410,6 +420,8 @@ export function App() {
     prevIndoorId.current = indoorBuildingId;
   }, [indoorBuildingId]);
   const arrivedAtIndoorBuilding = !!indoorBuildingId && !!plan?.accessible && viewState === 'outdoor';
+  const indoorHandoffReady = !!(indoorEntrance?.indoorNodeId || indoorEntrance?.portalId);
+  const indoorActionLabel = indoorHandoffReady ? `At ${destination?.name}? Go inside` : 'Indoor connection unavailable — view details';
   const inspectedSteps = (inspectedLeg?.steps || []) as {from_node_id: string; to_node_id: string}[];
   const viewBuildingId = inspectedLeg?.building_id || indoorBuildingId;
   const viewModel = inspectedLeg ? indoorCatalog.forBuilding(inspectedLeg.building_id) : destIndoorMap;
@@ -429,13 +441,16 @@ export function App() {
     setTab('accessible');
   };
 
-  const focusStep = (s: RouteStep) => {
+  const focusStep = (s: RouteStep, index: number) => {
+    if (!activeRoute) return;
+    setRouteProgress({route: activeRoute, index});
+    const point = routeStepPosition(activeRoute, index);
+    if (point) setFocus({lat: point.lat, lng: point.lng, key: Date.now()});
     // Tapping the last outdoor step ("Arrive at ...") at a supported building offers the indoor route
     if (s.icon === 'destination' && indoorBuildingId) {
       setViewState('transition_modal');
       return;
     }
-    if (s.at) setFocus({ lat: s.at[1], lng: s.at[0], key: Date.now() });
   };
 
   const handleReportSubmit = async (p: UserReportPayload) => {
@@ -461,6 +476,7 @@ export function App() {
         highContrast={hc}
         pickMode={!!picking}
         focus={focus}
+        stepPosition={stepPosition}
         onSelectBuilding={onSelectBuilding}
         incidents={incidents}
         onSelectIncident={onSelectIncident}
@@ -487,8 +503,8 @@ export function App() {
       />
 
       {activeRoute && viewState === 'outdoor' && (
-        <div className="fixed inset-x-3 bottom-[calc(35vh+12px)] z-30 max-h-[calc(65dvh-140px)] overflow-y-auto rounded-3xl lg:inset-x-auto lg:bottom-auto lg:right-4 lg:top-[152px] lg:w-[360px] lg:max-h-[calc(100dvh-176px)]" aria-label="Current route directions">
-          <Directions key={routeKey(activeRoute)} steps={activeRoute.steps} onFocusStep={focusStep} />
+        <div className="fixed right-4 top-[152px] z-30 hidden max-h-[calc(100dvh-176px)] w-[360px] overflow-y-auto rounded-3xl lg:block" aria-label="Current route directions">
+          <Directions key={routeKey(activeRoute)} steps={activeRoute.steps} activeStep={activeStep} onFocusStep={focusStep} />
         </div>
       )}
 
@@ -501,18 +517,25 @@ export function App() {
         </div>
       )}
 
-      <aside
-        className={cx(
-          'glass fixed z-20 flex flex-col overflow-hidden',
-          'inset-x-0 bottom-0 rounded-t-4xl',
-          activeRoute ? 'max-h-[35vh]' : 'max-h-[58vh]',
-          'lg:inset-x-auto lg:bottom-4 lg:left-4 lg:top-[84px] lg:max-h-none lg:w-[400px] lg:rounded-4xl'
-        )}
-        aria-label="Trip planner"
-      >
-        <div className="mx-auto mt-2 h-1 w-9 rounded-full bg-black/15 lg:hidden" aria-hidden />
-        <div className="scroll-soft flex-1 space-y-4 overflow-y-auto p-4">
-          {arrivedAtIndoorBuilding && <button type="button" className="w-full rounded-xl bg-emerald-700 px-3 py-2 text-sm font-semibold text-white lg:hidden" onClick={() => {setInspectedLeg(null); setViewState('transition_modal');}}>At {destination?.name}? Go inside</button>}
+      <MobileTripSheet hasRoute={!!activeRoute} picking={!!picking}
+        title={activeRoute ? `Step ${activeStep + 1} of ${activeRoute.steps.length}` : loading ? 'Finding a route…' : 'Trip details'}
+        detail={activeRoute?.steps[activeStep] ? displayInstruction(activeRoute.steps[activeStep].instruction) : destination ? `To ${destination.name}` : 'Choose your start and destination'}
+        onNext={activeRoute && activeStep < activeRoute.steps.length - 1
+          ? () => focusStep(activeRoute.steps[activeStep + 1], activeStep + 1)
+          : arrivedAtIndoorBuilding ? () => {setInspectedLeg(null); setViewState('transition_modal');} : undefined}
+        nextLabel={activeRoute && activeStep < activeRoute.steps.length - 1 ? 'Next' : 'Go inside'}>
+        {activeRoute && <div className="flex shrink-0 gap-2 border-b border-slate-200 px-4 py-2 lg:hidden" aria-label="Trip panel view">
+          <button className={cx('min-h-11 flex-1 rounded-xl text-sm font-semibold', mobilePanel === 'directions' && 'bg-emerald-100 text-emerald-900')} aria-pressed={mobilePanel === 'directions'} onClick={() => setMobilePanel('directions')}>Directions</button>
+          <button className={cx('min-h-11 flex-1 rounded-xl text-sm font-semibold', mobilePanel === 'trip' && 'bg-emerald-100 text-emerald-900')} aria-pressed={mobilePanel === 'trip'} onClick={() => setMobilePanel('trip')}>Trip details</button>
+        </div>}
+        <div className="trip-scroll scroll-soft min-h-0 flex-1 overflow-y-auto overscroll-contain p-4">
+          {activeRoute && mobilePanel === 'directions' && <div className="space-y-3 lg:hidden">
+            <p className="text-sm font-semibold">To {destination?.name} <span className="font-normal text-slate-600"> · {formatDistance(activeRoute.summary.total_distance_m)}</span></p>
+            <Directions key={routeKey(activeRoute)} steps={activeRoute.steps} activeStep={activeStep} onFocusStep={focusStep} />
+            {arrivedAtIndoorBuilding && <button type="button" className="min-h-11 w-full rounded-xl bg-emerald-700 px-3 py-3 text-sm font-semibold text-white" onClick={() => {setInspectedLeg(null); setViewState('transition_modal');}}>{indoorActionLabel}</button>}
+          </div>}
+          <div className={cx('space-y-4', activeRoute && mobilePanel === 'directions' && 'hidden lg:block')}>
+          {arrivedAtIndoorBuilding && <button type="button" className="w-full rounded-xl bg-emerald-700 px-3 py-2 text-sm font-semibold text-white lg:hidden" onClick={() => {setInspectedLeg(null); setViewState('transition_modal');}}>{indoorActionLabel}</button>}
           {routingConnected === false && <p role="status" className="rounded-2xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">Routing backend unavailable. Showing our saved UMass building data. Outdoor routes and source indoor maps will be available when the backend connects.</p>}
           <TripPlanner
             origin={origin}
@@ -529,14 +552,13 @@ export function App() {
             picking={picking === 'origin' || picking === 'destination' ? picking : null}
             onPick={setPicking}
           />
-          <div className="space-y-2">
-            <p className="text-xs font-semibold">Indoor starting place (optional)</p>
+          <details className="space-y-2">
+            <summary className="min-h-11 cursor-pointer py-3 text-sm font-semibold">Indoor starting place (optional)</summary>
             <DestinationInput placeholder="Start at a building, floor or landmark" value={originTarget?.label}
               onSelect={target => {const b = buildings.find(b => b.id === target.buildingId); if (b) setOrigin({name: b.name, building_id: b.id, ...b.location}); setOriginTarget(target.type === 'building' ? null : target);}} />
             {originTarget && <button className="text-xs underline" onClick={() => setOriginTarget(null)}>Start outdoors instead</button>}
-            <label className="flex gap-2 text-xs"><input type="checkbox" checked={acceptDrawing} onChange={e => setAcceptDrawing(e.target.checked)} />I accept drawing-based directions with unverified physical access.</label>
             <label className="flex gap-2 text-xs"><input type="checkbox" checked={residentAccess} onChange={e => setResidentAccess(e.target.checked)} />I have permission/keycard access for the selected residence.</label>
-          </div>
+          </details>
           {plan?.journey && <section className="space-y-3 rounded-2xl border border-emerald-200 p-3" aria-label="Complete journey directions">
             <h2 className="font-semibold">Indoor and outdoor journey</h2>
             {plan.journey.total_distance === null && <p className="text-xs">Indoor distance is unknown; the map shows the outdoor portion.</p>}
@@ -584,8 +606,9 @@ export function App() {
               Basemap: OpenStreetMap ({reason.toLowerCase()}). Add VITE_GOOGLE_MAPS_API_KEY to use Google Maps.
             </p>
           )}
+          </div>
         </div>
-      </aside>
+      </MobileTripSheet>
 
       <BuildingSheet
         building={selectedBuilding}
@@ -660,7 +683,7 @@ export function App() {
           onClick={() => {setInspectedLeg(null); setViewState('transition_modal');}}
           className="fixed bottom-6 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 rounded-full bg-emerald-600 px-5 py-3 text-[15px] font-semibold text-white shadow-lift ring-4 ring-white/80 transition hover:bg-emerald-500 active:scale-95 max-lg:hidden lg:left-[calc(50%+210px)]"
         >
-          <span aria-hidden="true">🏛️</span> At {destination?.name}? Go inside{indoorTarget ? ` to ${indoorTarget.label.replace(/^\S+\s/, '')}` : ''}
+          <span aria-hidden="true">🏛️</span> {indoorActionLabel}
         </button>
       )}
 
@@ -676,7 +699,7 @@ export function App() {
         buildingId={viewBuildingId}
         targetRoomId={viewTargetId || null}
         startNodeId={viewStartId}
-        consent={{drawing: acceptDrawing, resident: residentAccess}}
+        consent={{resident: residentAccess}}
         entrance={inspectedLeg ? null : indoorEntrance}
         closures={closures}
         preferences={prefs}

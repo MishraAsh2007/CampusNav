@@ -18,20 +18,21 @@ export interface IndoorFlowProps {
   targetRoomId?: string | null;
   /**
    * Entrance where the outdoor route ends (from the routing engine when it answered). The indoor route
-   * starts at the map's entrance nearest to it; null falls back to the map's default entrance.
+   * starts at its exact matched indoor landmark. Without a match, the user selects a start.
    */
   entrance?: IndoorEntrance | null;
   /** Live closures: elevators reported out of service are avoided indoors */
   closures?: Closure[];
   preferences: UserPreferences;
   startNodeId?: string;
-  consent?: {drawing?: boolean; resident?: boolean};
+  consent?: {resident?: boolean};
 }
 
 export interface IndoorEntrance {
   id?: string | null;
   portalId?: string;
   indoorNodeId?: string;
+  handoffMessage?: string;
   lat: number;
   lng: number;
   name: string;

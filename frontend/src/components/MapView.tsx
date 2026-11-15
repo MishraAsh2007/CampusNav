@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
 import type { Building, BuildingEntrance, Closure, Place, RouteResponse } from '../types';
-import { buildScene } from './map/scene';
+import { buildScene, withRouteStep } from './map/scene';
 import type { Incident } from '../services/incidents';
 import { useMapProvider } from './map/MapsProvider';
 import GoogleMapView from './map/GoogleMapView';
 import LeafletMapView from './map/LeafletMapView';
+import type { RouteStepPosition } from '../services/routeSteps';
 
 interface MapViewProps {
   buildings: Building[];
@@ -20,6 +21,7 @@ interface MapViewProps {
   highContrast: boolean;
   pickMode: boolean;
   focus: { lat: number; lng: number; key: number } | null;
+  stepPosition?: RouteStepPosition | null;
   onSelectBuilding: (b: Building) => void;
   incidents: Incident[];
   onSelectIncident: (inc: Incident) => void;
@@ -29,8 +31,8 @@ interface MapViewProps {
 
 export function MapView(props: MapViewProps) {
   const { provider } = useMapProvider();
-  const scene = useMemo(
-    () => buildScene(props),
+  const baseScene = useMemo(
+    () => buildScene({ ...props, stepPosition: null }),
     // Callbacks are stable (useCallback in App); data drives redraws
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
@@ -48,6 +50,7 @@ export function MapView(props: MapViewProps) {
       props.highContrast
     ]
   );
+  const scene = useMemo(() => withRouteStep(baseScene, props.stepPosition), [baseScene, props.stepPosition]);
 
   return (
     <div className="absolute inset-0 isolate z-0" role="region" aria-label="Campus map">

@@ -3,6 +3,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { Scene } from './scene';
 import { CAMPUS_CENTER } from './config';
+import { focusOffset } from './focusOffset';
 
 interface Props {
   scene: Scene;
@@ -18,7 +19,9 @@ interface Props {
 export default function LeafletMapView({ scene, pickMode, focus, onMapClick }: Props) {
   const el = useRef<HTMLDivElement>(null);
   const map = useRef<L.Map | null>(null);
-  const layer = useRef<L.LayerGroup>(L.layerGroup());
+  const routeLayer = useRef<L.LayerGroup>(L.layerGroup());
+  const closureLayer = useRef<L.LayerGroup>(L.layerGroup());
+  const markerLayer = useRef<L.LayerGroup>(L.layerGroup());
   const clickRef = useRef(onMapClick);
   const lastFit = useRef('');
   clickRef.current = onMapClick;
@@ -31,9 +34,11 @@ export default function LeafletMapView({ scene, pickMode, focus, onMapClick }: P
       maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(m);
-    layer.current.addTo(m);
+    closureLayer.current.addTo(m);
+    routeLayer.current.addTo(m);
+    markerLayer.current.addTo(m);
     m.on('click', (e: L.LeafletMouseEvent) => clickRef.current(e.latlng.lat, e.latlng.lng));
-    m.on('zoomend', () => draw());
+    m.on('zoomend', () => drawMarkers());
     map.current = m;
     return () => {
       m.remove();
@@ -45,14 +50,10 @@ export default function LeafletMapView({ scene, pickMode, focus, onMapClick }: P
   const sceneRef = useRef(scene);
   sceneRef.current = scene;
 
-  function draw() {
-    const m = map.current;
-    if (!m) return;
-    const s = sceneRef.current;
-    const z = m.getZoom();
-    const g = layer.current;
+  useEffect(() => {
+    const g = closureLayer.current;
     g.clearLayers();
-    for (const c of s.circles) {
+    for (const c of scene.circles) {
       L.circle(c.center, {
         radius: c.radius,
         color: c.color,
@@ -64,7 +65,12 @@ export default function LeafletMapView({ scene, pickMode, focus, onMapClick }: P
         interactive: false
       }).addTo(g);
     }
-    [...s.lines]
+  }, [scene.circles]);
+
+  useEffect(() => {
+    const g = routeLayer.current;
+    g.clearLayers();
+    [...scene.lines]
       .sort((a, b) => a.zIndex - b.zIndex)
       .forEach((l) => {
         L.polyline(l.path, {
@@ -77,7 +83,15 @@ export default function LeafletMapView({ scene, pickMode, focus, onMapClick }: P
           interactive: false
         }).addTo(g);
       });
-    for (const mk of s.markers) {
+  }, [scene.lines]);
+
+  function drawMarkers() {
+    const m = map.current;
+    if (!m) return;
+    const z = m.getZoom();
+    const g = markerLayer.current;
+    g.clearLayers();
+    for (const mk of sceneRef.current.markers) {
       if (mk.minZoom && z < mk.minZoom) continue;
       const icon = L.divIcon({
         className: 'au-icon',
@@ -94,7 +108,11 @@ export default function LeafletMapView({ scene, pickMode, focus, onMapClick }: P
   }
 
   useEffect(() => {
-    draw();
+    drawMarkers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scene.markers]);
+
+  useEffect(() => {
     const m = map.current;
     if (m && scene.bounds.length && lastFit.current !== scene.fitKey) {
       lastFit.current = scene.fitKey;
@@ -107,14 +125,20 @@ export default function LeafletMapView({ scene, pickMode, focus, onMapClick }: P
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scene]);
+  }, [scene.bounds, scene.fitKey]);
 
   useEffect(() => {
     el.current?.classList.toggle('au-pick-cursor', pickMode);
   }, [pickMode]);
 
   useEffect(() => {
-    if (focus && map.current) map.current.flyTo([focus.lat, focus.lng], Math.max(map.current.getZoom(), 19), { duration: 0.6 });
+    const m = map.current;
+    if (!focus || !m) return;
+    m.stop();
+    const zoom = m.getZoom();
+    const [x, y] = focusOffset();
+    const center = m.unproject(m.project([focus.lat, focus.lng], zoom).subtract(L.point(x, y)), zoom);
+    m.panTo(center, {animate: true, duration: 0.3});
   }, [focus]);
 
   return <div ref={el} className="h-full w-full" />;

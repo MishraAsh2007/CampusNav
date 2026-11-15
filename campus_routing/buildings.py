@@ -6,6 +6,7 @@ from pathlib import Path
 from pydantic import Field
 
 from .engine import RoutingError
+from .entrance_observations import apply_door_observations, read_door_observations
 from .models import Closure, ContractModel, Coordinate, RouteRequest
 
 
@@ -22,6 +23,7 @@ class TripRequest(ContractModel):
     no_stairs: bool = True
     need_automatic_door: bool = False
     allow_keycard_entrance_approach: bool = False
+    prefer_indoor_entrance: bool = False
     closures: list[Closure] = Field(default_factory=list, max_length=500)
 
 
@@ -29,7 +31,8 @@ def read_buildings(path: Path):
     payload = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(payload.get("buildings"), list) or not payload["buildings"]:
         raise ValueError("No building catalog")
-    return payload
+    observations = read_door_observations(path.parent / "reviews/entrance-observations.json")
+    return apply_door_observations(payload, observations) if observations else payload
 
 
 def choices(place, catalog, *, step_free, automatic, allow_keycard_approach=False):
@@ -147,7 +150,7 @@ def plan_trip(engine, catalog, request, *, now=None):
         standard = None
     if accessible:
         for label, entrance in zip(("Start", "Destination"), accessible[1:], strict=True):
-            if entrance.get("source_record_date"):
+            if entrance.get("source_record_date") or entrance.get("door_evidence"):
                 notes.append(f"{label}: {entrance['notes']}")
             if entrance.get("approach_only"):
                 notes.append(

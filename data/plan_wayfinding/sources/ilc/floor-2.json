@@ -1,0 +1,15 @@
+{
+  "source_url": "https://tiles.arcgis.com/tiles/2gdL2gxYNFY2TOUb/arcgis/rest/services/Integrated_Learning_Center_Second_Floor_Reup/MapServer",
+  "floor": "2",
+  "level": 20,
+  "resolution": 0.14929107082380833,
+  "width": 1536,
+  "height": 1280,
+  "extent": {
+    "xmin": -8073661.116279913,
+    "ymax": 5219846.447611859,
+    "xmax": -8073431.805195129,
+    "ymin": 5219655.355041204
+  },
+  "alignment_status": "original georeferenced tiles; existing routing geometry NOT aligned"
+}

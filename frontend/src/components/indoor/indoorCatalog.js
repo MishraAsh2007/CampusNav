@@ -16,6 +16,7 @@ import { isNavigable, normalizeIndoorMap } from './indoorModel';
 import { sampleIndoorMaps } from './sampleMaps';
 import { drawingDisplayMap } from './backendIndoor';
 import { FLOOR_PLAN_IMAGES } from './floorCalibration';
+import { isWithdrawnIndoorMap } from './indoorMapPolicy';
 import { DEMO_MODE, INDOOR_API_BASE, routingPaths } from '../../services/api';
 
 const SAMPLES = DEMO_MODE ? 'prefer' : 'off';
@@ -33,7 +34,7 @@ async function fetchJson(url, ms = 2500) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), ms);
   try {
-    const r = await fetch(url, { signal: ctrl.signal });
+    const r = await fetch(url, { signal: ctrl.signal, cache: 'no-store' });
     return r.ok ? await r.json() : null;
   } catch {
     return null;
@@ -53,7 +54,7 @@ function toModel(raw, source) {
   try {
     if (!DEMO_MODE && (source === 'sample' || raw?.synthetic)) return null;
     const m = normalizeIndoorMap(raw, { source, imageOverrides: overridesFor(raw?.building_id) });
-    return isNavigable(m) ? m : null;
+    return !isWithdrawnIndoorMap(m) && isNavigable(m) ? m : null;
   } catch (err) {
     console.warn(`[CampusNav] Skipping indoor map ${raw?.building_id ?? '?'} (${source}):`, err);
     return null;
@@ -158,7 +159,8 @@ export function resolveCatalog(models, buildings) {
   const chosen = new Map(); // outdoor id -> model
   const extra = [];
   for (const m of models) {
-    if (!DEMO_MODE && (m.source === 'sample' || m.synthetic)) continue;
+    if (isWithdrawnIndoorMap(m)) continue;
+    if (!DEMO_MODE && (m.source === 'sample' || m.synthetic || (m.routingKind !== 'drawing' && m.status !== 'reviewed'))) continue;
     const b = matchBuilding(m, buildings);
     const id = b?.id ?? m.id;
     const cur = chosen.get(id);

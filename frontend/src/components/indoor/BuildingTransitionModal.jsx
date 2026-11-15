@@ -13,7 +13,7 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
  *   error         message when the chosen room has no step-free route (e.g. elevator out of service)
  *   mapNote       small caveat about the map (sample layout, draft)
  */
-export default function BuildingTransitionModal({ open, buildingName, rooms, initialRoomId, onClose, onLaunch, error = null, mapNote = null, startControl = null, allow3D = true }) {
+export default function BuildingTransitionModal({ open, buildingName, rooms, initialRoomId, onClose, onLaunch, error = null, mapNote = null, startControl = null, allow3D = true, hasOutdoorArrival = true, startReady = true }) {
   const [query, setQuery] = useState('');
   const [roomId, setRoomId] = useState(initialRoomId ?? null);
   const [listOpen, setListOpen] = useState(false);
@@ -27,7 +27,11 @@ export default function BuildingTransitionModal({ open, buildingName, rooms, ini
     if (!open) return;
     setRoomId(initialRoomId ?? null);
     setQuery('');
-    const focusTimer = setTimeout(() => inputRef.current?.focus(), 50);
+    const focusTimer = setTimeout(() => {
+      // Keep the phone keyboard closed until the user chooses to search.
+      if (window.matchMedia('(min-width: 1024px)').matches) inputRef.current?.focus();
+      else dialogRef.current?.focus();
+    }, 50);
     const onKey = (e) => e.key === 'Escape' && onClose?.();
     window.addEventListener('keydown', onKey);
     return () => {
@@ -64,18 +68,19 @@ export default function BuildingTransitionModal({ open, buildingName, rooms, ini
       <div
         ref={dialogRef}
         role="dialog"
+        tabIndex={-1}
         aria-modal="true"
         aria-labelledby={titleId}
-        className="w-full max-w-lg rounded-t-[2rem] bg-white p-6 text-slate-950 shadow-2xl ring-1 ring-black/10 sm:rounded-[2rem]"
+        className="max-h-[calc(100dvh-24px)] w-full max-w-lg overflow-y-auto overscroll-contain rounded-t-[2rem] bg-white p-5 pb-[max(20px,env(safe-area-inset-bottom))] text-slate-950 shadow-2xl ring-1 ring-black/10 sm:rounded-[2rem] sm:p-6"
       >
         <div className="mb-5 flex items-start gap-4">
           <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-600 text-[24px] text-white" aria-hidden="true">
             🏛️
           </span>
           <div className="min-w-0 flex-1">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-emerald-700">Outdoor route complete</p>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-emerald-700">{hasOutdoorArrival ? 'Continue indoors' : 'Plan indoor directions'}</p>
             <h2 id={titleId} className="mt-0.5 text-[22px] font-semibold leading-tight tracking-tight">
-              You have arrived at {buildingName}. Want to access inside?
+              {hasOutdoorArrival ? `Continue inside ${buildingName}` : `Navigate inside ${buildingName}`}
             </h2>
           </div>
           <button type="button" onClick={onClose} aria-label="Stay outside" className="rounded-full bg-slate-100 px-3 py-1.5 text-[18px] leading-none text-slate-700 hover:bg-slate-200">
@@ -157,19 +162,19 @@ export default function BuildingTransitionModal({ open, buildingName, rooms, ini
         <div className="mt-5 grid gap-3 sm:grid-cols-2">
           <button
             type="button"
-            disabled={!selected}
+            disabled={!selected || !startReady}
             onClick={() => onLaunch?.('2d', roomId)}
             className="flex flex-col items-start gap-1 rounded-3xl bg-slate-950 p-4 text-left text-white shadow-lg transition hover:bg-slate-800 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <span aria-hidden="true" className="text-[22px]">
               🗺️
             </span>
-            <span className="text-[16px] font-semibold">2D Floor Plan</span>
-            <span className="text-[13px] text-white/70">Bird's Eye View</span>
+            <span className="text-[16px] font-semibold">{allow3D ? '2D Floor Plan' : 'Start indoor directions'}</span>
+            <span className="text-[13px] text-white/70">{allow3D ? "Bird's Eye View" : 'Landmarks, floors and elevators'}</span>
           </button>
           {allow3D && (<button
             type="button"
-            disabled={!selected}
+            disabled={!selected || !startReady}
             onClick={() => onLaunch?.('3d', roomId)}
             className="flex flex-col items-start gap-1 rounded-3xl bg-blue-600 p-4 text-left text-white shadow-lg transition hover:bg-blue-500 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
           >
@@ -186,7 +191,7 @@ export default function BuildingTransitionModal({ open, buildingName, rooms, ini
           </p>
         )}
         <p className="mt-3 text-center text-[12px] text-slate-500">
-          {selected ? 'You can switch between 2D and 3D at any time.' : 'Choose a room to start indoor directions.'}
+          {selected ? (allow3D ? 'You can switch between 2D and 3D at any time.' : 'Follow the steps with Next and Back. Indoor GPS is unavailable.') : 'Choose a room to start indoor directions.'}
           {mapNote && <span className="block text-slate-400">{mapNote}</span>}
         </p>
       </div>

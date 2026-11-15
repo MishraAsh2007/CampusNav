@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import BuildingTransitionModal from './BuildingTransitionModal';
+import IndoorGuide from './IndoorGuide';
+import IndoorStartControl from './IndoorStartControl';
 import IndoorNavigator2D from './IndoorNavigator2D';
 import IndoorNavigator from './IndoorNavigator';
 import IndoorStepPanel from './IndoorStepPanel';
@@ -54,8 +56,11 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
   const [verifiedError, setVerifiedError] = useState(null);
   const reviewed = model?.source === 'api';
   const [manualStart, setManualStart] = useState('');
-  const serverStart = startNodeId || entrance?.indoorNodeId || manualStart;
-  useEffect(() => {setManualStart('');}, [model]);
+  const [manualEnabled, setManualEnabled] = useState(false);
+  const arrivalStart = entrance?.indoorNodeId && model?.nodes.has(entrance.indoorNodeId) ? entrance.indoorNodeId : null;
+  const serverStart = (model?.nodes.has(startNodeId) ? startNodeId : '') || arrivalStart || (manualEnabled ? manualStart : '');
+  const startReady = !reviewed || !!serverStart || (model?.routingKind !== 'drawing' && !!entrance?.portalId);
+  useEffect(() => {setManualStart(''); setManualEnabled(false);}, [model, entrance?.id, entrance?.portalId]);
   const requestSequence = useRef(0);
   // GPS is opt-in; Next / Back always work, with or without it
   const [gpsOn, setGpsOn] = useState(false);
@@ -256,9 +261,10 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
       <BuildingTransitionModal
         open
         allow3D={!reviewed}
+        hasOutdoorArrival={!!entrance}
+        startReady={startReady}
         startControl={reviewed ? <div className="mb-4 space-y-2 text-sm">
-          {(serverStart || entrance?.portalId) ? <p className="rounded-xl bg-emerald-50 p-3 text-emerald-900">Starting at {model.nodes.get(serverStart)?.label || entrance?.name || "your routed entrance"}. Directions include the approach to the elevator.</p> : <label>Where are you now?<select aria-label="Current indoor landmark" className="mt-1 w-full rounded-xl border p-2" value={manualStart} onChange={e => setManualStart(e.target.value)}><option value="">Choose a mapped landmark</option>{[...model.nodes.values()].map(n => <option key={n.id} value={n.id}>{n.label} · floor {n.floor}</option>)}</select></label>}
-          {model.routingKind === "drawing" && !consent.drawing && <p>Accept drawing-based directions in the trip planner first.</p>}
+          <IndoorStartControl model={model} entrance={entrance} startNodeId={startNodeId} manualStart={manualStart} onManualStart={setManualStart} onPlanOutdoor={exit} manualEnabled={manualEnabled} onEnableManual={() => setManualEnabled(true)} />
           {model.residentAccessRequired && !consent.resident && <p>Confirm residence/keycard permission in the trip planner first.</p>}
         </div> : null}
         buildingName={building.name}
@@ -268,6 +274,7 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
         mapNote={model.sample ? 'Sample layout, not a surveyed plan.' : model.status === 'draft' ? 'Draft indoor map: check signs as you go.' : null}
         onClose={exit}
         onLaunch={async (mode, id) => {
+          if (!startReady) return;
           setReroute(null);
           setRoomId(id);
           setActive(0);
@@ -290,6 +297,9 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
       />
     );
   }
+
+  if (reviewed) return <IndoorGuide model={model} route={route} active={active} onGo={go} onExit={exit}
+    onChangeDestination={() => onViewStateChange('transition_modal')} />;
 
   const destination = { name: route.room.name, x: route.room.doorX, y: route.room.doorY, floor: route.room.floor };
   const warnings = <div className="max-w-sm space-y-2"><RouteWarningsPanel weather={reviewed ? null : weather} surfaces={reviewed ? [] : surfaces} compact />

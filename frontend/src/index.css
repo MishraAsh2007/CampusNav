@@ -24,6 +24,126 @@ body {
   color: #1d1d1f;
 }
 
+/* The grab area owns the drag; the panel contents keep normal touch scrolling. */
+.trip-sheet-expanded { display: flex; flex: 1; flex-direction: column; min-height: 0; }
+.trip-sheet-handle { display: flex; flex-shrink: 0; width: 100%; min-height: 44px; flex-direction: column; align-items: center; justify-content: center; gap: 3px; touch-action: none; user-select: none; -webkit-user-select: none; cursor: ns-resize; color: #475569; font-size: 11px; font-weight: 600; }
+.trip-sheet-handle > span:last-child { display: flex; align-items: center; gap: 4px; }
+.trip-sheet-grip { width: 36px; height: 4px; border-radius: 999px; background: #94a3b8; }
+.trip-sheet-summary { display: none; align-items: center; gap: 12px; padding: 0 16px max(12px, env(safe-area-inset-bottom)); }
+.trip-sheet-summary-text { flex: 1; min-width: 0; min-height: 48px; text-align: left; }
+.trip-sheet-summary-text span { display: block; font-size: 11px; color: #64748b; }
+.trip-sheet-summary-text strong { display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 14px; }
+.trip-sheet-summary .guide-next { flex: 0 0 auto; }
+@media (max-width: 1023px) {
+  .trip-sheet.is-collapsed .trip-sheet-expanded { display: none; }
+  .trip-sheet.is-collapsed .trip-sheet-summary { display: flex; }
+  .trip-sheet.is-dragging { max-height: none; }
+}
+@media (min-width: 1024px) {
+  .trip-sheet { height: auto !important; }
+  .trip-sheet-handle, .trip-sheet-summary { display: none; }
+}
+
+/* Indoor map workspace: a right-hand card on desktop, a compact bottom card on phones. */
+.indoor-guide {
+  position: fixed; inset: 0; z-index: 60; height: 100dvh;
+  display: flex; flex-direction: column; overflow: hidden; background: #f0f5f4;
+  padding-top: env(safe-area-inset-top); color: #0f172a;
+}
+.guide-header { display: flex; flex-shrink: 0; align-items: center; gap: 12px; padding: 6px 12px; border-bottom: 1px solid #e2e8f0; background: #fff; }
+.guide-icon-button { display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; border-radius: 12px; background: #f1f5f9; }
+.guide-text-button { min-height: 44px; padding: 8px 4px; font-size: 14px; font-weight: 600; }
+.guide-workspace { position: relative; display: grid; grid-template-rows: minmax(0, 1fr) auto; flex: 1; min-height: 0; }
+.guide-map { position: relative; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-width: 0; min-height: 0; padding: 10px 12px 4px; gap: 8px; }
+.guide-map-toolbar, .guide-map-tools { display: flex; align-items: center; gap: 8px; }
+.guide-map-toolbar { justify-content: flex-end; min-width: 0; }
+.guide-floor-select { min-width: 0; max-width: 140px; min-height: 44px; border: 1px solid #d8e3df; border-radius: 14px; padding: 0 10px; background: white; font-size: 16px; font-weight: 600; }
+.guide-map-tool, .guide-zoom { display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; border: 1px solid #d8e3df; border-radius: 14px; background: white; }
+.guide-map-tool { min-width: 44px; min-height: 44px; padding: 8px; gap: 8px; font-size: 14px; font-weight: 600; }
+.guide-map-tool[aria-pressed="true"] { border-color: #059669; color: #065f46; background: #d1fae5; }
+.guide-zoom button { display: inline-flex; min-height: 44px; width: 44px; align-items: center; justify-content: center; }
+.guide-zoom button:disabled { color: #94a3b8; }
+.guide-zoom button + button { border-left: 1px solid #e2e8f0; }
+.guide-plan-scroll { min-width: 0; min-height: 0; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab; overscroll-behavior: contain; border: 1px solid #d8e3df; border-radius: 20px; background: #f1f5f7; }
+.guide-plan-scroll.is-dragging { cursor: grabbing; }
+.guide-plan-scroll > svg, .guide-plan-scroll > img { display: block; }
+.guide-map-caption { margin: 0; color: #64748b; font-size: 11px; line-height: 16px; text-align: center; }
+.guide-empty-map { align-self: center; justify-self: center; max-width: 440px; margin: 16px; padding: 24px; border: 1px dashed #cbd5e1; border-radius: 20px; background: white; }
+.guide-map-popover { position: absolute; right: 12px; top: 64px; z-index: 5; width: min(340px, calc(100% - 24px)); max-height: min(440px, 55dvh); overflow-y: auto; padding: 16px; border: 1px solid #d8e3df; border-radius: 20px; background: white; box-shadow: 0 12px 40px #0f172a24; }
+.guide-map-options button { min-height: 44px; padding: 8px 12px; border: 1px solid #d8e3df; border-radius: 12px; font-size: 14px; font-weight: 600; }
+.guide-map-options button[aria-pressed="true"] { background: #d1fae5; border-color: #6ee7b7; color: #065f46; }
+.guide-details { border-top: 1px solid #e2e8f0; padding: 8px 0; }
+.guide-details summary { cursor: pointer; min-height: 44px; padding: 12px 0; font-size: 14px; font-weight: 600; }
+.guide-navigation { position: relative; min-width: 0; padding: 8px 12px max(12px, env(safe-area-inset-bottom)); }
+.guide-direction-card { max-height: 48dvh; overflow-y: auto; padding: 12px; border: 2px solid #059669; border-radius: 24px; background: #fff; box-shadow: 0 8px 28px #0f172a12; }
+.guide-direction-card.is-resizing { overflow: hidden; }
+.guide-sheet-handle { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; width: 100%; min-height: 44px; margin-top: -8px; margin-bottom: 4px; touch-action: none; user-select: none; cursor: ns-resize; color: #64748b; font-size: 11px; font-weight: 600; }
+.guide-sheet-handle > span:last-child { display: flex; align-items: center; gap: 4px; }
+.guide-sheet-grip { width: 36px; height: 4px; border-radius: 999px; background: #94a3b8; }
+.guide-collapsed-direction { display: none; align-items: center; gap: 12px; }
+.guide-collapsed-direction > button:first-child { flex: 1; min-width: 0; min-height: 44px; text-align: left; }
+.guide-collapsed-direction span { display: block; font-size: 11px; color: #64748b; }
+.guide-collapsed-direction strong { display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 14px; }
+.guide-collapsed-direction .guide-next { flex: 0 0 auto; }
+.guide-direction-card.is-collapsed .guide-collapsed-direction { display: flex; }
+.guide-direction-card.is-collapsed .guide-direction-content { display: none; }
+.guide-card-heading { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.guide-voice-toggle { display: inline-flex; flex-shrink: 0; width: 44px; height: 44px; align-items: center; justify-content: center; border-radius: 12px; color: #64748b; background: #f1f5f9; }
+.guide-voice-toggle[aria-pressed="true"] { color: #047857; background: #d1fae5; }
+.guide-voice-toggle:disabled { opacity: .4; }
+.guide-current-step { display: flex; align-items: flex-start; gap: 12px; margin: 10px 0 14px; }
+.guide-current-step > p { min-width: 0; font-size: 17px; line-height: 1.35; font-weight: 600; overflow-wrap: anywhere; }
+.guide-step-icon { display: inline-flex; flex-shrink: 0; width: 40px; height: 40px; justify-content: center; align-items: center; border-radius: 12px; color: #047857; background: #e1f3eb; }
+.guide-step-controls { display: flex; align-items: center; gap: 8px; }
+.guide-back, .guide-next { display: inline-flex; justify-content: center; align-items: center; gap: 8px; min-height: 44px; border-radius: 12px; padding: 10px 12px; font-size: 14px; font-weight: 600; }
+.guide-back { background: #f1f5f9; }
+.guide-back:disabled { opacity: .4; }
+.guide-next { flex: 1; color: white; background: #047857; }
+.guide-progress-note { margin: 8px 0 0; color: #64748b; font-size: 11px; line-height: 15px; }
+.guide-step-list { position: absolute; left: 12px; right: 12px; bottom: calc(100% + 4px); z-index: 6; max-height: 48dvh; overflow-y: auto; padding: 12px; border: 1px solid #d8e3df; border-radius: 20px; background: white; box-shadow: 0 8px 32px #0f172a26; }
+.guide-list-step { display: flex; gap: 10px; width: 100%; min-height: 44px; border-radius: 12px; padding: 12px 8px; text-align: left; font-size: 14px; line-height: 1.4; }
+.guide-list-step > span { color: #047857; font-weight: 700; }
+.guide-list-step[aria-current="step"] { background: #e1f3eb; font-weight: 600; }
+.guide-list-step:hover { background: #f1f5f9; }
+@media (min-width: 1024px) {
+  .guide-header { height: 64px; padding: 8px 24px; }
+  .guide-workspace { grid-template-columns: minmax(0, 1fr) 384px; grid-template-rows: minmax(0, 1fr); }
+  .guide-map { padding: 16px 8px 12px 16px; gap: 12px; }
+  .guide-navigation { padding: 80px 16px 16px 8px; }
+  .guide-direction-card { max-height: calc(100dvh - 184px); padding: 16px; }
+  .guide-current-step > p { font-size: 18px; }
+  .guide-step-list { left: 8px; right: 16px; top: 80px; bottom: auto; max-height: calc(100dvh - 184px); }
+  .guide-map-popover { right: 8px; top: 76px; }
+  .guide-map-caption { font-size: 12px; }
+}
+@media (max-width: 380px) {
+  .guide-header { gap: 8px; padding: 6px 8px; }
+  .guide-header .guide-text-button { max-width: 65px; font-size: 12px; line-height: 16px; }
+  .guide-map, .guide-navigation { padding-left: 8px; padding-right: 8px; }
+  .guide-map-tools, .guide-map-toolbar { gap: 4px; }
+  .guide-current-step > p { font-size: 16px; }
+}
+@media (max-height: 500px) and (max-width: 1023px) and (orientation: landscape) {
+  .guide-workspace { grid-template-columns: minmax(0, 1fr) 310px; grid-template-rows: minmax(0, 1fr); }
+  .guide-direction-card { max-height: calc(100dvh - 90px); }
+  .guide-navigation { padding-top: 10px; }
+  .guide-step-list { top: 10px; bottom: auto; max-height: calc(100dvh - 100px); }
+}
+@media (min-width: 1024px), (max-height: 500px) and (orientation: landscape) {
+  .guide-sheet-handle, .guide-direction-card.is-collapsed .guide-collapsed-direction { display: none; }
+  .guide-direction-card.is-collapsed .guide-direction-content { display: block; }
+  .guide-direction-card { height: auto !important; }
+}
+@media (max-width: 1023px) {
+  .trip-scroll { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
+}
+@media (max-width: 1023px), (hover: none) and (pointer: coarse) {
+  /* The root selector must outrank text-[13px]/text-[15px] and .field utilities.
+     Keep inputs readable before focus so iOS does not zoom into them. Leave
+     viewport scaling enabled for users who choose to magnify the page. */
+  #root :is(input, select, textarea) { font-size: max(16px, 1rem); }
+}
+
 *:focus-visible {
   outline: 2px solid #0a84ff;
   outline-offset: 2px;

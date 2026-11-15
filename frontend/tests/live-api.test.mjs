@@ -82,7 +82,7 @@ test('automatic-door failure is preserved without silently relaxing route requir
   assert.equal(requests[1].max_grade, requests[0].max_grade);
 });
 
-test('drawing journeys retain the indoor itinerary and send consent, with server-owned live closures', async () => {
+test('drawing journeys are enabled by default and retain the itinerary and server-owned closures', async () => {
   let payload;
   globalThis.fetch = async (url, init) => {
     assert.equal(url, '/journey');
@@ -95,7 +95,7 @@ test('drawing journeys retain the indoor itinerary and send consent, with server
   };
   const plan = await api.planRoutes(start, end, prefs, [official], [], {
     origin: {kind: 'drawing', building_id: 'north-d', node_id: 'apartment-513-5'},
-    acceptDrawing: true, residentAccess: true,
+    residentAccess: true,
   });
   assert.equal(payload.accept_drawing_only, true);
   assert.equal(payload.resident_access_confirmed, true);
@@ -257,4 +257,29 @@ test('report creation, confirmation and resolution use the service endpoints', a
   assert.equal(resolved.some(c => c.id === created.id), false);
   assert.deepEqual(calls, [['/reports', 'POST'], ['/reports/community-1/confirm', 'POST'],
     ['/api/data/community-reports/community-1', 'DELETE']]);
+});
+
+test('a slow backend startup stays pending before returning its route', async () => {
+  const cold = await server.ssrLoadModule('/src/services/api.ts?slow-startup');
+  let resolveHealth, healthSignal, finished = false;
+  globalThis.fetch = async (url, init) => {
+    if (url === '/health') {
+      healthSignal = init.signal;
+      return new Promise((resolve, reject) => {
+        resolveHealth = () => resolve(response({routes: ['/plan']}));
+        init.signal.addEventListener('abort', () => reject(new Error('aborted')), {once: true});
+      });
+    }
+    return response({accessible: wire, notes: []});
+  };
+  const pending = cold.planRoutes(start, end, prefs, [], []).then(plan => {finished = true; return plan;});
+  try {
+    // Longer than the old discovery deadline: no premature unavailable result.
+    await new Promise(resolve => setTimeout(resolve, 1700));
+    assert.equal(healthSignal.aborted, false);
+    assert.equal(finished, false);
+  } finally {
+    resolveHealth();
+  }
+  assert.ok((await pending).accessible);
 });

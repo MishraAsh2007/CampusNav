@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "observations": [
+    {
+      "id": "ilc-southwest-opener-2026-11-15",
+      "building_id": "ilc",
+      "entrance_id": "osm-entrance-6382267406",
+      "floor_id": "2",
+      "position": {"lat": 42.3908286, "lng": -72.5262556},
+      "door_type": "push-button",
+      "source": "community_peer_report",
+      "reported_on": "2026-11-15",
+      "observed_on": null,
+      "current_operation_verified": false,
+      "note": "The user confirmed their friend saw or used a push-button opener at the southwest doorway entering floor 2. The observation date and an operating test were not specified. This confirms opener presence at this doorway; it does not measure approach grade, door clearance, or interior access."
+    }
+  ]
+}

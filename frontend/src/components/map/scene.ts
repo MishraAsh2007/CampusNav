@@ -6,6 +6,7 @@ import type { Building, BuildingEntrance, Closure, Place, RouteResponse } from '
 import { getDistanceMeters } from '../../services/routingEngine';
 import type { Incident } from '../../services/incidents';
 import { closureIcon, ICONS } from './icons';
+import type { RouteStepPosition } from '../../services/routeSteps';
 
 export type LatLng = [number, number];
 
@@ -62,6 +63,7 @@ export interface SceneInput {
   selectedBuildingId: string | null;
   highContrast: boolean;
   incidents: Incident[];
+  stepPosition?: RouteStepPosition | null;
   onSelectBuilding: (b: Building) => void;
   onSelectIncident: (inc: Incident) => void;
   onSelectEntrance: (b: Building, e: BuildingEntrance) => void;
@@ -252,5 +254,19 @@ export function buildScene(i: SceneInput): Scene {
   }
 
   const fitKey = `${i.origin?.lat},${i.origin?.lng}|${i.destination?.lat},${i.destination?.lng}|${i.accessible?.summary.total_distance_m ?? 0}|${i.showStandard ? 1 : 0}`;
-  return { lines, markers, circles, bounds, fitKey };
+  return withRouteStep({ lines, markers, circles, bounds, fitKey }, i.stepPosition);
+}
+
+/** Advancing directions moves only the marker; route geometry and framing stay unchanged. */
+export function withRouteStep(scene: Scene, step?: RouteStepPosition | null): Scene {
+  if (!step && !scene.markers.some((marker) => marker.id === 'route-step')) return scene;
+  const markers = scene.markers.filter((marker) => marker.id !== 'route-step');
+  if (step) {
+    const label = `Step ${step.index + 1}`;
+    markers.push({id: 'route-step', position: [step.lat, step.lng], zIndex: 100, anchor: 'center',
+      title: `${label}: ${step.instruction} Selected instruction, not live GPS.`,
+      html: `<div class="au-route-step" role="img" aria-label="${esc(label)}: selected instruction"><span class="au-route-step-dot"></span><span class="au-route-step-label">${esc(label)}</span></div>`});
+  }
+
+  return { ...scene, markers };
 }

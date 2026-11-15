@@ -16,11 +16,15 @@ stairs/slope preferences, mapped building entrances and reported disruptions to 
 routes. This branch packages the current Role 1 routing and Role 3 ingestion work alongside
 the existing map UI. The Role 4 data service remains in `backend/`.
 
-**Indoor coverage is a pilot.** ILC and Du Bois have computable indoor graphs with
-approximate connections that still need physical verification. Dorm drawings are acquired
+**Indoor coverage is a pilot.** ILC uses routes traced on the public UMass plans for
+floors 1–2, with a simplified map and three elevator assets. The former ILC
+approximate graph is withdrawn. Du Bois has approximate connections that still
+need physical verification. Dorm drawings are acquired
 through authenticated SharePoint; Oak has a separate drawing-based wayfinding pilot with
 documented gaps. Do not interpret a
 successful route calculation or a map's `reviewed` status as facilities certification.
+See [ILC coverage, sources and entrance handoff](docs/ILC_PLAN_NAVIGATION.md) and
+[phone testing](docs/PHONE_TESTING.md) for the current navigation workflow.
 
 ## Run the integrated local map
 
@@ -38,7 +42,11 @@ and serves `frontend/`, the Python routing API, and the Data API on one origin.
 It reads `backend/.env` when present. `start-server.cmd --memory` runs with temporary data
 even when Atlas is configured. Run `start-server.cmd --demo` to reproduce the Role 2 screenshots
 with the original browser router, five sample issues, and the sample 2D and 3D floor plans.
-Open `/?indoor=ilc` and select **S335 Seminar** to view the indoor example.
+In normal live mode, plan Student Union → Integrative Learning Center and choose
+**Go inside**. The matched southwest doorway supplies the floor-2 starting point;
+choose N211 for a same-floor route or N111/N155 for a route using an elevator.
+The direct `/?indoor=ilc` shortcut asks for a starting landmark because it skips
+the outdoor arrival. Floors 3–4 are not covered by the live ILC pilot.
 
 The integrated launcher connects the map to the API on port 8000. When running Vite separately,
 the map checks which routing endpoints are available before sending a trip. A standalone Data API
@@ -64,16 +72,19 @@ The Python router checks active closures when planning routes and confirming ind
 ## How routing works
 
 The latest routing/scraper additions are integrated with the main Data API and Role 2 UI.
-Directions now appear directly below the trip fields, with a visible current instruction
-and Back / Next controls. Indoor instructions include the corridor approach to the named
+Directions appear in a card beside the map on laptops and a collapsible bottom
+panel on phones, with a visible current instruction and Back / Next controls.
+Advancing outdoor steps moves a selected-step marker while preserving the route
+line and zoom. It does not represent live GPS. Indoor instructions include the corridor approach to the named
 elevator, the ride, and the approach from the elevator to the destination. ILC floor-plan
 turns come from the mapped path, while missing connections remain explicit gaps.
 
 You can select an **indoor starting place** for a combined indoor/outdoor journey.
 North D has an explicit source-matched outdoor threshold. Old Chapel and Goodell have
 scoped indoor drawing pilots, but their outdoor joins remain unresolved. Drawing routes
-require acceptance of their limitations; residence routes also require permission/keycard
-confirmation. Authenticated source plans and generated private pilot data stay out of Git;
+are enabled by default in the UI, with their source/access limitations available
+in the guide; residence routes still require permission/keycard confirmation.
+Authenticated source plans and generated private pilot data stay out of Git;
 collect them locally with the [unified scraper](docs/UNIFIED_SCRAPER.md).
 See [the current UI integration](docs/ROLE2_INTEGRATION.md) and
 [pilot coverage and sources](docs/ADDITIONAL_INDOOR_PILOTS.md).
@@ -90,11 +101,14 @@ See [the current UI integration](docs/ROLE2_INTEGRATION.md) and
    bind those graphs to exact outdoor graph nodes. Floor-plan images alone cannot route.
 
 In the trip planner's destination search, enter a room or a building and room (for
-example, `ILC N151`). Follow the outdoor route to the selected entrance, then tap
-**Go inside** and choose **2D Floor Plan** or **3D Immersive View**. Choosing the
+example, `ILC N211`). Follow the outdoor route to the selected entrance, then tap
+**Go inside** and open the floor-plan guide. Choosing the
 indoor view confirms arrival and refreshes closures before calculating the indoor route.
 Buildings without source-based indoor coverage remain unavailable in live mode.
 Labeled sample layouts are restricted to the explicit demo experience.
+The indoor map supports drag/pinch zoom, floor switching and a collapsible
+directions card. Next/Back speak the new instruction when the voice toggle is on.
+Distances are displayed in feet/miles; API measurements remain in meters.
 
 ## Where the web scraper is
 
@@ -167,9 +181,11 @@ Counts describe the local source snapshot and can change after refreshes.
 
 Current indoor audit:
 
-- ILC: all 16 mapped destinations route from an entrance and back. Floors 3/4 lack plan
-  assets; floor 4 has no mapped destination. Closing either modeled elevator preserves all
-  destinations; closing both leaves only the seven first-floor destinations reachable.
+- ILC: nine destination approaches on floors 1–2, with 41 landmarks, 42 connections
+  and three independently closable elevators. The southwest outdoor threshold
+  joins floor 2. The north entrance has no established outdoor join. Closing all
+  three elevators blocks cross-floor routes. Floors 3–4 and untraced rooms remain
+  unavailable; physical door widths, corridor grades and current access are unverified.
 - Du Bois: all 27 mapped service destinations route from an entrance and back. Third-floor
   plan is missing; E/LL floor-label correspondence and actual door/corridor geometry need
   verification. One modeled elevator asset does not represent verified independent banks.

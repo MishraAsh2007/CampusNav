@@ -1,3 +1,4 @@
+import shutil
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from types import SimpleNamespace
@@ -146,11 +147,18 @@ def test_mounted_service_uses_one_catalog_and_active_feed(monkeypatch):
         assert client.get("/closures").json() == []
 
 
-def test_guided_trip_checks_current_closures_at_the_selected_portal(monkeypatch):
+def test_guided_trip_checks_current_closures_at_the_selected_portal(
+    monkeypatch, tmp_path, historical_ilc_mechanics
+):
     monkeypatch.setenv("CAMPUSNAV_MEMORY", "1")
     monkeypatch.setenv("CAMPUSNAV_ADMIN_KEY", "test-key")
     monkeypatch.delenv("CAMPUSNAV_DEMO", raising=False)
-    with TestClient(create_app(data_app=data_app), headers={"X-Admin-Key": "test-key"}) as client:
+    # Protocol test against an isolated historical fixture, not the production ILC map.
+    (tmp_path / "ilc.json").write_text(historical_ilc_mechanics.model_dump_json())
+    shutil.copyfile(ROOT / "data/indoor/library.json", tmp_path / "library.json")
+    with TestClient(
+        create_app(data_app=data_app, indoor_dir=tmp_path), headers={"X-Admin-Key": "test-key"}
+    ) as client:
         destination = {"building_id": "ilc", "node_id": "ilc-source-n151-f2"}
         plan = client.post(
             "/navigation/plan",

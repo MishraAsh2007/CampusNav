@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="openstreetmap-cgimap 2.1.1 (230585 spike-06.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <node id="2964330587" visible="true" version="4" changeset="167032421" timestamp="2025-06-01T00:29:44Z" user="seateaeye" uid="22570471" lat="42.3911322" lon="-72.5254779"/>
+ <node id="2964330588" visible="true" version="6" changeset="179959461" timestamp="2026-03-16T16:08:47Z" user="jm428" uid="22232254" lat="42.3907888" lon="-72.5253848"/>
+ <node id="2964330589" visible="true" version="5" changeset="167032421" timestamp="2025-06-01T00:29:44Z" user="seateaeye" uid="22570471" lat="42.3907110" lon="-72.5262036"/>
+ <node id="2964330590" visible="true" version="5" changeset="167032421" timestamp="2025-06-01T00:29:44Z" user="seateaeye" uid="22570471" lat="42.3913403" lon="-72.5264689"/>
+ <node id="2964330591" visible="true" version="5" changeset="167032421" timestamp="2025-06-01T00:29:44Z" user="seateaeye" uid="22570471" lat="42.3914433" lon="-72.5261255"/>
+ <node id="2964330592" visible="true" version="6" changeset="179959461" timestamp="2026-03-16T16:08:47Z" user="jm428" uid="22232254" lat="42.3910882" lon="-72.5259385"/>
+ <node id="6382267406" visible="true" version="3" changeset="189126114" timestamp="2026-09-16T18:32:02Z" user="jm428" uid="22232254" lat="42.3908286" lon="-72.5262556">
+  <tag k="entrance" v="yes"/>
+  <tag k="level" v="2"/>
+ </node>
+ <node id="6382267407" visible="true" version="1" changeset="68863516" timestamp="2019-04-04T02:16:07Z" user="Hamhock" uid="4910322" lat="42.3908868" lon="-72.5254020">
+  <tag k="entrance" v="yes"/>
+  <tag k="level" v="2"/>
+ </node>
+ <node id="8393893327" visible="true" version="2" changeset="189128608" timestamp="2026-09-16T19:45:40Z" user="jm428" uid="22232254" lat="42.3913465" lon="-72.5264417"/>
+ <node id="12878112814" visible="true" version="1" changeset="167032421" timestamp="2025-06-01T00:29:44Z" user="seateaeye" uid="22570471" lat="42.3914144" lon="-72.5261143"/>
+ <node id="12878112815" visible="true" version="1" changeset="167032421" timestamp="2025-06-01T00:29:44Z" user="seateaeye" uid="22570471" lat="42.3914240" lon="-72.5260761"/>
+ <node id="12878112816" visible="true" version="1" changeset="167032421" timestamp="2025-06-01T00:29:44Z" user="seateaeye" uid="22570471" lat="42.3913965" lon="-72.5263339"/>
+ <node id="12878112817" visible="true" version="1" changeset="167032421" timestamp="2025-06-01T00:29:44Z" user="seateaeye" uid="22570471" lat="42.3913680" lon="-72.5263220"/>
+ <node id="12878112818" visible="true" version="1" changeset="167032421" timestamp="2025-06-01T00:29:44Z" user="seateaeye" uid="22570471" lat="42.3913607" lon="-72.5263526"/>
+ <node id="12878112819" visible="true" version="1" changeset="167032421" timestamp="2025-06-01T00:29:44Z" user="seateaeye" uid="22570471" lat="42.3913662" lon="-72.5263552"/>
+ <node id="12878112820" visible="true" version="1" changeset="167032421" timestamp="2025-06-01T00:29:44Z" user="seateaeye" uid="22570471" lat="42.3907531" lon="-72.5257271"/>
+ <node id="12878112821" visible="true" version="1" changeset="167032421" timestamp="2025-06-01T00:29:44Z" user="seateaeye" uid="22570471" lat="42.3907577" lon="-72.5257280"/>
+ <node id="12878112822" visible="true" version="3" changeset="179959461" timestamp="2026-03-16T16:08:47Z" user="jm428" uid="22232254" lat="42.3909883" lon="-72.5254229"/>
+ <node id="12878112823" visible="true" version="1" changeset="167032421" timestamp="2025-06-01T00:29:44Z" user="seateaeye" uid="22570471" lat="42.3909855" lon="-72.5254532"/>
+ <node id="12901418136" visible="true" version="1" changeset="167428486" timestamp="2025-06-10T06:38:52Z" user="seateaeye" uid="22570471" lat="42.3914268" lon="-72.5261990"/>
+ <node id="13168476505" visible="true" version="3" changeset="179959461" timestamp="2026-03-16T16:08:47Z" user="jm428" uid="22232254" lat="42.3911249" lon="-72.5255542"/>
+ <way id="292876549" visible="true" version="12" changeset="189128608" timestamp="2026-09-16T19:45:40Z" user="jm428" uid="22232254">
+  <nd ref="2964330587"/>
+  <nd ref="12878112823"/>
+  <nd ref="12878112822"/>
+  <nd ref="6382267407"/>
+  <nd ref="2964330588"/>
+  <nd ref="12878112821"/>
+  <nd ref="12878112820"/>
+  <nd ref="2964330589"/>
+  <nd ref="6382267406"/>
+  <nd ref="2964330590"/>
+  <nd ref="8393893327"/>
+  <nd ref="12878112819"/>
+  <nd ref="12878112818"/>
+  <nd ref="12878112817"/>
+  <nd ref="12878112816"/>
+  <nd ref="12901418136"/>
+  <nd ref="2964330591"/>
+  <nd ref="12878112814"/>
+  <nd ref="12878112815"/>
+  <nd ref="2964330592"/>
+  <nd ref="13168476505"/>
+  <nd ref="2964330587"/>
+  <tag k="addr:city" v="Amherst"/>
+  <tag k="addr:housenumber" v="650"/>
+  <tag k="addr:postcode" v="01003"/>
+  <tag k="addr:state" v="MA"/>
+  <tag k="addr:street" v="North Pleasant Street"/>
+  <tag k="building" v="university"/>
+  <tag k="name" v="Integrative Learning Center"/>
+  <tag k="short_name" v="ILC"/>
+ </way>
+</osm>

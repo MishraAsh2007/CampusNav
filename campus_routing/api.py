@@ -67,7 +67,9 @@ def create_app(
     community = ReportStore(community_path or ROOT / "data/private/community_reports.json")
     indoor_maps = indoor_dir or Path(os.getenv("INDOOR_MAPS_DIR", ROOT / "data/indoor"))
     indoor_sources = indoor_sources_path or ROOT / "data/indoor_sources.json"
-    plan_dir = plan_wayfinding_dir or os.getenv("PLAN_WAYFINDING_DIR")
+    plan_dir = (
+        plan_wayfinding_dir or os.getenv("PLAN_WAYFINDING_DIR") or ROOT / "data/plan_wayfinding"
+    )
     portal_path = plan_portals_path or os.getenv("PLAN_PORTALS_PATH")
     if not portal_path and plan_dir:
         portal_path = Path(plan_dir).parent / "plan_wayfinding_portals.json"
@@ -120,6 +122,17 @@ def create_app(
         "under Server response after Execute. For a simpler test, open the [start page](/).",
         swagger_ui_parameters={"tryItOutEnabled": True},
     )
+
+    @app.middleware("http")
+    async def fresh_map_metadata(request, call_next):
+        response = await call_next(request)
+        if request.url.path in ("/", "/index.html", "/indoor/status", "/journey/portals") or (
+            request.url.path.startswith(("/indoor/maps/", "/plan-wayfinding"))
+            and not request.url.path.endswith("/image")
+        ):
+            response.headers["Cache-Control"] = "no-store"
+        return response
+
     origins = os.getenv(
         "ROUTING_CORS_ORIGINS",
         os.getenv(
@@ -180,7 +193,70 @@ def create_app(
     @app.post("/plan", tags=["Campus navigation"])
     def plan(request: TripRequest):
         try:
-            result = plan_trip(get_engine(), catalog(), current_closures(request))
+            live_request = current_closures(request)
+            buildings = catalog()
+            result = plan_trip(get_engine(), buildings, live_request)
+            # For buildings with a drawing pilot, prefer a usable, explicit threshold
+            # over an unrelated doorway. Keep all slope/closure/door constraints.
+            if (
+                request.prefer_indoor_entrance
+                and request.destination.building_id
+                and not request.destination.entrance_id
+            ):
+                try:
+                    drawing = source_plan(request.destination.building_id)
+                    portal_ids = {
+                        p.entrance_id
+                        for p in drawing_portal_registry().portals
+                        if p.building_id == drawing.building_id
+                        and (
+                            drawing.floor_sources.get(p.floor_id, {}).get("sha256")
+                            or drawing.floor_sources.get(p.floor_id, {}).get("source_sha256")
+                        )
+                        == p.plan_source_sha256
+                    }
+                    portal_ids &= {
+                        e["id"]
+                        for b in buildings["buildings"]
+                        if b["id"] == drawing.building_id
+                        for e in b["entrances"]
+                    }
+                    if portal_ids:
+                        matched_buildings = dict(
+                            buildings,
+                            buildings=[
+                                dict(
+                                    b,
+                                    entrances=[e for e in b["entrances"] if e["id"] in portal_ids],
+                                )
+                                if b["id"] == drawing.building_id
+                                else b
+                                for b in buildings["buildings"]
+                            ],
+                        )
+                        preferred = plan_trip(get_engine(), matched_buildings, live_request)
+                        if preferred["accessible"]:
+                            preferred["standard"] = result["standard"]
+                            result = preferred
+                        elif result["accessible"]:
+                            result["indoor_handoff"] = {
+                                "status": "unavailable",
+                                "message": (
+                                    "The entrance with a matched indoor doorway has no linked "
+                                    "automatic-door evidence. Other entrance records may document "
+                                    "openers, but their doorway identities must be matched first."
+                                    if preferred["failure_code"] == "automatic_door_unconfirmed"
+                                    else preferred["failure"]
+                                )
+                                or "No route to the indoor entrance meets these preferences.",
+                            }
+                            result["notes"].append(
+                                "The entrance with mapped indoor continuation is not reachable "
+                                "under these preferences. This outdoor arrival cannot "
+                                "automatically start an indoor route."
+                            )
+                except HTTPException:
+                    pass
             if bridge is not None and bridge.official_status()["stale"]:
                 result["notes"].append("Official closure data is stale or unavailable.")
             building_id = request.destination.building_id
@@ -205,7 +281,10 @@ def create_app(
                             p
                             for p in drawing_portal_registry().portals
                             if p.building_id == building_id
-                            and data.floor_sources.get(p.floor_id, {}).get("sha256")
+                            and (
+                                data.floor_sources.get(p.floor_id, {}).get("sha256")
+                                or data.floor_sources.get(p.floor_id, {}).get("source_sha256")
+                            )
                             == p.plan_source_sha256
                         ]
                         result["indoor_arrival"] = matched_arrival(
@@ -641,7 +720,10 @@ def create_app(
         value = data.floor_sources.get(floor_id, {}).get("local_image")
         if not value:
             raise HTTPException(404, detail="No source floor image for this pilot.")
-        image_path = Path(value).resolve()
+        image_path = Path(value)
+        if not image_path.is_absolute():
+            image_path = ROOT / image_path
+        image_path = image_path.resolve()
         allowed = (Path(plan_dir) / "sources").resolve()
         if (
             not image_path.is_relative_to(allowed)
@@ -682,6 +764,7 @@ def create_app(
                         floor_count=len(data.floors),
                         portal_count=len(data.portals),
                         reviewed_at=data.reviewed_at,
+                        review_notes=data.review_notes,
                     )
                 )
             except (OSError, ValueError):

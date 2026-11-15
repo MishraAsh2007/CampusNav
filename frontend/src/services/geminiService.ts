@@ -82,7 +82,7 @@ export function parseNaturalLanguageQuery(query: string): Partial<UserPreference
   const q = query.toLowerCase();
   const p: Partial<UserPreferences> = {};
   if (/power (wheel)?chair|electric (wheel)?chair|scooter/.test(q)) Object.assign(p, { mobility_preset: 'power_wheelchair', wheelchair_required: true, no_stairs: true, max_grade_pct: 8.3 });
-  else if (/wheelchair|chair user|wheel chair/.test(q)) Object.assign(p, { mobility_preset: 'manual_wheelchair', wheelchair_required: true, no_stairs: true, max_grade_pct: 6, avoid_rough_surfaces: true });
+  else if (/wheelchair|chair user|wheel chair/.test(q)) Object.assign(p, { mobility_preset: 'manual_wheelchair', wheelchair_required: true, no_stairs: true, max_grade_pct: 7, avoid_rough_surfaces: true });
   else if (/crutch|sprain|ankle|knee|cast|boot|broken (leg|foot)|injur/.test(q)) Object.assign(p, { mobility_preset: 'crutches', wheelchair_required: false, no_stairs: true, max_grade_pct: 5, prefer_indoor: true, handrails_required: true });
   else if (/walker|cane|rollator/.test(q)) Object.assign(p, { mobility_preset: 'walker_cane', wheelchair_required: false, handrails_required: true, max_grade_pct: 5 });
   else if (/stroller|pram|cart|luggage|suitcase|dolly|equipment/.test(q)) Object.assign(p, { mobility_preset: 'stroller', wheelchair_required: false, no_stairs: true });

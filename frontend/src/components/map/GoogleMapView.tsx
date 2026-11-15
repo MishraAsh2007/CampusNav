@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { AdvancedMarker, AdvancedMarkerAnchorPoint, Map, Polyline, useMap } from '@vis.gl/react-google-maps';
 import type { Scene, SceneCircle, SceneLine } from './scene';
 import { CAMPUS_CENTER, MAP_ID } from './config';
+import { focusOffset } from './focusOffset';
 
 interface Props {
   scene: Scene;
@@ -14,8 +15,12 @@ function Focus({ focus }: { focus: Props['focus'] }) {
   const map = useMap();
   useEffect(() => {
     if (!map || !focus) return;
-    map.panTo({ lat: focus.lat, lng: focus.lng });
-    if ((map.getZoom() ?? 0) < 19) map.setZoom(19);
+    const zoom = map.getZoom() ?? 17;
+    const projection = map.getProjection();
+    const point = projection?.fromLatLngToPoint(new google.maps.LatLng(focus.lat, focus.lng));
+    const [x, y] = focusOffset();
+    const center = point && projection?.fromPointToLatLng(new google.maps.Point(point.x - x / 2 ** zoom, point.y - y / 2 ** zoom));
+    map.panTo(center || {lat: focus.lat, lng: focus.lng});
   }, [map, focus]);
   return null;
 }
@@ -38,6 +43,10 @@ function lineProps(l: SceneLine) {
     ]
   };
 }
+
+const RouteLines = memo(function RouteLines({ lines }: { lines: SceneLine[] }) {
+  return <>{lines.map((line) => <Polyline key={line.id} {...lineProps(line)} clickable={false} />)}</>;
+});
 
 function Circles({ circles }: { circles: SceneCircle[] }) {
   const map = useMap();
@@ -106,9 +115,7 @@ export default function GoogleMapView({ scene, pickMode, focus, onMapClick }: Pr
       }}
       className="h-full w-full"
     >
-      {scene.lines.map((l) => (
-        <Polyline key={l.id} {...lineProps(l)} clickable={false} />
-      ))}
+      <RouteLines lines={scene.lines} />
       <Circles circles={scene.circles} />
       {markers.map((m) => (
         <AdvancedMarker

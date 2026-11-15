@@ -3,9 +3,9 @@
   "building_id": "ilc",
   "name": "Integrative Learning Center",
   "synthetic": false,
-  "status": "reviewed",
-  "reviewed_at": "2026-11-14T17:09:12.137445Z",
-  "review_notes": "Topology authored from ArcGIS accessibility layer elevator and entrance positions, matched to OSM outdoor graph. Corridors are simplified; room-level detail is not yet mapped. Includes the source-linked N151 2nd-floor entryway pilot waypoint; its doorway position is not survey-grade and must be field-verified. Includes the source-linked N151 2nd-floor entryway pilot waypoint; its doorway position is not survey-grade and must be field-verified. Expanded to 16 source-linked classroom records across documented pilot floors; coordinates are hackathon pilot approximations requiring field verification. Expanded to 16 source-linked classroom records across documented pilot floors; coordinates are hackathon pilot approximations requiring field verification. Public floor-plan assets are registered; corridor and doorway topology still requires explicit tracing from those plans. Public floor-plan assets are registered; corridor and doorway topology still requires explicit tracing from those plans. ILC floors 1 and 2 are now anchored to the public scaled ArcGIS floor plans with explicit room-to-corridor polylines. Doorway clearance and obstruction status still require field verification.",
+  "status": "draft",
+  "reviewed_at": null,
+  "review_notes": "WITHDRAWN after user-relayed peer observations on 2026-11-15: southwest entrance enters floor 2, the entrance called West could not be located, and an unnamed north elevator serving floors 1-2 is unmatched. Previous corridor geometry, entrance/GIS joins, and elevator stops require review. See docs/ILC_FIELD_REVIEW.md and data/reviews/ilc-field-review.json. No ILC indoor routes may be served from this draft.",
   "sources": [
     {
       "id": "ilc-classrooms",
@@ -233,8 +233,8 @@
     },
     {
       "id": "ilc-entrance-south",
-      "label": "ILC South Entrance",
-      "floor_id": "1",
+      "label": "ILC Southwest Entrance (reported floor 2; position unreviewed)",
+      "floor_id": "2",
       "kind": "entrance",
       "x": 770.0,
       "y": 900.0,
@@ -244,30 +244,11 @@
       },
       "source_id": "umass-entrances-pnts",
       "aliases": [
-        "south entrance",
-        "main entrance"
+        "southwest entrance",
+        "south entrance"
       ],
       "source_record_ids": [
         "umass-legacy-entrance-56"
-      ]
-    },
-    {
-      "id": "ilc-entrance-west",
-      "label": "ILC West Entrance",
-      "floor_id": "1",
-      "kind": "entrance",
-      "x": 485.0,
-      "y": 700.0,
-      "position": {
-        "lat": 42.390878,
-        "lng": -72.52531
-      },
-      "source_id": "umass-entrances-pnts",
-      "aliases": [
-        "west entrance"
-      ],
-      "source_record_ids": [
-        "umass-legacy-entrance-57"
       ]
     },
     {
@@ -843,58 +824,6 @@
       "door_type": "unknown",
       "source_id": "umass-arcgis-access",
       "evidence": "Unverified hackathon pilot approach. No floor-plan trace is available for this floor; geometry and metric distances require review."
-    },
-    {
-      "id": "ilc-corridor-south-junc",
-      "start": "ilc-entrance-south",
-      "end": "ilc-junction-f1",
-      "kind": "corridor",
-      "length_m": 19.68,
-      "geometry": [
-        [
-          770.0,
-          900.0
-        ],
-        [
-          748.0,
-          770.0
-        ]
-      ],
-      "asset_id": null,
-      "bidirectional": true,
-      "public_access": true,
-      "step_free": true,
-      "grade_percent": 0.0,
-      "width_m": 2.5,
-      "door_type": "automatic",
-      "source_id": "ilc-floorplans",
-      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
-    },
-    {
-      "id": "ilc-corridor-west-entrance-junc",
-      "start": "ilc-entrance-west",
-      "end": "ilc-elev-west-f1",
-      "kind": "corridor",
-      "length_m": 30.69,
-      "geometry": [
-        [
-          485.0,
-          700.0
-        ],
-        [
-          690.0,
-          715.0
-        ]
-      ],
-      "asset_id": null,
-      "bidirectional": true,
-      "public_access": true,
-      "step_free": true,
-      "grade_percent": 0.0,
-      "width_m": 2.5,
-      "door_type": "automatic",
-      "source_id": "ilc-floorplans",
-      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
     },
     {
       "id": "ilc-elev-east-f1-f2",
@@ -1511,55 +1440,6 @@
       "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
     }
   ],
-  "portals": [
-    {
-      "id": "ilc-portal-south",
-      "indoor_node_id": "ilc-entrance-south",
-      "outdoor_node_id": 12878112836,
-      "geometry": [
-        [
-          -72.526246,
-          42.390788
-        ],
-        [
-          -72.5262648,
-          42.3907945
-        ]
-      ],
-      "length_m": 2.0,
-      "public_access": true,
-      "step_free": true,
-      "grade_percent": 1.0,
-      "width_m": 2.0,
-      "door_type": "automatic",
-      "asset_id": null,
-      "source_id": "umass-entrances-pnts",
-      "evidence": "ArcGIS entrance OID 56 to nearest OSM walking path node 12878112836 (1.7m). Exact source: https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/56. Record dated 2019-07-26; current operation unverified."
-    },
-    {
-      "id": "ilc-portal-west",
-      "indoor_node_id": "ilc-entrance-west",
-      "outdoor_node_id": 13082573896,
-      "geometry": [
-        [
-          -72.52531,
-          42.390878
-        ],
-        [
-          -72.5252971,
-          42.3909265
-        ]
-      ],
-      "length_m": 6.0,
-      "public_access": true,
-      "step_free": true,
-      "grade_percent": 2.0,
-      "width_m": 2.0,
-      "door_type": "automatic",
-      "asset_id": null,
-      "source_id": "umass-entrances-pnts",
-      "evidence": "ArcGIS entrance OID 57 to nearest OSM walking path node 13082573896 (5.5m). Exact source: https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/57. Record dated 2019-07-26; current operation unverified."
-    }
-  ],
+  "portals": [],
   "maneuvers": []
 }

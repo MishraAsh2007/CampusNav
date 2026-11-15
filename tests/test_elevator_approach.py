@@ -1,16 +1,16 @@
-from pathlib import Path
 from types import SimpleNamespace
 
 from campus_routing.indoor import (
     IndoorEngine,
     IndoorRouteRequest,
     corridor_instruction,
-    read_indoor,
 )
 
 
-def test_ilc_route_walks_to_lift_before_riding_then_walks_to_classroom():
-    engine = IndoorEngine(read_indoor(Path(__file__).parents[1] / "data/indoor/ilc.json"))
+def test_fixture_route_walks_to_lift_before_riding_then_walks_to_classroom(
+    historical_ilc_mechanics,
+):
+    engine = IndoorEngine(historical_ilc_mechanics)
     route = engine.route(
         IndoorRouteRequest(
             building_id="ilc",
@@ -42,10 +42,14 @@ def test_plan_turns_follow_route_direction_and_unknown_axes_do_not_invent_bearin
     )
 
 
-def test_walking_past_an_elevator_landing_does_not_tell_user_they_rode_it():
-    engine = IndoorEngine(read_indoor(Path(__file__).parents[1] / "data/indoor/ilc.json"))
-    route = engine.route(IndoorRouteRequest(
-        building_id="ilc", start_node_id="ilc-entrance-west", end_node_id="ilc-source-n111-f1",
-    ))
+def test_walking_past_an_elevator_landing_does_not_tell_user_they_rode_it(historical_ilc_mechanics):
+    engine = IndoorEngine(historical_ilc_mechanics)
+    route = engine.route(
+        IndoorRouteRequest(
+            building_id="ilc",
+            start_node_id="ilc-entrance-west",
+            end_node_id="ilc-source-n111-f1",
+        )
+    )
     assert not route["uses_elevator"]
     assert all("Leave" not in step["instruction"] for step in route["steps"])

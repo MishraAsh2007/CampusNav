@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="openstreetmap-cgimap 2.1.1 (226031 spike-06.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <node id="6382267406" visible="true" version="3" changeset="189126114" timestamp="2026-09-16T18:32:02Z" user="jm428" uid="22232254" lat="42.3908286" lon="-72.5262556">
+  <tag k="entrance" v="yes"/>
+  <tag k="level" v="2"/>
+ </node>
+ <node id="12878112838" visible="true" version="2" changeset="189126114" timestamp="2026-09-16T18:32:02Z" user="jm428" uid="22232254" lat="42.3908237" lon="-72.5262754"/>
+ <way id="1559381819" visible="true" version="2" changeset="189126043" timestamp="2026-09-16T18:32:40Z" user="jm428" uid="22232254">
+  <nd ref="12878112838"/>
+  <nd ref="6382267406"/>
+  <tag k="highway" v="footway"/>
+  <tag k="surface" v="paving_stones"/>
+ </way>
+</osm>

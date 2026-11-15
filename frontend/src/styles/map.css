@@ -43,6 +43,10 @@ html.hc .leaflet-tile-pane {
   background: #2a9d64;
 }
 
+.au-route-step { position: relative; width: 24px; height: 24px; }
+.au-route-step-dot { display: block; width: 24px; height: 24px; border: 4px solid white; border-radius: 50%; background: #0369a1; box-shadow: 0 0 0 7px #0369a130, 0 2px 8px #0f172a50; }
+.au-route-step-label { position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%); padding: 5px 9px; border-radius: 10px; background: #075985; color: white; font: 600 12px/1.3 Inter, system-ui, sans-serif; white-space: nowrap; box-shadow: 0 2px 8px #0f172a30; }
+
 .au-building {
   display: inline-flex;
   align-items: center;

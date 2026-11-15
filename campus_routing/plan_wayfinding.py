@@ -20,6 +20,7 @@ class PlanNode(ContractModel):
     x: float | None = Field(default=None, ge=0)
     y: float | None = Field(default=None, ge=0)
     floor_id: str | None = None
+    kind: Literal["room", "entrance", "junction", "elevator_stop"] = "room"
 
 
 class PlanConnection(ContractModel):

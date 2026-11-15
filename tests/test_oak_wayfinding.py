@@ -95,4 +95,5 @@ def test_opt_in_api_rejects_unaccepted_drawing_limits_and_missing_maps(tmp_path)
         bad = request(accept_drawing_only=False).model_dump(mode="json")
         assert c.post("/plan-wayfinding/oak", json=bad).status_code == 409
     with TestClient(create_app(engine=RoutingEngine(make_demo_graph()))) as c:
-        assert c.get("/plan-wayfinding/oak").status_code == 503
+        # Bundled ILC plans configure this service by default; Oak is not bundled.
+        assert c.get("/plan-wayfinding/oak").status_code == 404

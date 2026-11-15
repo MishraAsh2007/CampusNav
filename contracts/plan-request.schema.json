@@ -65,9 +65,16 @@
           "title": "End Time"
         },
         "last_confirmed": {
-          "format": "date-time",
-          "title": "Last Confirmed",
-          "type": "string"
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Last Confirmed"
         },
         "asset_id": {
           "anyOf": [
@@ -205,6 +212,11 @@
     "allow_keycard_entrance_approach": {
       "default": false,
       "title": "Allow Keycard Entrance Approach",
+      "type": "boolean"
+    },
+    "prefer_indoor_entrance": {
+      "default": false,
+      "title": "Prefer Indoor Entrance",
       "type": "boolean"
     },
     "closures": {

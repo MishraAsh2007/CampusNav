@@ -11,7 +11,7 @@ const BASE: UserPreferences = {
   mobility_preset: 'manual_wheelchair',
   wheelchair_required: true,
   no_stairs: true,
-  max_grade_pct: 6,
+  max_grade_pct: 7,
   avoid_rough_surfaces: true,
   prefer_indoor: false,
   handrails_required: false,
@@ -22,15 +22,15 @@ const BASE: UserPreferences = {
 };
 
 /**
- * Slope guidance: ADA treats a walkway steeper than 5% (1:20) as a ramp, and caps ramps at 8.33% (1:12).
- * Manual chairs get a 6% default so short ADA-ramp sections stay usable; users can tighten it.
+ * The project default is a configurable 7% routing cutoff. Grades are terrain
+ * estimates, not measured ramp grades or a certification of physical access.
  */
 export const PROFILES: ProfileOption[] = [
   {
     id: 'manual_wheelchair',
     label: 'Manual wheelchair',
-    hint: 'No stairs or raised kerbs, gentle slopes, smooth surfaces',
-    prefs: { wheelchair_required: true, no_stairs: true, max_grade_pct: 6, avoid_rough_surfaces: true, need_automatic_door: true, handrails_required: false, prefer_indoor: false, minimize_crossings: false }
+    hint: 'No stairs, up to 7% estimated slope, smooth surfaces',
+    prefs: { wheelchair_required: true, no_stairs: true, max_grade_pct: 7, avoid_rough_surfaces: true, need_automatic_door: true, handrails_required: false, prefer_indoor: false, minimize_crossings: false }
   },
   {
     id: 'power_wheelchair',

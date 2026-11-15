@@ -11,6 +11,7 @@ from pydantic import Field, HttpUrl, model_validator
 from shapely.geometry import Point
 
 from .engine import RoutingError
+from .entrance_observations import DoorObservation
 from .models import ContractModel, Coordinate
 from .plan_wayfinding import PlanWayfindingRequest, plan_directions
 
@@ -30,6 +31,7 @@ class DrawingPortal(ContractModel):
     keycard_required: bool
     step_free: Literal[True]
     door_type: Literal["automatic", "push-button", "manual", "unknown"]
+    door_evidence: DoorObservation | None = None
     physical_verification: Literal[False] = False
     connection_type: Literal["coincident_source_threshold"] = "coincident_source_threshold"
 
@@ -95,7 +97,8 @@ class DrawingJourneyEngine:
             if (
                 not node
                 or (node.floor_id or data.floor_id) != portal.floor_id
-                or source.get("sha256") != portal.plan_source_sha256
+                or (source.get("sha256") or source.get("source_sha256"))
+                != portal.plan_source_sha256
             ):
                 raise RoutingError(
                     "portal_source_mismatch",

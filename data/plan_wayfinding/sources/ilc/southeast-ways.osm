@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="openstreetmap-cgimap 2.1.1 (256800 spike-06.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <way id="292876549" visible="true" version="12" changeset="189128608" timestamp="2026-09-16T19:45:40Z" user="jm428" uid="22232254">
+  <nd ref="2964330587"/>
+  <nd ref="12878112823"/>
+  <nd ref="12878112822"/>
+  <nd ref="6382267407"/>
+  <nd ref="2964330588"/>
+  <nd ref="12878112821"/>
+  <nd ref="12878112820"/>
+  <nd ref="2964330589"/>
+  <nd ref="6382267406"/>
+  <nd ref="2964330590"/>
+  <nd ref="8393893327"/>
+  <nd ref="12878112819"/>
+  <nd ref="12878112818"/>
+  <nd ref="12878112817"/>
+  <nd ref="12878112816"/>
+  <nd ref="12901418136"/>
+  <nd ref="2964330591"/>
+  <nd ref="12878112814"/>
+  <nd ref="12878112815"/>
+  <nd ref="2964330592"/>
+  <nd ref="13168476505"/>
+  <nd ref="2964330587"/>
+  <tag k="addr:city" v="Amherst"/>
+  <tag k="addr:housenumber" v="650"/>
+  <tag k="addr:postcode" v="01003"/>
+  <tag k="addr:state" v="MA"/>
+  <tag k="addr:street" v="North Pleasant Street"/>
+  <tag k="building" v="university"/>
+  <tag k="name" v="Integrative Learning Center"/>
+  <tag k="short_name" v="ILC"/>
+ </way>
+</osm>

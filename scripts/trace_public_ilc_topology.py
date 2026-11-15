@@ -73,6 +73,11 @@ def distance(points):
 
 def trace(path):
     data = read_indoor(path).model_dump(mode="json")
+    if data["building_id"] == "ilc" and data["status"] != "reviewed":
+        raise ValueError(
+            "ILC trace is withdrawn after field-reported entrance/floor conflicts. "
+            "Do not reapply the old coordinates; see docs/ILC_FIELD_REVIEW.md."
+        )
     nodes = {node["id"]: node for node in data["nodes"]}
     for floor_id, points in POINTS.items():
         floor = next(f for f in data["floors"] if f["id"] == floor_id)

@@ -8,6 +8,7 @@ import httpx
 
 from campus_notices.cache import atomic_json
 from campus_notices.entrance_evidence import supplement
+from campus_routing.entrance_observations import apply_door_observations, read_door_observations
 from scripts.sync_campus_access import SOURCES, fetch_layer
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,10 +25,12 @@ def main():
             client, "Entrances_PNTS", FIELDS, object_id_field="OBJECTID_1"
         )
     now = datetime.now(UTC).isoformat()
+    observations = read_door_observations(ROOT / "data/reviews/entrance-observations.json")
     updates, audits = [], {}
     for name in ("buildings", "residence_buildings"):
         path = ROOT / f"data/{name}.json"
         catalog, audit = supplement(json.loads(path.read_text(encoding="utf-8")), data, now)
+        catalog = apply_door_observations(catalog, observations)
         updates.append((path, catalog))
         audits[name] = audit
     # Fetch and validate every input before replacing any previously usable data.

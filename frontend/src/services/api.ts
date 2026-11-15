@@ -85,10 +85,12 @@ export function routingPaths(base = ROUTING_BASE): Promise<RoutingPaths> {
   if (cached && Date.now() < cached.expires) return cached.paths;
   const paths = (async () => {
     if (ROUTING_MODE === 'local') return new Set<string>();
-    const health = await fetchJson<{ routes?: string[] }>(`${base}/health`);
+    // A sleeping deployment can need several seconds to load its campus graph.
+    // Keep route discovery pending instead of declaring it unavailable after 1.5s.
+    const health = await fetchJson<{ routes?: string[] }>(`${base}/health`, {}, 15000);
     if (Array.isArray(health.data?.routes)) return new Set(health.data.routes);
     if (!health.status || health.status >= 500) return new Set<string>();
-    const api = await fetchJson<{ paths?: Record<string, { get?: unknown; post?: unknown }> }>(`${base}/openapi.json`);
+    const api = await fetchJson<{ paths?: Record<string, { get?: unknown; post?: unknown }> }>(`${base}/openapi.json`, {}, 15000);
     return new Set(Object.entries(api.data?.paths ?? {})
       .filter(([path, operations]) => path === '/indoor/status' ? operations.get : operations.post)
       .map(([path]) => path));
@@ -377,15 +379,15 @@ export interface PlanResult extends RouteBundle {
   ms: number;
   notes: string[];
   /** Where the accessible route reaches the destination building. The indoor route starts here. */
-  arrivalPoint?: { entranceId: string | null; lat: number; lng: number; source: 'engine' | 'local'; portalId?: string; indoorNodeId?: string; label?: string };
+  arrivalPoint?: { entranceId: string | null; lat: number; lng: number; source: 'engine' | 'local'; portalId?: string; indoorNodeId?: string; label?: string; handoffMessage?: string };
 }
 
 /** What the person is heading to inside the destination building (from the room search). */
 export interface IndoorIntent {
   origin?: JourneyEndpoint;
   destination?: JourneyEndpoint;
-  acceptDrawing?: boolean;
   residentAccess?: boolean;
+  preferIndoorEntrance?: boolean;
   /** Room or floor label, echoed by the engine */
   room?: string | null;
   /** The room is on another floor than the entrance: the engine then prefers doors near a working elevator */
@@ -407,6 +409,7 @@ type OutdoorPlan = {
   accessible: WireRoute | null; standard: WireRoute | null;
   start_entrance: Entrance | null; end_entrance: Entrance | null;
   indoor_arrival?: {node_id: string; label: string; portal_id: string} | null;
+  indoor_handoff?: {status: string; message: string};
   notes: string[]; failure?: string | null; failure_code?: string | null;
 };
 type ReviewedPlan = {
@@ -471,6 +474,7 @@ async function requestRemotePlan(
   const [walk, reviewed] = await Promise.all([
     fetchJson<OutdoorPlan>(`${ROUTING_BASE}/plan`, post({
       ...options, origin: place(origin), destination: place(destination), closures: simulated,
+      prefer_indoor_entrance: !!indoor.preferIndoorEntrance,
     }), 12000),
     indoor.reviewedBuildingId && indoorPaths.has('/navigation/plan') && indoorPaths.has('/navigation/arrive')
       ? fetchJson<ReviewedPlan>(`${INDOOR_API_BASE}/navigation/plan`, post({
@@ -505,7 +509,8 @@ async function requestRemotePlan(
     endEndpointId: end?.id ?? undefined,
     arrivalPoint: end ? {lat: end.lat, lng: end.lng, entranceId: end.id, source: 'engine',
       indoorNodeId: walk.data?.indoor_arrival?.node_id, label: walk.data?.indoor_arrival?.label,
-      portalId: walk.data?.indoor_arrival?.portal_id} : undefined,
+      portalId: walk.data?.indoor_arrival?.portal_id,
+      handoffMessage: walk.data?.indoor_handoff?.message} : undefined,
     notes: walk.data?.notes ?? [],
     failure: walk.data?.failure || walk.message || (!walk.ok ? 'Routing service is unavailable.' : undefined),
     failureCode: walk.data?.failure_code ?? undefined,
@@ -528,7 +533,7 @@ export async function planRoutes(
         destination: indoor.destination || {kind: 'outdoor', lat: destination.lat, lng: destination.lng},
         max_grade: prefs.max_grade_pct, no_stairs: prefs.no_stairs || prefs.wheelchair_required,
         need_automatic_door: prefs.need_automatic_door,
-        accept_drawing_only: !!indoor.acceptDrawing, resident_access_confirmed: !!indoor.residentAccess,
+        accept_drawing_only: true, resident_access_confirmed: !!indoor.residentAccess,
         closures: simulatedClosures(closures),
       }),
     });

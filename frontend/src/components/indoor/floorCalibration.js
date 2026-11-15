@@ -43,9 +43,10 @@ export function extentToCorners({ xmin, ymin, xmax, ymax }) {
  * file can carry `image_url`, `image_width`, `image_height` and `bounds` itself. An entry here with a
  * `url` replaces that floor's image and gives it these corner coordinates (indoorCatalog.js).
  *
- * ILC bounds: fullExtent of UMass's ArcGIS map services (EPSG:3857). Those services are secured, so the
- * images themselves can't be pulled from them; export a PNG with exactly this extent (or replace the
- * bounds with the export's own) and fill in url/width/height.
+ * ILC bounds below: fullExtent of UMass's ArcGIS map services (EPSG:3857).
+ * Public tiles were successfully retrieved on 2026-11-15. A tile mosaic can
+ * extend beyond fullExtent: use its actual extent and dimensions when filling
+ * these fields. Existing graph geometry still requires review and alignment.
  */
 export const FLOOR_PLAN_IMAGES = {
   ilc: {
