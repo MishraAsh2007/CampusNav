@@ -415,3 +415,55 @@ test('guided mode shares the selected instruction and preserves loading and arri
   assert.match(pending,/Updating your route/);
   assert.doesNotMatch(pending,/No route available|Turn right/);
 });
+
+test('mobility presets can be deselected into custom needs and selected again', async () => {
+  const {PROFILES, DEFAULT_PREFERENCES, toggleProfile} = await server.ssrLoadModule('/src/data/profiles.ts');
+  const {NeedsMenu} = await server.ssrLoadModule('/src/components/NeedsMenu.tsx');
+  for (const profile of PROFILES) {
+    const selected = toggleProfile({...DEFAULT_PREFERENCES,mobility_preset:'custom'},profile.id);
+    assert.equal(selected.mobility_preset,profile.id);
+    const custom = toggleProfile(selected,profile.id);
+    assert.deepEqual(custom,{...selected,mobility_preset:'custom'});
+    const html=renderToStaticMarkup(React.createElement(NeedsMenu,{prefs:custom,open:true,onChange(){},onToggle(){}}));
+    assert.match(html,/Custom needs/);
+    assert.doesNotMatch(html,/<button[^>]*aria-pressed="true"/);
+    assert.deepEqual(toggleProfile(custom,profile.id),selected);
+  }
+});
+
+test('turning off both stair restrictions selects maximum slope without locking the slider', async () => {
+  const {DEFAULT_PREFERENCES,MAX_SLOPE_PCT,updateNeeds,toggleProfile} = await server.ssrLoadModule('/src/data/profiles.ts');
+  const custom=toggleProfile(DEFAULT_PREFERENCES,'manual_wheelchair');
+  const noWheelchair=updateNeeds(custom,{wheelchair_required:false});
+  assert.equal(noWheelchair.no_stairs,true);
+  assert.equal(noWheelchair.max_grade_pct,7);
+  const stairsAllowed=updateNeeds(noWheelchair,{no_stairs:false});
+  assert.equal(stairsAllowed.wheelchair_required,false);
+  assert.equal(stairsAllowed.no_stairs,false);
+  assert.equal(stairsAllowed.max_grade_pct,MAX_SLOPE_PCT);
+  assert.equal(MAX_SLOPE_PCT,12);
+  assert.equal(updateNeeds(stairsAllowed,{max_grade_pct:6}).max_grade_pct,6);
+  assert.equal(updateNeeds(stairsAllowed,{avoid_rough_surfaces:false,max_grade_pct:8}).max_grade_pct,8);
+  const wheelchair=updateNeeds(stairsAllowed,{wheelchair_required:true});
+  assert.equal(wheelchair.no_stairs,true);
+  assert.equal(wheelchair.max_grade_pct,7);
+  assert.equal(updateNeeds(wheelchair,{no_stairs:false}).max_grade_pct,7);
+  // Switching off wheelchair last also works for restored/custom preferences.
+  assert.equal(updateNeeds({...custom,no_stairs:false},{wheelchair_required:false}).max_grade_pct,12);
+});
+
+test('enabling any accessibility option restores the previous slope after allowing stairs', async () => {
+  const {DEFAULT_PREFERENCES,updateNeeds} = await server.ssrLoadModule('/src/data/profiles.ts');
+  const relaxed={...DEFAULT_PREFERENCES,mobility_preset:'custom',wheelchair_required:false,no_stairs:false,max_grade_pct:12};
+  for (const setting of ['wheelchair_required','no_stairs','handrails_required','avoid_rough_surfaces',
+    'prefer_indoor','need_automatic_door','need_accessible_restroom','avoid_construction','minimize_crossings']) {
+    const before={...relaxed,[setting]:false};
+    assert.equal(updateNeeds(before,{[setting]:true},7).max_grade_pct,7,setting);
+    assert.equal(updateNeeds(before,{[setting]:true},6).max_grade_pct,6,setting);
+  }
+  assert.equal(updateNeeds({...relaxed,mobility_preset:'power_wheelchair'},{wheelchair_required:true}).max_grade_pct,8.3);
+  assert.equal(updateNeeds(relaxed,{no_stairs:true}).max_grade_pct,7);
+  assert.equal(updateNeeds(relaxed,{no_stairs:true,max_grade_pct:4},7).max_grade_pct,4);
+  assert.equal(updateNeeds(relaxed,{max_grade_pct:10},7).max_grade_pct,10);
+  assert.equal(updateNeeds({...relaxed,prefer_indoor:true},{prefer_indoor:false},6).max_grade_pct,12);
+});

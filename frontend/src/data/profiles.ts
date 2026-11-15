@@ -1,5 +1,7 @@
 import { MobilityProfile, UserPreferences } from '../types';
 
+export const MAX_SLOPE_PCT = 12;
+
 export interface ProfileOption {
   id: MobilityProfile;
   label: string;
@@ -67,6 +69,29 @@ export const PROFILES: ProfileOption[] = [
 export function applyProfile(current: UserPreferences, id: MobilityProfile): UserPreferences {
   const p = PROFILES.find((x) => x.id === id);
   return { ...current, ...(p?.prefs ?? {}), mobility_preset: id };
+}
+
+/** Clearing a preset keeps the individual controls available as custom needs. */
+export function toggleProfile(current: UserPreferences, id: MobilityProfile): UserPreferences {
+  return current.mobility_preset === id
+    ? {...current, mobility_preset: 'custom'}
+    : applyProfile(current, id);
+}
+
+/** Restore the user's slope when enabling accessibility after the automatic 12% setting. */
+export function updateNeeds(current: UserPreferences, patch: Partial<UserPreferences>, previousSlope?: number): UserPreferences {
+  const next = {...current, ...patch};
+  if (patch.wheelchair_required === true) next.no_stairs = true;
+  const enabling = Object.entries(patch).some(([key, value]) => value === true
+    && current[key as keyof UserPreferences] !== true);
+  if (patch.max_grade_pct !== undefined) return next;
+  if (enabling) {
+    next.max_grade_pct = previousSlope
+      ?? PROFILES.find(profile => profile.id === current.mobility_preset)?.prefs.max_grade_pct
+      ?? BASE.max_grade_pct;
+  } else if ((patch.wheelchair_required === false || patch.no_stairs === false)
+      && !next.wheelchair_required && !next.no_stairs) next.max_grade_pct = MAX_SLOPE_PCT;
+  return next;
 }
 
 export const DEFAULT_PREFERENCES: UserPreferences = applyProfile(BASE, 'manual_wheelchair');

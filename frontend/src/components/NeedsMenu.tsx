@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Accessibility,
   ArrowRightLeft,
@@ -12,8 +12,8 @@ import {
   Umbrella,
   Waves
 } from 'lucide-react';
-import type { MobilityProfile, UserPreferences } from '../types';
-import { applyProfile, needsSummary, PROFILES, profileLabel } from '../data/profiles';
+import type { UserPreferences } from '../types';
+import { applyProfile, MAX_SLOPE_PCT, needsSummary, PROFILES, profileLabel, toggleProfile, updateNeeds } from '../data/profiles';
 import { parseNaturalLanguageQuery } from '../services/geminiService';
 import { cx, Switch } from './ui';
 
@@ -33,7 +33,14 @@ function isEdited(p: UserPreferences): boolean {
 export function NeedsMenu({ prefs, onChange, open, onToggle }: Props) {
   const [text, setText] = useState('');
   const [notice, setNotice] = useState<string | null>(null);
-  const set = (patch: Partial<UserPreferences>) => onChange({ ...prefs, ...patch });
+  const previousSlope = useRef(PROFILES.find(p => p.id === prefs.mobility_preset)?.prefs.max_grade_pct ?? 7);
+  useEffect(() => {
+    if (prefs.max_grade_pct !== MAX_SLOPE_PCT) previousSlope.current = prefs.max_grade_pct;
+  }, [prefs.max_grade_pct]);
+  const set = (patch: Partial<UserPreferences>) => {
+    if (patch.max_grade_pct !== undefined) previousSlope.current = patch.max_grade_pct;
+    onChange(updateNeeds(prefs, patch, previousSlope.current));
+  };
   const chips = needsSummary(prefs);
   const stairsBlocked = prefs.wheelchair_required || prefs.no_stairs;
 
@@ -44,7 +51,7 @@ export function NeedsMenu({ prefs, onChange, open, onToggle }: Props) {
       return;
     }
     const base = parsed.mobility_preset ? applyProfile(prefs, parsed.mobility_preset) : prefs;
-    const next = { ...base, ...parsed };
+    const next = parsed.mobility_preset ? { ...base, ...parsed } : updateNeeds(base, parsed, previousSlope.current);
     onChange(next);
     setNotice(`Set to ${profileLabel(next.mobility_preset).toLowerCase()} · ${needsSummary(next).slice(1).join(' · ')}`);
     setText('');
@@ -97,16 +104,15 @@ export function NeedsMenu({ prefs, onChange, open, onToggle }: Props) {
 
           <fieldset>
             <legend className="eyebrow mb-2 px-1">I get around with</legend>
-            <div className="grid grid-cols-2 gap-1.5" role="radiogroup">
+            <div className="grid grid-cols-2 gap-1.5" role="group" aria-label="Mobility presets">
               {PROFILES.map((p) => {
                 const on = prefs.mobility_preset === p.id;
                 return (
                   <button
                     key={p.id}
                     type="button"
-                    role="radio"
-                    aria-checked={on}
-                    onClick={() => onChange(applyProfile(prefs, p.id as MobilityProfile))}
+                    aria-pressed={on}
+                    onClick={() => onChange(toggleProfile(prefs, p.id))}
                     className={cx(
                       'rounded-2xl px-3 py-2.5 text-left transition duration-200 ease-soft',
                       on ? 'bg-ink text-white shadow-float' : 'bg-white text-ink shadow-ring hover:shadow-float'
@@ -118,6 +124,7 @@ export function NeedsMenu({ prefs, onChange, open, onToggle }: Props) {
                 );
               })}
             </div>
+            <p className="mt-2 px-1 text-xs text-ink-3">Tap the selected preset again to use Custom needs. Your settings stay available below.</p>
           </fieldset>
 
           <div className="rounded-2xl bg-white px-3.5 py-3 shadow-ring">
@@ -131,7 +138,7 @@ export function NeedsMenu({ prefs, onChange, open, onToggle }: Props) {
               id="max-slope"
               type="range"
               min={2}
-              max={12}
+              max={MAX_SLOPE_PCT}
               step={0.5}
               value={prefs.max_grade_pct}
               onChange={(e) => set({ max_grade_pct: parseFloat(e.target.value) })}
@@ -143,7 +150,7 @@ export function NeedsMenu({ prefs, onChange, open, onToggle }: Props) {
               <span className={cx(prefs.max_grade_pct <= 5 && 'text-go-ink font-medium')}>5% ADA walkway</span>
               <span className={cx(prefs.max_grade_pct > 8.33 && 'text-stop-ink font-medium')}>8.3% ramp max</span>
             </div>
-            <p className="mt-2 text-xs text-ink-3">The slope limit also applies to stairs when you allow them.</p>
+            <p className="mt-2 text-xs text-ink-3">Turning off both wheelchair and stair avoidance sets this to {MAX_SLOPE_PCT}%. Turning an accessibility option back on restores your previous slope. You can also adjust it here.</p>
           </div>
 
           <div className="rounded-2xl bg-white px-3.5 py-1 shadow-ring divide-y divide-hairline">
@@ -152,7 +159,7 @@ export function NeedsMenu({ prefs, onChange, open, onToggle }: Props) {
               label="Wheelchair required"
               hint="Blocks stairs and raised kerbs; slope limit is strict"
               checked={prefs.wheelchair_required}
-              onChange={(v) => set({ wheelchair_required: v, no_stairs: v ? true : prefs.no_stairs })}
+              onChange={(v) => set({ wheelchair_required: v })}
             />
             <Switch
               icon={<Footprints className="h-4 w-4" />}
