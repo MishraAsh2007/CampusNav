@@ -84,11 +84,13 @@
           "source": "On-site check by the team, 2026-11-14: the door on North Pleasant St (you face west on entering, photo taken) opens straight onto floor 2, with an elevator immediately to the right. The ArcGIS east elevator is 2 m from this door.",
           "replaces_portal": "ilc-portal-west",
           "connects_to": {
-            "node": "ilc-elev-east-f2",
-            "length_m": 3.0,
-            "source": "Elevator is immediately to the right of the door (team, 2026-11-14)."
+            "node": "f2-lobby-se",
+            "length_m": 4.3,
+            "source": "Door position on the traced floor plan, to the lobby it opens onto."
           },
-          "name": "Southeast door (North Pleasant St)"
+          "name": "Southeast door (North Pleasant St)",
+          "x": 1141,
+          "y": 891
         },
         "ilc-sw": {
           "floor": "2",
@@ -99,11 +101,13 @@
           "source": "On-site check by the team, 2026-11-14 (photo): glass door onto the paved plaza between the ILC and Du Bois (the Du Bois tower is reflected behind the photographer). No stairs; opens onto floor 2.",
           "replaces_portal": "ilc-portal-south",
           "connects_to": {
-            "node": "ilc-junction-f2",
-            "length_m": 19.7,
-            "source": "Length of the scraper map's south-door corridor to the main junction (the replaced portal's)."
+            "node": "f2-lobby-w",
+            "length_m": 8.4,
+            "source": "Door position on the traced floor plan, to the lobby it opens onto."
           },
-          "name": "Southwest door (plaza facing Du Bois)"
+          "name": "Southwest door (plaza facing Du Bois)",
+          "x": 504,
+          "y": 949
         },
         "ilc-nw": {
           "floor": "2",
@@ -112,7 +116,14 @@
           "lng": -72.526436,
           "step_free_approach": false,
           "approach": "footbridge from the Campus Center / Hotel UMass side",
-          "source": "On-site check by the team, 2026-11-14 (photo): you face southeast on entering; reached by a footbridge from the Campus Center / Hotel UMass, spanning ground ~7 m below. The door is level with floor 2, but a wheelchair user can only reach the bridge through Hotel UMass, so it is not a practical step-free entrance from outdoors."
+          "source": "On-site check by the team, 2026-11-14 (photo): you face southeast on entering; reached by a footbridge from the Campus Center / Hotel UMass, spanning ground ~7 m below. The door is level with floor 2, but a wheelchair user can only reach the bridge through Hotel UMass, so it is not a practical step-free entrance from outdoors.",
+          "x": 370,
+          "y": 434,
+          "connects_to": {
+            "node": "f2-lobby-n",
+            "length_m": 11.6,
+            "source": "Door position on the traced floor plan, to the lobby it opens onto."
+          }
         },
         "_note": "Doors are matched by location. routing-scraper's ILC map has two portals on floor 1, ilc-portal-south (4.6 m from ilc-sw) and ilc-portal-west (7.6 m from ilc-se), taken from ArcGIS entrance points that carry no floor. The on-site check found those two doors open onto floor 2, so ilc-sw and ilc-se replace them. The ILC's real floor-1 doors are the two vestibules on the north wing's glass wall (ilc-north-floor1, ilc-west-floor1); ground there is ~65 m, vs 69.5-71.5 m at the floor-2 doors (USGS 3DEP). Neither floor-1 door is in the scraper map or the frontend's building data.",
         "_unchecked": "ilc-ne (push-button, possibly a wheelchair exit) is left out until someone checks it.",
@@ -125,11 +136,13 @@
           "approach": "level paved walkway at ground level; the footbridge to the Campus Center rises on the left as you exit",
           "source": "On-site photo by the team, 2026-11-14 (looking out from this door: Campus Center ahead, bridge on the left, flat walkway to the right), matched to the floor-1 plan's door vestibule at the north end of the north wing. Position is read off the plan (about +/-3 m). Door threshold not checked.",
           "connects_to": {
-            "node": "ilc-junction-f1",
-            "length_m": 71.0,
-            "source": "Straight-line pixel distance on the floor-1 plan (475 px x 0.15 m/px); the real corridor path is not traced."
+            "node": "f1-lobby-n",
+            "length_m": 6.1,
+            "source": "Door position on the traced floor plan, to the lobby it opens onto."
           },
-          "name": "North door (ground level)"
+          "name": "North door (ground level)",
+          "x": 470,
+          "y": 385
         },
         "ilc-west-floor1": {
           "floor": "1",
@@ -139,58 +152,744 @@
           "step_free_approach": null,
           "source": "Team member reports a second floor-1 door on the west side of the north wing. The floor-1 plan shows a vestibule there (N199C) whose doors face west; the team member remembers it facing north. Floor and position come from the plan; facing direction and step-free approach are unconfirmed (the plan also shows an exterior stair just south of it).",
           "connects_to": {
-            "node": "ilc-elev-west-f1",
-            "length_m": 35.0,
-            "source": "Pixel distance on the floor-1 plan (235 px x 0.15 m/px); path not traced."
+            "node": "f1-lobby-w",
+            "length_m": 5.4,
+            "source": "Door position on the traced floor plan, to the lobby it opens onto."
           },
-          "name": "West door (ground level)"
+          "name": "West door (ground level)",
+          "x": 455,
+          "y": 717
         }
       },
       "elevators": {
-        "car_count": 3,
+        "car_count": 4,
         "verified": true,
         "cars": [
           {
-            "id": "ilc-elevator-east",
-            "label": "East elevator (beside the North Pleasant St door)",
-            "near_entrance": "ilc-se",
-            "lat": 42.3908924,
-            "lng": -72.5254216,
-            "gis_marker": true
-          },
-          {
             "id": "ilc-elevator-core-a",
-            "label": "Core elevator A (next to core-b)",
-            "lat": 42.390955,
-            "lng": -72.525973,
-            "gis_marker": false
+            "label": "Elevator 1 (core pair, left)",
+            "lat": 42.3909512,
+            "lng": -72.5259742,
+            "gis_marker": false,
+            "number": 1
           },
           {
             "id": "ilc-elevator-core-b",
-            "label": "Core elevator B (next to core-a)",
-            "lat": 42.390955,
-            "lng": -72.525973,
-            "gis_marker": false
+            "label": "Elevator 2 (core pair, right)",
+            "lat": 42.3909512,
+            "lng": -72.525942,
+            "gis_marker": false,
+            "number": 2
+          },
+          {
+            "id": "ilc-elevator-east",
+            "label": "Elevator 3 (by the North Pleasant St door)",
+            "near_entrance": "ilc-se",
+            "lat": 42.3908924,
+            "lng": -72.5254216,
+            "gis_marker": true,
+            "number": 3
+          },
+          {
+            "id": "ilc-elevator-north",
+            "label": "Elevator 4 (by N155)",
+            "lat": 42.3913632,
+            "lng": -72.5262317,
+            "gis_marker": false,
+            "number": 4
           }
         ],
         "gis_note": "UMass GIS puts one marker per elevator lobby, not per car: the ILC's 'west' marker (42.3908828, -72.5259219) stands for the adjacent pair, and Du Bois's single marker stands for its five cars. Do not read a car count from GIS markers.",
-        "source": "Team member, on site 2026-11-14 (corrected from an earlier 'two'): three elevators, two right next to each other and one beside the North Pleasant St entrance. Matches the frontend's mockBuildings.ts (3) and the floor-1 plan (a pair of shaft symbols in the south wing's core, one at the east end). Core pair position is read off the plan (+/-5 m). Which car is out of service today is unknown.",
+        "source": "Team member, on site 2026-11-14 (corrected from an earlier 'two'): three elevators, two right next to each other and one beside the North Pleasant St entrance. Matches the frontend's mockBuildings.ts (3) and the floor-1 plan (a pair of shaft symbols in the south wing's core, one at the east end). Core pair position is read off the plan (+/-5 m). Which car is out of service today is unknown. Corrected to four on 2026-11-14: the floor plans show a fourth elevator at the north end (by N155 / N255), which the team then confirmed.",
         "banks": {
           "ilc-elevator-east": {
-            "label": "East elevator (by the North Pleasant St door)",
+            "label": "Elevator 3 (by the North Pleasant St door)",
             "cars": [
               "ilc-elevator-east"
             ]
           },
           "ilc-elevator-west": {
-            "label": "Core elevators (the adjacent pair)",
+            "label": "Elevators 1 and 2 (core pair, opposite S140)",
             "cars": [
               "ilc-elevator-core-a",
               "ilc-elevator-core-b"
             ]
+          },
+          "ilc-elevator-north": {
+            "label": "Elevator 4 (by N155)",
+            "cars": [
+              "ilc-elevator-north"
+            ]
           }
         },
-        "banks_note": "Maps the scraper map's elevator assets (east, west) onto cars. The map's 'west' elevator is the adjacent core pair."
+        "banks_note": "Maps the scraper map's elevator assets (east, west) onto cars. The map's 'west' elevator is the adjacent core pair.",
+        "plan_note": "Floor plans: the adjacent pair in the south wing's core (plan px ~726,826), one at the east end (~1110,840) beside the SE door, and one at the north end (~522,410) by N155.",
+        "numbering": "Team, 2026-11-14: 1 and 2 are the adjacent pair opposite S140 (1 on the left, 2 on the right when facing them), 3 is by the North Pleasant St door, 4 is by N155."
+      },
+      "room_floor_rule": {
+        "pattern": "\\b[NS](\\d)\\d\\d\\b",
+        "source": "Team, 2026-11-14: in the ILC the first digit of a room number is its floor (N151 is on floor 1, 2xx on floor 2, 3xx on floor 3). The scraper map's N151 'entryway' sits on floor 2, the only one of its 16 rooms that breaks the rule."
+      },
+      "drop_floors": [
+        "4"
+      ],
+      "drop_floors_note": "Team, 2026-11-14: the ILC has no public 4th floor.",
+      "traced_floors": {
+        "_source": "Traced by hand from the public scaled ArcGIS floor plans (Integrated_Learning_Center_First_Floor_Scaled, Integrated_Learning_Center_Second_Floor_Reup), stitched at web-mercator level 20 into the same 1536x1280 pixel frame the scraper map uses. Room points are at or next to each room's door on the corridor, read from the plan; corridors follow the plan's main halls. Accuracy is a few metres. Door clearances are not checked. The team confirmed the N140 commons (with the café) and the 2nd-floor west gallery are walkable.",
+        "m_per_px": 0.11026,
+        "replaces": "all non-elevator nodes and edges the scraper map has on these floors",
+        "1": {
+          "nodes": {
+            "f1-main-w": {
+              "x": 650,
+              "y": 857,
+              "kind": "junction",
+              "label": "Main corridor, 1st Floor"
+            },
+            "f1-main-1": {
+              "x": 726,
+              "y": 855,
+              "kind": "junction",
+              "label": "Main corridor, 1st Floor"
+            },
+            "f1-main-2": {
+              "x": 745,
+              "y": 854,
+              "kind": "junction",
+              "label": "Main corridor, 1st Floor"
+            },
+            "f1-main-3": {
+              "x": 772,
+              "y": 851,
+              "kind": "junction",
+              "label": "Main corridor, 1st Floor"
+            },
+            "f1-main-s122": {
+              "x": 850,
+              "y": 848,
+              "kind": "junction",
+              "label": "Main corridor, 1st Floor"
+            },
+            "f1-main-4": {
+              "x": 905,
+              "y": 845,
+              "kind": "junction",
+              "label": "Main corridor, 1st Floor"
+            },
+            "f1-main-s112": {
+              "x": 1020,
+              "y": 840,
+              "kind": "junction",
+              "label": "Main corridor, 1st Floor"
+            },
+            "f1-main-5": {
+              "x": 1057,
+              "y": 838,
+              "kind": "junction",
+              "label": "Main corridor, 1st Floor"
+            },
+            "f1-main-e": {
+              "x": 1100,
+              "y": 836,
+              "kind": "junction",
+              "label": "Main corridor, 1st Floor (east end)"
+            },
+            "f1-core-n": {
+              "x": 645,
+              "y": 705,
+              "kind": "junction",
+              "label": "Corridor by N121, 1st Floor"
+            },
+            "f1-core-mid": {
+              "x": 650,
+              "y": 760,
+              "kind": "junction",
+              "label": "Corridor by the restrooms, 1st Floor"
+            },
+            "f1-nw": {
+              "x": 560,
+              "y": 715,
+              "kind": "junction",
+              "label": "Passage north of N111, 1st Floor"
+            },
+            "f1-lobby-w": {
+              "x": 495,
+              "y": 745,
+              "kind": "junction",
+              "label": "West lobby (N199B), 1st Floor"
+            },
+            "f1-wcorr": {
+              "x": 505,
+              "y": 770,
+              "kind": "junction",
+              "label": "West corridor, 1st Floor"
+            },
+            "f1-sw": {
+              "x": 510,
+              "y": 880,
+              "kind": "junction",
+              "label": "Corridor by N101, 1st Floor"
+            },
+            "f1-s-mid": {
+              "x": 545,
+              "y": 880,
+              "kind": "junction",
+              "label": "Corridor by N101, 1st Floor"
+            },
+            "f1-lobby-n": {
+              "x": 470,
+              "y": 440,
+              "kind": "junction",
+              "label": "North lobby (N199G), 1st Floor"
+            },
+            "ilc-f1-n140": {
+              "x": 470,
+              "y": 600,
+              "kind": "room",
+              "label": "ILC N140 (commons and café)",
+              "aliases": [
+                "commons",
+                "café",
+                "cafe",
+                "lobby",
+                "ilc cafe",
+                "ilc café"
+              ]
+            },
+            "ilc-f1-n101": {
+              "x": 545,
+              "y": 905,
+              "kind": "room",
+              "label": "ILC N101"
+            },
+            "ilc-f1-n111": {
+              "x": 530,
+              "y": 765,
+              "kind": "room",
+              "label": "ILC N111"
+            },
+            "ilc-f1-n151": {
+              "x": 655,
+              "y": 648,
+              "kind": "room",
+              "label": "ILC N151"
+            },
+            "ilc-f1-n155": {
+              "x": 545,
+              "y": 440,
+              "kind": "room",
+              "label": "ILC N155"
+            },
+            "ilc-f1-s110": {
+              "x": 1057,
+              "y": 852,
+              "kind": "room",
+              "label": "ILC S110"
+            },
+            "ilc-f1-s112": {
+              "x": 1020,
+              "y": 848,
+              "kind": "room",
+              "label": "ILC S112"
+            },
+            "ilc-f1-s120": {
+              "x": 905,
+              "y": 866,
+              "kind": "room",
+              "label": "ILC S120"
+            },
+            "ilc-f1-s122": {
+              "x": 850,
+              "y": 858,
+              "kind": "room",
+              "label": "ILC S122"
+            },
+            "ilc-f1-s131": {
+              "x": 772,
+              "y": 832,
+              "kind": "room",
+              "label": "ILC S131"
+            },
+            "ilc-f1-s140": {
+              "x": 745,
+              "y": 885,
+              "kind": "room",
+              "label": "ILC S140"
+            },
+            "ilc-f1-restrooms": {
+              "x": 668,
+              "y": 760,
+              "kind": "room",
+              "label": "Restrooms, 1st Floor",
+              "aliases": [
+                "restrooms",
+                "restroom",
+                "bathroom",
+                "bathrooms"
+              ]
+            },
+            "ilc-elev-north-f1": {
+              "x": 522,
+              "y": 411,
+              "kind": "elevator_stop",
+              "label": "North Elevator, 1st Floor"
+            }
+          },
+          "elevator_stops": {
+            "ilc-elev-west-f1": {
+              "x": 726,
+              "y": 838
+            },
+            "ilc-elev-east-f1": {
+              "x": 1110,
+              "y": 839
+            }
+          },
+          "edges": [
+            [
+              "f1-lobby-n",
+              "ilc-f1-n155"
+            ],
+            [
+              "f1-lobby-n",
+              "ilc-f1-n140"
+            ],
+            [
+              "ilc-f1-n140",
+              "f1-lobby-w"
+            ],
+            [
+              "f1-lobby-w",
+              "f1-nw"
+            ],
+            [
+              "f1-nw",
+              "f1-core-n"
+            ],
+            [
+              "f1-lobby-w",
+              "f1-wcorr"
+            ],
+            [
+              "f1-wcorr",
+              "ilc-f1-n111"
+            ],
+            [
+              "f1-wcorr",
+              "f1-sw"
+            ],
+            [
+              "f1-sw",
+              "f1-s-mid"
+            ],
+            [
+              "f1-s-mid",
+              "ilc-f1-n101"
+            ],
+            [
+              "f1-s-mid",
+              "f1-main-w"
+            ],
+            [
+              "f1-core-n",
+              "ilc-f1-n151"
+            ],
+            [
+              "f1-core-n",
+              "f1-core-mid"
+            ],
+            [
+              "f1-core-mid",
+              "ilc-f1-restrooms"
+            ],
+            [
+              "f1-core-mid",
+              "f1-main-w"
+            ],
+            [
+              "f1-main-w",
+              "f1-main-1"
+            ],
+            [
+              "f1-main-1",
+              "f1-main-2"
+            ],
+            [
+              "f1-main-2",
+              "f1-main-3"
+            ],
+            [
+              "f1-main-3",
+              "f1-main-s122"
+            ],
+            [
+              "f1-main-s122",
+              "f1-main-4"
+            ],
+            [
+              "f1-main-4",
+              "f1-main-s112"
+            ],
+            [
+              "f1-main-s112",
+              "f1-main-5"
+            ],
+            [
+              "f1-main-5",
+              "f1-main-e"
+            ],
+            [
+              "f1-main-1",
+              "ilc-elev-west-f1"
+            ],
+            [
+              "f1-main-2",
+              "ilc-f1-s140"
+            ],
+            [
+              "f1-main-3",
+              "ilc-f1-s131"
+            ],
+            [
+              "f1-main-s122",
+              "ilc-f1-s122"
+            ],
+            [
+              "f1-main-4",
+              "ilc-f1-s120"
+            ],
+            [
+              "f1-main-s112",
+              "ilc-f1-s112"
+            ],
+            [
+              "f1-main-5",
+              "ilc-f1-s110"
+            ],
+            [
+              "f1-main-e",
+              "ilc-elev-east-f1"
+            ],
+            [
+              "f1-lobby-n",
+              "ilc-elev-north-f1"
+            ]
+          ]
+        },
+        "2": {
+          "nodes": {
+            "f2-main-w": {
+              "x": 645,
+              "y": 852,
+              "kind": "junction",
+              "label": "Main corridor, 2nd Floor"
+            },
+            "f2-main-a": {
+              "x": 690,
+              "y": 851,
+              "kind": "junction",
+              "label": "Main corridor, 2nd Floor"
+            },
+            "f2-main-1": {
+              "x": 724,
+              "y": 850,
+              "kind": "junction",
+              "label": "Main corridor, 2nd Floor"
+            },
+            "f2-main-s275": {
+              "x": 775,
+              "y": 848,
+              "kind": "junction",
+              "label": "Main corridor, 2nd Floor"
+            },
+            "f2-main-b": {
+              "x": 830,
+              "y": 845,
+              "kind": "junction",
+              "label": "Main corridor, 2nd Floor"
+            },
+            "f2-main-c": {
+              "x": 895,
+              "y": 842,
+              "kind": "junction",
+              "label": "Main corridor, 2nd Floor"
+            },
+            "f2-main-d": {
+              "x": 940,
+              "y": 838,
+              "kind": "junction",
+              "label": "Main corridor, 2nd Floor"
+            },
+            "f2-main-e": {
+              "x": 1095,
+              "y": 830,
+              "kind": "junction",
+              "label": "Main corridor, 2nd Floor (east end)"
+            },
+            "f2-lobby-se": {
+              "x": 1102,
+              "y": 890,
+              "kind": "junction",
+              "label": "Southeast lobby (S299B), 2nd Floor"
+            },
+            "f2-pass": {
+              "x": 605,
+              "y": 872,
+              "kind": "junction",
+              "label": "Passage by N211, 2nd Floor"
+            },
+            "f2-lobby-w": {
+              "x": 560,
+              "y": 897,
+              "kind": "junction",
+              "label": "West lobby (N299B), 2nd Floor"
+            },
+            "f2-wcorr-s": {
+              "x": 515,
+              "y": 870,
+              "kind": "junction",
+              "label": "West corridor, 2nd Floor"
+            },
+            "f2-wcorr-n": {
+              "x": 520,
+              "y": 725,
+              "kind": "junction",
+              "label": "West corridor, 2nd Floor"
+            },
+            "f2-core-n": {
+              "x": 635,
+              "y": 705,
+              "kind": "junction",
+              "label": "Corridor north of the restrooms, 2nd Floor"
+            },
+            "f2-core-mid": {
+              "x": 638,
+              "y": 760,
+              "kind": "junction",
+              "label": "Corridor by the restrooms, 2nd Floor"
+            },
+            "f2-strip": {
+              "x": 465,
+              "y": 600,
+              "kind": "junction",
+              "label": "West gallery, 2nd Floor"
+            },
+            "f2-lobby-n": {
+              "x": 475,
+              "y": 437,
+              "kind": "junction",
+              "label": "North lobby (N299G), 2nd Floor"
+            },
+            "ilc-f2-n201": {
+              "x": 560,
+              "y": 955,
+              "kind": "room",
+              "label": "ILC N201"
+            },
+            "ilc-f2-n211": {
+              "x": 595,
+              "y": 855,
+              "kind": "room",
+              "label": "ILC N211"
+            },
+            "ilc-f2-n255": {
+              "x": 555,
+              "y": 452,
+              "kind": "room",
+              "label": "ILC N255"
+            },
+            "ilc-f2-s211": {
+              "x": 940,
+              "y": 808,
+              "kind": "room",
+              "label": "ILC S211"
+            },
+            "ilc-f2-s220": {
+              "x": 895,
+              "y": 862,
+              "kind": "room",
+              "label": "ILC S220"
+            },
+            "ilc-f2-s231": {
+              "x": 830,
+              "y": 822,
+              "kind": "room",
+              "label": "ILC S231"
+            },
+            "ilc-f2-s240": {
+              "x": 690,
+              "y": 880,
+              "kind": "room",
+              "label": "ILC S240"
+            },
+            "ilc-f2-s275": {
+              "x": 775,
+              "y": 812,
+              "kind": "room",
+              "label": "ILC S275"
+            },
+            "ilc-f2-restrooms": {
+              "x": 650,
+              "y": 760,
+              "kind": "room",
+              "label": "Restrooms, 2nd Floor",
+              "aliases": [
+                "restrooms",
+                "restroom",
+                "bathroom",
+                "bathrooms"
+              ]
+            },
+            "ilc-elev-north-f2": {
+              "x": 520,
+              "y": 405,
+              "kind": "elevator_stop",
+              "label": "North Elevator, 2nd Floor"
+            }
+          },
+          "elevator_stops": {
+            "ilc-elev-west-f2": {
+              "x": 724,
+              "y": 836
+            },
+            "ilc-elev-east-f2": {
+              "x": 1110,
+              "y": 843
+            }
+          },
+          "edges": [
+            [
+              "f2-lobby-w",
+              "ilc-f2-n201"
+            ],
+            [
+              "f2-lobby-w",
+              "f2-pass"
+            ],
+            [
+              "f2-pass",
+              "ilc-f2-n211"
+            ],
+            [
+              "f2-pass",
+              "f2-main-w"
+            ],
+            [
+              "f2-lobby-w",
+              "f2-wcorr-s"
+            ],
+            [
+              "f2-wcorr-s",
+              "f2-wcorr-n"
+            ],
+            [
+              "f2-wcorr-n",
+              "f2-core-n"
+            ],
+            [
+              "f2-wcorr-n",
+              "f2-strip"
+            ],
+            [
+              "f2-strip",
+              "f2-lobby-n"
+            ],
+            [
+              "f2-lobby-n",
+              "ilc-f2-n255"
+            ],
+            [
+              "f2-core-n",
+              "f2-core-mid"
+            ],
+            [
+              "f2-core-mid",
+              "ilc-f2-restrooms"
+            ],
+            [
+              "f2-core-mid",
+              "f2-main-w"
+            ],
+            [
+              "f2-main-w",
+              "f2-main-a"
+            ],
+            [
+              "f2-main-a",
+              "f2-main-1"
+            ],
+            [
+              "f2-main-1",
+              "f2-main-s275"
+            ],
+            [
+              "f2-main-s275",
+              "f2-main-b"
+            ],
+            [
+              "f2-main-b",
+              "f2-main-c"
+            ],
+            [
+              "f2-main-c",
+              "f2-main-d"
+            ],
+            [
+              "f2-main-d",
+              "f2-main-e"
+            ],
+            [
+              "f2-main-a",
+              "ilc-f2-s240"
+            ],
+            [
+              "f2-main-1",
+              "ilc-elev-west-f2"
+            ],
+            [
+              "f2-main-s275",
+              "ilc-f2-s275"
+            ],
+            [
+              "f2-main-b",
+              "ilc-f2-s231"
+            ],
+            [
+              "f2-main-c",
+              "ilc-f2-s220"
+            ],
+            [
+              "f2-main-d",
+              "ilc-f2-s211"
+            ],
+            [
+              "f2-main-e",
+              "ilc-elev-east-f2"
+            ],
+            [
+              "f2-main-e",
+              "f2-lobby-se"
+            ],
+            [
+              "f2-lobby-se",
+              "ilc-elev-east-f2"
+            ],
+            [
+              "f2-lobby-n",
+              "ilc-elev-north-f2"
+            ]
+          ]
+        },
+        "elevators": [
+          {
+            "asset_id": "ilc-elevator-north",
+            "stops": [
+              "ilc-elev-north-f1",
+              "ilc-elev-north-f2"
+            ],
+            "note": "Shaft drawn on the floor 1 and 2 plans; floors above 2 not confirmed."
+          }
+        ]
       }
     }
   }

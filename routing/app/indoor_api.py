@@ -97,6 +97,8 @@ def indoor_route(body: IndoorRouteRequest) -> dict[str, Any]:
         return {"status": "not_found", "building": name, "message": msg}
     if msg:
         warnings.append(msg)
+    if dest.get("approximate") and not dest.get("unmapped"):
+        warnings.append(f"{dest['label']}'s exact spot on its floor isn't surveyed; the walking distance is approximate.")
     nonpublic = (model.ov.get("non_public_floors") or {}).get(dest["floor_id"])
     if nonpublic:
         return {"status": "not_public", "building": name,
@@ -109,10 +111,11 @@ def indoor_route(body: IndoorRouteRequest) -> dict[str, Any]:
         door = ir._match_door(model, point.lat, point.lng)
         if door is None:
             warnings.append(f"That {'exit' if leaving else 'entrance'} isn't on the indoor map; using the best door instead.")
-    found = ir.find_route(model, dest["id"], door)
+    also = tuple(dest.get("alternatives") or ())
+    found = ir.find_route(model, dest["id"], door, also)
     if found is None and door is not None:
         # The chosen door may be wrong for this destination (e.g. it only reaches a floor with its elevator out).
-        alt = ir.find_route(model, dest["id"], None)
+        alt = ir.find_route(model, dest["id"], None, also)
         if alt is not None:
             warnings.append(f"No indoor route {'to' if leaving else 'from'} {door.name}; using {alt.door.name} instead.")
             found = alt
@@ -120,17 +123,20 @@ def indoor_route(body: IndoorRouteRequest) -> dict[str, Any]:
     if found is None:
         reason = "No step-free indoor route found."
         healthy = ir.build_model(key, m, [], avoid_steps, building)
-        if ir.find_route(healthy, dest["id"], None) is not None:
+        if ir.find_route(healthy, dest["id"], None, also) is not None:
             down = [b.label for b in model.banks.values() if not b.usable]
             reason = (f"{ir._floor_label(model, dest['floor_id'])} is only reachable by elevator, and "
                       f"{', '.join(down) or 'the elevators'} may be out of service right now.")
-        elif avoid_steps and ir.find_route(ir.build_model(key, m, [], False, building), dest["id"], None):
+        elif avoid_steps and ir.find_route(ir.build_model(key, m, [], False, building), dest["id"], None, also):
             reason = "The indoor map shows no step-free way to that place."
         return {"status": "no_route", "building": name, "destination": _dest_json(model, dest),
                 "message": reason, "elevators": _elevators_json(model), "warnings": warnings}
 
     if leaving:
         found = ir.Found(found.door, list(reversed(found.path)), found.total_m)
+    room_end = found.path[0] if leaving else found.path[-1]
+    if found.path and room_end != dest["id"]:  # the nearer of several same-named places
+        dest = model.nodes[room_end]
     legs, steps = ir.build_legs(model, found, dest, reverse=leaving)
     d = found.door
     if d.step_free is None or d.verified == "partial":

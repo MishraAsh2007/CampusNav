@@ -9,6 +9,7 @@ indoor-map.schema.json) and applies data/indoor_overrides.json on top:
 from __future__ import annotations
 
 import json
+import math
 import re
 from dataclasses import dataclass, field
 from typing import Any, Optional
@@ -21,6 +22,7 @@ from ..utils.geo import haversine_m, m_to_ft
 from . import overrides
 from .elevators import Assessment, assess
 
+ROOM_CODE_RX = re.compile(r"\b([ns])\s*(\d)(\d\d)\b", re.I)
 ENTRANCE_MATCH_M = 30.0        # a given outdoor door must be this close to an indoor door
 UNVERIFIED_DOOR_PENALTY_M = 150.0
 _SRC = "__entrance__"
@@ -38,7 +40,7 @@ def _tokens(s: str) -> set[str]:
 
 def load_maps() -> dict[str, dict]:
     """building_id -> indoor map dict (reloaded when a file changes)."""
-    d = config.DATA_DIR / "indoor"
+    d = config.INDOOR_MAPS_DIR
     files = [f for f in sorted(d.glob("*.json")) if not f.name.endswith(".schema.json")] if d.is_dir() else []
     sig = tuple((f.name, f.stat().st_mtime) for f in files)
     if _maps["sig"] != sig:
@@ -110,8 +112,32 @@ def _door_name(m: dict, nodes: dict, node_id: str) -> str:
 def build_model(key: str, m: dict, active: list[Closure], avoid_steps: bool,
                 building: Optional[DestinationBuilding]) -> Model:
     ov = overrides.load().get(key, {})
-    nodes = {n["id"]: dict(n) for n in m["nodes"]}
-    floors = {f["id"]: f for f in m["floors"]}
+    dropped = set(ov.get("drop_floors") or [])
+    traced = {k: v for k, v in (ov.get("traced_floors") or {}).items() if not k.startswith("_") and isinstance(v, dict)}
+    floors = {f["id"]: f for f in m["floors"] if f["id"] not in dropped}
+    nodes = {n["id"]: dict(n) for n in m["nodes"] if n["floor_id"] in floors
+             and (n["floor_id"] not in traced or n["kind"] == "elevator_stop")}
+    map_edges = [e for e in m["edges"] if e["kind"] == "elevator" or not (
+        nodes.get(e["start"], {}).get("floor_id") in traced and nodes.get(e["end"], {}).get("floor_id") in traced)]
+    scale = float((ov.get("traced_floors") or {}).get("m_per_px", 0.11))
+    for fid, spec in traced.items():
+        if fid not in floors:
+            continue
+        for nid, pos in (spec.get("elevator_stops") or {}).items():
+            if nid in nodes:
+                nodes[nid].update(x=pos["x"], y=pos["y"])
+        for nid, n in spec["nodes"].items():
+            nodes[nid] = {"id": nid, "floor_id": fid, "aliases": n.get("aliases", []), "x": n["x"], "y": n["y"],
+                          "kind": n["kind"], "label": n["label"], "source_id": "traced"}
+        for a, b in spec["edges"]:
+            length = round(math.dist((nodes[a]["x"], nodes[a]["y"]), (nodes[b]["x"], nodes[b]["y"])) * scale, 1)
+            map_edges.append({"id": f"trace-{a}-{b}", "start": a, "end": b, "kind": "corridor", "length_m": length,
+                              "step_free": True, "public_access": True, "asset_id": None})
+    for lift in (ov.get("traced_floors") or {}).get("elevators") or []:
+        stops = [s for s in lift["stops"] if s in nodes]
+        for a, b in zip(stops, stops[1:]):
+            map_edges.append({"id": f"trace-{a}-{b}", "start": a, "end": b, "kind": "elevator", "length_m": 4.0,
+                              "step_free": True, "public_access": True, "asset_id": lift["asset_id"]})
     ev = ov.get("elevators") or {}
 
     if building is None:
@@ -126,7 +152,7 @@ def build_model(key: str, m: dict, active: list[Closure], avoid_steps: bool,
     assets = {x["id"]: x for x in m.get("assets", []) if x.get("kind") == "elevator"}
     banks: dict[str, Bank] = {}
     spec_banks = ev.get("banks") or {}
-    for asset_id in {e["asset_id"] for e in m["edges"] if e["kind"] == "elevator" and e.get("asset_id")}:
+    for asset_id in {e["asset_id"] for e in map_edges if e["kind"] == "elevator" and e.get("asset_id")}:
         sb = spec_banks.get(asset_id)
         label = (sb or {}).get("label") or (assets.get(asset_id) or {}).get("label") or asset_id
         banks[asset_id] = Bank(asset_id, label, (sb or {}).get("cars"))
@@ -151,7 +177,8 @@ def build_model(key: str, m: dict, active: list[Closure], avoid_steps: bool,
         ct = d["connects_to"]
         if ct["node"] not in nodes:
             continue
-        nodes[k] = {"id": k, "label": d.get("name") or k, "floor_id": d["floor"], "kind": "entrance", "x": None, "y": None}
+        nodes[k] = {"id": k, "label": d.get("name") or k, "floor_id": d["floor"], "kind": "entrance",
+                    "x": d.get("x"), "y": d.get("y")}
         G.add_node(k)
         G.add_edge(k, ct["node"], w=float(ct["length_m"]), edge={
             "id": f"{k}-link", "start": k, "end": ct["node"], "kind": "corridor", "length_m": float(ct["length_m"]),
@@ -160,11 +187,35 @@ def build_model(key: str, m: dict, active: list[Closure], avoid_steps: bool,
         sf = d.get("step_free_approach", True)  # key absent: a door the team confirmed as an accessible entrance
         doors.append(Door(k, d.get("name") or k, k, d["floor"], d["lat"], d["lng"], sf, d.get("verified"), d.get("approach")))
 
-    for e in m["edges"]:
+    rule = ov.get("room_floor_rule")
+    if rule:
+        rx = re.compile(rule["pattern"], re.I)
+        for n in nodes.values():
+            code = rx.search(n.get("label", "")) if n["kind"] == "room" else None
+            if code and code.group(1) in floors and code.group(1) != n["floor_id"]:
+                n["floor_id"] = code.group(1)
+                n["approximate"] = True
+                n["label"] = re.sub(r",?\s*\d\w*\s+Floor entryway", "", n["label"]).strip()
+
+    def hub(fid: str) -> Optional[str]:
+        for kind in ("junction", "elevator_stop"):
+            for n in nodes.values():
+                if n["floor_id"] == fid and n["kind"] == kind:
+                    return n["id"]
+        return None
+
+    for e in map_edges:
         if e["start"] not in nodes or e["end"] not in nodes:
             continue
         if e.get("public_access") is False:
             continue
+        # A room moved to another floor hangs off that floor's corridor instead (same length, approximate).
+        for room_end, other_end in (("start", "end"), ("end", "start")):
+            moved = nodes[e[room_end]]
+            if moved.get("approximate") and nodes[e[other_end]]["floor_id"] != moved["floor_id"]:
+                h = hub(moved["floor_id"])
+                if h:
+                    e = {**e, other_end: h}
         if avoid_steps and (e["kind"] == "steps" or e.get("step_free") is False):
             continue
         w = float(e.get("length_m") or 0.0)
@@ -197,6 +248,50 @@ def _floor_by_query(floors: dict[str, dict], q: str) -> Optional[str]:
     return None
 
 
+def _room_hits(cands: list[dict], room: str) -> list[dict]:
+    want = _tokens(room) - {"room", "the"}
+    return [n for n in cands if want and want <= _tokens(n["label"] + " " + " ".join(n.get("aliases", [])))]
+
+
+def _floor_hub(model: Model, fid: str) -> Optional[dict]:
+    for kind in ("junction", "elevator_stop"):
+        for n in model.nodes.values():
+            if n["floor_id"] == fid and n["kind"] == kind:
+                return n
+    return None
+
+
+def _unmapped_place(model: Model, room: str):
+    """A room the map lacks but whose floor is known: the floor's corridor, flagged as approximate.
+
+    Two sources of floor: the building's room-number rule (ILC: N250 is on floor 2) and the override's
+    list of named places per floor (Cafe, Lobby, Restrooms on floor 1).
+    """
+    fid = None
+    label = room.strip()
+    if model.ov.get("room_floor_rule"):
+        code = ROOM_CODE_RX.search(room)
+        if code and code.group(2) in model.floors:
+            fid = code.group(2)
+            label = f"{code.group(1).upper()}{code.group(2)}{code.group(3)}"
+    if fid is None:
+        nq = _norm(re.sub(r"^\s*ilc\s+", "", room, flags=re.I))
+        for f, names in (model.ov.get("unmapped_places") or {}).items():
+            for name in names:
+                if _norm(name) == nq and f in model.floors:
+                    fid, label = f, name
+    hub = _floor_hub(model, fid) if fid else None
+    if hub is None:
+        return None
+    node = {**hub, "label": label, "approximate": True, "unmapped": True}
+    return node, (f"{label} isn't on the indoor map yet. It is on {ir_floor_label(model, fid)}, so this "
+                  "takes you to that floor's main corridor; the last walk to the door isn't shown.")
+
+
+def ir_floor_label(model: Model, fid: str) -> str:
+    return model.floors.get(fid, {}).get("label", fid)
+
+
 def resolve_destination(model: Model, room: Optional[str], floor: Optional[str], node_id: Optional[str]):
     """-> (node dict or None, message)."""
     nodes, floors = model.nodes, model.floors
@@ -207,9 +302,16 @@ def resolve_destination(model: Model, room: Optional[str], floor: Optional[str],
     if room:
         nq = _norm(room)
         exact = [n for n in cands if nq in {_norm(n["label"])} | {_norm(x) for x in n.get("aliases", [])}]
+        if floor and len(exact) > 1:
+            ff = _floor_by_query(floors, floor)
+            exact = [n for n in exact if n["floor_id"] == ff] or exact
         if exact:
-            return exact[0], ""
+            return {**exact[0], "alternatives": [n["id"] for n in exact[1:]]}, ""
         fid = _floor_by_query(floors, room)
+        if fid is None and not _room_hits(cands, room):
+            spot = _unmapped_place(model, room)
+            if spot is not None:
+                return spot
         if fid is not None:  # "2nd floor", "5": the whole floor, not a room that happens to mention it
             floor = fid
             room = None
@@ -269,8 +371,30 @@ def _match_door(model: Model, lat: float, lng: float) -> Optional[Door]:
     return best[1] if best else None
 
 
-def find_route(model: Model, target: str, door: Optional[Door]) -> Optional[Found]:
+def _placeholder_floors(model: Model) -> set[str]:
+    """Floors with neither a plan image nor a trace: their corridor geometry is made up."""
+    traced = {k for k in (model.ov.get("traced_floors") or {}) if not k.startswith("_")}
+    return {fid for fid, f in model.floors.items() if not f.get("image_url") and fid not in traced}
+
+
+def find_route(model: Model, target: str, door: Optional[Door], also: tuple = ()) -> Optional[Found]:
+    """Cheapest route from a door to ``target`` (or any of ``also``, e.g. the other floor's restrooms)."""
     G = model.G.copy()
+    targets = [t for t in (target, *also) if t in G]
+    if not targets:
+        return None
+    # A placeholder floor's corridors are only walked when the destination is on it; otherwise the router
+    # would use its made-up 3 m corridors as a shortcut between elevator banks.
+    keep = {model.nodes[t]["floor_id"] for t in targets}
+    fake = _placeholder_floors(model) - keep
+    if fake:
+        G.remove_edges_from([(a, b) for a, b, d in G.edges(data=True)
+                             if d.get("edge") and d["edge"]["kind"] != "elevator"
+                             and model.nodes[a]["floor_id"] in fake and model.nodes[b]["floor_id"] in fake])
+    _SINK = "__target__"
+    for t in targets:
+        G.add_edge(t, _SINK, w=0.0, edge=None)
+    target = _SINK
     allowed = [door] if door else model.doors
     G.add_node(_SRC)
     by_node: dict[str, Door] = {}
@@ -288,7 +412,7 @@ def find_route(model: Model, target: str, door: Optional[Door]) -> Optional[Foun
         return None
     d = by_node[path[1]]
     extra = _door_extra(d, model.avoid_steps) or 0.0
-    return Found(d, path[1:], total - extra)
+    return Found(d, path[1:-1], total - extra)
 
 
 # --------------------------------------------------------------- presentation
@@ -298,6 +422,11 @@ def _ft(m: float) -> int:
 
 def _lc(label: str) -> str:
     return label[0].lower() + label[1:] if len(label) > 1 and label[1].islower() else label
+
+
+def _the(label: str) -> str:
+    """'Elevator 3 (...)' reads as a name; 'Core elevators (...)' needs 'the'."""
+    return label if label.startswith("Elevator") else "the " + _lc(label)
 
 
 def _floor_label(model: Model, fid: str) -> str:
@@ -344,7 +473,7 @@ def build_legs(model: Model, found: Found, dest: dict, reverse: bool = False) ->
                    "to_floor_label": _floor_label(model, b["floor_id"]), "length_m": round(length, 1),
                    "points": []}
             legs.append(leg)
-            steps.append(f"Take the {_lc(label)} "
+            steps.append(f"Take {_the(label)} "
                          f"from {leg['from_floor_label']} to {leg['to_floor_label']}.")
             i = j
             continue
@@ -370,7 +499,7 @@ def build_legs(model: Model, found: Found, dest: dict, reverse: bool = False) ->
                     nxt = G[path[j]][path[j + 1]]["edge"]
                     bank_next = model.banks.get(nxt.get("asset_id"))
                 if bank_next:
-                    target = "the " + _lc(bank_next.label)
+                    target = _the(bank_next.label)
                 steps.append(f"Walk about {_ft(length)} ft to {target}.")
             elif path[j] != path[-1]:
                 steps.append(f"Walk about {_ft(length)} ft along {_floor_label(model, fid)}.")
