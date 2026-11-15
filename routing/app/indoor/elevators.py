@@ -142,10 +142,14 @@ def assess(b: DestinationBuilding, active: list[Closure]) -> Assessment:
                     car.out = True
         elif total <= 1:
             all_out = True
+        elif c.scope == "one":
+            # "One car" notices say nothing about which lobby; their point is just where the notice is pinned.
+            unattributed += 1
         elif near_car and c.radius_m <= BANK_RADIUS_MAX_M:
             # Pointing at one lobby: take out a car there if exactly one is still free.
             nearest = min(near_car, key=lambda k: haversine_m(c.lat, c.lon, k.lat, k.lng))
-            lobby = [k for k in cars if k.bank == nearest.bank]
+            group = next((ids for ids in banks.values() if nearest.id in ids), None)
+            lobby = [k for k in cars if k.id in group] if group else [k for k in cars if k.bank == nearest.bank]
             free = [k for k in lobby if not k.out]
             if len(free) == 1:
                 free[0].out = True

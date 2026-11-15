@@ -166,60 +166,65 @@
         "verified": true,
         "cars": [
           {
-            "id": "ilc-elevator-east",
-            "label": "East elevator (beside the North Pleasant St door)",
-            "near_entrance": "ilc-se",
-            "lat": 42.3908924,
-            "lng": -72.5254216,
-            "gis_marker": true
-          },
-          {
             "id": "ilc-elevator-core-a",
-            "label": "Core elevator A (next to core-b)",
-            "lat": 42.390955,
-            "lng": -72.525973,
-            "gis_marker": false
+            "label": "Elevator 1 (core pair, left)",
+            "lat": 42.3909512,
+            "lng": -72.5259742,
+            "gis_marker": false,
+            "number": 1
           },
           {
             "id": "ilc-elevator-core-b",
-            "label": "Core elevator B (next to core-a)",
-            "lat": 42.390955,
-            "lng": -72.525973,
-            "gis_marker": false
+            "label": "Elevator 2 (core pair, right)",
+            "lat": 42.3909512,
+            "lng": -72.525942,
+            "gis_marker": false,
+            "number": 2
+          },
+          {
+            "id": "ilc-elevator-east",
+            "label": "Elevator 3 (by the North Pleasant St door)",
+            "near_entrance": "ilc-se",
+            "lat": 42.3908924,
+            "lng": -72.5254216,
+            "gis_marker": true,
+            "number": 3
           },
           {
             "id": "ilc-elevator-north",
-            "label": "North elevator (by N155)",
+            "label": "Elevator 4 (by N155)",
             "lat": 42.3913632,
             "lng": -72.5262317,
-            "gis_marker": false
+            "gis_marker": false,
+            "number": 4
           }
         ],
         "gis_note": "UMass GIS puts one marker per elevator lobby, not per car: the ILC's 'west' marker (42.3908828, -72.5259219) stands for the adjacent pair, and Du Bois's single marker stands for its five cars. Do not read a car count from GIS markers.",
         "source": "Team member, on site 2026-11-14 (corrected from an earlier 'two'): three elevators, two right next to each other and one beside the North Pleasant St entrance. Matches the frontend's mockBuildings.ts (3) and the floor-1 plan (a pair of shaft symbols in the south wing's core, one at the east end). Core pair position is read off the plan (+/-5 m). Which car is out of service today is unknown. Corrected to four on 2026-11-14: the floor plans show a fourth elevator at the north end (by N155 / N255), which the team then confirmed.",
         "banks": {
           "ilc-elevator-east": {
-            "label": "East elevator (by the North Pleasant St door)",
+            "label": "Elevator 3 (by the North Pleasant St door)",
             "cars": [
               "ilc-elevator-east"
             ]
           },
           "ilc-elevator-west": {
-            "label": "Core elevators (the adjacent pair)",
+            "label": "Elevators 1 and 2 (core pair, opposite S140)",
             "cars": [
               "ilc-elevator-core-a",
               "ilc-elevator-core-b"
             ]
           },
           "ilc-elevator-north": {
-            "label": "North elevator (by N155)",
+            "label": "Elevator 4 (by N155)",
             "cars": [
               "ilc-elevator-north"
             ]
           }
         },
         "banks_note": "Maps the scraper map's elevator assets (east, west) onto cars. The map's 'west' elevator is the adjacent core pair.",
-        "plan_note": "Floor plans: the adjacent pair in the south wing's core (plan px ~726,826), one at the east end (~1110,840) beside the SE door, and one at the north end (~522,410) by N155."
+        "plan_note": "Floor plans: the adjacent pair in the south wing's core (plan px ~726,826), one at the east end (~1110,840) beside the SE door, and one at the north end (~522,410) by N155.",
+        "numbering": "Team, 2026-11-14: 1 and 2 are the adjacent pair opposite S140 (1 on the left, 2 on the right when facing them), 3 is by the North Pleasant St door, 4 is by N155."
       },
       "room_floor_rule": {
         "pattern": "\\b[NS](\\d)\\d\\d\\b",
