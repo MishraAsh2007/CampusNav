@@ -283,3 +283,23 @@ test('a slow backend startup stays pending before returning its route', async ()
   }
   assert.ok((await pending).accessible);
 });
+
+test('Ash indoor directions retain the outdoor doorway and filter expired reports', async () => {
+  let sent;
+  globalThis.fetch = async (url, init) => {
+    assert.equal(url,'/api/indoor-route');
+    sent=JSON.parse(init.body);
+    return response({status:'ok',entrance:{name:'Southwest',lat:end.lat,lng:end.lng},steps:['Enter the building.']});
+  };
+  const req={buildingId:'ilc',door:end,room:'N211',direction:'to_room',prefs,
+    closures:[official,{...official,id:'expired',end_time:utc(-1000)},{...official,id:'fixed',status:'repaired'}]};
+  assert.equal((await api.getIndoorDirections(req)).status,'ok');
+  assert.equal(sent.closures.length,1);
+  assert.deepEqual(sent.entrance,end);
+  globalThis.fetch = async () => response({status:'ok',entrance:{name:'Other door',lat:end.lat+0.001,lng:end.lng},steps:['Use a different entrance.']});
+  const mismatch=await api.getIndoorDirections(req);
+  assert.equal(mismatch.status,'no_route');
+  assert.match(mismatch.message,/different doorway/);
+  globalThis.fetch = async () => response({detail:'Unavailable'},{status:503});
+  assert.equal((await api.getIndoorDirections(req)).status,'unavailable');
+});

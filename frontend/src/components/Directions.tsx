@@ -19,7 +19,7 @@ import type { RouteStep } from '../types';
 import { cx } from './ui';
 import { speak } from '../services/voiceEngine';
 
-function StepIcon({ icon }: { icon?: RouteStep['icon'] }) {
+export function StepIcon({ icon }: { icon?: RouteStep['icon'] }) {
   const cls = 'h-4 w-4';
   switch (icon) {
     case 'start':
@@ -51,7 +51,7 @@ function StepIcon({ icon }: { icon?: RouteStep['icon'] }) {
   }
 }
 
-const tone = (s: RouteStep) =>
+export const tone = (s: RouteStep) =>
   s.icon === 'elevator'
     ? 'bg-lift-soft text-lift-ink'
     : s.icon === 'stairs'

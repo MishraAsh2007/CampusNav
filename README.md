@@ -25,6 +25,8 @@ documented gaps. Do not interpret a
 successful route calculation or a map's `reviewed` status as facilities certification.
 See [ILC coverage, sources and entrance handoff](docs/ILC_PLAN_NAVIGATION.md) and
 [phone testing](docs/PHONE_TESTING.md) for the current navigation workflow.
+The [ash/indoor-directions merge comparison](docs/ASH_INDOOR_DIRECTIONS_MERGE.md)
+describes the added spoken outdoor guide, optional GPS advancement and off-route prompt.
 
 ## Run the integrated local map
 

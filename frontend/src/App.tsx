@@ -32,6 +32,8 @@ import { NeedsMenu } from './components/NeedsMenu';
 import { RouteSummary } from './components/RouteSummary';
 import { Narrator } from './components/Narrator';
 import { Directions } from './components/Directions';
+import { OutdoorGuide } from './components/OutdoorGuide';
+import { IndoorDirectionsSheet, type IndoorLeg, useIndoorDirectionsAvailable } from './components/IndoorDirectionsSheet';
 import { SourcePanel } from './components/SourcePanel';
 import type { JourneyEndpoint, JourneyLeg } from './services/api';
 import { OutageList } from './components/OutageList';
@@ -209,6 +211,8 @@ export function App() {
   const [reportBuildingId, setReportBuildingId] = useState<string | null>(null);
   const [reportPoint, setReportPoint] = useState<{ lat: number; lng: number } | null>(null);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const [guiding, setGuiding] = useState(false);
+  const [indoorDirOpen, setIndoorDirOpen] = useState(false);
   const [focus, setFocus] = useState<{ lat: number; lng: number; key: number } | null>(null);
 
   const onSelectBuilding = useCallback((b: Building) => {
@@ -368,6 +372,13 @@ export function App() {
     };
   }, [plan, destBuilding]);
   const chosenEntranceIds = useMemo(() => [plan?.endEndpointId, plan?.startEndpointId].filter(Boolean) as string[], [plan?.endEndpointId, plan?.startEndpointId]);
+  const indoorDirAvailable = useIndoorDirectionsAvailable();
+  const arriveLeg: IndoorLeg | null = destBuilding ? {buildingId: destBuilding.id, buildingName: destBuilding.name,
+    door: indoorEntrance ? {lat: indoorEntrance.lat, lng: indoorEntrance.lng, name: indoorEntrance.name} : null} : null;
+  const originBuilding = buildings.find(b => b.id === origin?.building_id);
+  const exitDoor = originBuilding?.entrances.find(e => e.id === plan?.startEndpointId);
+  const leaveLeg: IndoorLeg | null = originBuilding ? {buildingId: originBuilding.id, buildingName: originBuilding.name,
+    door: exitDoor ? {lat: exitDoor.lat, lng: exitDoor.lng, name: exitDoor.name} : null} : null;
   const activeIssues = incidents.length;
   const highAlerts = incidents.filter((i) => i.severity === 'high').length;
 
@@ -447,7 +458,7 @@ export function App() {
     const point = routeStepPosition(activeRoute, index);
     if (point) setFocus({lat: point.lat, lng: point.lng, key: Date.now()});
     // Tapping the last outdoor step ("Arrive at ...") at a supported building offers the indoor route
-    if (s.icon === 'destination' && indoorBuildingId) {
+    if (s.icon === 'destination' && indoorBuildingId && !guiding) {
       setViewState('transition_modal');
       return;
     }
@@ -502,9 +513,10 @@ export function App() {
         onLargeText={() => setLargeText((v) => !v)}
       />
 
-      {activeRoute && viewState === 'outdoor' && (
+      {activeRoute && viewState === 'outdoor' && !guiding && (
         <div className="fixed right-4 top-[152px] z-30 hidden max-h-[calc(100dvh-176px)] w-[360px] overflow-y-auto rounded-3xl lg:block" aria-label="Current route directions">
           <Directions key={routeKey(activeRoute)} steps={activeRoute.steps} activeStep={activeStep} onFocusStep={focusStep} />
+          <button type="button" className="btn btn-primary mt-2 w-full justify-center" onClick={() => setGuiding(true)}>Start guided directions</button>
         </div>
       )}
 
@@ -517,7 +529,7 @@ export function App() {
         </div>
       )}
 
-      <MobileTripSheet hasRoute={!!activeRoute} picking={!!picking}
+      {!guiding && <MobileTripSheet hasRoute={!!activeRoute} picking={!!picking}
         title={activeRoute ? `Step ${activeStep + 1} of ${activeRoute.steps.length}` : loading ? 'Finding a route…' : 'Trip details'}
         detail={activeRoute?.steps[activeStep] ? displayInstruction(activeRoute.steps[activeStep].instruction) : destination ? `To ${destination.name}` : 'Choose your start and destination'}
         onNext={activeRoute && activeStep < activeRoute.steps.length - 1
@@ -532,6 +544,7 @@ export function App() {
           {activeRoute && mobilePanel === 'directions' && <div className="space-y-3 lg:hidden">
             <p className="text-sm font-semibold">To {destination?.name} <span className="font-normal text-slate-600"> · {formatDistance(activeRoute.summary.total_distance_m)}</span></p>
             <Directions key={routeKey(activeRoute)} steps={activeRoute.steps} activeStep={activeStep} onFocusStep={focusStep} />
+            <button type="button" className="btn btn-primary w-full justify-center" onClick={() => setGuiding(true)}>Start guided directions</button>
             {arrivedAtIndoorBuilding && <button type="button" className="min-h-11 w-full rounded-xl bg-emerald-700 px-3 py-3 text-sm font-semibold text-white" onClick={() => {setInspectedLeg(null); setViewState('transition_modal');}}>{indoorActionLabel}</button>}
           </div>}
           <div className={cx('space-y-4', activeRoute && mobilePanel === 'directions' && 'hidden lg:block')}>
@@ -600,6 +613,7 @@ export function App() {
             <Narrator route={plan.accessible} originName={origin.name} destinationName={destination.name} prefs={prefs} />
           )}
           <OutageList incidents={listedIncidents} onSelect={onSelectIncident} live={live} lastSync={lastSync} />
+          {indoorDirAvailable && plan?.accessible && (arriveLeg || leaveLeg) && <button type="button" className="btn btn-quiet w-full justify-center" onClick={() => setIndoorDirOpen(true)}>Indoor directions</button>}
           {!DEMO_MODE && <SourcePanel />}
           {provider === 'osm' && reason && (
             <p className="px-1 text-[11px] text-ink-4">
@@ -608,7 +622,16 @@ export function App() {
           )}
           </div>
         </div>
-      </MobileTripSheet>
+      </MobileTripSheet>}
+
+      {guiding && viewState === 'outdoor' && <OutdoorGuide route={activeRoute} loading={loading}
+        active={activeStep} destinationName={destination?.name || 'your destination'}
+        canGoInside={tab === 'accessible' && !!indoorBuildingId && indoorHandoffReady}
+        onGoInside={() => {setGuiding(false); setInspectedLeg(null); setViewState('transition_modal');}}
+        onStep={index => {if (activeRoute?.steps[index]) setRouteProgress({route: activeRoute, index});}}
+        onFocus={(lat, lng) => setFocus({lat, lng, key: Date.now()})}
+        onRerouteFrom={(lat, lng) => {setOriginTarget(null); setOrigin({name: 'Your location', lat, lng});}}
+        onStop={() => setGuiding(false)} />}
 
       <BuildingSheet
         building={selectedBuilding}
@@ -661,6 +684,10 @@ export function App() {
       />
 
       <AboutSheet open={aboutOpen} onClose={() => setAboutOpen(false)} graphMeta={graph?.meta ?? null} provider={provider} />
+      <IndoorDirectionsSheet open={indoorDirOpen} onClose={() => setIndoorDirOpen(false)}
+        arrive={arriveLeg} leave={leaveLeg} prefs={prefs} closures={closures}
+        initialRoom={indoorTarget?.buildingId === destination?.building_id ? indoorTarget?.label.replace(/^\S+\s/, '') : undefined}
+        initialFloor={indoorTarget?.buildingId === destination?.building_id ? indoorTarget?.floorId : null} />
 
       <JudgePanel
         open={judgeOpen}
@@ -677,7 +704,7 @@ export function App() {
         live={live}
       />
 
-      {arrivedAtIndoorBuilding && (
+      {arrivedAtIndoorBuilding && !guiding && (
         <button
           type="button"
           onClick={() => {setInspectedLeg(null); setViewState('transition_modal');}}

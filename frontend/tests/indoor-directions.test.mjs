@@ -353,3 +353,65 @@ test('pending routes hide previous failures and comparison routes until the resu
   assert.match(finished, /Previous trip had no route/);
   assert.doesNotMatch(finished, /Finding a route/);
 });
+
+test('guided GPS progress follows maneuvers within one GeoJSON feature', async () => {
+  const {routeGeometry, gpsProgress, locate} = await server.ssrLoadModule('/src/services/outdoorProgress.ts');
+  const points = [[-72.528,42.39],[-72.5275,42.39],[-72.5275,42.3905],[-72.527,42.3905]];
+  const route = {features:[{geometry:{coordinates:points}}],steps:points.map((at,i)=>({
+    at,instruction:`Instruction ${i}`,icon:i===3?'destination':'straight'}))};
+  const geo = routeGeometry(route);
+  assert.equal(geo.stepStart.length, 4);
+  assert.ok(geo.stepStart[1] > 30 && geo.stepStart[1] < 50);
+  assert.ok(geo.stepStart[2] > 90 && geo.stepStart[2] < 110);
+  assert.equal(geo.stepStart[3], geo.total);
+  const now = Date.now();
+  const fix = {lat:42.39,lng:-72.5275,accuracy:5,timestamp:now};
+  assert.equal(gpsProgress(geo,fix,0,now).next,1);
+  assert.equal(gpsProgress(geo,{...fix,lat:42.3905},1,now).next,2);
+  assert.equal(gpsProgress(geo,{...fix,lat:42.3905,lng:-72.527},2,now).next,3);
+  assert.equal(gpsProgress(geo,{...fix,accuracy:80},0,now),null);
+  assert.equal(gpsProgress(geo,{...fix,timestamp:now-30000},0,now),null);
+  assert.equal(gpsProgress(geo,{...fix,lat:42.392},0,now).offRoute,true);
+  assert.equal(gpsProgress(geo,{...fix,lat:42.392},0,now).next,0);
+  // Projection respects the requested interval, even within a long segment.
+  const clipped = locate(geo,{lat:42.39,lng:-72.528},20,30);
+  assert.ok(clipped.along >= 20 && clipped.along <= 30);
+  // Missing maneuver coordinates never get guessed from a feature index.
+  route.steps[1] = {instruction:'Unknown location',icon:'straight'};
+  assert.equal(routeGeometry(route).stepStart[1],null);
+  assert.equal(gpsProgress(routeGeometry(route),fix,1,now),null);
+});
+
+test('guided geometry does not create a walkable segment between disjoint features', async () => {
+  const {routeGeometry,locate} = await server.ssrLoadModule('/src/services/outdoorProgress.ts');
+  const geo = routeGeometry({steps:[],features:[
+    {geometry:{coordinates:[[-72.53,42.39],[-72.529,42.39]]}},
+    {geometry:{coordinates:[[-72.525,42.39],[-72.524,42.39]]}},
+  ]});
+  assert.equal(geo.segments.length,2);
+  assert.ok(locate(geo,{lat:42.39,lng:-72.527}).off > 150);
+});
+
+test('guided mode shares the selected instruction and preserves loading and arrival states', async () => {
+  const {OutdoorGuide} = await server.ssrLoadModule('/src/components/OutdoorGuide.tsx');
+  const route = {features:[{geometry:{coordinates:[[-72.528,42.39],[-72.527,42.39]]}}],steps:[
+    {instruction:'Continue 20 m along the path.',at:[-72.528,42.39],icon:'start',grade_pct:0},
+    {instruction:'Turn right.',at:[-72.5275,42.39],icon:'turn-right',grade_pct:0},
+    {instruction:'Arrive at ILC.',at:[-72.527,42.39],icon:'destination',grade_pct:0},
+  ]};
+  const props = {route,active:1,destinationName:'ILC',canGoInside:true,onGoInside(){},onStep(){},onFocus(){},onRerouteFrom(){},onStop(){}};
+  const html = renderToStaticMarkup(React.createElement(OutdoorGuide,props));
+  assert.match(html,/Turn right/);
+  assert.match(html,/Step 2 of 3/);
+  assert.match(html,/Follow me/);
+  assert.match(html,/Mute voice/);
+  assert.doesNotMatch(html,/>Go inside</);
+  const arrived = renderToStaticMarkup(React.createElement(OutdoorGuide,{...props,active:2}));
+  assert.match(arrived,/You have arrived at ILC/);
+  assert.match(arrived,/>Go inside</);
+  const unmatched = renderToStaticMarkup(React.createElement(OutdoorGuide,{...props,active:2,canGoInside:false}));
+  assert.doesNotMatch(unmatched,/>Go inside</);
+  const pending = renderToStaticMarkup(React.createElement(OutdoorGuide,{...props,loading:true}));
+  assert.match(pending,/Updating your route/);
+  assert.doesNotMatch(pending,/No route available|Turn right/);
+});
