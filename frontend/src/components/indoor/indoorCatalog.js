@@ -15,10 +15,11 @@ import { createContext, useContext, useMemo, useSyncExternalStore } from 'react'
 import { isNavigable, normalizeIndoorMap } from './indoorModel';
 import { sampleIndoorMaps } from './sampleMaps';
 import { FLOOR_PLAN_IMAGES } from './floorCalibration';
+import { DEMO_MODE, INDOOR_API_BASE, routingPaths } from '../../services/api';
 
-const INDOOR_API = String(import.meta.env.VITE_INDOOR_API_URL ?? '').replace(/\/$/, '');
-const SAMPLES = String(import.meta.env.VITE_INDOOR_SAMPLES ?? 'fallback'); // fallback | prefer | off
-const PRIORITY = SAMPLES === 'prefer' ? { sample: 2, api: 1 } : { api: 2, sample: 1 };
+const SAMPLES = DEMO_MODE ? 'prefer' : String(import.meta.env.VITE_INDOOR_SAMPLES ?? 'fallback');
+const DATA_FILES = import.meta.glob('/data/indoor/*.json', { import: 'default' });
+const PRIORITY = SAMPLES === 'prefer' ? { sample: 3, api: 2, data: 1 } : { api: 3, data: 2, sample: 1 };
 
 let state = { models: [], loading: true, errors: [] };
 const listeners = new Set();
@@ -63,15 +64,25 @@ export function loadIndoorCatalog() {
   started = true;
   const models = SAMPLES === 'off' ? [] : sampleIndoorMaps().map((m) => toModel(m, 'sample')).filter(Boolean);
   set({ models, loading: true });
-
-  const fromApi = fetchJson(`${INDOOR_API}/indoor/status`).then(async (s) => {
+  if (DEMO_MODE) {
+    set({ loading: false });
+    return;
+  }
+  const fromFiles = Promise.all(Object.values(DATA_FILES).map(async load => {
+    const raw = await load().catch(() => null);
+    return raw?.version === 1 && raw.building_id ? toModel(raw, 'data') : null;
+  }));
+  const fromApi = routingPaths(INDOOR_API_BASE).then(async paths => {
+    if (!paths.has('/indoor/status')) return [];
+    const source = paths.has('/navigation/plan') && paths.has('/navigation/arrive') ? 'api' : 'data';
+    const s = await fetchJson(`${INDOOR_API_BASE}/indoor/status`);
     const ids = (s?.buildings ?? []).filter((b) => b.routable === true).map((b) => b.building_id);
-    const maps = await Promise.all(ids.map((id) => fetchJson(`${INDOOR_API}/indoor/maps/${encodeURIComponent(id)}`, 5000)));
-    return maps.map((m) => (m ? toModel(m, 'api') : null));
+    const maps = await Promise.all(ids.map((id) => fetchJson(`${INDOOR_API_BASE}/indoor/maps/${encodeURIComponent(id)}`, 5000)));
+    return maps.map((m) => (m ? toModel(m, source) : null));
   });
 
-  fromApi.then((api) => {
-    set({ models: [...state.models, ...api.filter(Boolean)], loading: false });
+  Promise.all([fromFiles, fromApi]).then(([files, api]) => {
+    set({ models: [...state.models, ...files.filter(Boolean), ...api.filter(Boolean)], loading: false });
   });
 }
 

@@ -36,7 +36,14 @@ npm.cmd --prefix frontend ci
 Open **http://127.0.0.1:8000**. Keep the server terminal running. The launcher builds
 and serves `frontend/`, the Python routing API, and the Data API on one origin.
 It reads `backend/.env` when present. `start-server.cmd --memory` runs with temporary data
-even when Atlas is configured. Use `--demo` to enable the browser's route simulation.
+even when Atlas is configured. Run `start-server.cmd --demo` to reproduce the Role 2 screenshots
+with the original browser router, five sample issues, and the sample 2D and 3D floor plans.
+Open `/?indoor=ilc` and select **S335 Seminar** to view the indoor example.
+
+The integrated launcher connects the map to the API on port 8000. When running Vite separately,
+the map checks which routing endpoints are available before sending a trip. A standalone Data API
+can supply its closure feed and building catalog while the map uses the in-browser router. To enable live routing,
+run the integrated launcher and stop any older server occupying port 8000.
 
 - Map: http://127.0.0.1:8000/
 - API documentation and request testing: http://127.0.0.1:8000/docs
@@ -182,7 +189,7 @@ See the [Data API guide](backend/BACKEND.md) for document shapes and standalone 
 ```powershell
 .\.venv\Scripts\python.exe -m pytest -q
 .\.venv\Scripts\ruff.exe check campus_routing campus_notices scripts tests
-npm.cmd --prefix frontend run test:integration
+node --test frontend/tests/live-api.test.mjs
 npm.cmd --prefix frontend run build
 .\.venv\Scripts\python.exe -m scripts.demo_navigation
 .\.venv\Scripts\python.exe -m scripts.audit_indoor_coverage

@@ -46,6 +46,7 @@ export function OutageList({ incidents, onSelect, live, lastSync }: Props) {
   const counts = useMemo(() => Object.fromEntries(FILTERS.map((f) => [f.id, incidents.filter((i) => matches(i, f.id)).length])) as Record<Filter, number>, [incidents]);
   const shown = incidents.filter((i) => matches(i, filter));
   const high = incidents.filter((i) => i.severity === 'high').length;
+  const hasSamples = incidents.some(inc => inc.all.some(isSampleData));
 
   return (
     <section aria-labelledby="out-h">
@@ -125,7 +126,7 @@ export function OutageList({ incidents, onSelect, live, lastSync }: Props) {
             )}
           </ul>
           <p className="mt-2 px-1 text-[11px] leading-snug text-ink-4">
-            {live ? 'Live from the CampusNav backend' : 'Official closure data is stale or unavailable'}
+            {live ? 'Live from the CampusNav backend' : hasSamples ? 'Offline: showing cached and sample reports' : 'Official closure data is stale or unavailable'}
             {lastSync ? ` · synced ${formatFreshness(new Date(lastSync).toISOString())}` : ''}. <strong className="font-medium text-ink-3">High alert</strong> means UMass
             Facilities and students both report it. Bus routes are matched from OpenStreetMap;{' '}
             <a className="underline" href="https://www.umass.edu/transportation/news" target="_blank" rel="noreferrer">

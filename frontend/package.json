@@ -9,8 +9,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "tsc --noEmit",
-    "dev:phone": "vite --mode https",
-    "test:integration": "node --test tests/live-api.test.mjs"
+    "dev:phone": "vite --mode https"
   },
   "dependencies": {
     "@vis.gl/react-google-maps": "^1.10.2",

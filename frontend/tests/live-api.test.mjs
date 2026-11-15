@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { after, afterEach, test } from 'node:test';
 import { createServer } from 'vite';
@@ -23,6 +24,11 @@ const response = (value, init) => new Response(JSON.stringify(value), init);
 const start = {name: 'Campus Center', building_id: 'campus-center', lat: 42.39, lng: -72.528};
 const end = {name: 'ILC', building_id: 'ilc', lat: 42.39, lng: -72.527};
 const prefs = {max_grade_pct: 6, wheelchair_required: true, need_automatic_door: false};
+const mockRouting = handle => {
+  globalThis.fetch = async (url, init) => url === '/health'
+    ? response({routes: ['/plan', '/navigation/plan', '/navigation/arrive', '/indoor/status']})
+    : handle(url, init);
+};
 
 test('route adapter preserves unknown grade and the router directions', () => {
   const route = api.adaptWireRoute(wire, 10);
@@ -59,7 +65,7 @@ test('stale and disconnected closure feeds are labeled, and schedules stay separ
 });
 
 test('outdoor planning lets the server choose entrances and load active closures', async () => {
-  globalThis.fetch = async (url, init) => {
+  mockRouting((url, init) => {
     assert.equal(url, '/plan');
     const body = JSON.parse(init.body);
     assert.equal(body.no_stairs, true);
@@ -67,7 +73,7 @@ test('outdoor planning lets the server choose entrances and load active closures
     assert.equal(body.origin.building_id, 'campus-center');
     return response({accessible: wire, standard: wire, start_entrance: {id: 'exit-a'},
       end_entrance: {id: 'door-b', lat: end.lat, lng: end.lng}, notes: []});
-  };
+  });
   const plan = await api.planRoutes(start, end, prefs, [official], []);
   assert.equal(plan.engine, 'remote');
   assert.equal(plan.startEndpointId, 'exit-a');
@@ -76,9 +82,9 @@ test('outdoor planning lets the server choose entrances and load active closures
 
 test('unavailable and no-route responses stay visible in the Role 2 planner', async () => {
   const plan = () => api.planRoutes(start, end, prefs, [], []);
-  globalThis.fetch = async () => response({detail: {message: 'Graph unavailable'}}, {status: 503});
+  mockRouting(() => response({detail: {message: 'Graph unavailable'}}, {status: 503}));
   assert.equal((await plan()).failure, 'Graph unavailable');
-  globalThis.fetch = async () => response({accessible: null, standard: wire, failure: 'No mapped route'});
+  mockRouting(() => response({accessible: null, standard: wire, failure: 'No mapped route'}));
   const result = await plan();
   assert.equal(result.failure, 'No mapped route');
   assert.equal(result.accessible, null);
@@ -86,17 +92,65 @@ test('unavailable and no-route responses stay visible in the Role 2 planner', as
 });
 
 test('a reviewed room route retains the portal selected by the Python router', async () => {
-  globalThis.fetch = async (url, init) => {
+  mockRouting((url, init) => {
     if (url === '/plan') return response({standard: wire});
     assert.equal(url, '/navigation/plan');
     assert.deepEqual(JSON.parse(init.body).destination, {building_id: 'ilc', node_id: 'ilc-source-n151-f2'});
     return response({status: 'route_ready', arrival_context: {building_id: 'ilc', portal_id: 'ilc-portal-south'},
       journey: {legs: [{kind: 'outdoor', route: wire}], warnings: []}});
-  };
+  });
   const result = await api.planRoutes(start, end, prefs, [], [],
     {reviewedBuildingId: 'ilc', nodeId: 'ilc-source-n151-f2'});
   assert.equal(result.arrivalPoint.portalId, 'ilc-portal-south');
   assert.equal(result.failure, undefined);
+});
+
+test('a standalone Data API is detected without sending unsupported routing POSTs', async () => {
+  const older = await server.ssrLoadModule('/src/services/api.ts?standalone');
+  const paths = [];
+  const graph = await readFile(new URL('../public/data/campusGraph.json', import.meta.url), 'utf8');
+  globalThis.fetch = async (url, init) => {
+    paths.push([url, init?.method]);
+    if (url === '/health') return response({status: 'ok'});
+    if (url === '/openapi.json') return response({paths: {'/community-reports': {post: {}}}});
+    if (url === '/data/campusGraph.json') return new Response(graph);
+    return response({detail: 'Not Found'}, {status: 404});
+  };
+  const intent = {reviewedBuildingId: 'ilc', nodeId: 'ilc-source-n151-f2'};
+  for (let i = 0; i < 2; i++) assert.equal((await older.planRoutes(start, end, prefs, [], [], intent)).engine, 'local');
+  assert.deepEqual(paths, [['/health', undefined], ['/openapi.json', undefined], ['/data/campusGraph.json', undefined]]);
+});
+
+test('if a server changes mid-session the missing navigation endpoint is tried once', async () => {
+  const older = await server.ssrLoadModule('/src/services/api.ts?changed');
+  let guidedCalls = 0;
+  mockRouting(url => {
+    if (url === '/navigation/plan') {
+      guidedCalls++;
+      return response({detail: 'Not Found'}, {status: 404});
+    }
+    return response({accessible: wire, end_entrance: {id: 'entry', ...wire.properties.snapped_end}, notes: []});
+  });
+  const intent = {reviewedBuildingId: 'ilc', nodeId: 'ilc-source-n151-f2'};
+  for (let i = 0; i < 2; i++) assert.equal((await older.planRoutes(start, end, prefs, [], [], intent)).arrivalPoint.entranceId, 'entry');
+  assert.equal(guidedCalls, 1);
+});
+
+test('an older routing engine continues to use its advertised Role 2 endpoint', async () => {
+  const legacy = await server.ssrLoadModule('/src/services/api.ts?legacy');
+  const graph = await readFile(new URL('../public/data/campusGraph.json', import.meta.url), 'utf8');
+  const posts = [];
+  globalThis.fetch = async (url, init) => {
+    if (url === '/health') return response({status: 'ok'});
+    if (url === '/openapi.json') return response({paths: {'/api/route': {post: {}}}});
+    if (url === '/data/campusGraph.json') return new Response(graph);
+    posts.push(url);
+    return response({step_free: api.adaptWireRoute(wire, 10), destination: {end, entrance_id: 'legacy-door'}});
+  };
+  const result = await legacy.planRoutes(start, end, prefs, [], []);
+  assert.equal(result.engine, 'remote');
+  assert.equal(result.arrivalPoint.entranceId, 'legacy-door');
+  assert.deepEqual(posts, ['/api/route']);
 });
 
 test('report creation, confirmation and resolution use the service endpoints', async () => {

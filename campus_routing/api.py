@@ -283,6 +283,7 @@ def create_app(
             "nodes": current.graph.number_of_nodes(),
             "edges": current.graph.number_of_edges(),
             "demo": demo_enabled(),
+            "routes": ["/plan", "/navigation/plan", "/navigation/arrive", "/indoor/status"],
             "storage_mode": bridge.app.state.storage_mode if bridge is not None else "local_files",
         }
 

@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import basicSsl from '@vitejs/plugin-basic-ssl';
 import { fileURLToPath } from 'node:url';
 
-const routes = ['/api/data', '/health', '/buildings', '/closures', '/reports', '/notices',
+const routes = ['/api/data', '/api/route', '/health', '/openapi.json', '/buildings', '/closures', '/reports', '/notices',
   '/plan', '/navigation', '/indoor', '/external-reports'];
 
 // https://vitejs.dev/config/

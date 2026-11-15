@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { AlertTriangle, Contrast, Info, Sparkles, Type } from 'lucide-react';
 import { cx, useClickOutside } from './ui';
 import { formatFreshness } from '../data/mockClosures';
+import { DEMO_MODE } from '../services/api';
 
 interface Props {
   activeIssues: number;
@@ -46,7 +47,8 @@ export function TopBar(p: Props) {
       <div className="pointer-events-auto flex items-center gap-1.5">
         <div
           className="glass hidden items-center gap-2 rounded-full px-3.5 py-2 text-[12px] text-ink-2 md:flex"
-          title={p.live ? 'Connected to the CampusNav backend' : 'Official closure data is stale or unavailable'}
+          title={p.live ? 'Connected to the CampusNav backend' : DEMO_MODE
+            ? 'Backend unreachable: using cached reports and the in-browser router' : 'Official closure data is stale or unavailable'}
         >
           <span className="relative flex h-2 w-2">
             {p.live && <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-go opacity-60" />}

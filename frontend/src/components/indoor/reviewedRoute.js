@@ -1,7 +1,5 @@
-import { routingPreferences } from '../../services/api';
+import { INDOOR_API_BASE, routingPreferences } from '../../services/api';
 import { renderReviewedPath, targetNodes } from './indoorRouter';
-
-const base = (import.meta.env.VITE_ROUTING_API_URL ?? import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
 
 export async function reviewedRoute(model, targetId, preferences, {portalId, startNode} = {}) {
   if (!portalId && !startNode) throw new Error('Plan an outdoor route to a reviewed entrance first.');
@@ -14,7 +12,7 @@ export async function reviewedRoute(model, targetId, preferences, {portalId, sta
       ...options, building_id: model.id, portal_id: portalId, confirmed: true, continue_indoors: true,
       destination: {building_id: model.id, node_id: nodeId},
     } : {...options, building_id: model.id, start_node_id: startNode, end_node_id: nodeId};
-    const response = await fetch(base + path, {method: 'POST', signal: AbortSignal.timeout(15000),
+    const response = await fetch(INDOOR_API_BASE + path, {method: 'POST', signal: AbortSignal.timeout(15000),
       headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload)});
     const result = await response.json();
     if (portalId && result.arrival_confirmation_required) {

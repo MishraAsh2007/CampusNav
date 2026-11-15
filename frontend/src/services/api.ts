@@ -10,9 +10,13 @@ import { INITIAL_CLOSURES } from '../data/mockClosures';
 import { UMASS_BUILDINGS } from '../data/mockBuildings';
 import { computeRoutes, Endpoint, getDistanceMeters, loadCampusGraph, RouteBundle } from './routingEngine';
 
-const API_BASE: string = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
-const ROUTING_BASE: string = (import.meta.env.VITE_ROUTING_API_URL || API_BASE).replace(/\/$/, '');
-const ROUTING_MODE: 'auto' | 'local' | 'remote' = (import.meta.env.VITE_ROUTING_ENGINE as 'auto' | 'local' | 'remote') || 'remote';
+const integrated = import.meta.env.VITE_CAMPUSNAV_INTEGRATED === '1';
+const API_BASE: string = integrated ? '' : (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
+const ROUTING_BASE: string = integrated ? '' : (import.meta.env.VITE_ROUTING_API_URL || API_BASE).replace(/\/$/, '');
+export const INDOOR_API_BASE = integrated ? '' : (import.meta.env.VITE_INDOOR_API_URL || ROUTING_BASE).replace(/\/$/, '');
+export const DEMO_MODE = import.meta.env.VITE_CAMPUSNAV_DEMO === '1';
+const ROUTING_MODE: 'auto' | 'local' | 'remote' = DEMO_MODE ? 'local'
+  : (import.meta.env.VITE_ROUTING_ENGINE as 'auto' | 'local' | 'remote') || 'auto';
 
 let store: Closure[] = INITIAL_CLOSURES.map((c) => ({ ...c }));
 /** Edits made in this browser (fixed / confirmed) win over a backend that has not caught up yet. */
@@ -43,6 +47,29 @@ async function fetchJson<T>(url: string, init: RequestInit = {}, timeoutMs = 150
     clearTimeout(timer);
   }
 }
+
+type RoutingPaths = Set<string>;
+const discoveredRoutes = new Map<string, { expires: number; paths: Promise<RoutingPaths> }>();
+
+export function routingPaths(base = ROUTING_BASE): Promise<RoutingPaths> {
+  const cached = discoveredRoutes.get(base);
+  if (cached && Date.now() < cached.expires) return cached.paths;
+  const paths = (async () => {
+    if (ROUTING_MODE === 'local') return new Set<string>();
+    const health = await fetchJson<{ routes?: string[] }>(`${base}/health`);
+    if (Array.isArray(health.data?.routes)) return new Set(health.data.routes);
+    if (!health.status || health.status >= 500) return new Set<string>();
+    const api = await fetchJson<{ paths?: Record<string, { get?: unknown; post?: unknown }> }>(`${base}/openapi.json`);
+    return new Set(Object.entries(api.data?.paths ?? {})
+      .filter(([path, operations]) => path === '/indoor/status' ? operations.get : operations.post)
+      .map(([path]) => path));
+  })();
+  discoveredRoutes.set(base, { expires: Date.now() + 15000, paths });
+  return paths;
+}
+
+const missingEndpoint = (result: {status?: number; message?: string}) =>
+  result.status === 405 || (result.status === 404 && (!result.message || result.message === 'Not Found'));
 
 // ---------- closures ----------
 
@@ -114,6 +141,7 @@ const TYPE_TITLES: Record<string, string> = {
 };
 
 export async function getClosures(): Promise<ClosuresResult> {
+  if (DEMO_MODE) return { closures: [...store], scheduled: [], live: false, received: true, ms: 0 };
   const [r, notices] = await Promise.all([
     fetchClosuresRaw(),
     fetchJson<Record<string, unknown>[]>(`${API_BASE}/notices`),
@@ -227,6 +255,7 @@ export function normalizeBuilding(raw: ApiBuilding): Building {
  * have yet are kept so the offline demo still works.
  */
 export async function getBuildings(): Promise<Building[]> {
+  if (DEMO_MODE) return UMASS_BUILDINGS;
   let r = await fetchJson<ApiBuilding[]>(`${API_BASE}/buildings`, {}, 1500);
   if (!r.ok && r.status === 404) r = await fetchJson<ApiBuilding[]>(`${API_BASE}/api/buildings`, {}, 1500);
   if (r.ok && Array.isArray(r.data) && r.data.length) {
@@ -329,6 +358,19 @@ type ReviewedPlan = {
   arrival_context?: {building_id: string; portal_id: string};
   journey?: {legs: Array<{kind: string; route?: WireRoute}>; warnings: string[]};
 };
+type LegacyPlan = {
+  step_free?: RouteResponse & {found?: boolean};
+  shortest?: RouteResponse | null;
+  origin?: {exit_id?: string};
+  destination?: {entrance_id?: string; end?: Point; standard_end?: Point; warnings?: string[]};
+};
+
+function endsNear(route: RouteResponse | null | undefined, end: Point): route is RouteResponse {
+  const features = route?.features ?? [];
+  const coordinates = features[features.length - 1]?.geometry?.coordinates;
+  const last = coordinates?.[coordinates.length - 1];
+  return !!route?.summary && !!last && getDistanceMeters(last[1], last[0], end.lat, end.lng) < 120;
+}
 
 export function adaptWireRoute(route: WireRoute | null | undefined, ms: number): RouteResponse | null {
   if (!route || route.geometry?.coordinates.length < 2) return null;
@@ -356,7 +398,8 @@ export const routingPreferences = (prefs: UserPreferences) => ({
 });
 
 async function requestRemotePlan(
-  origin: Place, destination: Place, prefs: UserPreferences, indoor: IndoorIntent, closures: Closure[]
+  origin: Place, destination: Place, prefs: UserPreferences, indoor: IndoorIntent, closures: Closure[],
+  paths: RoutingPaths, indoorPaths: RoutingPaths
 ): Promise<PlanResult | null> {
   const post = (body: unknown): RequestInit => ({
     method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body),
@@ -373,16 +416,19 @@ async function requestRemotePlan(
     fetchJson<OutdoorPlan>(`${ROUTING_BASE}/plan`, post({
       ...options, origin: place(origin), destination: place(destination), closures: simulated,
     }), 12000),
-    indoor.reviewedBuildingId ? fetchJson<ReviewedPlan>(`${ROUTING_BASE}/navigation/plan`, post({
+    indoor.reviewedBuildingId && indoorPaths.has('/navigation/plan') && indoorPaths.has('/navigation/arrive')
+      ? fetchJson<ReviewedPlan>(`${INDOOR_API_BASE}/navigation/plan`, post({
       ...options,
       origin: origin.building_id ? {building_id: origin.building_id} : {outdoor: {lat: origin.lat, lng: origin.lng}},
       origin_entrance_id: origin.entrance_id,
       destination: {building_id: indoor.reviewedBuildingId, node_id: indoor.nodeId},
     }), 12000) : null,
   ]);
-  if (!walk.status && !reviewed?.status) return null;
+  if (reviewed && missingEndpoint(reviewed)) indoorPaths.delete('/navigation/plan');
+  if (missingEndpoint(walk)) paths.delete('/plan');
+  if ((!walk.status || missingEndpoint(walk)) && (!reviewed?.status || missingEndpoint(reviewed))) return null;
   const standard = adaptWireRoute(walk.data?.standard, walk.ms);
-  if (reviewed) {
+  if (reviewed && !missingEndpoint(reviewed)) {
     const body = reviewed.data;
     const outdoor = body?.journey?.legs.find(leg => leg.kind === 'outdoor')?.route;
     const point = outdoor?.properties.snapped_end;
@@ -416,13 +462,11 @@ export async function planRoutes(
   indoor: IndoorIntent = {}
 ): Promise<PlanResult> {
   const t0 = performance.now();
+  const paths = await routingPaths();
   if (ROUTING_MODE !== 'local') {
-    const remote = await requestRemotePlan(origin, destination, prefs, indoor, closures);
+    const indoorPaths = indoor.reviewedBuildingId ? await routingPaths(INDOOR_API_BASE) : paths;
+    const remote = paths.has('/plan') ? await requestRemotePlan(origin, destination, prefs, indoor, closures, paths, indoorPaths) : null;
     if (remote) return remote;
-    if (ROUTING_MODE === 'remote') return {
-      accessible: null, standard: null, notes: [], engine: 'remote',
-      failure: 'Routing service is unavailable.', ms: Math.round(performance.now() - t0),
-    };
   }
   const G = await loadCampusGraph();
   const o = endpointsFor(origin, buildings, prefs, closures);
@@ -441,6 +485,47 @@ export async function planRoutes(
     landmarks
   });
   const notes = [o.note, d.note].filter(Boolean) as string[];
+  if (paths.has('/api/route')) {
+    const start = o.accessible[0];
+    const end = d.accessible.find(entry => entry.id === local.endEndpointId) ?? d.accessible[0];
+    const from = buildings.find(b => b.id === origin.building_id);
+    const to = buildings.find(b => b.id === destination.building_id);
+    const result = await fetchJson<LegacyPlan>(`${ROUTING_BASE}/api/route`, {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        ...(from?.entrances.length ? {origin: {building: from, needs_elevator: false}} : {start: {lat: start.lat, lng: start.lng}}),
+        ...(to?.entrances.length ? {destination: {building: to, needs_elevator: !!indoor.needsElevator, room: indoor.room ?? null}}
+          : {end: {lat: end.lat, lng: end.lng}}),
+        preferences: {...prefs, wheelchair_preset: prefs.mobility_preset === 'power_wheelchair' ? 'power'
+          : prefs.mobility_preset === 'manual_wheelchair' ? 'manual' : 'none'},
+        closures: closures.filter(c => c.status !== 'repaired'),
+      }),
+    }, 4500);
+    if (missingEndpoint(result)) paths.delete('/api/route');
+    const reply = result.data;
+    const arrival = reply?.destination;
+    const accessible = reply?.step_free;
+    const noRoute = accessible?.found === false;
+    const route = !noRoute && endsNear(accessible, arrival?.end ?? end)
+      ? {...accessible, summary: {...accessible.summary, engine: 'remote' as const, compute_ms: result.ms}} : null;
+    if (noRoute || route) {
+      return {
+        ...local, engine: 'remote', ms: result.ms, notes: [...notes, ...(arrival?.warnings ?? [])],
+        accessible: route,
+        standard: endsNear(reply?.shortest, arrival?.standard_end ?? end) ? reply.shortest : local.standard,
+        failure: noRoute ? accessible?.summary?.warnings?.[0] ?? 'No step-free route matches your needs.' : undefined,
+        startEndpointId: reply?.origin?.exit_id ?? local.startEndpointId,
+        endEndpointId: arrival?.entrance_id ?? local.endEndpointId,
+        arrivalPoint: !noRoute && arrival?.end
+          ? {...arrival.end, entranceId: arrival.entrance_id ?? null, source: 'engine'} : undefined,
+      };
+    }
+  }
+  if (ROUTING_MODE === 'remote') return {
+    accessible: null, standard: null, notes: [], engine: 'remote',
+    failure: 'Routing service is unavailable. Start the integrated CampusNav server with start-server.cmd.',
+    ms: Math.round(performance.now() - t0),
+  };
   // The in-browser graph covers central campus only ([south, west, north, east], ~150 m margin)
   const bb = G.meta.bbox;
   const outside = (p: Place) => !!bb && (p.lat < bb[0] - 0.0014 || p.lat > bb[2] + 0.0014 || p.lng < bb[1] - 0.0018 || p.lng > bb[3] + 0.0018);
@@ -500,12 +585,19 @@ export async function submitUserReport(report: UserReportPayload): Promise<Repor
   const browserOnly = ROUTING_MODE === 'local' || report.reporter_device_id === 'judge-demo'
     || !BACKEND_TYPES.includes(report.type);
   if (status === 'repaired') {
-    const matches = store.filter(c => c.source === 'community' && c.status !== 'repaired' && c.type === report.type
+    const demo = report.reporter_device_id === 'judge-demo';
+    const matches = store.filter(c => (c.source === 'community' || demo && c.id.startsWith('local-'))
+      && c.status !== 'repaired' && c.type === report.type
       && (report.connector_id ? c.connector_id === report.connector_id
         : getDistanceMeters(c.lat, c.lng, report.lat, report.lng) < 15)
-      && (!browserOnly || c.id.startsWith('local-') || ROUTING_MODE === 'local'));
+      && (!browserOnly || c.id.startsWith('local-')));
     const t0 = performance.now();
-    for (const match of matches) await markClosureResolved(match.id);
+    if (demo) {
+      const ids = new Set(matches.map(c => c.id));
+      store = store.filter(c => !ids.has(c.id));
+    } else {
+      for (const match of matches) await markClosureResolved(match.id);
+    }
     return {closure: local, live: !browserOnly && matches.length > 0, ms: Math.round(performance.now() - t0),
       browserOnly: browserOnly || matches.length === 0};
   }

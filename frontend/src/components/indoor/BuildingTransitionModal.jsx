@@ -27,7 +27,7 @@ export default function BuildingTransitionModal({ open, buildingName, rooms, ini
     if (!open) return;
     setRoomId(initialRoomId ?? null);
     setQuery('');
-    const focusTimer = setTimeout(() => (initialRoomId ? dialogRef.current : inputRef.current)?.focus(), 50);
+    const focusTimer = setTimeout(() => inputRef.current?.focus(), 50);
     const onKey = (e) => e.key === 'Escape' && onClose?.();
     window.addEventListener('keydown', onKey);
     return () => {
@@ -66,7 +66,6 @@ export default function BuildingTransitionModal({ open, buildingName, rooms, ini
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        tabIndex={-1}
         className="w-full max-w-lg rounded-t-[2rem] bg-white p-6 text-slate-950 shadow-2xl ring-1 ring-black/10 sm:rounded-[2rem]"
       >
         <div className="mb-5 flex items-start gap-4">
@@ -103,9 +102,10 @@ export default function BuildingTransitionModal({ open, buildingName, rooms, ini
               value={listOpen ? query : selected ? `${selected.name} · ${selected.floorLabel}` : query}
               placeholder="Room number or name, e.g. S331, Ballroom, Restrooms"
               onFocus={() => {
-                setListOpen(true);
+                if (!roomId) setListOpen(true);
                 setHi(0);
               }}
+              onClick={() => setListOpen(true)}
               onBlur={() => setTimeout(() => setListOpen(false), 120)}
               onChange={(e) => {
                 setQuery(e.target.value);
@@ -115,7 +115,8 @@ export default function BuildingTransitionModal({ open, buildingName, rooms, ini
               onKeyDown={(e) => {
                 if (e.key === 'ArrowDown') {
                   e.preventDefault();
-                  setHi((h) => Math.min(h + 1, results.length - 1));
+                  if (listOpen) setHi((h) => Math.min(h + 1, results.length - 1));
+                  else setListOpen(true);
                 } else if (e.key === 'ArrowUp') {
                   e.preventDefault();
                   setHi((h) => Math.max(h - 1, 0));

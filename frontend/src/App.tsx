@@ -121,12 +121,14 @@ export function App() {
   // so it prefers the entrance closest to a working one
   const destIndoorMap = indoorCatalog.forBuilding(destination?.building_id);
   const indoorIntent = useMemo<IndoorIntent>(() => {
-    if (!destIndoorMap || destIndoorMap.sample || destIndoorMap.status !== 'reviewed') return {};
+    if (!destIndoorMap) return {};
     const target = indoorTarget?.buildingId === destination?.building_id ? indoorTarget : null;
+    const intent = {room: target?.label, needsElevator: !!target?.floorId && target.floorId !== destIndoorMap.entryFloor};
+    if (destIndoorMap.source !== 'api' || destIndoorMap.status !== 'reviewed') return intent;
     const targetId = target?.roomId ?? undefined;
-    return {reviewedBuildingId: destIndoorMap.id, nodeId: targetId?.endsWith(':@lobby') ? undefined : targetId};
+    return {...intent, reviewedBuildingId: destIndoorMap.id, nodeId: targetId?.endsWith(':@lobby') ? undefined : targetId};
   }, [destIndoorMap, indoorTarget, destination?.building_id]);
-  const intentKey = `${indoorIntent.reviewedBuildingId ?? ''}|${indoorIntent.nodeId ?? ''}`;
+  const intentKey = `${indoorIntent.reviewedBuildingId ?? ''}|${indoorIntent.nodeId ?? ''}|${indoorIntent.room ?? ''}`;
 
   useEffect(() => {
     if (!origin || !destination || !graph) return;

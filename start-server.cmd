@@ -2,10 +2,13 @@
 setlocal
 pushd "%~dp0"
 if errorlevel 1 exit /b 1
+set "VITE_CAMPUSNAV_INTEGRATED=1"
+set "VITE_CAMPUSNAV_DEMO=0"
 if /i "%~1"=="--memory" set "CAMPUSNAV_MEMORY=1"
 if /i "%~1"=="--demo" (
     set "CAMPUSNAV_MEMORY=1"
     set "CAMPUSNAV_DEMO=1"
+    set "VITE_CAMPUSNAV_DEMO=1"
 )
 if not exist ".venv\Scripts\python.exe" (
     echo The project Python environment is missing. See README.md for setup.
@@ -34,7 +37,8 @@ if errorlevel 1 (
 )
 set "campusnav_env_args="
 if exist "backend\.env" set "campusnav_env_args=--env-file backend\.env"
-echo Open http://127.0.0.1:8000 for the campus map. Keep this terminal open.
+echo Open http://127.0.0.1:8000 after the integrated server starts. Keep this terminal open.
+echo If port 8000 is already in use, stop the older server before restarting.
 echo Data API: http://127.0.0.1:8000/api/data/docs
 echo Backend diagnostics: http://127.0.0.1:8000/backend
 echo API documentation: http://127.0.0.1:8000/docs
