@@ -5,6 +5,7 @@ from pathlib import Path
 
 from pydantic import Field
 
+from .elevator_inventory import apply_elevator_inventory
 from .engine import RoutingError
 from .entrance_observations import apply_door_observations, read_door_observations
 from .models import Closure, ContractModel, Coordinate, RouteRequest
@@ -32,7 +33,8 @@ def read_buildings(path: Path):
     if not isinstance(payload.get("buildings"), list) or not payload["buildings"]:
         raise ValueError("No building catalog")
     observations = read_door_observations(path.parent / "reviews/entrance-observations.json")
-    return apply_door_observations(payload, observations) if observations else payload
+    payload = apply_door_observations(payload, observations) if observations else payload
+    return apply_elevator_inventory(payload, path.parent / "reviews/elevator-inventory.json")
 
 
 def choices(place, catalog, *, step_free, automatic, allow_keycard_approach=False):

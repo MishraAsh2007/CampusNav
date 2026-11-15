@@ -1,0 +1,8 @@
+{
+  "start": { "lat": 42.39076, "lon": -72.52527 },
+  "end": { "lat": 42.39184, "lon": -72.52625 },
+  "max_grade_pct": 5.0,
+  "avoid_steps": true,
+  "include_standard": true,
+  "closures": []
+}

@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "observations": [
+    {
+      "building_id": "ilc",
+      "total_count": 4,
+      "reported_on": "2026-11-15",
+      "source": "user_confirmation_and_Ash_ver_team_observations",
+      "note": "User explicitly confirms four ILC elevators. Ash_ver distinguishes the central pair, North Pleasant Street car, and N155/N255 car. Current operating status and floors above 2 are not established."
+    },
+    {
+      "building_id": "library",
+      "total_count": 5,
+      "reported_on": "2026-11-15",
+      "source": "user_confirmation_and_Ash_ver_team_observations",
+      "note": "User confirms five Du Bois elevators serving all floors. Ash_ver records cars 1-5 in the main lobby. The existing indoor graph still represents one bank; current operation and individual car-door geometry are not established."
+    }
+  ]
+}

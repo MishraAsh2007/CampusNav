@@ -30,6 +30,7 @@ class PlanConnection(ContractModel):
     kind: Literal["door", "corridor", "elevator"]
     evidence: str = Field(min_length=10)
     asset_id: str
+    asset_aliases: list[str] = Field(default_factory=list)
     served_floor_evidence: str | None = None
     forward_instruction: str | None = None
     reverse_instruction: str | None = None
@@ -118,7 +119,7 @@ def plan_directions(data, request, *, now=None):
     for e in data.connections:
         edge_floors = {nodes[n].floor_id or data.floor_id for n in [e.start, e.end]}
         if any(
-            c.asset_id == e.asset_id
+            c.asset_id in (e.asset_id, *e.asset_aliases)
             and c.status == "closed"
             and (not c.floor_id or c.floor_id in edge_floors)
             for c in active
@@ -126,7 +127,7 @@ def plan_directions(data, request, *, now=None):
             continue
         # Connection count is a topological preference, not metric distance.
         degraded = any(
-            c.asset_id == e.asset_id
+            c.asset_id in (e.asset_id, *e.asset_aliases)
             and c.status == "degraded"
             and (not c.floor_id or c.floor_id in edge_floors)
             for c in active

@@ -124,7 +124,7 @@ class DataBridge:
             row["database_details"] = {
                 "bathrooms": view["bathrooms"], "elevators": view["elevators"]
             }
-            if building.elevator_count is not None:
+            if building.elevator_count is not None and not row["elevators"].get("count_evidence"):
                 row["elevators"]["total_count"] = building.elevator_count
             lifts = {lift.asset_id: lift for lift in building.elevators if lift.asset_id}
             for lift in row["elevators"]["list"]:

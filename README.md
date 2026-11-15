@@ -17,7 +17,7 @@ routes. This branch packages the current Role 1 routing and Role 3 ingestion wor
 the existing map UI. The Role 4 data service remains in `backend/`.
 
 **Indoor coverage is a pilot.** ILC uses routes traced on the public UMass plans for
-floors 1–2, with a simplified map and three elevator assets. The former ILC
+floors 1–2, with a simplified map and four elevator assets. The former ILC
 approximate graph is withdrawn. Du Bois has approximate connections that still
 need physical verification. Dorm drawings are acquired
 through authenticated SharePoint; Oak has a separate drawing-based wayfinding pilot with
@@ -181,10 +181,10 @@ Counts describe the local source snapshot and can change after refreshes.
 
 Current indoor audit:
 
-- ILC: nine destination approaches on floors 1–2, with 41 landmarks, 42 connections
-  and three independently closable elevators. The southwest outdoor threshold
+- ILC: 21 destination approaches on floors 1–2, with 70 landmarks, 72 connections
+  and four independently closable elevators. The southwest outdoor threshold
   joins floor 2. The north entrance has no established outdoor join. Closing all
-  three elevators blocks cross-floor routes. Floors 3–4 and untraced rooms remain
+  four elevators blocks cross-floor routes. Floors 3–4 and untraced rooms remain
   unavailable; physical door widths, corridor grades and current access are unverified.
 - Du Bois: all 27 mapped service destinations route from an entrance and back. Third-floor
   plan is missing; E/LL floor-label correspondence and actual door/corridor geometry need
@@ -257,3 +257,98 @@ tests demonstrate modeled behavior, not physical accessibility verification.
 
 Some detailed guides describe the original developer workspace and its historical snapshots.
 Use this README for the branch's clean-clone setup and the latest coverage audit for current limits.
+
+## Second routing engine: `routing/` (Role 1, port 8001)
+Ash_ver is merged locally alongside the current application. See
+[what was integrated and what still differs](docs/ASH_VER_MERGE.md). Its reviewed
+ILC additions are used by the default app; the alternate outdoor engine is a
+separate comparison tool and does not replace the production `/plan` endpoint.
+
+This is a separate engine from `campus_routing/` above: it has its own graph, 1 m lidar grades, the
+`/api/route` and `/api/indoor-route` endpoints, elevator car-count rules and a SIN parser in
+`services/scraper/`. Contracts are in `docs/contracts.md`.
+
+
+OSMnx + NetworkX graph of central campus, USGS elevation for per-edge grade, A* search behind a stateless
+FastAPI `/route` endpoint. Closures arrive in each request body, so the engine needs no database.
+
+### Setup
+
+```powershell
+cd routing
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+### Build the graph (once)
+
+`data/graph.graphml` is committed, so teammates can skip this. To rebuild (needs internet, about 1 minute;
+elevations are cached in `data/elevation_cache.json`):
+
+```powershell
+python scripts/build_graph.py
+```
+
+Edit `data/ground_truth.json` (verified elevators, ramps, entrances; schema in `app/graph/overrides.py`)
+and rebuild to fold it in.
+
+### Demo: standard vs. accessible
+
+```powershell
+python scripts/demo_route.py                                   # ILC -> Campus Center
+python scripts/demo_route.py --closures mocks/closures.json    # ramp blocked: accessible route reroutes
+python scripts/demo_route.py --max-grade 8 --geojson out.geojson
+python scripts/demo_route.py --request mocks/sample_request_destination.json   # route to a building's best entrance
+```
+
+Routing to a building (`destination` instead of `end`) checks elevator closures and entrance
+accessibility first, picks the entrance that suits the indoor leg, and returns plain-language
+warnings. See `docs/contracts.md`. The entrances in `mocks/sample_request_destination.json`
+are placeholders.
+
+### Run the API
+
+```powershell
+uvicorn app.main:app --reload --port 8001
+```
+
+`GET /health`, `POST /route` (see `docs/contracts.md`), Swagger UI at `/docs`.
+
+The backend and integrated Python server use port 8000. Keep this standalone
+engine on 8001 and inspect `/docs` there for comparisons. The current frontend
+requires the integrated source-routing/portal contracts; changing its API URL
+to this engine is not a supported way to retain all current features. Live mode
+does not fall back to the sample browser router.
+
+```powershell
+curl.exe -X POST localhost:8001/route -H "Content-Type: application/json" -d "@mocks/sample_request.json"
+```
+
+### Tests
+
+```powershell
+python -m pytest -q
+```
+
+### How it works
+
+| piece | file |
+|---|---|
+| Edge cost: stairs, grade, ground truth | `app/routing/weights.py` |
+| Closures -> blocked edges, expiry | `app/routing/closures.py` |
+| A* / Dijkstra | `app/routing/pathfinding.py` |
+| Path -> GeoJSON + template directions | `app/routing/serialize.py` |
+| OSM download, edge classification | `app/graph/build.py` |
+| Elevation + grade | `app/graph/elevation.py` |
+| Ground-truth overrides | `app/graph/overrides.py` |
+
+* **Standard route**: shortest distance, stairs and slope ignored.
+* **Accessible route**: stairs blocked, longer edges steeper than `max_grade_pct` (default 5%) blocked,
+  grades above 60% of the limit get a rising cost, closures removed.
+* Edges under 8 m with a steep computed grade are penalized, not blocked, because DEM noise on short edges
+  would otherwise cut the graph.
+* The default collector uses USGS EPQS/3DEP; OpenTopoData and Open-Meteo adapters
+  remain available. Treat terrain grades as estimates. The committed graph also
+  contains deck assumptions and an unverified sample-based ramp override; see the
+  merge comparison before using it as the production source.

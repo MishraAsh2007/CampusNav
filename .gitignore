@@ -20,9 +20,10 @@ dist/
 data/collected_data.json
 data/scrape_status.json
 tmp/
-
 frontend/node_modules/
-
 frontend/dist/
-
 node_modules/
+services/scraper/data/raw/
+services/scraper/data/out/
+routing/cache/
+.worktrees/

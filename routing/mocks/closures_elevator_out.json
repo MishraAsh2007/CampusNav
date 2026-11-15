@@ -1,0 +1,13 @@
+[
+  {
+    "id": "mock-elevator-1",
+    "type": "elevator_out",
+    "lat": 42.39177,
+    "lon": -72.52702,
+    "radius_m": 40,
+    "description": "Campus Center elevator out of service (placeholder: only blocks routes once a verified elevator link exists in data/ground_truth.json near this point)",
+    "reported_at": "2026-11-13T22:10:00-05:00",
+    "confirmed_at": "2026-11-13T22:10:00-05:00",
+    "expires_at": null
+  }
+]

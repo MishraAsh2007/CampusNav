@@ -23,7 +23,13 @@ test('ILC drawing uses the original image coordinate frame and separates floor r
   assert.equal(model.nodes.get('ilc-entrance-south').floor, '2');
   assert.equal(model.nodes.get('ilc-entrance-south').kind, 'entrance');
   assert.deepEqual(model.nodes.get('ilc-entrance-south').px, [508, 943]);
-  assert.equal(model.rooms.length, 9);
+  assert.equal(model.rooms.length, 21);
+  for (const floor of model.floors) {
+    assert.equal(floor.vectorPlan.lifts.length, 4);
+    assert.ok(floor.vectorPlan.lifts.some(lift => lift.id === 'east'));
+  }
+  assert.ok(model.rooms.some(room => room.id === 'ilc-door-s241-f2'));
+  assert.ok(model.rooms.some(room => room.id === 'ilc-door-s225-f2'));
   const route = {room: {floor:'2', doorX:549, doorY:454}, steps:[
     {floor:'1', kind:'straight', pts:[[500,443],[511,416]]},
     {floor:'1', kind:'elevator', pts:[[511,416]]},
@@ -40,6 +46,7 @@ test('ILC drawing uses the original image coordinate frame and separates floor r
     onGo() {}, onExit() {}, onChangeDestination() {},
   }));
   assert.match(guide, /Simplified floor plan/);
+  assert.match(guide, /North Pleasant Street elevator/);
   assert.doesNotMatch(guide, /<image|<img/);
   assert.doesNotMatch(guide, /No usable floor-plan image/);
   assert.match(guide, /Room outlines traced from the UMass plans/);

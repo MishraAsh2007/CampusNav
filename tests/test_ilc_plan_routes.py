@@ -52,13 +52,13 @@ def test_every_listed_destination_reachable_from_corrected_floor_2_entrance():
         assert reverse["steps"][-1]["to_floor"] == "2"
 
 
-def test_three_shafts_offer_alternatives_and_all_closed_blocks_floor_change():
+def test_four_shafts_offer_alternatives_and_all_closed_blocks_floor_change():
     plan = data()
     assets = {e.asset_id for e in plan.connections if e.kind == "elevator"}
-    assert assets == {"ilc-lift-north", "ilc-lift-central-q", "ilc-lift-central-p"}
+    assert assets == {"ilc-lift-north", "ilc-lift-central-q", "ilc-lift-central-p", "ilc-lift-east"}
     now = datetime.now(UTC)
     blocked = []
-    for _ in range(3):
+    for _ in range(4):
         result = plan_directions(plan, request(closures=blocked))
         ride = next(s for s in result["steps"] if s["kind"] == "elevator")
         assert ride["asset_id"] not in {c.asset_id for c in blocked}
@@ -79,6 +79,42 @@ def test_three_shafts_offer_alternatives_and_all_closed_blocks_floor_change():
         )
     with pytest.raises(RoutingError, match="No drawing connection"):
         plan_directions(plan, request(closures=blocked))
+
+
+def test_ash_additions_preserve_floor_identity_and_named_car_closures():
+    plan = data()
+    nodes = {n.id: n for n in plan.nodes}
+    assert len([n for n in plan.nodes if n.kind == "room"]) == 21
+    assert nodes["ilc-door-s241-f2"].floor_id == "2"
+    assert nodes["ilc-door-s225-f2"].floor_id == "2"
+    assert "caf\u00e9" in nodes["ilc-f1-n140"].label
+    now = datetime.now(UTC)
+    closures = [Closure(
+        lat=42.391, lng=-72.526, radius=3, type="elevator", status="closed",
+        source="community", building_id="ilc", asset_id=asset,
+        start_time=now - timedelta(minutes=1), end_time=None, last_confirmed=now,
+    ) for asset in ("ilc-elevator-north", "ilc-elevator-core-a", "ilc-elevator-core-b")]
+    result = plan_directions(plan, request(closures=closures))
+    ride = next(s for s in result["steps"] if s["kind"] == "elevator")
+    assert ride["asset_id"] == "ilc-lift-east"
+    assert "S220" in ride["instruction"] and "S110" not in ride["instruction"]
+    closures.append(closures[0].model_copy(update={"asset_id": "ilc-elevator-east"}))
+    with pytest.raises(RoutingError, match="No drawing connection"):
+        plan_directions(plan, request(closures=closures))
+
+
+def test_elevator_counts_do_not_invent_car_positions_or_working_status():
+    from campus_routing.buildings import read_buildings
+
+    with TestClient(create_app()) as client:
+        buildings = read_buildings(ROOT / "data/buildings.json")["buildings"]
+        ilc = next(b for b in buildings if b["id"] == "ilc")
+        library = next(b for b in buildings if b["id"] == "library")
+        assert ilc["elevators"]["total_count"] == 4
+        assert library["elevators"]["total_count"] == 5
+        assert ilc["elevators"]["working_count"] is None
+        assert len(ilc["elevators"]["list"]) == 2  # Existing GIS lobby locations, not cars.
+        assert client.get("/plan-wayfinding/ilc").status_code == 200
 
 
 def test_default_api_serves_same_fingerprint_images_and_requires_consent():

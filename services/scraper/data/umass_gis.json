@@ -1,0 +1,3264 @@
+{
+  "fetched_at": "2026-11-14T06:14:52+00:00",
+  "source": "UMass Campus Accessibility Map ArcGIS layers (data as of August 2022)",
+  "buildings": [
+    {
+      "name": "25 Butterfield Terrace",
+      "id": "788",
+      "access_level": null,
+      "centroid": [
+        42.3855378,
+        -72.5204087
+      ],
+      "radius_m": 9.9,
+      "elevators": []
+    },
+    {
+      "name": "358 North Pleasant",
+      "id": "628",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3828552,
+        -72.5208247
+      ],
+      "radius_m": 22.7,
+      "elevators": [
+        {
+          "id": 105,
+          "lat": 42.3828044,
+          "lon": -72.5207675
+        }
+      ]
+    },
+    {
+      "name": "380 Russell Street",
+      "id": "784",
+      "access_level": null,
+      "centroid": [
+        42.3604187,
+        -72.5485067
+      ],
+      "radius_m": 27.2,
+      "elevators": []
+    },
+    {
+      "name": "400 Venture Way",
+      "id": "778",
+      "access_level": null,
+      "centroid": [
+        42.3676364,
+        -72.5468809
+      ],
+      "radius_m": 39.9,
+      "elevators": []
+    },
+    {
+      "name": "472 North Pleasant Street",
+      "id": "743",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3866659,
+        -72.5230083
+      ],
+      "radius_m": 40.7,
+      "elevators": []
+    },
+    {
+      "name": "758 North Pleasant",
+      "id": "714",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3956648,
+        -72.5275831
+      ],
+      "radius_m": 14.1,
+      "elevators": []
+    },
+    {
+      "name": "Adams, John House",
+      "id": "354",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3818416,
+        -72.5287895
+      ],
+      "radius_m": 20.1,
+      "elevators": [
+        {
+          "id": 161,
+          "lat": 42.381861,
+          "lon": -72.5288037
+        }
+      ]
+    },
+    {
+      "name": "Adams, John Q. House",
+      "id": "355",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3822411,
+        -72.5291617
+      ],
+      "radius_m": 19.4,
+      "elevators": [
+        {
+          "id": 162,
+          "lat": 42.3822439,
+          "lon": -72.5291409
+        }
+      ]
+    },
+    {
+      "name": "Ag Engineering Annex A",
+      "id": "679",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3922013,
+        -72.5313429
+      ],
+      "radius_m": 19.8,
+      "elevators": []
+    },
+    {
+      "name": "Ag Engineering Annex B",
+      "id": "680",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3915167,
+        -72.5310875
+      ],
+      "radius_m": 22.4,
+      "elevators": []
+    },
+    {
+      "name": "Agricultural Engineering Building Central",
+      "id": "387",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.3919459,
+        -72.5310769
+      ],
+      "radius_m": 18.8,
+      "elevators": []
+    },
+    {
+      "name": "Agricultural Engineering Building North",
+      "id": "094",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.3922178,
+        -72.5309759
+      ],
+      "radius_m": 25.7,
+      "elevators": []
+    },
+    {
+      "name": "Agricultural Engineering Building South",
+      "id": "093",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.3916532,
+        -72.5309022
+      ],
+      "radius_m": 31.2,
+      "elevators": [
+        {
+          "id": 128,
+          "lat": 42.3914812,
+          "lon": -72.530563
+        }
+      ]
+    },
+    {
+      "name": "Agricultural Experiment Station",
+      "id": "110",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.399265,
+        -72.5117673
+      ],
+      "radius_m": 37.3,
+      "elevators": []
+    },
+    {
+      "name": "Alfond Hall",
+      "id": "655",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3863456,
+        -72.5247823
+      ],
+      "radius_m": 32.2,
+      "elevators": [
+        {
+          "id": 104,
+          "lat": 42.3864798,
+          "lon": -72.5247869
+        }
+      ]
+    },
+    {
+      "name": "Alumnae Hall",
+      "id": "756",
+      "access_level": null,
+      "centroid": [
+        42.2958159,
+        -71.1930164
+      ],
+      "radius_m": 34.2,
+      "elevators": []
+    },
+    {
+      "name": "Applied Science Center",
+      "id": "769",
+      "access_level": null,
+      "centroid": [
+        42.2944002,
+        -71.1951987
+      ],
+      "radius_m": 26.2,
+      "elevators": []
+    },
+    {
+      "name": "Army ROTC Building",
+      "id": "079",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3852023,
+        -72.5296226
+      ],
+      "radius_m": 15.2,
+      "elevators": []
+    },
+    {
+      "name": "Arnold House",
+      "id": "002",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3944312,
+        -72.526089
+      ],
+      "radius_m": 38.1,
+      "elevators": [
+        {
+          "id": 140,
+          "lat": 42.3945123,
+          "lon": -72.5260618
+        }
+      ]
+    },
+    {
+      "name": "Astronomy Building",
+      "id": "403",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3948148,
+        -72.5297209
+      ],
+      "radius_m": 25.0,
+      "elevators": []
+    },
+    {
+      "name": "Athletic Center",
+      "id": "772",
+      "access_level": null,
+      "centroid": [
+        42.2930757,
+        -71.1945187
+      ],
+      "radius_m": 38.9,
+      "elevators": []
+    },
+    {
+      "name": "Auxiliary Services Food Storage Building",
+      "id": "605",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3940312,
+        -72.5353651
+      ],
+      "radius_m": 28.2,
+      "elevators": []
+    },
+    {
+      "name": "Baker House",
+      "id": "003",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3895557,
+        -72.5197607
+      ],
+      "radius_m": 61.7,
+      "elevators": []
+    },
+    {
+      "name": "Barone House",
+      "id": "766",
+      "access_level": null,
+      "centroid": [
+        42.2964418,
+        -71.1952115
+      ],
+      "radius_m": 10.2,
+      "elevators": []
+    },
+    {
+      "name": "Bartlett Hall",
+      "id": "107",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3878014,
+        -72.5285592
+      ],
+      "radius_m": 76.3,
+      "elevators": [
+        {
+          "id": 119,
+          "lat": 42.3877012,
+          "lon": -72.5286201
+        }
+      ]
+    },
+    {
+      "name": "Berkshire Dining Hall",
+      "id": "399",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3819515,
+        -72.5298781
+      ],
+      "radius_m": 38.3,
+      "elevators": [
+        {
+          "id": 102,
+          "lat": 42.381854,
+          "lon": -72.5297688
+        }
+      ]
+    },
+    {
+      "name": "Berkshire House",
+      "id": "007",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3855376,
+        -72.5289386
+      ],
+      "radius_m": 22.5,
+      "elevators": []
+    },
+    {
+      "name": "Birch House",
+      "id": "710",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3879781,
+        -72.5314209
+      ],
+      "radius_m": 37.9,
+      "elevators": [
+        {
+          "id": 180,
+          "lat": 42.3879912,
+          "lon": -72.5314052
+        }
+      ]
+    },
+    {
+      "name": "Blaisdell House",
+      "id": "038",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.390076,
+        -72.5307201
+      ],
+      "radius_m": 9.4,
+      "elevators": []
+    },
+    {
+      "name": "Bowditch Chemical Storage Shed",
+      "id": "705",
+      "access_level": null,
+      "centroid": [
+        42.391748,
+        -72.5315308
+      ],
+      "radius_m": 3.4,
+      "elevators": []
+    },
+    {
+      "name": "Bowditch Hall",
+      "id": "135",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3926349,
+        -72.5319102
+      ],
+      "radius_m": 25.3,
+      "elevators": []
+    },
+    {
+      "name": "Bowditch Hall Greenhouse",
+      "id": "167",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3924466,
+        -72.5319193
+      ],
+      "radius_m": 20.0,
+      "elevators": []
+    },
+    {
+      "name": "Bowditch Lodge",
+      "id": "077",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3813906,
+        -72.5345199
+      ],
+      "radius_m": 14.2,
+      "elevators": []
+    },
+    {
+      "name": "Boyden Gymnasium",
+      "id": "319",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3863824,
+        -72.5304773
+      ],
+      "radius_m": 51.3,
+      "elevators": []
+    },
+    {
+      "name": "Brack Auxiliary Building",
+      "id": "748",
+      "access_level": null,
+      "centroid": [
+        42.3978003,
+        -72.5134605
+      ],
+      "radius_m": 5.1,
+      "elevators": []
+    },
+    {
+      "name": "Brett House",
+      "id": "295",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3896531,
+        -72.5215144
+      ],
+      "radius_m": 39.6,
+      "elevators": [
+        {
+          "id": 108,
+          "lat": 42.3896951,
+          "lon": -72.5215615
+        }
+      ]
+    },
+    {
+      "name": "Brooks House",
+      "id": "004",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3899107,
+        -72.521023
+      ],
+      "radius_m": 24.0,
+      "elevators": [
+        {
+          "id": 153,
+          "lat": 42.3899345,
+          "lon": -72.5209294
+        }
+      ]
+    },
+    {
+      "name": "Brown House",
+      "id": "426",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3974928,
+        -72.5229476
+      ],
+      "radius_m": 36.6,
+      "elevators": [
+        {
+          "id": 149,
+          "lat": 42.3973105,
+          "lon": -72.5229416
+        },
+        {
+          "id": 186,
+          "lat": 42.3974174,
+          "lon": -72.5229617
+        }
+      ]
+    },
+    {
+      "name": "Butterfield House",
+      "id": "005",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3886147,
+        -72.5181664
+      ],
+      "radius_m": 37.6,
+      "elevators": []
+    },
+    {
+      "name": "Cance House",
+      "id": "400",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.381174,
+        -72.5300262
+      ],
+      "radius_m": 43.1,
+      "elevators": [
+        {
+          "id": 160,
+          "lat": 42.3811112,
+          "lon": -72.5300735
+        }
+      ]
+    },
+    {
+      "name": "Carlson Student Center",
+      "id": "754",
+      "access_level": null,
+      "centroid": [
+        42.2943306,
+        -71.1917109
+      ],
+      "radius_m": 28.1,
+      "elevators": []
+    },
+    {
+      "name": "Cashin House",
+      "id": "427",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3975204,
+        -72.521868
+      ],
+      "radius_m": 36.8,
+      "elevators": [
+        {
+          "id": 150,
+          "lat": 42.3975051,
+          "lon": -72.5215625
+        }
+      ]
+    },
+    {
+      "name": "Central Facility",
+      "id": "653",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3878623,
+        -72.5293717
+      ],
+      "radius_m": 32.5,
+      "elevators": []
+    },
+    {
+      "name": "Central Heating Plant",
+      "id": "664",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3898069,
+        -72.5370905
+      ],
+      "radius_m": 52.7,
+      "elevators": []
+    },
+    {
+      "name": "Chadbourne House",
+      "id": "006",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3894558,
+        -72.5191142
+      ],
+      "radius_m": 37.7,
+      "elevators": []
+    },
+    {
+      "name": "Chandler Laboratory",
+      "id": "436",
+      "access_level": null,
+      "centroid": [
+        42.2539184,
+        -72.3601332
+      ],
+      "radius_m": 33.7,
+      "elevators": []
+    },
+    {
+      "name": "Chapel",
+      "id": "080",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3889987,
+        -72.52796
+      ],
+      "radius_m": 24.0,
+      "elevators": []
+    },
+    {
+      "name": "Chenoweth Laboratory",
+      "id": "101",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3916664,
+        -72.5302386
+      ],
+      "radius_m": 24.4,
+      "elevators": []
+    },
+    {
+      "name": "Chenoweth Laboratory Addition",
+      "id": "344",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3919699,
+        -72.5303361
+      ],
+      "radius_m": 43.7,
+      "elevators": [
+        {
+          "id": 129,
+          "lat": 42.3921344,
+          "lon": -72.5302441
+        }
+      ]
+    },
+    {
+      "name": "Clark Hall",
+      "id": "083",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.3891549,
+        -72.5237479
+      ],
+      "radius_m": 20.2,
+      "elevators": []
+    },
+    {
+      "name": "Clark Hall Greenhouse",
+      "id": "084",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.3890173,
+        -72.5237535
+      ],
+      "radius_m": 19.8,
+      "elevators": []
+    },
+    {
+      "name": "Cold Storage Building",
+      "id": "292",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.3915373,
+        -72.5305876
+      ],
+      "radius_m": 23.0,
+      "elevators": [
+        {
+          "id": 128,
+          "lat": 42.3914812,
+          "lon": -72.530563
+        }
+      ]
+    },
+    {
+      "name": "Commonwealth Honors College",
+      "id": "711",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3881452,
+        -72.5306244
+      ],
+      "radius_m": 29.6,
+      "elevators": [
+        {
+          "id": 177,
+          "lat": 42.388152,
+          "lon": -72.5303689
+        }
+      ]
+    },
+    {
+      "name": "Computer Science",
+      "id": "651",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3951546,
+        -72.5311246
+      ],
+      "radius_m": 53.6,
+      "elevators": [
+        {
+          "id": 133,
+          "lat": 42.395213,
+          "lon": -72.5312777
+        }
+      ]
+    },
+    {
+      "name": "Conte Polymer Research Center",
+      "id": "614",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.394379,
+        -72.5280063
+      ],
+      "radius_m": 52.7,
+      "elevators": [
+        {
+          "id": 138,
+          "lat": 42.3944256,
+          "lon": -72.5283048
+        },
+        {
+          "id": 139,
+          "lat": 42.3942272,
+          "lon": -72.5279879
+        }
+      ]
+    },
+    {
+      "name": "Coolidge House",
+      "id": "353",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3836464,
+        -72.5299311
+      ],
+      "radius_m": 25.9,
+      "elevators": [
+        {
+          "id": 165,
+          "lat": 42.3836629,
+          "lon": -72.5298748
+        }
+      ]
+    },
+    {
+      "name": "Cooperative Extension Service Main Building",
+      "id": "594",
+      "access_level": null,
+      "centroid": [
+        42.455043,
+        -71.348957
+      ],
+      "radius_m": 10.2,
+      "elevators": []
+    },
+    {
+      "name": "Cooperative Extension Service School House",
+      "id": "595",
+      "access_level": null,
+      "centroid": [
+        42.4549205,
+        -71.3487544
+      ],
+      "radius_m": 8.8,
+      "elevators": []
+    },
+    {
+      "name": "Crabtree House",
+      "id": "012",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.394112,
+        -72.5251281
+      ],
+      "radius_m": 25.7,
+      "elevators": []
+    },
+    {
+      "name": "Crampton House",
+      "id": "380",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3832933,
+        -72.528947
+      ],
+      "radius_m": 44.2,
+      "elevators": [
+        {
+          "id": 176,
+          "lat": 42.3833751,
+          "lon": -72.5291084
+        }
+      ]
+    },
+    {
+      "name": "Crotty Hall",
+      "id": "736",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.384613,
+        -72.5221598
+      ],
+      "radius_m": 30.3,
+      "elevators": []
+    },
+    {
+      "name": "Dakin Carriage House",
+      "id": "649",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.4014031,
+        -72.516894
+      ],
+      "radius_m": 12.3,
+      "elevators": []
+    },
+    {
+      "name": "Dakin House",
+      "id": "626",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.4016399,
+        -72.5170799
+      ],
+      "radius_m": 13.2,
+      "elevators": []
+    },
+    {
+      "name": "Dickinson Hall",
+      "id": "132",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3890611,
+        -72.5303124
+      ],
+      "radius_m": 31.5,
+      "elevators": []
+    },
+    {
+      "name": "Dickinson House",
+      "id": "331",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.392137,
+        -72.5196247
+      ],
+      "radius_m": 41.4,
+      "elevators": [
+        {
+          "id": 157,
+          "lat": 42.3921204,
+          "lon": -72.5196026
+        }
+      ]
+    },
+    {
+      "name": "Dome Restroom",
+      "id": "783",
+      "access_level": null,
+      "centroid": [
+        42.3775981,
+        -72.537712
+      ],
+      "radius_m": 9.6,
+      "elevators": []
+    },
+    {
+      "name": "Draper Hall",
+      "id": "087",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.3923267,
+        -72.5284076
+      ],
+      "radius_m": 22.1,
+      "elevators": []
+    },
+    {
+      "name": "Draper Hall Annex",
+      "id": "088",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.3925716,
+        -72.5284289
+      ],
+      "radius_m": 21.2,
+      "elevators": []
+    },
+    {
+      "name": "DuBois Library",
+      "id": "417",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3897193,
+        -72.5278561
+      ],
+      "radius_m": 74.5,
+      "elevators": [
+        {
+          "id": 121,
+          "lat": 42.3898381,
+          "lon": -72.5282299
+        }
+      ]
+    },
+    {
+      "name": "Duda Building",
+      "id": "071",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3944562,
+        -72.530301
+      ],
+      "radius_m": 12.1,
+      "elevators": []
+    },
+    {
+      "name": "Durfee Range",
+      "id": "096",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.3906526,
+        -72.5225304
+      ],
+      "radius_m": 25.1,
+      "elevators": []
+    },
+    {
+      "name": "Durfee Shed",
+      "id": "695",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3904559,
+        -72.5221682
+      ],
+      "radius_m": 3.8,
+      "elevators": []
+    },
+    {
+      "name": "Dwight House",
+      "id": "035",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3953976,
+        -72.5251656
+      ],
+      "radius_m": 33.9,
+      "elevators": []
+    },
+    {
+      "name": "East Experiment Station",
+      "id": "089",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.3933353,
+        -72.5255692
+      ],
+      "radius_m": 9.8,
+      "elevators": []
+    },
+    {
+      "name": "Elm House",
+      "id": "708",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3880973,
+        -72.5299778
+      ],
+      "radius_m": 37.6,
+      "elevators": [
+        {
+          "id": 178,
+          "lat": 42.3881622,
+          "lon": -72.5298002
+        },
+        {
+          "id": 195,
+          "lat": 42.3883559,
+          "lon": -72.5298817
+        }
+      ]
+    },
+    {
+      "name": "Emerson House",
+      "id": "351",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3835051,
+        -72.5312842
+      ],
+      "radius_m": 38.7,
+      "elevators": [
+        {
+          "id": 169,
+          "lat": 42.3834538,
+          "lon": -72.5308804
+        }
+      ]
+    },
+    {
+      "name": "Engineering Laboratory II",
+      "id": "657",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3944028,
+        -72.5311438
+      ],
+      "radius_m": 48.3,
+      "elevators": [
+        {
+          "id": 132,
+          "lat": 42.394455,
+          "lon": -72.5311514
+        }
+      ]
+    },
+    {
+      "name": "Engineering Shops Building",
+      "id": "293",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3947132,
+        -72.5304939
+      ],
+      "radius_m": 39.1,
+      "elevators": []
+    },
+    {
+      "name": "Experimental Biology Laboratory-Cranberry Station",
+      "id": "410",
+      "access_level": null,
+      "centroid": [
+        41.7659056,
+        -70.6696098
+      ],
+      "radius_m": 28.6,
+      "elevators": []
+    },
+    {
+      "name": "Farley Lodge",
+      "id": "095",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3811581,
+        -72.5346868
+      ],
+      "radius_m": 11.7,
+      "elevators": []
+    },
+    {
+      "name": "Farmhouse (BE)",
+      "id": "278",
+      "access_level": null,
+      "centroid": [
+        42.2530415,
+        -72.3592768
+      ],
+      "radius_m": 13.2,
+      "elevators": []
+    },
+    {
+      "name": "Fernald Hall",
+      "id": "097",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.3885634,
+        -72.5223583
+      ],
+      "radius_m": 26.4,
+      "elevators": []
+    },
+    {
+      "name": "Field Hockey Facility",
+      "id": "738",
+      "access_level": null,
+      "centroid": [
+        42.3789103,
+        -72.5372778
+      ],
+      "radius_m": 7.0,
+      "elevators": []
+    },
+    {
+      "name": "Field House",
+      "id": "332",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3916726,
+        -72.5186376
+      ],
+      "radius_m": 42.1,
+      "elevators": [
+        {
+          "id": 158,
+          "lat": 42.3917533,
+          "lon": -72.5185477
+        }
+      ]
+    },
+    {
+      "name": "Flint Laboratory",
+      "id": "100",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3916859,
+        -72.5296116
+      ],
+      "radius_m": 23.4,
+      "elevators": []
+    },
+    {
+      "name": "Football Performance Center",
+      "id": "716",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3780889,
+        -72.5359873
+      ],
+      "radius_m": 53.7,
+      "elevators": []
+    },
+    {
+      "name": "Forest & Parks Building",
+      "id": "244",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3934895,
+        -72.5359186
+      ],
+      "radius_m": 17.3,
+      "elevators": []
+    },
+    {
+      "name": "Franklin Dining Hall",
+      "id": "334",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3892147,
+        -72.5225804
+      ],
+      "radius_m": 41.2,
+      "elevators": []
+    },
+    {
+      "name": "French Hall",
+      "id": "104",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.3899874,
+        -72.5229262
+      ],
+      "radius_m": 24.2,
+      "elevators": []
+    },
+    {
+      "name": "Furcolo Hall",
+      "id": "289",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3981729,
+        -72.5267911
+      ],
+      "radius_m": 89.8,
+      "elevators": []
+    },
+    {
+      "name": "Gladchuck Press Box",
+      "id": "744",
+      "access_level": null,
+      "centroid": [
+        42.3794122,
+        -72.5371671
+      ],
+      "radius_m": 4.6,
+      "elevators": []
+    },
+    {
+      "name": "Goessmann Laboratory",
+      "id": "081",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3929,
+        -72.527318
+      ],
+      "radius_m": 36.8,
+      "elevators": []
+    },
+    {
+      "name": "Goessmann Laboratory Addition",
+      "id": "082",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3932719,
+        -72.5275267
+      ],
+      "radius_m": 59.9,
+      "elevators": [
+        {
+          "id": 135,
+          "lat": 42.3930822,
+          "lon": -72.5275959
+        }
+      ]
+    },
+    {
+      "name": "Goodell Building",
+      "id": "171",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3887269,
+        -72.5290378
+      ],
+      "radius_m": 30.5,
+      "elevators": []
+    },
+    {
+      "name": "Goodell Building Addition",
+      "id": "172",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3886315,
+        -72.5292409
+      ],
+      "radius_m": 34.8,
+      "elevators": [
+        {
+          "id": 120,
+          "lat": 42.3886312,
+          "lon": -72.5292011
+        }
+      ]
+    },
+    {
+      "name": "Gordon Hall",
+      "id": "662",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3848737,
+        -72.5222328
+      ],
+      "radius_m": 26.6,
+      "elevators": []
+    },
+    {
+      "name": "Gorman House",
+      "id": "294",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3875142,
+        -72.5210234
+      ],
+      "radius_m": 48.6,
+      "elevators": []
+    },
+    {
+      "name": "Grayson House",
+      "id": "330",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3922689,
+        -72.5188411
+      ],
+      "radius_m": 38.5,
+      "elevators": [
+        {
+          "id": 109,
+          "lat": 42.3922341,
+          "lon": -72.5188717
+        }
+      ]
+    },
+    {
+      "name": "Greenough House",
+      "id": "024",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3899316,
+        -72.5192539
+      ],
+      "radius_m": 39.2,
+      "elevators": []
+    },
+    {
+      "name": "Grinnell Arena",
+      "id": "136",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3895278,
+        -72.5310578
+      ],
+      "radius_m": 16.9,
+      "elevators": []
+    },
+    {
+      "name": "Grounds Greenhouse",
+      "id": "717",
+      "access_level": null,
+      "centroid": [
+        42.3997644,
+        -72.513066
+      ],
+      "radius_m": 8.4,
+      "elevators": []
+    },
+    {
+      "name": "Grounds Greenhouse #2",
+      "id": "719",
+      "access_level": null,
+      "centroid": [
+        42.3998902,
+        -72.5128582
+      ],
+      "radius_m": 14.4,
+      "elevators": []
+    },
+    {
+      "name": "Grounds Greenhouse #3",
+      "id": "747",
+      "access_level": null,
+      "centroid": [
+        42.3997897,
+        -72.5131862
+      ],
+      "radius_m": 6.5,
+      "elevators": []
+    },
+    {
+      "name": "Gunness Laboratory",
+      "id": "091",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3944856,
+        -72.5296709
+      ],
+      "radius_m": 41.3,
+      "elevators": []
+    },
+    {
+      "name": "Hadley Farm Animal Agricultural Education Center",
+      "id": "616",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3781808,
+        -72.5476761
+      ],
+      "radius_m": 30.4,
+      "elevators": []
+    },
+    {
+      "name": "Hadley Farm Covered Shelter #1",
+      "id": "621",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.380834,
+        -72.5459697
+      ],
+      "radius_m": 21.4,
+      "elevators": []
+    },
+    {
+      "name": "Hadley Farm Covered Shelter #2",
+      "id": "622",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3752829,
+        -72.5457782
+      ],
+      "radius_m": 19.3,
+      "elevators": []
+    },
+    {
+      "name": "Hadley Farm Demonstration Center",
+      "id": "618",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3780617,
+        -72.5460473
+      ],
+      "radius_m": 28.1,
+      "elevators": []
+    },
+    {
+      "name": "Hadley Farm Education Center",
+      "id": "745",
+      "access_level": null,
+      "centroid": [
+        42.3784487,
+        -72.5477839
+      ],
+      "radius_m": 12.7,
+      "elevators": []
+    },
+    {
+      "name": "Hadley Farm Equine Education Center",
+      "id": "617",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3785392,
+        -72.546768
+      ],
+      "radius_m": 35.5,
+      "elevators": []
+    },
+    {
+      "name": "Hadley Farm Lawrence Arena",
+      "id": "619",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3793201,
+        -72.5453132
+      ],
+      "radius_m": 51.8,
+      "elevators": []
+    },
+    {
+      "name": "Hamlin House",
+      "id": "025",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3948986,
+        -72.5263273
+      ],
+      "radius_m": 34.6,
+      "elevators": []
+    },
+    {
+      "name": "Hampden Dining_Hall",
+      "id": "382",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3828887,
+        -72.5296407
+      ],
+      "radius_m": 44.9,
+      "elevators": []
+    },
+    {
+      "name": "Hampshire Dining Hall",
+      "id": "357",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.383844,
+        -72.530441
+      ],
+      "radius_m": 38.3,
+      "elevators": []
+    },
+    {
+      "name": "Hampshire House",
+      "id": "008",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3851428,
+        -72.5286173
+      ],
+      "radius_m": 22.4,
+      "elevators": []
+    },
+    {
+      "name": "Hasbrouck Laboratory",
+      "id": "124",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3920251,
+        -72.5260063
+      ],
+      "radius_m": 40.1,
+      "elevators": []
+    },
+    {
+      "name": "Hasbrouck Laboratory Addition",
+      "id": "318",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3916894,
+        -72.5258921
+      ],
+      "radius_m": 60.8,
+      "elevators": [
+        {
+          "id": 142,
+          "lat": 42.3916882,
+          "lon": -72.5257334
+        }
+      ]
+    },
+    {
+      "name": "Hatch Laboratory",
+      "id": "118",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.3925234,
+        -72.5302759
+      ],
+      "radius_m": 19.7,
+      "elevators": []
+    },
+    {
+      "name": "Hay Barn",
+      "id": "688",
+      "access_level": null,
+      "centroid": [
+        42.4792118,
+        -72.5802147
+      ],
+      "radius_m": 16.0,
+      "elevators": []
+    },
+    {
+      "name": "Herter Hall",
+      "id": "406",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3873346,
+        -72.5272167
+      ],
+      "radius_m": 69.0,
+      "elevators": [
+        {
+          "id": 117,
+          "lat": 42.3871248,
+          "lon": -72.5271604
+        }
+      ]
+    },
+    {
+      "name": "Hicks Physical Education Building",
+      "id": "121",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.3873601,
+        -72.5279392
+      ],
+      "radius_m": 37.1,
+      "elevators": []
+    },
+    {
+      "name": "Hicks Physical Education Cage",
+      "id": "122",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3872576,
+        -72.5284014
+      ],
+      "radius_m": 40.0,
+      "elevators": []
+    },
+    {
+      "name": "Hicks Physical Education Cage Addition",
+      "id": "576",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3869249,
+        -72.5282473
+      ],
+      "radius_m": 23.5,
+      "elevators": []
+    },
+    {
+      "name": "Holbrook Hall",
+      "id": "757",
+      "access_level": null,
+      "centroid": [
+        42.2955346,
+        -71.1929845
+      ],
+      "radius_m": 22.6,
+      "elevators": []
+    },
+    {
+      "name": "Holdsworth Hall",
+      "id": "296",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3928413,
+        -72.5308948
+      ],
+      "radius_m": 46.6,
+      "elevators": [
+        {
+          "id": 131,
+          "lat": 42.3928168,
+          "lon": -72.5309271
+        }
+      ]
+    },
+    {
+      "name": "Homestead House",
+      "id": "061",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3899324,
+        -72.5236724
+      ],
+      "radius_m": 10.5,
+      "elevators": []
+    },
+    {
+      "name": "Horse Barn & Tack Room",
+      "id": "159",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3977956,
+        -72.512583
+      ],
+      "radius_m": 10.3,
+      "elevators": []
+    },
+    {
+      "name": "Integrated Sciences Building",
+      "id": "676",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3926018,
+        -72.5247669
+      ],
+      "radius_m": 69.2,
+      "elevators": [
+        {
+          "id": 143,
+          "lat": 42.392647,
+          "lon": -72.5250284
+        }
+      ]
+    },
+    {
+      "name": "Integrative Learning Center",
+      "id": "704",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3910469,
+        -72.5259246
+      ],
+      "radius_m": 54.4,
+      "elevators": [
+        {
+          "id": 187,
+          "lat": 42.3908924,
+          "lon": -72.5254216
+        },
+        {
+          "id": 188,
+          "lat": 42.3908828,
+          "lon": -72.5259219
+        }
+      ]
+    },
+    {
+      "name": "International Programs",
+      "id": "579",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3869465,
+        -72.5209671
+      ],
+      "radius_m": 17.3,
+      "elevators": [
+        {
+          "id": 106,
+          "lat": 42.3869253,
+          "lon": -72.5209371
+        }
+      ]
+    },
+    {
+      "name": "Isenberg School of Management Building",
+      "id": "317",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3872823,
+        -72.5248106
+      ],
+      "radius_m": 85.3,
+      "elevators": [
+        {
+          "id": 104,
+          "lat": 42.3864798,
+          "lon": -72.5247869
+        },
+        {
+          "id": 174,
+          "lat": 42.3871143,
+          "lon": -72.5249707
+        }
+      ]
+    },
+    {
+      "name": "Jacobson, Martin & Richard Press & Skybox Complex",
+      "id": "734",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3773803,
+        -72.536948
+      ],
+      "radius_m": 31.5,
+      "elevators": []
+    },
+    {
+      "name": "James House",
+      "id": "350",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3841172,
+        -72.5311218
+      ],
+      "radius_m": 39.0,
+      "elevators": [
+        {
+          "id": 168,
+          "lat": 42.3842022,
+          "lon": -72.5308347
+        }
+      ]
+    },
+    {
+      "name": "Johnson House",
+      "id": "036",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3955696,
+        -72.5245053
+      ],
+      "radius_m": 28.2,
+      "elevators": []
+    },
+    {
+      "name": "Kennedy House",
+      "id": "352",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3840785,
+        -72.5296116
+      ],
+      "radius_m": 19.4,
+      "elevators": [
+        {
+          "id": 164,
+          "lat": 42.3840988,
+          "lon": -72.5296056
+        }
+      ]
+    },
+    {
+      "name": "Kennedy, John Francis Champions Center",
+      "id": "718",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3884852,
+        -72.532873
+      ],
+      "radius_m": 74.1,
+      "elevators": [
+        {
+          "id": 191,
+          "lat": 42.388221,
+          "lon": -72.5322631
+        }
+      ]
+    },
+    {
+      "name": "Knowles Engineering Building",
+      "id": "604",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.393254,
+        -72.528962
+      ],
+      "radius_m": 31.3,
+      "elevators": [
+        {
+          "id": 134,
+          "lat": 42.3933361,
+          "lon": -72.5289069
+        }
+      ]
+    },
+    {
+      "name": "Knowlton House",
+      "id": "026",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3939243,
+        -72.5257359
+      ],
+      "radius_m": 28.9,
+      "elevators": [
+        {
+          "id": 152,
+          "lat": 42.3938135,
+          "lon": -72.5257419
+        }
+      ]
+    },
+    {
+      "name": "Leach House",
+      "id": "027",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.395193,
+        -72.5257207
+      ],
+      "radius_m": 24.8,
+      "elevators": []
+    },
+    {
+      "name": "Lederle Graduate Research Center",
+      "id": "412",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3941815,
+        -72.5271287
+      ],
+      "radius_m": 82.4,
+      "elevators": [
+        {
+          "id": 136,
+          "lat": 42.3939604,
+          "lon": -72.5275863
+        },
+        {
+          "id": 137,
+          "lat": 42.394631,
+          "lon": -72.5271772
+        },
+        {
+          "id": 170,
+          "lat": 42.3939693,
+          "lon": -72.5268515
+        }
+      ]
+    },
+    {
+      "name": "Lederle Graduate Research Center Addition",
+      "id": "502",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3939927,
+        -72.5278093
+      ],
+      "radius_m": 38.0,
+      "elevators": [
+        {
+          "id": 136,
+          "lat": 42.3939604,
+          "lon": -72.5275863
+        }
+      ]
+    },
+    {
+      "name": "Lewis House",
+      "id": "028",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3951114,
+        -72.5239693
+      ],
+      "radius_m": 31.1,
+      "elevators": []
+    },
+    {
+      "name": "Life Science Laboratories",
+      "id": "694",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3919705,
+        -72.5236697
+      ],
+      "radius_m": 95.0,
+      "elevators": [
+        {
+          "id": 184,
+          "lat": 42.3926307,
+          "lon": -72.5241105
+        },
+        {
+          "id": 185,
+          "lat": 42.3919826,
+          "lon": -72.5237287
+        },
+        {
+          "id": 198,
+          "lat": 42.3919757,
+          "lon": -72.5239329
+        }
+      ]
+    },
+    {
+      "name": "Lincoln Campus Center",
+      "id": "413",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3914134,
+        -72.527196
+      ],
+      "radius_m": 105.9,
+      "elevators": [
+        {
+          "id": 141,
+          "lat": 42.391647,
+          "lon": -72.5270807
+        }
+      ]
+    },
+    {
+      "name": "Linden House",
+      "id": "706",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3870978,
+        -72.5308299
+      ],
+      "radius_m": 38.5,
+      "elevators": [
+        {
+          "id": 182,
+          "lat": 42.3870153,
+          "lon": -72.5309772
+        }
+      ]
+    },
+    {
+      "name": "Longfellow",
+      "id": "767",
+      "access_level": null,
+      "centroid": [
+        42.2959623,
+        -71.1953904
+      ],
+      "radius_m": 14.8,
+      "elevators": []
+    },
+    {
+      "name": "MI-Health Center",
+      "id": "764",
+      "access_level": null,
+      "centroid": [
+        42.2967177,
+        -71.1949501
+      ],
+      "radius_m": 14.9,
+      "elevators": []
+    },
+    {
+      "name": "Machmer Hall",
+      "id": "111",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3905346,
+        -72.5290349
+      ],
+      "radius_m": 41.2,
+      "elevators": []
+    },
+    {
+      "name": "Mackimmie House",
+      "id": "379",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3827902,
+        -72.5287173
+      ],
+      "radius_m": 52.1,
+      "elevators": [
+        {
+          "id": 163,
+          "lat": 42.3826633,
+          "lon": -72.5285886
+        }
+      ]
+    },
+    {
+      "name": "Mahar Auditorium",
+      "id": "329",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.386579,
+        -72.5242237
+      ],
+      "radius_m": 17.7,
+      "elevators": [
+        {
+          "id": 173,
+          "lat": 42.3866107,
+          "lon": -72.5241373
+        },
+        {
+          "id": 175,
+          "lat": 42.3866413,
+          "lon": -72.5241729
+        }
+      ]
+    },
+    {
+      "name": "Main Barn",
+      "id": "280",
+      "access_level": null,
+      "centroid": [
+        42.2535809,
+        -72.3597994
+      ],
+      "radius_m": 32.4,
+      "elevators": []
+    },
+    {
+      "name": "Maintenance Shed",
+      "id": "763",
+      "access_level": null,
+      "centroid": [
+        42.2967174,
+        -71.1945218
+      ],
+      "radius_m": 13.2,
+      "elevators": []
+    },
+    {
+      "name": "Maple House",
+      "id": "709",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.387567,
+        -72.5310796
+      ],
+      "radius_m": 47.5,
+      "elevators": [
+        {
+          "id": 181,
+          "lat": 42.387476,
+          "lon": -72.5311345
+        },
+        {
+          "id": 196,
+          "lat": 42.3878198,
+          "lon": -72.5308097
+        },
+        {
+          "id": 197,
+          "lat": 42.3875406,
+          "lon": -72.5306894
+        }
+      ]
+    },
+    {
+      "name": "Marcus Hall",
+      "id": "343",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3938711,
+        -72.5285619
+      ],
+      "radius_m": 67.5,
+      "elevators": []
+    },
+    {
+      "name": "Marston Hall",
+      "id": "092",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3940413,
+        -72.5294289
+      ],
+      "radius_m": 41.2,
+      "elevators": [
+        {
+          "id": 192,
+          "lat": 42.394038,
+          "lon": -72.5292436
+        }
+      ]
+    },
+    {
+      "name": "Mary Lyon House",
+      "id": "034",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3942474,
+        -72.5245184
+      ],
+      "radius_m": 33.6,
+      "elevators": []
+    },
+    {
+      "name": "Massachusetts Farm Bureau Federation Hall",
+      "id": "166",
+      "access_level": null,
+      "centroid": [
+        42.4026126,
+        -72.5277967
+      ],
+      "radius_m": 19.0,
+      "elevators": []
+    },
+    {
+      "name": "Mather Building",
+      "id": "570",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3945766,
+        -72.5108723
+      ],
+      "radius_m": 34.9,
+      "elevators": []
+    },
+    {
+      "name": "McGuirk Alumni Stadium",
+      "id": "346",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3771265,
+        -72.5360918
+      ],
+      "radius_m": 117.7,
+      "elevators": []
+    },
+    {
+      "name": "McNamara House",
+      "id": "428",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3979322,
+        -72.5222213
+      ],
+      "radius_m": 36.8,
+      "elevators": [
+        {
+          "id": 151,
+          "lat": 42.3979359,
+          "lon": -72.522103
+        }
+      ]
+    },
+    {
+      "name": "Melville House",
+      "id": "349",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.384658,
+        -72.5307161
+      ],
+      "radius_m": 38.1,
+      "elevators": [
+        {
+          "id": 167,
+          "lat": 42.3847429,
+          "lon": -72.5303005
+        }
+      ]
+    },
+    {
+      "name": "Memorial Hall",
+      "id": "115",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3884182,
+        -72.5275858
+      ],
+      "radius_m": 21.9,
+      "elevators": []
+    },
+    {
+      "name": "Middlesex House",
+      "id": "009",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3856661,
+        -72.5285091
+      ],
+      "radius_m": 22.7,
+      "elevators": []
+    },
+    {
+      "name": "Montague House",
+      "id": "058",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3978076,
+        -72.5267261
+      ],
+      "radius_m": 18.5,
+      "elevators": []
+    },
+    {
+      "name": "Moore House",
+      "id": "402",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3821276,
+        -72.5307431
+      ],
+      "radius_m": 49.1,
+      "elevators": [
+        {
+          "id": 156,
+          "lat": 42.3821547,
+          "lon": -72.5308063
+        }
+      ]
+    },
+    {
+      "name": "Morrill Science Center Greenhouse Addition",
+      "id": "508",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.3889929,
+        -72.5243255
+      ],
+      "radius_m": 31.0,
+      "elevators": [
+        {
+          "id": 115,
+          "lat": 42.3892567,
+          "lon": -72.5244139
+        }
+      ]
+    },
+    {
+      "name": "Morrill Science Center I",
+      "id": "126",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3910328,
+        -72.5240965
+      ],
+      "radius_m": 40.2,
+      "elevators": []
+    },
+    {
+      "name": "Morrill Science Center II",
+      "id": "127",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3899175,
+        -72.5244605
+      ],
+      "radius_m": 52.0,
+      "elevators": [
+        {
+          "id": 113,
+          "lat": 42.3904121,
+          "lon": -72.5244438
+        },
+        {
+          "id": 114,
+          "lat": 42.3897661,
+          "lon": -72.5243064
+        }
+      ]
+    },
+    {
+      "name": "Morrill Science Center III",
+      "id": "290",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3894937,
+        -72.5243171
+      ],
+      "radius_m": 38.5,
+      "elevators": [
+        {
+          "id": 114,
+          "lat": 42.3897661,
+          "lon": -72.5243064
+        },
+        {
+          "id": 115,
+          "lat": 42.3892567,
+          "lon": -72.5244139
+        }
+      ]
+    },
+    {
+      "name": "Morrill Science Center IV",
+      "id": "347",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.3906335,
+        -72.5246261
+      ],
+      "radius_m": 64.3,
+      "elevators": [
+        {
+          "id": 112,
+          "lat": 42.3907326,
+          "lon": -72.5246996
+        },
+        {
+          "id": 113,
+          "lat": 42.3904121,
+          "lon": -72.5244438
+        }
+      ]
+    },
+    {
+      "name": "Mullins Memorial Center",
+      "id": "613",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3893787,
+        -72.5333844
+      ],
+      "radius_m": 99.8,
+      "elevators": [
+        {
+          "id": 125,
+          "lat": 42.389832,
+          "lon": -72.5337633
+        },
+        {
+          "id": 126,
+          "lat": 42.3902623,
+          "lon": -72.5336698
+        }
+      ]
+    },
+    {
+      "name": "Munson Hall",
+      "id": "116",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.3865772,
+        -72.5275767
+      ],
+      "radius_m": 18.4,
+      "elevators": []
+    },
+    {
+      "name": "Nelson House North",
+      "id": "498",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3959183,
+        -72.5150807
+      ],
+      "radius_m": 7.7,
+      "elevators": []
+    },
+    {
+      "name": "Nelson House South",
+      "id": "499",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3950303,
+        -72.5153071
+      ],
+      "radius_m": 11.0,
+      "elevators": []
+    },
+    {
+      "name": "New Africa House",
+      "id": "029",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3889677,
+        -72.5206465
+      ],
+      "radius_m": 29.0,
+      "elevators": [
+        {
+          "id": 171,
+          "lat": 42.3889772,
+          "lon": -72.5206453
+        }
+      ]
+    },
+    {
+      "name": "North A",
+      "id": "670",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3975958,
+        -72.524277
+      ],
+      "radius_m": 44.3,
+      "elevators": [
+        {
+          "id": 145,
+          "lat": 42.3975555,
+          "lon": -72.5241277
+        }
+      ]
+    },
+    {
+      "name": "North B",
+      "id": "671",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3967732,
+        -72.524284
+      ],
+      "radius_m": 44.6,
+      "elevators": [
+        {
+          "id": 146,
+          "lat": 42.3967385,
+          "lon": -72.5241759
+        }
+      ]
+    },
+    {
+      "name": "North C",
+      "id": "672",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3975571,
+        -72.5249646
+      ],
+      "radius_m": 44.5,
+      "elevators": [
+        {
+          "id": 147,
+          "lat": 42.3976035,
+          "lon": -72.5250533
+        }
+      ]
+    },
+    {
+      "name": "North Chiller Plant",
+      "id": "741",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.394416,
+        -72.5316311
+      ],
+      "radius_m": 28.7,
+      "elevators": []
+    },
+    {
+      "name": "North D",
+      "id": "673",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3967753,
+        -72.5250051
+      ],
+      "radius_m": 49.3,
+      "elevators": [
+        {
+          "id": 148,
+          "lat": 42.3967597,
+          "lon": -72.525101
+        }
+      ]
+    },
+    {
+      "name": "Oak House",
+      "id": "707",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.387499,
+        -72.5303382
+      ],
+      "radius_m": 54.0,
+      "elevators": [
+        {
+          "id": 183,
+          "lat": 42.3874819,
+          "lon": -72.5301911
+        }
+      ]
+    },
+    {
+      "name": "Olver, John W. Design Building",
+      "id": "720",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3882244,
+        -72.5234957
+      ],
+      "radius_m": 40.8,
+      "elevators": []
+    },
+    {
+      "name": "PVTA Bus Garage",
+      "id": "546",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3943009,
+        -72.5333527
+      ],
+      "radius_m": 49.7,
+      "elevators": []
+    },
+    {
+      "name": "PVTA Bus Garage Addition",
+      "id": "609",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3942615,
+        -72.5337328
+      ],
+      "radius_m": 47.6,
+      "elevators": []
+    },
+    {
+      "name": "PVTA Transit Facility",
+      "id": "681",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3933629,
+        -72.5333412
+      ],
+      "radius_m": 40.8,
+      "elevators": []
+    },
+    {
+      "name": "Paige Laboratory",
+      "id": "120",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3933426,
+        -72.5298544
+      ],
+      "radius_m": 24.1,
+      "elevators": [
+        {
+          "id": 193,
+          "lat": 42.3933902,
+          "lon": -72.5297936
+        }
+      ]
+    },
+    {
+      "name": "Parking Garage",
+      "id": "414",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3913495,
+        -72.5291068
+      ],
+      "radius_m": 67.1,
+      "elevators": []
+    },
+    {
+      "name": "Parks, George N. Minuteman Marching Band Building",
+      "id": "696",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3896547,
+        -72.5305539
+      ],
+      "radius_m": 38.1,
+      "elevators": [
+        {
+          "id": 190,
+          "lat": 42.3896177,
+          "lon": -72.530789
+        }
+      ]
+    },
+    {
+      "name": "Patterson House",
+      "id": "378",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3818488,
+        -72.528475
+      ],
+      "radius_m": 53.1,
+      "elevators": [
+        {
+          "id": 100,
+          "lat": 42.3815847,
+          "lon": -72.5283135
+        }
+      ]
+    },
+    {
+      "name": "Photography Laboratory",
+      "id": "125",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.3904798,
+        -72.5304165
+      ],
+      "radius_m": 16.5,
+      "elevators": []
+    },
+    {
+      "name": "Physical Plant Building",
+      "id": "170",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3913499,
+        -72.5325436
+      ],
+      "radius_m": 51.9,
+      "elevators": []
+    },
+    {
+      "name": "Physical Plant Building Addition",
+      "id": "398",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3910367,
+        -72.5321754
+      ],
+      "radius_m": 57.0,
+      "elevators": [
+        {
+          "id": 127,
+          "lat": 42.3908878,
+          "lon": -72.532102
+        }
+      ]
+    },
+    {
+      "name": "Physical Sciences Building",
+      "id": "715",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3934526,
+        -72.5267079
+      ],
+      "radius_m": 52.2,
+      "elevators": []
+    },
+    {
+      "name": "Pierpont House",
+      "id": "401",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3814187,
+        -72.530903
+      ],
+      "radius_m": 45.2,
+      "elevators": [
+        {
+          "id": 155,
+          "lat": 42.3813867,
+          "lon": -72.5309584
+        }
+      ]
+    },
+    {
+      "name": "Police Station",
+      "id": "693",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3978267,
+        -72.5149733
+      ],
+      "radius_m": 37.3,
+      "elevators": []
+    },
+    {
+      "name": "Prince House",
+      "id": "381",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3839947,
+        -72.5290294
+      ],
+      "radius_m": 52.6,
+      "elevators": [
+        {
+          "id": 101,
+          "lat": 42.3842932,
+          "lon": -72.5289147
+        }
+      ]
+    },
+    {
+      "name": "Recreation Center",
+      "id": "678",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3888294,
+        -72.5316426
+      ],
+      "radius_m": 51.0,
+      "elevators": [
+        {
+          "id": 124,
+          "lat": 42.3889532,
+          "lon": -72.5319688
+        },
+        {
+          "id": 189,
+          "lat": 42.3891508,
+          "lon": -72.5318515
+        }
+      ]
+    },
+    {
+      "name": "Recycling Facilities Building",
+      "id": "568",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3983971,
+        -72.5115744
+      ],
+      "radius_m": 49.8,
+      "elevators": []
+    },
+    {
+      "name": "Recycling Facilities Office Trailer",
+      "id": "583",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3985829,
+        -72.5118779
+      ],
+      "radius_m": 16.7,
+      "elevators": []
+    },
+    {
+      "name": "Research & Education Greenhouse",
+      "id": "701",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3921834,
+        -72.5318587
+      ],
+      "radius_m": 39.0,
+      "elevators": []
+    },
+    {
+      "name": "Robsham Memorial Center for Visitors",
+      "id": "577",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3851409,
+        -72.5252657
+      ],
+      "radius_m": 13.7,
+      "elevators": []
+    },
+    {
+      "name": "Salt Storage Building",
+      "id": "692",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3970417,
+        -72.5065122
+      ],
+      "radius_m": 13.7,
+      "elevators": []
+    },
+    {
+      "name": "School of Design",
+      "id": "770",
+      "access_level": null,
+      "centroid": [
+        42.2938844,
+        -71.1948038
+      ],
+      "radius_m": 41.8,
+      "elevators": []
+    },
+    {
+      "name": "Service Barn",
+      "id": "279",
+      "access_level": null,
+      "centroid": [
+        42.2532537,
+        -72.3596781
+      ],
+      "radius_m": 13.6,
+      "elevators": []
+    },
+    {
+      "name": "Shade Trees Laboratory",
+      "id": "090",
+      "access_level": "Not Accessible",
+      "centroid": [
+        42.3895726,
+        -72.5237562
+      ],
+      "radius_m": 16.3,
+      "elevators": []
+    },
+    {
+      "name": "Skinner Hall",
+      "id": "128",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3916385,
+        -72.5247923
+      ],
+      "radius_m": 38.1,
+      "elevators": [
+        {
+          "id": 111,
+          "lat": 42.3916823,
+          "lon": -72.5248445
+        }
+      ]
+    },
+    {
+      "name": "South College",
+      "id": "129",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3895743,
+        -72.5293242
+      ],
+      "radius_m": 54.4,
+      "elevators": [
+        {
+          "id": 194,
+          "lat": 42.3894773,
+          "lon": -72.5296993
+        }
+      ]
+    },
+    {
+      "name": "South Deerfield Turf Facility",
+      "id": "667",
+      "access_level": null,
+      "centroid": [
+        42.470627,
+        -72.5857526
+      ],
+      "radius_m": 19.4,
+      "elevators": []
+    },
+    {
+      "name": "Stadium Facilities Building",
+      "id": "345",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.376186,
+        -72.5361899
+      ],
+      "radius_m": 60.8,
+      "elevators": []
+    },
+    {
+      "name": "Stockbridge Hall",
+      "id": "130",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3922528,
+        -72.5295363
+      ],
+      "radius_m": 36.7,
+      "elevators": [
+        {
+          "id": 130,
+          "lat": 42.3923428,
+          "lon": -72.529339
+        }
+      ]
+    },
+    {
+      "name": "Stockbridge House",
+      "id": "062",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3896567,
+        -72.5236329
+      ],
+      "radius_m": 18.1,
+      "elevators": []
+    },
+    {
+      "name": "Stockbridge House Addition",
+      "id": "509",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.389699,
+        -72.5235943
+      ],
+      "radius_m": 24.6,
+      "elevators": []
+    },
+    {
+      "name": "Student Union",
+      "id": "131",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3907423,
+        -72.5277204
+      ],
+      "radius_m": 55.7,
+      "elevators": [
+        {
+          "id": 122,
+          "lat": 42.3909455,
+          "lon": -72.5277546
+        }
+      ]
+    },
+    {
+      "name": "Studio Arts Building",
+      "id": "677",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3876245,
+        -72.5227732
+      ],
+      "radius_m": 47.8,
+      "elevators": [
+        {
+          "id": 107,
+          "lat": 42.3875859,
+          "lon": -72.5226154
+        }
+      ]
+    },
+    {
+      "name": "Sycamore House",
+      "id": "712",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3885152,
+        -72.5304644
+      ],
+      "radius_m": 40.8,
+      "elevators": [
+        {
+          "id": 179,
+          "lat": 42.3885485,
+          "lon": -72.5303584
+        }
+      ]
+    },
+    {
+      "name": "Tennis Storage Shed #1",
+      "id": "686",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3890338,
+        -72.5352792
+      ],
+      "radius_m": 2.8,
+      "elevators": []
+    },
+    {
+      "name": "Tennis Storage Shed #2",
+      "id": "687",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3889905,
+        -72.535277
+      ],
+      "radius_m": 2.9,
+      "elevators": []
+    },
+    {
+      "name": "Thatcher House",
+      "id": "030",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3944738,
+        -72.5238062
+      ],
+      "radius_m": 27.7,
+      "elevators": []
+    },
+    {
+      "name": "The Randolph W. Bromery Center for the Arts",
+      "id": "420",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.388491,
+        -72.5256533
+      ],
+      "radius_m": 132.6,
+      "elevators": [
+        {
+          "id": 116,
+          "lat": 42.3878539,
+          "lon": -72.5264995
+        }
+      ]
+    },
+    {
+      "name": "Thompson Hall",
+      "id": "405",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3900855,
+        -72.5297642
+      ],
+      "radius_m": 46.1,
+      "elevators": [
+        {
+          "id": 123,
+          "lat": 42.3901106,
+          "lon": -72.5294572
+        }
+      ]
+    },
+    {
+      "name": "Thoreau House",
+      "id": "348",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3843596,
+        -72.5301776
+      ],
+      "radius_m": 37.5,
+      "elevators": [
+        {
+          "id": 166,
+          "lat": 42.3843356,
+          "lon": -72.5297637
+        }
+      ]
+    },
+    {
+      "name": "Tillson House",
+      "id": "060",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3983319,
+        -72.514548
+      ],
+      "radius_m": 12.0,
+      "elevators": []
+    },
+    {
+      "name": "Tobin Hall",
+      "id": "415",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3875309,
+        -72.5293953
+      ],
+      "radius_m": 49.4,
+      "elevators": [
+        {
+          "id": 118,
+          "lat": 42.3875288,
+          "lon": -72.529187
+        }
+      ]
+    },
+    {
+      "name": "Toddler House",
+      "id": "652",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.3812021,
+        -72.5342558
+      ],
+      "radius_m": 12.9,
+      "elevators": []
+    },
+    {
+      "name": "Totman Physical Education Building",
+      "id": "123",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3961273,
+        -72.5258555
+      ],
+      "radius_m": 48.7,
+      "elevators": [
+        {
+          "id": 144,
+          "lat": 42.3961076,
+          "lon": -72.5256248
+        }
+      ]
+    },
+    {
+      "name": "Tractor Repair Facility",
+      "id": "685",
+      "access_level": null,
+      "centroid": [
+        42.4794335,
+        -72.5797859
+      ],
+      "radius_m": 16.0,
+      "elevators": []
+    },
+    {
+      "name": "UMass Center at Springfield",
+      "id": "722",
+      "access_level": null,
+      "centroid": [
+        42.1027383,
+        -72.5932456
+      ],
+      "radius_m": 41.5,
+      "elevators": []
+    },
+    {
+      "name": "University Health Center - UHC",
+      "id": "291",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3904665,
+        -72.5216127
+      ],
+      "radius_m": 42.8,
+      "elevators": [
+        {
+          "id": 110,
+          "lat": 42.3904553,
+          "lon": -72.5217677
+        }
+      ]
+    },
+    {
+      "name": "University Health Center Addition - UHCA",
+      "id": "418",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3904577,
+        -72.5218017
+      ],
+      "radius_m": 27.9,
+      "elevators": [
+        {
+          "id": 110,
+          "lat": 42.3904553,
+          "lon": -72.5217677
+        }
+      ]
+    },
+    {
+      "name": "Van Meter House",
+      "id": "032",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3898425,
+        -72.5183411
+      ],
+      "radius_m": 58.2,
+      "elevators": []
+    },
+    {
+      "name": "Vehicle Storage Shed",
+      "id": "282",
+      "access_level": null,
+      "centroid": [
+        42.2538522,
+        -72.3594364
+      ],
+      "radius_m": 10.4,
+      "elevators": []
+    },
+    {
+      "name": "Vet Tech Building",
+      "id": "761",
+      "access_level": null,
+      "centroid": [
+        42.2960248,
+        -71.1936732
+      ],
+      "radius_m": 35.6,
+      "elevators": []
+    },
+    {
+      "name": "Wadsworth Library",
+      "id": "760",
+      "access_level": null,
+      "centroid": [
+        42.2963035,
+        -71.1929447
+      ],
+      "radius_m": 28.8,
+      "elevators": []
+    },
+    {
+      "name": "Washington House",
+      "id": "356",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3815549,
+        -72.5293045
+      ],
+      "radius_m": 18.9,
+      "elevators": [
+        {
+          "id": 154,
+          "lat": 42.3815884,
+          "lon": -72.5293341
+        }
+      ]
+    },
+    {
+      "name": "Webster House",
+      "id": "333",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3915033,
+        -72.5194241
+      ],
+      "radius_m": 40.6,
+      "elevators": [
+        {
+          "id": 159,
+          "lat": 42.3915097,
+          "lon": -72.5194288
+        }
+      ]
+    },
+    {
+      "name": "Wheeler House",
+      "id": "033",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.3888765,
+        -72.5212993
+      ],
+      "radius_m": 32.1,
+      "elevators": []
+    },
+    {
+      "name": "Whitmore Hall",
+      "id": "388",
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "centroid": [
+        42.3859014,
+        -72.5266914
+      ],
+      "radius_m": 51.9,
+      "elevators": [
+        {
+          "id": 103,
+          "lat": 42.3857654,
+          "lon": -72.5264918
+        },
+        {
+          "id": 172,
+          "lat": 42.3860578,
+          "lon": -72.5268139
+        }
+      ]
+    },
+    {
+      "name": "Wilder Hall",
+      "id": "169",
+      "access_level": "Not All Floors Accessible",
+      "centroid": [
+        42.390326,
+        -72.5237459
+      ],
+      "radius_m": 13.5,
+      "elevators": []
+    },
+    {
+      "name": "Worcester Commons",
+      "id": "750",
+      "access_level": "Fully Accessible",
+      "centroid": [
+        42.3932287,
+        -72.5252501
+      ],
+      "radius_m": 45.0,
+      "elevators": []
+    },
+    {
+      "name": "Wysocki House",
+      "id": "309",
+      "access_level": "Not Defined",
+      "centroid": [
+        42.4010296,
+        -72.5275326
+      ],
+      "radius_m": 12.2,
+      "elevators": []
+    }
+  ]
+}

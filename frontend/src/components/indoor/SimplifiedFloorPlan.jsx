@@ -16,13 +16,14 @@ export default function SimplifiedFloorPlan({plan}) {
       </g>;
     })}
     {plan.lifts.map(lift => <g key={lift.id}>
-      <title>{lift.id === 'north' ? 'North elevator beside N155 / N255' : `Central elevator ${lift.id === 'central-q' ? 'Q' : 'P'}`}</title>
+      <title>{lift.id === 'north' ? 'North elevator beside N155 / N255' : lift.id === 'east' ? 'North Pleasant Street elevator beside S110 / S220' : `Central elevator ${lift.id === 'central-q' ? 'Q' : 'P'}`}</title>
       <rect x={lift.x-9} y={lift.y-11} width="18" height="22" rx="3" fill="#6d28d9" stroke="white" strokeWidth="1.5" />
       <path d={`M${lift.x-4},${lift.y-2} l4,-5 4,5 Z M${lift.x-4},${lift.y+2} l4,5 4,-5 Z`} fill="white" />
     </g>)}
     <text x="563" y="346" fontSize="13" fontWeight="600" textAnchor="middle" fill="#6d28d9" style={labelStyle}>North elevator</text>
     <path d={`M541 353 L${plan.lifts[0].x} ${plan.lifts[0].y-15}`} fill="none" stroke="#a78bfa" strokeWidth="1.3" />
     <text x="732" y="800" fontSize="12" fontWeight="600" textAnchor="middle" fill="#6d28d9" style={labelStyle}>2 elevators</text>
+    {plan.lifts.some(lift => lift.id === 'east') && <text x="1105" y="818" fontSize="11" fontWeight="600" textAnchor="middle" fill="#6d28d9" style={labelStyle}>East elevator</text>}
     <g>
       <path d={`M${plan.entrance.x-10},${plan.entrance.y+3} l20,-6`} stroke="#0284c7" strokeWidth="6" strokeLinecap="round" />
       <path d={`M${plan.entrance.label[0]},${plan.entrance.label[1]+8} L${plan.entrance.x},${plan.entrance.y}`} stroke="#0284c7" strokeWidth="1.3" fill="none" />

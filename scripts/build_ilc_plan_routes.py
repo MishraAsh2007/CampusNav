@@ -11,6 +11,7 @@ from pathlib import Path
 
 from campus_notices.plan_integrity import require_reviewed_source
 from campus_routing.plan_wayfinding import PlanWayfindingMap
+from scripts.ash_ilc_additions import add_routes, update_display_trace
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -167,6 +168,8 @@ def build():
     link("ilc-sw-junction-f2", "ilc-south-junction-f2")
     node("ilc-entrance-north-f1", 1, "North entrance beside N155 - floor 1", 476, 400)
     link("ilc-entrance-north-f1", "ilc-north-f1")
+    add_routes(nodes, connections)
+    update_display_trace()
     data = dict(
         building_id="ilc",
         floor_sources=floors,
@@ -174,9 +177,10 @@ def build():
         source_sha256=hashlib.sha256(
             "".join(f["source_sha256"] for f in floors.values()).encode()
         ).hexdigest(),
-        drawing_review=("UMass plan tiles traced on 2026-11-15. North shaft and central pair "
-                        "matched with user reports; southwest doorway on floor 2. "
-                        "Selected corridor approaches only; no floors 3/4."),
+        drawing_review=("UMass plan tiles traced on 2026-11-15; expanded with Ash_ver's "
+                        "source-aligned corridor and room traces. Four elevators confirmed "
+                        "by the user, including the North Pleasant Street shaft. Southwest "
+                        "doorway on floor 2. Selected approaches only; no floors 3/4."),
         coordinate_system="image_pixels",
         resident_access_required=False,
         source_warnings=[

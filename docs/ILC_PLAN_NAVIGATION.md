@@ -17,12 +17,17 @@ elevator doors; they are deliberately distinct from the shaft-center icons.
 ## Included coverage
 
 - Southwest entrance starts on floor 2; north entrance beside N155 starts on floor 1.
-- North elevator beside N155/N255, and two separate central elevators opposite S140/S142.
+- North elevator beside N155/N255, two separate central elevators opposite S140/S142,
+  and the North Pleasant Street elevator beside S110/S220. The user confirms four cars.
 - Floor 1 destinations: N155, N111, S142, S140 hallway approach, S120 hallway approach.
 - Floor 2 destinations: N255, N211, S240 hallway approach, S220 hallway approach.
+- Ash_ver additions: N101, N140 commons/cafe, S110, S112, S122, S131 and restrooms
+  on floor 1; N201, S225, S231, S241 and restrooms on floor 2. These add 12 approaches
+  for 21 total. S225/S241 correct the branch's S275/S211 labels using the printed plan.
 - Floor-specific route lines, floor selector, zoom/pan, selected-step marker, and Back/Next.
-- Each elevator can be blocked independently by a scoped closure; all three blocked
-  produces no cross-floor route. Unknown asset IDs cannot be matched by proximity.
+- Each elevator can be blocked independently by a scoped closure; all four blocked
+  produces no cross-floor route. Named Ash_ver car IDs are explicit aliases of the
+  matching pilot assets. Unknown asset IDs cannot be matched by proximity.
 
 These are selected approaches, **not complete room coverage**. Floors 3–4 are not
 included. Door operation, grades and widths remain unverified; the API therefore
@@ -80,12 +85,15 @@ and indoor metadata use `Cache-Control: no-store` to avoid retaining old edition
 
 ## Files and source provenance
 
-- `data/plan_wayfinding/ilc.json`: 41 landmarks, 42 connections, 3 elevator assets.
+- `data/plan_wayfinding/ilc.json`: 70 landmarks, 72 connections, 4 elevator assets.
 - `data/plan_wayfinding/sources/ilc/`: exact PNG mosaics and source tile extents.
 - `data/plan_wayfinding/sources/ilc/display-trace.json`: display-only outlines,
   bound to each source image's SHA-256. A different source edition disables
   this overlay until retraced. The routing graph never consumes these shapes.
 - `scripts/build_ilc_plan_routes.py`: explicit pixel traces, labels and source-edition checks.
+- `scripts/ash_ilc_additions.py`: reviewed corridor joins and room outlines from
+  Ash_ver. Both branches' PNG sources have identical hashes; box fallback shapes
+  are excluded. See [the merge comparison](ASH_VER_MERGE.md).
 - `scripts/build_ilc_portal.py`: validates the southwest OSM entrance, floor, approach
   and source-image alignment; updates `data/plan_wayfinding_portals.json`.
 - `campus_notices/plan_integrity.py`: approved source image fingerprints; changed
