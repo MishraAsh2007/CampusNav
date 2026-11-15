@@ -1,0 +1,35 @@
+{
+  "max_grade": 5.0,
+  "no_stairs": true,
+  "allow_unknown_access": false,
+  "allow_unknown_grade": false,
+  "need_automatic_door": false,
+  "min_width_m": null,
+  "building_id": "ilc",
+  "portal_id": "ilc-entrance",
+  "confirmed": true,
+  "continue_indoors": true,
+  "destination": {
+    "text": "N211",
+    "building_id": null,
+    "floor_id": null,
+    "node_id": null,
+    "outdoor": null
+  },
+  "closures": [
+    {
+      "lat": 42.391,
+      "lng": -72.52805,
+      "radius": 4.0,
+      "type": "elevator",
+      "status": "closed",
+      "source": "community",
+      "start_time": "2026-11-14T11:00:00Z",
+      "end_time": "2026-11-15T12:00:00Z",
+      "last_confirmed": "2026-11-14T12:00:00Z",
+      "asset_id": "ilc-lift-a",
+      "building_id": "ilc",
+      "floor_id": null
+    }
+  ]
+}

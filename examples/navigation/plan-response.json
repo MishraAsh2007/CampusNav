@@ -1,0 +1,658 @@
+{
+  "status": "route_ready",
+  "journey": {
+    "legs": [
+      {
+        "kind": "indoor",
+        "building_id": "library",
+        "synthetic": true,
+        "node_path": [
+          "a2",
+          "a1",
+          "hall1",
+          "entrance"
+        ],
+        "floor_sequence": [
+          "2",
+          "1"
+        ],
+        "segments": [
+          {
+            "edge_id": "hall-a1",
+            "kind": "corridor",
+            "asset_id": null,
+            "distance_m": 3.0,
+            "from_floor": "1",
+            "to_floor": "1",
+            "from_node_id": "a1",
+            "to_node_id": "hall1",
+            "from_label": "Demo elevator A landing",
+            "to_label": "HALL landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "1",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  5.0,
+                  0.0
+                ],
+                [
+                  2.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 3 m to HALL landing on Floor 1."
+          },
+          {
+            "edge_id": "entrance-hall",
+            "kind": "corridor",
+            "asset_id": "library-hall",
+            "distance_m": 2.0,
+            "from_floor": "1",
+            "to_floor": "1",
+            "from_node_id": "hall1",
+            "to_node_id": "entrance",
+            "from_label": "HALL landing",
+            "to_label": "Demo entrance",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "1",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  2.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 2 m to Demo entrance on Floor 1."
+          }
+        ],
+        "steps": [
+          {
+            "edge_id": "lift-a",
+            "kind": "elevator",
+            "asset_id": "library-lift-a",
+            "distance_m": 4.0,
+            "from_floor": "2",
+            "to_floor": "1",
+            "from_node_id": "a2",
+            "to_node_id": "a1",
+            "from_label": "Demo elevator A landing",
+            "to_label": "Demo elevator A landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "from_position": [
+              5.0,
+              0.0
+            ],
+            "to_position": [
+              5.0,
+              0.0
+            ],
+            "instruction": "Use library-lift-a from Floor 2 to Floor 1."
+          },
+          {
+            "edge_id": "hall-a1",
+            "kind": "corridor",
+            "asset_id": null,
+            "distance_m": 3.0,
+            "from_floor": "1",
+            "to_floor": "1",
+            "from_node_id": "a1",
+            "to_node_id": "hall1",
+            "from_label": "Demo elevator A landing",
+            "to_label": "HALL landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "1",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  5.0,
+                  0.0
+                ],
+                [
+                  2.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 3 m to HALL landing on Floor 1."
+          },
+          {
+            "edge_id": "entrance-hall",
+            "kind": "corridor",
+            "asset_id": "library-hall",
+            "distance_m": 2.0,
+            "from_floor": "1",
+            "to_floor": "1",
+            "from_node_id": "hall1",
+            "to_node_id": "entrance",
+            "from_label": "HALL landing",
+            "to_label": "Demo entrance",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "1",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  2.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 2 m to Demo entrance on Floor 1."
+          }
+        ],
+        "transitions": [
+          {
+            "edge_id": "lift-a",
+            "kind": "elevator",
+            "asset_id": "library-lift-a",
+            "distance_m": 4.0,
+            "from_floor": "2",
+            "to_floor": "1",
+            "from_node_id": "a2",
+            "to_node_id": "a1",
+            "from_label": "Demo elevator A landing",
+            "to_label": "Demo elevator A landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "from_position": [
+              5.0,
+              0.0
+            ],
+            "to_position": [
+              5.0,
+              0.0
+            ],
+            "instruction": "Use library-lift-a from Floor 2 to Floor 1."
+          }
+        ],
+        "directions": [
+          "Use library-lift-a from Floor 2 to Floor 1.",
+          "Continue 3 m to HALL landing on Floor 1.",
+          "Continue 2 m to Demo entrance on Floor 1."
+        ],
+        "total_distance": 9.0,
+        "routing_cost": 9.0,
+        "max_grade": 0.0,
+        "uses_stairs": false,
+        "uses_elevator": true,
+        "warnings": [
+          "Synthetic indoor demonstration; this is not a campus floor plan.",
+          "Indoor routing uses the published map review; current access can change.",
+          "This route relies on an elevator; absence of an outage is not operating confirmation."
+        ],
+        "reviewed_at": "2026-11-14T12:00:00+00:00"
+      },
+      {
+        "kind": "portal",
+        "portal_id": "library-entrance",
+        "building_id": "library",
+        "floor_id": "1",
+        "indoor_node_id": "entrance",
+        "entrance_label": "Demo entrance",
+        "direction": "exit",
+        "instruction": "Exit via Demo entrance.",
+        "coordinate_system": "WGS84",
+        "total_distance": 4.2,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              -72.52805,
+              42.392
+            ],
+            [
+              -72.528,
+              42.392
+            ]
+          ]
+        },
+        "source_id": "synthetic-fixture",
+        "degraded": false,
+        "max_grade": 0.0
+      },
+      {
+        "kind": "outdoor",
+        "route": {
+          "type": "Feature",
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -72.528,
+                42.392
+              ],
+              [
+                -72.5276,
+                42.39200000000001
+              ],
+              [
+                -72.5276,
+                42.39144999999999
+              ],
+              [
+                -72.5276,
+                42.39139999999999
+              ],
+              [
+                -72.5276,
+                42.391
+              ],
+              [
+                -72.528,
+                42.391000000000005
+              ]
+            ]
+          },
+          "properties": {
+            "total_distance": 176.95,
+            "max_grade": 2.0,
+            "warnings": [
+              "Synthetic demo graph: paths, elevators, and grades are not campus facts.",
+              "This route relies on an elevator; check its current operating status."
+            ],
+            "directions": [
+              "Continue 94 m along Demo east approach.",
+              "Use the mapped elevator connection.",
+              "Continue 77 m along Demo east approach.",
+              "Arrive at the destination on the mapped path."
+            ],
+            "graph_source": "synthetic-demo",
+            "uses_stairs": false,
+            "uses_elevator": true,
+            "snapped_start": {
+              "lat": 42.392,
+              "lng": -72.528
+            },
+            "snapped_end": {
+              "lat": 42.391000000000005,
+              "lng": -72.528
+            },
+            "start_snap_distance": 0.0,
+            "end_snap_distance": 0.0,
+            "routing_cost": 176.95
+          }
+        }
+      }
+    ],
+    "total_distance": 190.15,
+    "routing_cost": 190.15,
+    "warnings": [
+      "Synthetic indoor demonstration; this is not a campus floor plan.",
+      "Indoor routing uses the published map review; current access can change.",
+      "This route relies on an elevator; absence of an outage is not operating confirmation.",
+      "Synthetic demo graph: paths, elevators, and grades are not campus facts.",
+      "This route relies on an elevator; check its current operating status."
+    ],
+    "synthetic": true,
+    "complete": true,
+    "scope": "to_outside_entrance_approach"
+  },
+  "stages": [
+    {
+      "id": "stage-1",
+      "phase": "leave_building",
+      "instructions": [
+        "Use library-lift-a from Floor 2 to Floor 1.",
+        "Continue 3 m to HALL landing on Floor 1.",
+        "Continue 2 m to Demo entrance on Floor 1."
+      ],
+      "leg": {
+        "kind": "indoor",
+        "building_id": "library",
+        "synthetic": true,
+        "node_path": [
+          "a2",
+          "a1",
+          "hall1",
+          "entrance"
+        ],
+        "floor_sequence": [
+          "2",
+          "1"
+        ],
+        "segments": [
+          {
+            "edge_id": "hall-a1",
+            "kind": "corridor",
+            "asset_id": null,
+            "distance_m": 3.0,
+            "from_floor": "1",
+            "to_floor": "1",
+            "from_node_id": "a1",
+            "to_node_id": "hall1",
+            "from_label": "Demo elevator A landing",
+            "to_label": "HALL landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "1",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  5.0,
+                  0.0
+                ],
+                [
+                  2.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 3 m to HALL landing on Floor 1."
+          },
+          {
+            "edge_id": "entrance-hall",
+            "kind": "corridor",
+            "asset_id": "library-hall",
+            "distance_m": 2.0,
+            "from_floor": "1",
+            "to_floor": "1",
+            "from_node_id": "hall1",
+            "to_node_id": "entrance",
+            "from_label": "HALL landing",
+            "to_label": "Demo entrance",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "1",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  2.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 2 m to Demo entrance on Floor 1."
+          }
+        ],
+        "steps": [
+          {
+            "edge_id": "lift-a",
+            "kind": "elevator",
+            "asset_id": "library-lift-a",
+            "distance_m": 4.0,
+            "from_floor": "2",
+            "to_floor": "1",
+            "from_node_id": "a2",
+            "to_node_id": "a1",
+            "from_label": "Demo elevator A landing",
+            "to_label": "Demo elevator A landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "from_position": [
+              5.0,
+              0.0
+            ],
+            "to_position": [
+              5.0,
+              0.0
+            ],
+            "instruction": "Use library-lift-a from Floor 2 to Floor 1."
+          },
+          {
+            "edge_id": "hall-a1",
+            "kind": "corridor",
+            "asset_id": null,
+            "distance_m": 3.0,
+            "from_floor": "1",
+            "to_floor": "1",
+            "from_node_id": "a1",
+            "to_node_id": "hall1",
+            "from_label": "Demo elevator A landing",
+            "to_label": "HALL landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "1",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  5.0,
+                  0.0
+                ],
+                [
+                  2.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 3 m to HALL landing on Floor 1."
+          },
+          {
+            "edge_id": "entrance-hall",
+            "kind": "corridor",
+            "asset_id": "library-hall",
+            "distance_m": 2.0,
+            "from_floor": "1",
+            "to_floor": "1",
+            "from_node_id": "hall1",
+            "to_node_id": "entrance",
+            "from_label": "HALL landing",
+            "to_label": "Demo entrance",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "floor_id": "1",
+            "coordinate_system": "local_meters",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  2.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ]
+            },
+            "instruction": "Continue 2 m to Demo entrance on Floor 1."
+          }
+        ],
+        "transitions": [
+          {
+            "edge_id": "lift-a",
+            "kind": "elevator",
+            "asset_id": "library-lift-a",
+            "distance_m": 4.0,
+            "from_floor": "2",
+            "to_floor": "1",
+            "from_node_id": "a2",
+            "to_node_id": "a1",
+            "from_label": "Demo elevator A landing",
+            "to_label": "Demo elevator A landing",
+            "source_id": "synthetic-fixture",
+            "degraded": false,
+            "from_position": [
+              5.0,
+              0.0
+            ],
+            "to_position": [
+              5.0,
+              0.0
+            ],
+            "instruction": "Use library-lift-a from Floor 2 to Floor 1."
+          }
+        ],
+        "directions": [
+          "Use library-lift-a from Floor 2 to Floor 1.",
+          "Continue 3 m to HALL landing on Floor 1.",
+          "Continue 2 m to Demo entrance on Floor 1."
+        ],
+        "total_distance": 9.0,
+        "routing_cost": 9.0,
+        "max_grade": 0.0,
+        "uses_stairs": false,
+        "uses_elevator": true,
+        "warnings": [
+          "Synthetic indoor demonstration; this is not a campus floor plan.",
+          "Indoor routing uses the published map review; current access can change.",
+          "This route relies on an elevator; absence of an outage is not operating confirmation."
+        ],
+        "reviewed_at": "2026-11-14T12:00:00+00:00"
+      }
+    },
+    {
+      "id": "stage-2",
+      "phase": "leave_building",
+      "instructions": [
+        "Exit via Demo entrance."
+      ],
+      "leg": {
+        "kind": "portal",
+        "portal_id": "library-entrance",
+        "building_id": "library",
+        "floor_id": "1",
+        "indoor_node_id": "entrance",
+        "entrance_label": "Demo entrance",
+        "direction": "exit",
+        "instruction": "Exit via Demo entrance.",
+        "coordinate_system": "WGS84",
+        "total_distance": 4.2,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              -72.52805,
+              42.392
+            ],
+            [
+              -72.528,
+              42.392
+            ]
+          ]
+        },
+        "source_id": "synthetic-fixture",
+        "degraded": false,
+        "max_grade": 0.0
+      }
+    },
+    {
+      "id": "stage-3",
+      "phase": "outdoor",
+      "instructions": [
+        "Continue 94 m along Demo east approach.",
+        "Use the mapped elevator connection.",
+        "Continue 77 m along Demo east approach.",
+        "Arrive at the destination on the mapped path."
+      ],
+      "leg": {
+        "kind": "outdoor",
+        "route": {
+          "type": "Feature",
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              [
+                -72.528,
+                42.392
+              ],
+              [
+                -72.5276,
+                42.39200000000001
+              ],
+              [
+                -72.5276,
+                42.39144999999999
+              ],
+              [
+                -72.5276,
+                42.39139999999999
+              ],
+              [
+                -72.5276,
+                42.391
+              ],
+              [
+                -72.528,
+                42.391000000000005
+              ]
+            ]
+          },
+          "properties": {
+            "total_distance": 176.95,
+            "max_grade": 2.0,
+            "warnings": [
+              "Synthetic demo graph: paths, elevators, and grades are not campus facts.",
+              "This route relies on an elevator; check its current operating status."
+            ],
+            "directions": [
+              "Continue 94 m along Demo east approach.",
+              "Use the mapped elevator connection.",
+              "Continue 77 m along Demo east approach.",
+              "Arrive at the destination on the mapped path."
+            ],
+            "graph_source": "synthetic-demo",
+            "uses_stairs": false,
+            "uses_elevator": true,
+            "snapped_start": {
+              "lat": 42.392,
+              "lng": -72.528
+            },
+            "snapped_end": {
+              "lat": 42.391000000000005,
+              "lng": -72.528
+            },
+            "start_snap_distance": 0.0,
+            "end_snap_distance": 0.0,
+            "routing_cost": 176.95
+          }
+        }
+      }
+    }
+  ],
+  "closure_context": {
+    "mode": "server_snapshot",
+    "stale": false
+  },
+  "position_tracking": "User-confirmed locations; no indoor GPS.",
+  "arrival_context": {
+    "building_id": "ilc",
+    "portal_id": "ilc-entrance"
+  },
+  "arrival_confirmation_required": true,
+  "on_arrival": {
+    "question": "Do you need to go somewhere inside SYNTHETIC ilc protocol fixture?",
+    "choices": [
+      {
+        "continue_indoors": true,
+        "label": "Choose an indoor destination"
+      },
+      {
+        "continue_indoors": false,
+        "label": "Finish outside"
+      }
+    ]
+  }
+}

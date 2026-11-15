@@ -1,0 +1,14 @@
+{
+  "_comment": "Indoor connections OpenStreetMap does not map as walkways. 'from'/'to' snap to the nearest graph vertex. Elevators are closed by closure.connector_id.",
+  "connectors": [
+    {
+      "id": "cc-concourse-elevator",
+      "kind": "elevator",
+      "name": "Campus Center concourse elevator",
+      "building_id": "campus-center",
+      "from": [42.391416, -72.526525],
+      "to": [42.391497, -72.526579],
+      "length_m": 24
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Closures Contract",
+  "description": "Standard schema for active barriers, elevator outages, and path construction across UMass Amherst. Adhered to by Role 1 (Routing), Role 2 (Frontend), Role 3 (Scraper), and Role 4 (Backend).",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "lat",
+      "lng",
+      "radius",
+      "type",
+      "status",
+      "source",
+      "title",
+      "last_confirmed"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Unique identifier for this outage or barrier"
+      },
+      "lat": {
+        "type": "number",
+        "description": "Latitude coordinate in WGS84"
+      },
+      "lng": {
+        "type": "number",
+        "description": "Longitude coordinate in WGS84"
+      },
+      "radius": {
+        "type": "number",
+        "description": "Affected barrier radius in meters (snapped to nearest graph edge)"
+      },
+      "type": {
+        "type": "string",
+        "enum": ["elevator", "ramp", "path", "construction", "automatic_door"],
+        "description": "Type of accessibility infrastructure affected"
+      },
+      "status": {
+        "type": "string",
+        "enum": ["closed", "degraded", "repaired"],
+        "description": "Current status of the obstacle"
+      },
+      "source": {
+        "type": "string",
+        "enum": ["official", "community", "verified"],
+        "description": "Source of data: official UMass facilities notice, community report, or field-verified"
+      },
+      "title": {
+        "type": "string",
+        "description": "Short human-readable summary (e.g. 'Campus Center Main Elevator Broken')"
+      },
+      "description": {
+        "type": "string",
+        "description": "Detailed explanation or alternate instructions"
+      },
+      "building_name": {
+        "type": "string",
+        "description": "Associated campus building, if applicable"
+      },
+      "connector_id": {
+        "type": "string",
+        "description": "Optional. Indoor connector (elevator) this closure disables, matching ids in scripts/curated-connectors.json. Without it, elevator closures snap to the nearest elevator within 30 m."
+      },
+      "start_time": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "end_time": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "last_confirmed": {
+        "type": "string",
+        "format": "date-time",
+        "description": "ISO timestamp of the most recent verification; used for algorithmic freshness labeling"
+      },
+      "confirmations_count": {
+        "type": "integer",
+        "description": "Number of community confirmations validating this outage"
+      }
+    }
+  },
+  "example": [
+    {
+      "id": "cc-elev-01",
+      "lat": 42.3916,
+      "lng": -72.5273,
+      "radius": 15,
+      "type": "elevator",
+      "status": "closed",
+      "source": "official",
+      "title": "Campus Center Concourse Elevator Out",
+      "description": "Hydraulic failure reported by Facilities. Service crew dispatched.",
+      "building_name": "Campus Center",
+      "start_time": "2026-11-13T08:00:00Z",
+      "end_time": "2026-11-14T20:00:00Z",
+      "last_confirmed": "2026-11-13T20:45:00Z",
+      "confirmations_count": 8
+    }
+  ]
+}

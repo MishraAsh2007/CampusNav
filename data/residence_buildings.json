@@ -1,0 +1,3600 @@
+{
+  "generated_at": "2026-11-14T23:36:18.243284+00:00",
+  "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+  "source_as_of": "August 2022",
+  "buildings": [
+    {
+      "id": "campus-center",
+      "name": "Lincoln Campus Center",
+      "code": "CC",
+      "category": "student_services",
+      "location": {
+        "lat": 42.39177615981222,
+        "lng": -72.52704857953009
+      },
+      "entrances": [
+        {
+          "id": "umass-entrance-73",
+          "name": "Northeast entrance",
+          "lat": 42.3918716415351,
+          "lng": -72.52652502621739,
+          "step_free": true,
+          "door_type": "manual",
+          "keycard_required": false,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/73",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true,
+          "supplemental_sources": [
+            "https://www.openstreetmap.org/node/8393893323"
+          ]
+        },
+        {
+          "id": "umass-entrance-96",
+          "name": "Northwest entrance",
+          "lat": 42.391844107079336,
+          "lng": -72.52716922335033,
+          "step_free": true,
+          "door_type": "manual",
+          "keycard_required": false,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/96",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        },
+        {
+          "id": "umass-entrance-179",
+          "name": "Southeast entrance",
+          "lat": 42.39144795395004,
+          "lng": -72.52662772582029,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": false,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/179",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        },
+        {
+          "id": "umass-entrance-180",
+          "name": "Southwest entrance",
+          "lat": 42.39167423613821,
+          "lng": -72.52746970540315,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": false,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/180",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true,
+          "supplemental_sources": [
+            "https://www.openstreetmap.org/node/1445169880"
+          ]
+        }
+      ],
+      "step_free_entrances": [
+        {
+          "id": "umass-entrance-73",
+          "name": "Northeast entrance",
+          "lat": 42.3918716415351,
+          "lng": -72.52652502621739,
+          "step_free": true,
+          "door_type": "manual",
+          "keycard_required": false,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/73",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true,
+          "supplemental_sources": [
+            "https://www.openstreetmap.org/node/8393893323"
+          ]
+        },
+        {
+          "id": "umass-entrance-96",
+          "name": "Northwest entrance",
+          "lat": 42.391844107079336,
+          "lng": -72.52716922335033,
+          "step_free": true,
+          "door_type": "manual",
+          "keycard_required": false,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/96",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        },
+        {
+          "id": "umass-entrance-179",
+          "name": "Southeast entrance",
+          "lat": 42.39144795395004,
+          "lng": -72.52662772582029,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": false,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/179",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        },
+        {
+          "id": "umass-entrance-180",
+          "name": "Southwest entrance",
+          "lat": 42.39167423613821,
+          "lng": -72.52746970540315,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": false,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/180",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true,
+          "supplemental_sources": [
+            "https://www.openstreetmap.org/node/1445169880"
+          ]
+        }
+      ],
+      "door_type": "mixed",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-141",
+            "name": "Mapped elevator location",
+            "lat": 42.39164704619488,
+            "lng": -72.52708074887958,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-141"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "ilc",
+      "name": "Integrative Learning Center",
+      "code": "ILC",
+      "category": "academic",
+      "location": {
+        "lat": 42.391013345269165,
+        "lng": -72.52595173690452
+      },
+      "entrances": [
+        {
+          "id": "osm-entrance-6382267406",
+          "name": "Southwest entrance",
+          "lat": 42.3908286,
+          "lng": -72.5262556,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": "2",
+          "osm_id": 6382267406,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/6382267406",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        },
+        {
+          "id": "osm-entrance-8393893332",
+          "name": "Northwest entrance",
+          "lat": 42.3911055,
+          "lng": -72.5263204,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": null,
+          "osm_id": 8393893332,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/8393893332",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        },
+        {
+          "id": "osm-entrance-14185644842",
+          "name": "Northwest entrance",
+          "lat": 42.3913385,
+          "lng": -72.5264364,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": null,
+          "osm_id": 14185644842,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/14185644842",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        },
+        {
+          "id": "osm-entrance-6382267407",
+          "name": "Southeast entrance",
+          "lat": 42.3908868,
+          "lng": -72.525402,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": "2",
+          "osm_id": 6382267407,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/6382267407",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 2,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-187",
+            "name": "Mapped elevator location",
+            "lat": 42.390892431451576,
+            "lng": -72.52542160205012,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-187"
+          },
+          {
+            "id": "umass-elevator-188",
+            "name": "Mapped elevator location",
+            "lat": 42.39088281968076,
+            "lng": -72.52592187860468,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-188"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "Fully Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "student-union",
+      "name": "Student Union",
+      "code": "SU",
+      "category": "student_services",
+      "location": {
+        "lat": 42.39085432000195,
+        "lng": -72.52757984551953
+      },
+      "entrances": [
+        {
+          "id": "osm-entrance-9733532733",
+          "name": "Southwest entrance",
+          "lat": 42.3908217,
+          "lng": -72.5279492,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": null,
+          "osm_id": 9733532733,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/9733532733",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-122",
+            "name": "Mapped elevator location",
+            "lat": 42.39094553070591,
+            "lng": -72.52775463191782,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-122"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "Fully Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "library",
+      "name": "W.E.B. Du Bois Library",
+      "code": "LIB",
+      "category": "library",
+      "location": {
+        "lat": 42.38965691426768,
+        "lng": -72.52816532387322
+      },
+      "entrances": [
+        {
+          "id": "osm-entrance-8393893355",
+          "name": "Northwest entrance",
+          "lat": 42.3897015,
+          "lng": -72.5281716,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": null,
+          "osm_id": 8393893355,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/8393893355",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-121",
+            "name": "Mapped elevator location",
+            "lat": 42.389838144417546,
+            "lng": -72.52822985896846,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-121"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "goodell",
+      "name": "Goodell Hall",
+      "code": "GDL",
+      "category": "administration",
+      "location": {
+        "lat": 42.388677907001416,
+        "lng": -72.52920118301569
+      },
+      "entrances": [
+        {
+          "id": "umass-entrance-75",
+          "name": "Northwest entrance",
+          "lat": 42.38888953470532,
+          "lng": -72.52934876587696,
+          "step_free": true,
+          "door_type": "manual",
+          "keycard_required": false,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/75",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        },
+        {
+          "id": "osm-entrance-13194425358",
+          "name": "Northwest entrance",
+          "lat": 42.3887568,
+          "lng": -72.52964,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": null,
+          "osm_id": 13194425358,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/13194425358",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [
+        {
+          "id": "umass-entrance-75",
+          "name": "Northwest entrance",
+          "lat": 42.38888953470532,
+          "lng": -72.52934876587696,
+          "step_free": true,
+          "door_type": "manual",
+          "keycard_required": false,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/75",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "door_type": "manual",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-120",
+            "name": "Mapped elevator location",
+            "lat": 42.38863120368139,
+            "lng": -72.52920106940996,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-120"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "patterson",
+      "name": "Patterson House",
+      "code": "378",
+      "category": "residential",
+      "location": {
+        "lat": 42.38180887421345,
+        "lng": -72.52842812414305
+      },
+      "entrances": [
+        {
+          "id": "umass-entrance-45",
+          "name": "Southwest entrance",
+          "lat": 42.38158157769723,
+          "lng": -72.52844611900038,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/45",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [
+        {
+          "id": "umass-entrance-45",
+          "name": "Southwest entrance",
+          "lat": 42.38158157769723,
+          "lng": -72.52844611900038,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/45",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "door_type": "push-button",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-100",
+            "name": "Mapped elevator location",
+            "lat": 42.38158465162623,
+            "lng": -72.52831354306397,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-100"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "grayson",
+      "name": "Grayson House",
+      "code": "330",
+      "category": "residential",
+      "location": {
+        "lat": 42.39225252282009,
+        "lng": -72.51883211608181
+      },
+      "entrances": [
+        {
+          "id": "umass-entrance-135",
+          "name": "Northeast entrance",
+          "lat": 42.392323845677424,
+          "lng": -72.51881638440271,
+          "step_free": true,
+          "door_type": "manual",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/135",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [
+        {
+          "id": "umass-entrance-135",
+          "name": "Northeast entrance",
+          "lat": 42.392323845677424,
+          "lng": -72.51881638440271,
+          "step_free": true,
+          "door_type": "manual",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/135",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "door_type": "manual",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-109",
+            "name": "Mapped elevator location",
+            "lat": 42.39223408704256,
+            "lng": -72.51887171255531,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-109"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "birch",
+      "name": "Birch House",
+      "code": "710",
+      "category": "residential",
+      "location": {
+        "lat": 42.388035113033034,
+        "lng": -72.53136378280864
+      },
+      "entrances": [
+        {
+          "id": "network-approach-birch",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.38808389999999,
+          "lng": -72.5310191,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 2.36,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-180",
+            "name": "Mapped elevator location",
+            "lat": 42.387991217560604,
+            "lng": -72.53140522480258,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-180"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "Fully Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "elm",
+      "name": "Elm House",
+      "code": "708",
+      "category": "residential",
+      "location": {
+        "lat": 42.38811883051982,
+        "lng": -72.5299292494725
+      },
+      "entrances": [
+        {
+          "id": "umass-entrance-1",
+          "name": "Northwest entrance",
+          "lat": 42.38834722662551,
+          "lng": -72.53003348761871,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": false,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/1",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true,
+          "supplemental_sources": [
+            "https://www.openstreetmap.org/node/13194430159",
+            "https://www.openstreetmap.org/node/13194433135"
+          ]
+        },
+        {
+          "id": "osm-entrance-13194425357",
+          "name": "Northeast entrance",
+          "lat": 42.3884146,
+          "lng": -72.5298115,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": null,
+          "osm_id": 13194425357,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/13194425357",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        },
+        {
+          "id": "osm-entrance-13194425359",
+          "name": "Northeast entrance",
+          "lat": 42.3882711,
+          "lng": -72.5297511,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": null,
+          "osm_id": 13194425359,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/13194425359",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        },
+        {
+          "id": "osm-entrance-13194430161",
+          "name": "Southwest entrance",
+          "lat": 42.3881013,
+          "lng": -72.5301023,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": null,
+          "osm_id": 13194430161,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/13194430161",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        },
+        {
+          "id": "osm-entrance-13194445419",
+          "name": "Southwest entrance",
+          "lat": 42.3880181,
+          "lng": -72.5302666,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": null,
+          "osm_id": 13194445419,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/13194445419",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [
+        {
+          "id": "umass-entrance-1",
+          "name": "Northwest entrance",
+          "lat": 42.38834722662551,
+          "lng": -72.53003348761871,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": false,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/1",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true,
+          "supplemental_sources": [
+            "https://www.openstreetmap.org/node/13194430159",
+            "https://www.openstreetmap.org/node/13194433135"
+          ]
+        }
+      ],
+      "door_type": "push-button",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 2,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-178",
+            "name": "Mapped elevator location",
+            "lat": 42.38816215096671,
+            "lng": -72.52980024797311,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-178"
+          },
+          {
+            "id": "umass-elevator-195",
+            "name": "Mapped elevator location",
+            "lat": 42.38835585503582,
+            "lng": -72.52988174759415,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-195"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "Fully Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "linden",
+      "name": "Linden House",
+      "code": "706",
+      "category": "residential",
+      "location": {
+        "lat": 42.387032065955864,
+        "lng": -72.53084332834064
+      },
+      "entrances": [
+        {
+          "id": "osm-entrance-13194492317",
+          "name": "Northeast entrance",
+          "lat": 42.3871195,
+          "lng": -72.5304014,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": null,
+          "osm_id": 13194492317,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/13194492317",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        },
+        {
+          "id": "osm-entrance-13194492319",
+          "name": "Northwest entrance",
+          "lat": 42.3870825,
+          "lng": -72.5308787,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": null,
+          "osm_id": 13194492319,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/13194492319",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-182",
+            "name": "Mapped elevator location",
+            "lat": 42.38701531074524,
+            "lng": -72.53097715286405,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-182"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "Fully Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "maple",
+      "name": "Maple House",
+      "code": "709",
+      "category": "residential",
+      "location": {
+        "lat": 42.38757457319829,
+        "lng": -72.53093620496007
+      },
+      "entrances": [
+        {
+          "id": "osm-entrance-13194416870",
+          "name": "Northeast entrance",
+          "lat": 42.3878554,
+          "lng": -72.5307078,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": null,
+          "osm_id": 13194416870,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/13194416870",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 3,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-181",
+            "name": "Mapped elevator location",
+            "lat": 42.387475995847154,
+            "lng": -72.53113453940904,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-181"
+          },
+          {
+            "id": "umass-elevator-196",
+            "name": "Mapped elevator location",
+            "lat": 42.387819796399526,
+            "lng": -72.53080973856943,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-196"
+          },
+          {
+            "id": "umass-elevator-197",
+            "name": "Mapped elevator location",
+            "lat": 42.38754058731015,
+            "lng": -72.53068937417467,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-197"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "Fully Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "oak",
+      "name": "Oak House",
+      "code": "707",
+      "category": "residential",
+      "location": {
+        "lat": 42.38753568770323,
+        "lng": -72.53027260257878
+      },
+      "entrances": [
+        {
+          "id": "osm-entrance-13194416869",
+          "name": "Northwest entrance",
+          "lat": 42.3875753,
+          "lng": -72.5304253,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": null,
+          "osm_id": 13194416869,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/13194416869",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        },
+        {
+          "id": "osm-entrance-13194492318",
+          "name": "Southwest entrance",
+          "lat": 42.3872284,
+          "lng": -72.5303358,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": null,
+          "osm_id": 13194492318,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/13194492318",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-183",
+            "name": "Mapped elevator location",
+            "lat": 42.38748192206273,
+            "lng": -72.53019110603299,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-183"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "Fully Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "sycamore",
+      "name": "Sycamore House",
+      "code": "712",
+      "category": "residential",
+      "location": {
+        "lat": 42.38847874285923,
+        "lng": -72.53043881662009
+      },
+      "entrances": [
+        {
+          "id": "osm-entrance-13194430160",
+          "name": "Southeast entrance",
+          "lat": 42.3884641,
+          "lng": -72.5303241,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": null,
+          "osm_id": 13194430160,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/13194430160",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        },
+        {
+          "id": "osm-entrance-13194430162",
+          "name": "Northeast entrance",
+          "lat": 42.3885812,
+          "lng": -72.5300355,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": null,
+          "osm_id": 13194430162,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/13194430162",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-179",
+            "name": "Mapped elevator location",
+            "lat": 42.38854854647619,
+            "lng": -72.53035836234268,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-179"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "Fully Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "baker",
+      "name": "Baker House",
+      "code": "003",
+      "category": "residential",
+      "location": {
+        "lat": 42.38960071007766,
+        "lng": -72.51978519115573
+      },
+      "entrances": [
+        {
+          "id": "network-approach-baker",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.38928869833843,
+          "lng": -72.51988641748338,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 2.31,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 0,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": []
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "brett",
+      "name": "Brett House",
+      "code": "295",
+      "category": "residential",
+      "location": {
+        "lat": 42.3896331512949,
+        "lng": -72.52154745552671
+      },
+      "entrances": [
+        {
+          "id": "umass-entrance-44",
+          "name": "Northeast entrance",
+          "lat": 42.38972438334045,
+          "lng": -72.52148252284954,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/44",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [
+        {
+          "id": "umass-entrance-44",
+          "name": "Northeast entrance",
+          "lat": 42.38972438334045,
+          "lng": -72.52148252284954,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/44",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "door_type": "push-button",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-108",
+            "name": "Mapped elevator location",
+            "lat": 42.389695062901936,
+            "lng": -72.5215614793677,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-108"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "brooks",
+      "name": "Brooks House",
+      "code": "004",
+      "category": "residential",
+      "location": {
+        "lat": 42.38991369830801,
+        "lng": -72.52101572060361
+      },
+      "entrances": [
+        {
+          "id": "umass-entrance-43",
+          "name": "Southwest entrance",
+          "lat": 42.38988766844397,
+          "lng": -72.52111108045106,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/43",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [
+        {
+          "id": "umass-entrance-43",
+          "name": "Southwest entrance",
+          "lat": 42.38988766844397,
+          "lng": -72.52111108045106,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/43",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "door_type": "push-button",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-153",
+            "name": "Mapped elevator location",
+            "lat": 42.389934524033,
+            "lng": -72.52092941546256,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-153"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "butterfield",
+      "name": "Butterfield House",
+      "code": "005",
+      "category": "residential",
+      "location": {
+        "lat": 42.38855471619258,
+        "lng": -72.51817221596306
+      },
+      "entrances": [
+        {
+          "id": "network-approach-butterfield",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.388370580539856,
+          "lng": -72.51837638840709,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 2.23,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 0,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": []
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "chadbourne",
+      "name": "Chadbourne House",
+      "code": "006",
+      "category": "residential",
+      "location": {
+        "lat": 42.38937155684502,
+        "lng": -72.51909392106565
+      },
+      "entrances": [
+        {
+          "id": "network-approach-chadbourne",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.38935889999998,
+          "lng": -72.5192373,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 4.57,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 0,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": []
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "gorman",
+      "name": "Gorman House",
+      "code": "294",
+      "category": "residential",
+      "location": {
+        "lat": 42.38753154247289,
+        "lng": -72.5210980691306
+      },
+      "entrances": [
+        {
+          "id": "osm-entrance-5261619800",
+          "name": "Southeast entrance",
+          "lat": 42.3875233,
+          "lng": -72.5209319,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": null,
+          "osm_id": 5261619800,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/5261619800",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 0,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": []
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "greenough",
+      "name": "Greenough House",
+      "code": "024",
+      "category": "residential",
+      "location": {
+        "lat": 42.39002535114857,
+        "lng": -72.51929974271043
+      },
+      "entrances": [
+        {
+          "id": "network-approach-greenough",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.390146300000005,
+          "lng": -72.5194409,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 2.52,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 0,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": []
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "van-meter",
+      "name": "Van Meter House",
+      "code": "032",
+      "category": "residential",
+      "location": {
+        "lat": 42.38984602396876,
+        "lng": -72.51833799842834
+      },
+      "entrances": [
+        {
+          "id": "network-approach-van-meter",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.38984631183616,
+          "lng": -72.51851560275344,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 3.35,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 0,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": []
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "wheeler",
+      "name": "Wheeler House",
+      "code": "033",
+      "category": "residential",
+      "location": {
+        "lat": 42.388906131779905,
+        "lng": -72.52130334372599
+      },
+      "entrances": [
+        {
+          "id": "network-approach-wheeler",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.38862516764513,
+          "lng": -72.52124927235367,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 3.37,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 0,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": []
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "north-a",
+      "name": "North A",
+      "code": "670",
+      "category": "residential",
+      "location": {
+        "lat": 42.39758152648975,
+        "lng": -72.52425956150304
+      },
+      "entrances": [
+        {
+          "id": "umass-entrance-47",
+          "name": "Northeast entrance",
+          "lat": 42.39764983822749,
+          "lng": -72.52400084026404,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/47",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        },
+        {
+          "id": "umass-entrance-51",
+          "name": "Southeast entrance",
+          "lat": 42.39757486211714,
+          "lng": -72.52424664172636,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/51",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [
+        {
+          "id": "umass-entrance-47",
+          "name": "Northeast entrance",
+          "lat": 42.39764983822749,
+          "lng": -72.52400084026404,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/47",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        },
+        {
+          "id": "umass-entrance-51",
+          "name": "Southeast entrance",
+          "lat": 42.39757486211714,
+          "lng": -72.52424664172636,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/51",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "door_type": "push-button",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-145",
+            "name": "Mapped elevator location",
+            "lat": 42.39755551914282,
+            "lng": -72.52412771671703,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-145"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "Fully Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "north-b",
+      "name": "North B",
+      "code": "671",
+      "category": "residential",
+      "location": {
+        "lat": 42.3967681658375,
+        "lng": -72.52430997034412
+      },
+      "entrances": [
+        {
+          "id": "umass-entrance-48",
+          "name": "Northeast entrance",
+          "lat": 42.39682373516802,
+          "lng": -72.52404921281925,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/48",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        },
+        {
+          "id": "umass-entrance-52",
+          "name": "Southeast entrance",
+          "lat": 42.39674460899046,
+          "lng": -72.52429494377348,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/52",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [
+        {
+          "id": "umass-entrance-48",
+          "name": "Northeast entrance",
+          "lat": 42.39682373516802,
+          "lng": -72.52404921281925,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/48",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        },
+        {
+          "id": "umass-entrance-52",
+          "name": "Southeast entrance",
+          "lat": 42.39674460899046,
+          "lng": -72.52429494377348,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/52",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "door_type": "push-button",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-146",
+            "name": "Mapped elevator location",
+            "lat": 42.39673845720704,
+            "lng": -72.52417589014631,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-146"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "Fully Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "north-c",
+      "name": "North C",
+      "code": "672",
+      "category": "residential",
+      "location": {
+        "lat": 42.3975657042142,
+        "lng": -72.52493477807029
+      },
+      "entrances": [
+        {
+          "id": "umass-entrance-46",
+          "name": "Northwest entrance",
+          "lat": 42.397616382073195,
+          "lng": -72.52495465104518,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/46",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        },
+        {
+          "id": "umass-entrance-49",
+          "name": "Southwest entrance",
+          "lat": 42.39754974926126,
+          "lng": -72.52519780977144,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/49",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [
+        {
+          "id": "umass-entrance-46",
+          "name": "Northwest entrance",
+          "lat": 42.397616382073195,
+          "lng": -72.52495465104518,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/46",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        },
+        {
+          "id": "umass-entrance-49",
+          "name": "Southwest entrance",
+          "lat": 42.39754974926126,
+          "lng": -72.52519780977144,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/49",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "door_type": "push-button",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-147",
+            "name": "Mapped elevator location",
+            "lat": 42.39760350544297,
+            "lng": -72.52505326255967,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-147"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "Fully Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "north-d",
+      "name": "North D",
+      "code": "673",
+      "category": "residential",
+      "location": {
+        "lat": 42.3967212196088,
+        "lng": -72.52499678135136
+      },
+      "entrances": [
+        {
+          "id": "umass-entrance-50",
+          "name": "Southwest entrance",
+          "lat": 42.39672165586618,
+          "lng": -72.52523768619369,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/50",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        },
+        {
+          "id": "umass-entrance-53",
+          "name": "Northeast entrance",
+          "lat": 42.39679039838253,
+          "lng": -72.52499178812155,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/53",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [
+        {
+          "id": "umass-entrance-50",
+          "name": "Southwest entrance",
+          "lat": 42.39672165586618,
+          "lng": -72.52523768619369,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/50",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        },
+        {
+          "id": "umass-entrance-53",
+          "name": "Northeast entrance",
+          "lat": 42.39679039838253,
+          "lng": -72.52499178812155,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/53",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "door_type": "push-button",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-148",
+            "name": "Mapped elevator location",
+            "lat": 42.3967596721315,
+            "lng": -72.52510098997027,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-148"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "Fully Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "crabtree",
+      "name": "Crabtree House",
+      "code": "012",
+      "category": "residential",
+      "location": {
+        "lat": 42.394074969444326,
+        "lng": -72.52509592617486
+      },
+      "entrances": [
+        {
+          "id": "network-approach-crabtree",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.39403179999999,
+          "lng": -72.5251545,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 1.0,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 0,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": []
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "dwight",
+      "name": "Dwight House",
+      "code": "035",
+      "category": "residential",
+      "location": {
+        "lat": 42.39534661503191,
+        "lng": -72.52514213514635
+      },
+      "entrances": [
+        {
+          "id": "osm-entrance-2264382776",
+          "name": "Northwest entrance",
+          "lat": 42.3954325,
+          "lng": -72.5253082,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": null,
+          "osm_id": 2264382776,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/2264382776",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 0,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": []
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "hamlin",
+      "name": "Hamlin House",
+      "code": "025",
+      "category": "residential",
+      "location": {
+        "lat": 42.39500499322581,
+        "lng": -72.5263430969094
+      },
+      "entrances": [
+        {
+          "id": "network-approach-hamlin",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.39482198769365,
+          "lng": -72.52619468659604,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 1.33,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 0,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": []
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "johnson",
+      "name": "Johnson House",
+      "code": "036",
+      "category": "residential",
+      "location": {
+        "lat": 42.39557897880228,
+        "lng": -72.52450796115916
+      },
+      "entrances": [
+        {
+          "id": "network-approach-johnson",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.39563259999999,
+          "lng": -72.5244564,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 1.3,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 0,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": []
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "knowlton",
+      "name": "Knowlton House",
+      "code": "026",
+      "category": "residential",
+      "location": {
+        "lat": 42.39388520632332,
+        "lng": -72.52569040961129
+      },
+      "entrances": [
+        {
+          "id": "umass-entrance-42",
+          "name": "Northwest entrance",
+          "lat": 42.393930463748816,
+          "lng": -72.5258933328481,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/42",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [
+        {
+          "id": "umass-entrance-42",
+          "name": "Northwest entrance",
+          "lat": 42.393930463748816,
+          "lng": -72.5258933328481,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/42",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "door_type": "push-button",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-152",
+            "name": "Mapped elevator location",
+            "lat": 42.393813465089714,
+            "lng": -72.52574194395972,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-152"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "Fully Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "leach",
+      "name": "Leach House",
+      "code": "027",
+      "category": "residential",
+      "location": {
+        "lat": 42.39519815245162,
+        "lng": -72.52574673985492
+      },
+      "entrances": [
+        {
+          "id": "network-approach-leach",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.39497026996876,
+          "lng": -72.52566428901615,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 2.99,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 0,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": []
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "lewis",
+      "name": "Lewis House",
+      "code": "028",
+      "category": "residential",
+      "location": {
+        "lat": 42.395084018986296,
+        "lng": -72.52395928763012
+      },
+      "entrances": [
+        {
+          "id": "network-approach-lewis",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.39483313283007,
+          "lng": -72.52381901506807,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 2.82,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 0,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": []
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "mary-lyon",
+      "name": "Mary Lyon House",
+      "code": "034",
+      "category": "residential",
+      "location": {
+        "lat": 42.394300382225296,
+        "lng": -72.52453472279181
+      },
+      "entrances": [
+        {
+          "id": "network-approach-mary-lyon",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.39413408437539,
+          "lng": -72.52439188389988,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 2.11,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 0,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": []
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "thatcher",
+      "name": "Thatcher House",
+      "code": "030",
+      "category": "residential",
+      "location": {
+        "lat": 42.39447009956467,
+        "lng": -72.52381052706863
+      },
+      "entrances": [
+        {
+          "id": "network-approach-thatcher",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.39445449999999,
+          "lng": -72.523722,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 1.28,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 0,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": []
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "dickinson",
+      "name": "Dickinson House",
+      "code": "331",
+      "category": "residential",
+      "location": {
+        "lat": 42.392138776575685,
+        "lng": -72.51965907549166
+      },
+      "entrances": [
+        {
+          "id": "umass-entrance-37",
+          "name": "Southwest entrance",
+          "lat": 42.392135689645606,
+          "lng": -72.5197333687724,
+          "step_free": true,
+          "door_type": "manual",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/37",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [
+        {
+          "id": "umass-entrance-37",
+          "name": "Southwest entrance",
+          "lat": 42.392135689645606,
+          "lng": -72.5197333687724,
+          "step_free": true,
+          "door_type": "manual",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/37",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "door_type": "manual",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-157",
+            "name": "Mapped elevator location",
+            "lat": 42.39212041643847,
+            "lng": -72.51960258788309,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-157"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "field",
+      "name": "Field House",
+      "code": "332",
+      "category": "residential",
+      "location": {
+        "lat": 42.39164936023967,
+        "lng": -72.51864381959165
+      },
+      "entrances": [
+        {
+          "id": "umass-entrance-35",
+          "name": "Northwest entrance",
+          "lat": 42.39173598309402,
+          "lng": -72.51869139413867,
+          "step_free": true,
+          "door_type": "manual",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/35",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [
+        {
+          "id": "umass-entrance-35",
+          "name": "Northwest entrance",
+          "lat": 42.39173598309402,
+          "lng": -72.51869139413867,
+          "step_free": true,
+          "door_type": "manual",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/35",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "door_type": "manual",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-158",
+            "name": "Mapped elevator location",
+            "lat": 42.39175330756981,
+            "lng": -72.5185477377608,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-158"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "webster",
+      "name": "Webster House",
+      "code": "333",
+      "category": "residential",
+      "location": {
+        "lat": 42.39150991895559,
+        "lng": -72.51943253112732
+      },
+      "entrances": [
+        {
+          "id": "umass-entrance-4",
+          "name": "Southwest entrance",
+          "lat": 42.39147182503756,
+          "lng": -72.51951867551371,
+          "step_free": true,
+          "door_type": "manual",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/4",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [
+        {
+          "id": "umass-entrance-4",
+          "name": "Southwest entrance",
+          "lat": 42.39147182503756,
+          "lng": -72.51951867551371,
+          "step_free": true,
+          "door_type": "manual",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/4",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "door_type": "manual",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-159",
+            "name": "Mapped elevator location",
+            "lat": 42.39150974491854,
+            "lng": -72.51942884630114,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-159"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "cance",
+      "name": "Cance House",
+      "code": "400",
+      "category": "residential",
+      "location": {
+        "lat": 42.38121176605937,
+        "lng": -72.52997138448471
+      },
+      "entrances": [
+        {
+          "id": "umass-entrance-54",
+          "name": "Southwest entrance",
+          "lat": 42.38103154057676,
+          "lng": -72.53007041926847,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/54",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [
+        {
+          "id": "umass-entrance-54",
+          "name": "Southwest entrance",
+          "lat": 42.38103154057676,
+          "lng": -72.53007041926847,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/54",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "door_type": "push-button",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-160",
+            "name": "Mapped elevator location",
+            "lat": 42.381111179120616,
+            "lng": -72.53007351351782,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-160"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "coolidge",
+      "name": "Coolidge House",
+      "code": "353",
+      "category": "residential",
+      "location": {
+        "lat": 42.38366461357214,
+        "lng": -72.52991186480303
+      },
+      "entrances": [
+        {
+          "id": "network-approach-coolidge",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.383783427521145,
+          "lng": -72.52977370399269,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 1.44,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-165",
+            "name": "Mapped elevator location",
+            "lat": 42.383662869420974,
+            "lng": -72.52987483315212,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-165"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "crampton",
+      "name": "Crampton House",
+      "code": "380",
+      "category": "residential",
+      "location": {
+        "lat": 42.383291806937024,
+        "lng": -72.52899430990581
+      },
+      "entrances": [
+        {
+          "id": "network-approach-crampton",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.38335234662011,
+          "lng": -72.52852024822079,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 3.2,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-176",
+            "name": "Mapped elevator location",
+            "lat": 42.38337506189791,
+            "lng": -72.52910843737462,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-176"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "emerson",
+      "name": "Emerson House",
+      "code": "351",
+      "category": "residential",
+      "location": {
+        "lat": 42.38353276028834,
+        "lng": -72.53126415691669
+      },
+      "entrances": [
+        {
+          "id": "network-approach-emerson",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.38338079999998,
+          "lng": -72.5309367,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 1.21,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-169",
+            "name": "Mapped elevator location",
+            "lat": 42.38345376292369,
+            "lng": -72.53088036986453,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-169"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "james",
+      "name": "James House",
+      "code": "350",
+      "category": "residential",
+      "location": {
+        "lat": 42.38406845119557,
+        "lng": -72.5311281154827
+      },
+      "entrances": [
+        {
+          "id": "network-approach-james",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.384108699999985,
+          "lng": -72.53105580000002,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 2.02,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-168",
+            "name": "Mapped elevator location",
+            "lat": 42.38420216758582,
+            "lng": -72.53083473310856,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-168"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "john-adams",
+      "name": "Adams, John House",
+      "code": "354",
+      "category": "residential",
+      "location": {
+        "lat": 42.38185781152007,
+        "lng": -72.52881622044173
+      },
+      "entrances": [
+        {
+          "id": "network-approach-john-adams",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.38194255359274,
+          "lng": -72.52852603149275,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 8.46,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-161",
+            "name": "Mapped elevator location",
+            "lat": 42.38186100917422,
+            "lng": -72.52880369676875,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-161"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "john-quincy-adams",
+      "name": "Adams, John Q. House",
+      "code": "355",
+      "category": "residential",
+      "location": {
+        "lat": 42.38225156812688,
+        "lng": -72.52913476519154
+      },
+      "entrances": [
+        {
+          "id": "network-approach-john-quincy-adams",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.38206663829417,
+          "lng": -72.52922086915555,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 4.23,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-162",
+            "name": "Mapped elevator location",
+            "lat": 42.382243902058775,
+            "lng": -72.52914087881257,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-162"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "kennedy",
+      "name": "Kennedy House",
+      "code": "352",
+      "category": "residential",
+      "location": {
+        "lat": 42.3841006890052,
+        "lng": -72.5296241603267
+      },
+      "entrances": [
+        {
+          "id": "network-approach-kennedy",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.384249941440075,
+          "lng": -72.5296533188623,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 5.58,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-164",
+            "name": "Mapped elevator location",
+            "lat": 42.38409883083771,
+            "lng": -72.52960559642594,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-164"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "mackimmie",
+      "name": "Mackimmie House",
+      "code": "379",
+      "category": "residential",
+      "location": {
+        "lat": 42.3827863476449,
+        "lng": -72.52867465629596
+      },
+      "entrances": [
+        {
+          "id": "network-approach-mackimmie",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.382695000000005,
+          "lng": -72.5285007,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 2.01,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-163",
+            "name": "Mapped elevator location",
+            "lat": 42.38266333548975,
+            "lng": -72.5285886168239,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-163"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "melville",
+      "name": "Melville House",
+      "code": "349",
+      "category": "residential",
+      "location": {
+        "lat": 42.3846634755271,
+        "lng": -72.53066003416563
+      },
+      "entrances": [
+        {
+          "id": "network-approach-melville",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.384664,
+          "lng": -72.5304019,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 1.35,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-167",
+            "name": "Mapped elevator location",
+            "lat": 42.38474293709804,
+            "lng": -72.53030050845064,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-167"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "moore",
+      "name": "Moore House",
+      "code": "402",
+      "category": "residential",
+      "location": {
+        "lat": 42.38204182606211,
+        "lng": -72.53070237356242
+      },
+      "entrances": [
+        {
+          "id": "network-approach-moore",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.381707299999995,
+          "lng": -72.5307872,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 1.29,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-156",
+            "name": "Mapped elevator location",
+            "lat": 42.38215471799128,
+            "lng": -72.53080628850996,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-156"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "pierpont",
+      "name": "Pierpont House",
+      "code": "401",
+      "category": "residential",
+      "location": {
+        "lat": 42.381476697035104,
+        "lng": -72.5308370981737
+      },
+      "entrances": [
+        {
+          "id": "network-approach-pierpont",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.3817137042991,
+          "lng": -72.53090829841912,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 1.79,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-155",
+            "name": "Mapped elevator location",
+            "lat": 42.38138672895201,
+            "lng": -72.5309583881376,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-155"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "prince",
+      "name": "Prince House",
+      "code": "381",
+      "category": "residential",
+      "location": {
+        "lat": 42.3840166348069,
+        "lng": -72.52898232130063
+      },
+      "entrances": [
+        {
+          "id": "network-approach-prince",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.3837884,
+          "lng": -72.5291507,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 1.07,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-101",
+            "name": "Mapped elevator location",
+            "lat": 42.384293201756705,
+            "lng": -72.52891470269188,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-101"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "thoreau",
+      "name": "Thoreau House",
+      "code": "348",
+      "category": "residential",
+      "location": {
+        "lat": 42.38437847456348,
+        "lng": -72.53012790674418
+      },
+      "entrances": [
+        {
+          "id": "network-approach-thoreau",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.3842565,
+          "lng": -72.5302055,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 1.05,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-166",
+            "name": "Mapped elevator location",
+            "lat": 42.38433563106242,
+            "lng": -72.52976368764082,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-166"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "washington",
+      "name": "Washington House",
+      "code": "356",
+      "category": "residential",
+      "location": {
+        "lat": 42.38157585550359,
+        "lng": -72.52931146128034
+      },
+      "entrances": [
+        {
+          "id": "network-approach-washington",
+          "name": "Outdoor meeting point; entrance not mapped",
+          "lat": 42.38145597213963,
+          "lng": -72.5294126430725,
+          "approach_only": true,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": null,
+          "in_routing_area": true,
+          "source": "OSM walking network near official building footprint",
+          "source_url": "https://www.openstreetmap.org/copyright",
+          "building_gap_m": 1.63,
+          "notes": "Ends on a mapped outdoor path. No connection to a door has been established; find an entrance locally. Not an indoor route."
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-154",
+            "name": "Mapped elevator location",
+            "lat": 42.38158843431622,
+            "lng": -72.52933410332662,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-154"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": false,
+      "access_level": "Not All Floors Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "brown-house",
+      "name": "Brown House",
+      "code": "426",
+      "category": "residential",
+      "location": {
+        "lat": 42.39744396625157,
+        "lng": -72.52294034575768
+      },
+      "entrances": [
+        {
+          "id": "umass-entrance-3",
+          "name": "Southeast entrance",
+          "lat": 42.397319084921826,
+          "lng": -72.52277666581294,
+          "step_free": true,
+          "door_type": "manual",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/3",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [
+        {
+          "id": "umass-entrance-3",
+          "name": "Southeast entrance",
+          "lat": 42.397319084921826,
+          "lng": -72.52277666581294,
+          "step_free": true,
+          "door_type": "manual",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/3",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "door_type": "manual",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 2,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-149",
+            "name": "Mapped elevator location",
+            "lat": 42.3973104543854,
+            "lng": -72.52294161562183,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-149"
+          },
+          {
+            "id": "umass-elevator-186",
+            "name": "Mapped elevator location",
+            "lat": 42.39741739380068,
+            "lng": -72.52296170086319,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-186"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "cashin",
+      "name": "Cashin House",
+      "code": "427",
+      "category": "residential",
+      "location": {
+        "lat": 42.397512464109376,
+        "lng": -72.52179748970018
+      },
+      "entrances": [
+        {
+          "id": "umass-entrance-106",
+          "name": "Southeast entrance",
+          "lat": 42.39739123181657,
+          "lng": -72.52161693782517,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/106",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [
+        {
+          "id": "umass-entrance-106",
+          "name": "Southeast entrance",
+          "lat": 42.39739123181657,
+          "lng": -72.52161693782517,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/106",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "door_type": "push-button",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-150",
+            "name": "Mapped elevator location",
+            "lat": 42.39750505134469,
+            "lng": -72.5215625494416,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-150"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
+    {
+      "id": "mcnamara",
+      "name": "McNamara House",
+      "code": "428",
+      "category": "residential",
+      "location": {
+        "lat": 42.397940240920214,
+        "lng": -72.52229094380559
+      },
+      "entrances": [
+        {
+          "id": "umass-entrance-38",
+          "name": "Southeast entrance",
+          "lat": 42.397833250071805,
+          "lng": -72.5220938168687,
+          "step_free": true,
+          "door_type": "manual",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/38",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [
+        {
+          "id": "umass-entrance-38",
+          "name": "Southeast entrance",
+          "lat": 42.397833250071805,
+          "lng": -72.5220938168687,
+          "step_free": true,
+          "door_type": "manual",
+          "keycard_required": true,
+          "has_ramp": null,
+          "source": "UMass accessibility map (August 2022)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances/FeatureServer/0/38",
+          "notes": "All floors accessible in the source map.",
+          "in_routing_area": true
+        }
+      ],
+      "door_type": "manual",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 1,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": [
+          {
+            "id": "umass-elevator-151",
+            "name": "Mapped elevator location",
+            "lat": 42.397935919345336,
+            "lng": -72.52210304049925,
+            "floors": "Floors not specified",
+            "status": "unknown",
+            "connector_id": "umass-elevator-151"
+          }
+        ]
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "All Floors Accessible (not all doors and toilets)",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    }
+  ],
+  "residence_inventory_unmatched": [],
+  "bbox": [
+    -72.541,
+    42.381,
+    -72.512,
+    42.401
+  ]
+}
