@@ -2,13 +2,13 @@ import SimplifiedFloorPlan from './SimplifiedFloorPlan';
 import InteractivePlan from './InteractivePlan';
 
 /** Route segments, traced outlines and source image share the same pixel frame. */
-export default function SourceRoutePlan({floor, route, active, image, zoom, onZoom, onImageError, simplified = true, focusStep = false}) {
+export default function SourceRoutePlan({floor, route, active, image, zoom, onZoom, onImageError, mapStyle = 'detailed', focusStep = false}) {
   const segments = route.steps.filter(s => s.floor === floor.id && s.kind !== 'elevator' && s.pts?.length > 1);
   const step = route.steps[active];
   const focus = step?.floor === floor.id ? step.pts?.[0] : null;
   // ILC's original mosaics include whitespace. Crop the viewport, never transform
   // the geometry relative to the image. Other plans retain their full extent.
-  const vector = simplified && floor.vectorPlan;
+  const vector = mapStyle === 'simple' && floor.vectorPlan;
   let viewBox = floor.vectorPlan?.view_box.join(' ') || (floor.width === 1536 && floor.height === 1280
     ? '320 300 890 780' : `0 0 ${floor.width} ${floor.height}`);
   if (focusStep && focus && step.pts?.length) {
@@ -26,8 +26,10 @@ export default function SourceRoutePlan({floor, route, active, image, zoom, onZo
     viewBox = `${(left + Math.max(...xs) - width) / 2} ${(top + Math.max(...ys) - height) / 2} ${width} ${height}`;
   }
   return <InteractivePlan key={`${floor.id}:${focusStep}:${focusStep ? active : ''}`} viewBox={viewBox} zoom={zoom} onZoom={onZoom}
-    label={`${floor.label}: route on ${vector ? 'simplified room outlines traced from' : ''} the published plan; marker shows selected step, not GPS`}>
-    {vector ? <SimplifiedFloorPlan plan={vector} /> : <image href={image} width={floor.width} height={floor.height} onError={onImageError} />}
+    label={`${floor.label}: route on ${mapStyle === 'detailed' ? 'detailed map' : vector ? 'simplified room outlines' : 'original drawing'} from the published plan; marker shows selected step, not GPS`}>
+    <g data-map-style={mapStyle}>
+      {vector ? <SimplifiedFloorPlan plan={vector} /> : <image href={image} width={floor.width} height={floor.height} onError={onImageError} />}
+    </g>
     {segments.map((s, i) => <g key={i}>
       <polyline points={s.pts.map(p => p.join(',')).join(' ')} fill="none" stroke="white" strokeWidth="9" strokeLinejoin="round" strokeLinecap="round" />
       <polyline points={s.pts.map(p => p.join(',')).join(' ')} fill="none" stroke={s === step ? '#0369a1' : '#059669'} strokeWidth="4" strokeLinejoin="round" strokeLinecap="round" />

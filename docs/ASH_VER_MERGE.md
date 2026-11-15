@@ -2,7 +2,8 @@
 
 Compared main `2659763` with Ash_ver `f73e8fc`, then merged the branch history
 on `integration/ash-ver-20261115`. The existing `campus_routing.integrated:app`
-entrypoint and simplified, responsive frontend remain the default application.
+entrypoint and responsive frontend remain the default application. ILC now opens
+with Ash's detailed map; Simple map and Original drawing remain selectable.
 
 ## Enabled in the current application
 
@@ -11,6 +12,7 @@ entrypoint and simplified, responsive frontend remain the default application.
 | Fourth ILC elevator | North Pleasant Street car beside S110/S220 joins the central pair and N155/N255 car. Four cars are explicitly confirmed by the user. Only floors 1–2 are routed. |
 | More ILC destinations | 12 additional hallway approaches: N101, N140 commons/cafe, S110, S112, S122, S131 and floor-1 restrooms; N201, S225, S231, S241 and floor-2 restrooms. Total: 21. |
 | Shared map coordinates | Both branches' floor PNGs are byte-for-byte identical. Room polygons marked `method=plan` are folded into the existing simplified map; invented box fallbacks are excluded. No classroom interiors are shown. |
+| Three map styles | Detailed map is the ILC default, with Simple map and Original drawing in Map options. Routes and steps stay in the same coordinate frame across all three. The detailed view includes the source-traced N151 upper auditorium on floor 2, which Ash's renderer previously omitted because it had no routing node on that floor. |
 | Corrected labels | The printed floor-2 plan labels S241 and S225; Ash's corresponding traces were labeled S211 and S275. The active routes and outlines use the printed labels. |
 | Closure identity | Ash's named car IDs map explicitly to the corresponding four pilot assets. Each car can be blocked independently, and closing all four prevents cross-floor routing. Unknown IDs do not snap to a nearby car. |
 | Elevator inventory | The source catalog records four ILC cars and five Du Bois cars, with reported evidence. Existing GIS lobby locations, unknown operating status, and indoor bank geometry are kept distinct from car counts. |
@@ -36,7 +38,7 @@ The complete Ash branch is retained, including these tools:
 | Ground-truth override framework | `routing/app/graph/overrides.py`, `routing/data/ground_truth.json` | Retained; individual observations still need evidence review. |
 | Car-count/bank outage assessment | `routing/app/indoor/elevators.py` | Available in Ash's API. Building-wide/unnamed-car logic has not replaced the current asset-scoped router. |
 | Room/floor search and room-to-exit routing | `routing/app/indoor/router.py`, `indoor_api.py` | Retained as a separate API. Current application continues using its explicit node and portal contracts. |
-| Generated SVG plans | `routing/app/indoor/schematic.py`, `routing/scripts/plan_outline.py` | Retained as tools; the existing simplified map is still the default. |
+| Generated SVG plans | `routing/app/indoor/schematic.py`, `routing/scripts/plan_outline.py` | Used by `scripts/build_ilc_detailed_maps.py` for the default ILC background; this does not switch to Ash's routing engine. |
 | Service Interruption Notice CSV parser | `services/scraper/parse_sin.py` | Optional fallback/import tool. The authenticated SharePoint scraper remains primary. |
 | Official-notice publishing helper | `services/scraper/sync_backend.py` | Imported but not run. It performs a read/replace write and can race with another publisher. |
 
@@ -91,7 +93,7 @@ npm.cmd --prefix frontend run build
 ```
 
 At integration: **349 Python tests passed** (including Ash's 33 original tests),
-**34 frontend tests passed**, and TypeScript/production build passed. Coverage
+**35 frontend tests passed**, and TypeScript/production build passed. Coverage
 includes every listed ILC destination in both directions, four independent
 elevator alternatives, named-car closures, map alignment, and unchanged entrance
 handoff. These are software checks, not physical accessibility verification.

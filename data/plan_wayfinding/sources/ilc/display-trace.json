@@ -223,13 +223,14 @@
       ],
       "zones": [
         {
-          "label": "Auditorium area",
+          "label": "N151 auditorium",
+          "subtitle": "Upper level",
           "at": [
             576,
             582
           ],
           "points": "477,484 526,469 619,488 642,478 686,626 645,659 603,699 563,713 526,700",
-          "kind": "void"
+          "kind": "auditorium"
         },
         {
           "label": "Restrooms",

@@ -37,6 +37,9 @@ them when the backend restarts. The scraper's saved data may still be displayed.
 - Check map focus/full-floor view, room outlines, Next/Back, automatic floor
   switching at the elevator, voice on/off, and Repeat. Voice is on by default;
   taps on Next/Back read the selected instruction.
+- Open **Map options** and switch between **Detailed map** (default), **Simple map**
+  and **Original drawing**. The selected step and route should stay aligned.
+  Floor 2 should show the **N151 auditorium — Upper level** outline in both drawn views.
 - Drag the indoor map with one finger; pinch with two fingers to zoom. The +/−
   controls also zoom. Full floor / Focus step resets the view. A keyboard can pan
   with arrow keys and reset with Home while the map is focused.

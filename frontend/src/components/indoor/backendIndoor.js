@@ -2,6 +2,10 @@
 import { apiJSON, INDOOR_API_BASE, simulatedClosures } from '../../services/api';
 import { normalizeIndoorMap } from './indoorModel';
 import ilcDisplayTrace from '../../../../data/plan_wayfinding/sources/ilc/display-trace.json';
+import ilcDetailedFloor1 from '../../../../data/plan_wayfinding/sources/ilc/detailed-1.svg?url';
+import ilcDetailedFloor2 from '../../../../data/plan_wayfinding/sources/ilc/detailed-2.svg?url';
+
+const ilcDetailedPlans = {'1': ilcDetailedFloor1, '2': ilcDetailedFloor2};
 
 export function drawingDisplayMap(raw, portals = []) {
   const elevatorNodes = new Set(raw.connections.filter(e => e.kind === 'elevator').flatMap(e => [e.start, e.end]));
@@ -29,6 +33,7 @@ export function drawingDisplayMap(raw, portals = []) {
     const trace = raw.building_id === ilcDisplayTrace.building_id ? ilcDisplayTrace.floors[floor.id] : null;
     if (floor.routeAligned && trace?.source_sha256 === raw.floor_sources[floor.id]?.source_sha256) {
       floor.vectorPlan = trace;
+      floor.detailedImage = ilcDetailedPlans[floor.id];
     }
   }
   for (const edge of model.edges) edge.lengthM = null;

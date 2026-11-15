@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, ArrowUp, ChevronDown, Flag, Focus, Layers, Minus, MoveVertical, Plus, RotateCcw, Volume2, VolumeX, X } from 'lucide-react';
 import { displayInstruction } from '../../services/displayUnits';
 import { isVoiceSupported, setVoiceMuted, speak, stop } from '../../services/voiceEngine';
-import { isDisplayableImage } from './indoorModel';
+import { availableMapStyles, resolveMapStyle } from './mapStyles';
 import SourceRoutePlan from './SourceRoutePlan';
 import InteractivePlan from './InteractivePlan';
 import { isWithdrawnIndoorMap } from './indoorMapPolicy';
@@ -11,9 +11,9 @@ import { isWithdrawnIndoorMap } from './indoorMapPolicy';
 export default function IndoorGuide({ model, route, active, onGo, onExit, onChangeDestination }) {
   const step = route.steps[active];
   const [floorId, setFloorId] = useState(step?.floor || model.floors[0]?.id);
-  const [failedImage, setFailedImage] = useState(null);
+  const [failedImages, setFailedImages] = useState([]);
   const [zoom, setZoom] = useState(100);
-  const [originalPlan, setOriginalPlan] = useState(false);
+  const [mapStyle, setMapStyle] = useState('detailed');
   const [focusStep, setFocusStep] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches);
   const [showOptions, setShowOptions] = useState(false);
   const [showSteps, setShowSteps] = useState(false);
@@ -67,8 +67,11 @@ export default function IndoorGuide({ model, route, active, onGo, onExit, onChan
   const floor = model.floorById.get(floorId);
   // imageUrl may be a generated schematic; only use the actual published image.
   const original = floor?.rawImage;
-  const image = isDisplayableImage(original) && failedImage !== original ? original : null;
-  const simplified = !!floor?.vectorPlan && !originalPlan;
+  const styles = availableMapStyles(floor);
+  const selectedStyle = resolveMapStyle(floor, mapStyle, failedImages);
+  const image = selectedStyle?.image;
+  const simplified = selectedStyle?.id === 'simple';
+  const imageFailed = () => setFailedImages(previous => [...new Set([...previous, image])]);
   const sourceUrl = /^https?:\/\//i.test(original || '') ? original : null;
   const last = active === route.steps.length - 1;
   const Icon = step.kind === 'elevator' ? MoveVertical : last ? Flag : ArrowUp;
@@ -109,16 +112,16 @@ export default function IndoorGuide({ model, route, active, onGo, onExit, onChan
         {showOptions && <section className="guide-map-popover" id="indoor-map-options" aria-label="Map options and sources">
           <div className="flex items-center justify-between"><h2 className="font-semibold">Map options</h2><button className="guide-icon-button" aria-label="Close map options" onClick={() => setShowOptions(false)}><X size={18} /></button></div>
           <label className="mt-2 flex items-center justify-between gap-3 text-sm font-semibold">View floor<select className="guide-floor-select" aria-label="Map floor" value={floorId} onChange={e => {setFloorId(e.target.value); setFocusStep(false);}}>{model.floors.map(f => <option key={f.id} value={f.id}>{f.label}</option>)}</select></label>
-          {floor?.vectorPlan && <div className="guide-map-options mt-2 flex gap-2"><button aria-pressed={!originalPlan} onClick={() => setOriginalPlan(false)}>Simple map</button><button aria-pressed={originalPlan} onClick={() => setOriginalPlan(true)}>Original plan</button></div>}
+          {styles.length > 1 && <div className="guide-map-options mt-2 grid gap-2" role="group" aria-label="Map style">{styles.map(style => <button key={style.id} aria-pressed={selectedStyle?.id === style.id} onClick={() => setMapStyle(style.id)}>{style.label}</button>)}</div>}
           <p className="mt-3 text-sm text-slate-600">Room outlines are traced from the UMass plans; dimensions are approximate. Blue marks the selected instruction landmark, not live GPS. Red marks your destination.</p>
           <details className="guide-details"><summary>Source information and access</summary><p className="text-sm">Directions follow mapped landmarks. Current physical access has not been field verified.</p>{[...(model.sourceWarnings || []), ...(route.warnings || [])].map((warning, i) => <p className="mt-2 text-sm" key={i}>{warning}</p>)}</details>
           {sourceUrl && <a className="guide-text-button inline-flex items-center text-emerald-800 underline" href={sourceUrl} target="_blank" rel="noreferrer">Open original source</a>}
         </section>}
         {image || simplified ? floor.routeAligned
-          ? <SourceRoutePlan floor={floor} route={route} active={active} image={image} zoom={zoom} onZoom={setZoom} simplified={simplified} focusStep={focusStep} onImageError={() => setFailedImage(image)} />
-          : <InteractivePlan key={floorId} viewBox={`0 0 ${floor.width} ${floor.height}`} zoom={zoom} onZoom={setZoom} label={`${model.name}, ${floor?.label}: published floor plan`}><image href={image} width={floor.width} height={floor.height} onError={() => setFailedImage(image)} /></InteractivePlan>
+          ? <SourceRoutePlan floor={floor} route={route} active={active} image={image} zoom={zoom} onZoom={setZoom} mapStyle={selectedStyle.id} focusStep={focusStep} onImageError={imageFailed} />
+          : <InteractivePlan key={floorId} viewBox={`0 0 ${floor.width} ${floor.height}`} zoom={zoom} onZoom={setZoom} label={`${model.name}, ${floor?.label}: published floor plan`}><image href={image} width={floor.width} height={floor.height} onError={imageFailed} /></InteractivePlan>
           : <div className="guide-empty-map"><h2 className="font-semibold">No usable floor-plan image for this floor</h2><p className="mt-2 text-sm leading-relaxed text-slate-600">Follow the landmark directions. A graph connection does not tell us the shape of a corridor, so we do not draw it as one.</p></div>}
-        <p className="guide-map-caption">{simplified ? <><span className="hidden sm:inline">Room outlines traced from the UMass plans. </span>Blue: selected step · Red: destination</> : floor?.routeAligned ? 'Published floor plan · Blue: selected step · Red: destination' : 'Published floor plan for reference. Route positions are not aligned to this image.'}</p>
+        <p className="guide-map-caption">{floor?.routeAligned ? <><span className="hidden sm:inline">{selectedStyle?.label} · </span>Blue: selected step · Red: destination</> : 'Published floor plan for reference. Route positions are not aligned to this image.'}</p>
       </main>
       <aside className="guide-navigation" aria-label="Current route directions">
         <section className={`guide-direction-card${sheetCollapsed ? ' is-collapsed' : ''}${sheetHeight !== null ? ' is-resizing' : ''}`} aria-label="Indoor directions" style={{height: sheetHeight ?? undefined}}>

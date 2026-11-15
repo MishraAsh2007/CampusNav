@@ -7,12 +7,14 @@ export default function SimplifiedFloorPlan({plan}) {
     {plan.zones.map((z, i) => <g key={i}>
       <polygon points={z.points} fill={z.kind === 'void' ? '#e2e8f0' : z.kind === 'service' ? '#eef2f6' : '#f0fdfa'} stroke="#cbd5e1" strokeWidth="1.5" strokeDasharray={z.kind === 'void' ? '5 4' : undefined} />
       <text x={z.at[0]} y={z.at[1]} textAnchor="middle" fontSize={z.kind === 'service' ? '10' : '13'} fill="#64748b" style={labelStyle}>{z.label}</text>
+      {z.subtitle && <text x={z.at[0]} y={z.at[1]+17} textAnchor="middle" fontSize="11" fill="#64748b" style={labelStyle}>{z.subtitle}</text>}
     </g>)}
     {plan.rooms.map(([label, points, at]) => {
       const [x,y] = at.split(',');
       return <g key={label}><title>{`${label}: approximate room outline from the published plan`}</title>
         <polygon points={points} fill="#e9eef3" stroke="#94a3b8" strokeWidth="1.8" strokeLinejoin="round" />
         <text x={x} y={y} fill="#334155" textAnchor="middle" fontSize={['S142','S112','S122','S242','S241A'].includes(label) ? 10 : 16} fontWeight="600" style={labelStyle}>{label}</text>
+        {label === 'N151' && <text x={x} y={Number(y)+17} fill="#64748b" textAnchor="middle" fontSize="11" style={labelStyle}>Auditorium</text>}
       </g>;
     })}
     {plan.lifts.map(lift => <g key={lift.id}>

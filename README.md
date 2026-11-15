@@ -17,7 +17,7 @@ routes. This branch packages the current Role 1 routing and Role 3 ingestion wor
 the existing map UI. The Role 4 data service remains in `backend/`.
 
 **Indoor coverage is a pilot.** ILC uses routes traced on the public UMass plans for
-floors 1–2, with a simplified map and four elevator assets. The former ILC
+floors 1–2, with a detailed map by default, optional simple/original views and four elevator assets. The former ILC
 approximate graph is withdrawn. Du Bois has approximate connections that still
 need physical verification. Dorm drawings are acquired
 through authenticated SharePoint; Oak has a separate drawing-based wayfinding pilot with

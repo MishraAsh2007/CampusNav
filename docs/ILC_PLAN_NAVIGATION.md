@@ -4,12 +4,13 @@ The new pilot traces selected hallway routes in the original UMass ArcGIS
 floor-1 and floor-2 mosaics. The frontend draws route segments directly in that
 image coordinate frame. It does not use the withdrawn star-shaped graph.
 
-The default **Simple map** is now a vector tracing of the major classroom
-outlines, foyer/circulation areas and elevator shafts. Classroom interiors and
-furnishings are omitted. These are approximate traced shapes, not measured room
-dimensions or new routable destinations. **Original plan** restores the source
-image. **Focus this step** enlarges the current instruction area for phone use.
-The route uses the same coordinates in both views.
+The default **Detailed map** uses Ash's source-aligned room outlines, hallways,
+door markers and numbered elevators. **Map options** also offers our **Simple map**
+and the **Original drawing**. These are approximate traced shapes, not measured
+room dimensions or new routable destinations. The N151 auditorium's upper-level
+outline is included on floor 2 in both drawn maps; it is a display landmark, not
+an additional routing connection. **Focus this step** enlarges the current
+instruction area for phone use. All three views retain the same route coordinates.
 Elevator icons mark the centers of the crossed shaft boxes on the source plans,
 as confirmed by the user. Routing endpoints remain on the hallway side of the
 elevator doors; they are deliberately distinct from the shaft-center icons.
@@ -45,12 +46,12 @@ For a direct indoor-only test, open the frontend with
 `/?indoor=ilc`, choose your actual starting landmark (for example **Southwest
 entrance - floor 2**), then select a destination. Floor-plan directions are enabled
 automatically; the UI sends `accept_drawing_only: true` for indoor and journey requests.
-The simplified map stays visible alongside a compact directions card: on the
+The selected map stays visible alongside a compact directions card: on the
 right on laptops, and below the map on phones. Phones focus the current step;
 the focus button toggles the full floor. Next/Back advance the selected
 instruction and automatically switch floors after the elevator step. The blue
 marker is not live GPS. **All steps** opens the complete itinerary; the layers
-button contains the original-plan toggle and source details. There is no
+button contains the three map styles and source details. There is no
 separate next-instruction ("Then") preview.
 
 Spoken indoor steps are on by default. Next, Back and selecting a step read the
@@ -91,6 +92,9 @@ and indoor metadata use `Cache-Control: no-store` to avoid retaining old edition
   bound to each source image's SHA-256. A different source edition disables
   this overlay until retraced. The routing graph never consumes these shapes.
 - `scripts/build_ilc_plan_routes.py`: explicit pixel traces, labels and source-edition checks.
+- `scripts/build_ilc_detailed_maps.py`: generates `detailed-1.svg` and `detailed-2.svg`
+  from Ash's renderer and the reviewed display annotations. Run
+  `python -m scripts.build_ilc_detailed_maps` after changing display traces.
 - `scripts/ash_ilc_additions.py`: reviewed corridor joins and room outlines from
   Ash_ver. Both branches' PNG sources have identical hashes; box fallback shapes
   are excluded. See [the merge comparison](ASH_VER_MERGE.md).

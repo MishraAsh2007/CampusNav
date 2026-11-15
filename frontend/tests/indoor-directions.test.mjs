@@ -45,21 +45,72 @@ test('ILC drawing uses the original image coordinate frame and separates floor r
       steps: route.steps.map(s => ({...s, text:'Continue to the next mapped landmark.'}))}, active:0,
     onGo() {}, onExit() {}, onChangeDestination() {},
   }));
-  assert.match(guide, /Simplified floor plan/);
-  assert.match(guide, /North Pleasant Street elevator/);
-  assert.doesNotMatch(guide, /<image|<img/);
+  assert.match(guide, /data-map-style="detailed"/);
+  assert.match(guide, /<image href="[^"]*detailed-1\.svg/);
+  assert.doesNotMatch(guide, /<img/);
   assert.doesNotMatch(guide, /No usable floor-plan image/);
-  assert.match(guide, /Room outlines traced from the UMass plans/);
+  assert.match(guide, /Detailed map/);
   assert.match(guide, /aria-label="Indoor floor map"/);
   assert.match(guide, /aria-label="Current route directions"/);
   assert.match(guide, /width:100%;height:100%/);
   assert.doesNotMatch(guide, />Then<|guide-tabs|guide-footer|guide-directions/);
   const original = renderToStaticMarkup(React.createElement(SourceRoutePlan, {
-    floor:model.floorById.get('1'), route, active:0, image:'/original.png', zoom:100, simplified:false}));
+    floor:model.floorById.get('1'), route, active:0, image:'/original.png', zoom:100, mapStyle:'original'}));
   assert.match(original, /<image href="\/original.png"/);
   const changed = structuredClone(plan);
   changed.floor_sources['1'].source_sha256 = 'different-edition';
   assert.equal(drawingDisplayMap(changed).floorById.get('1').vectorPlan, undefined);
+  assert.equal(drawingDisplayMap(changed).floorById.get('1').detailedImage, undefined);
+});
+
+test('detailed, simple and original views preserve the same floor route and step coordinates', async () => {
+  const {drawingDisplayMap} = await server.ssrLoadModule('/src/components/indoor/backendIndoor.js');
+  const {default: SourceRoutePlan} = await server.ssrLoadModule('/src/components/indoor/SourceRoutePlan.jsx');
+  const {availableMapStyles, resolveMapStyle} = await server.ssrLoadModule('/src/components/indoor/mapStyles.js');
+  const plan = JSON.parse(await readFile(new URL('../../data/plan_wayfinding/ilc.json', import.meta.url), 'utf8'));
+  const model = drawingDisplayMap(plan);
+  const route = {room:{floor:'2',doorX:549,doorY:454},steps:[
+    {floor:'1',kind:'straight',pts:[[500,443],[511,416]]},
+    {floor:'2',kind:'straight',pts:[[511,416],[549,454]]}]};
+  for (const floor of model.floors) {
+    assert.deepEqual(availableMapStyles(floor).map(style => style.id), ['detailed','simple','original']);
+    assert.equal(resolveMapStyle(floor).id, 'detailed');
+    const output = availableMapStyles(floor).map(style => renderToStaticMarkup(React.createElement(SourceRoutePlan, {
+      floor,route,active:floor.id === '1' ? 0 : 1,image:style.image,zoom:150,mapStyle:style.id,
+    })));
+    const paths = output.map(html => [...html.matchAll(/<polyline[^>]*points="([^"]+)"/g)].map(match => match[1]));
+    assert.deepEqual(paths[0], paths[1]);
+    assert.deepEqual(paths[1], paths[2]);
+    const frames = output.map(html => /viewBox="([^"]+)"/.exec(html)[1]);
+    assert.equal(frames[0], frames[1]);
+    assert.equal(frames[1], frames[2]);
+    assert.match(output[0], /data-map-style="detailed"/);
+    assert.match(output[1], /Simplified floor plan/);
+    assert.doesNotMatch(output[1], /<image/);
+    assert.match(output[2], /data-map-style="original"/);
+    assert.equal(resolveMapStyle(floor,'detailed',[floor.detailedImage]).id, 'simple');
+    const detailed = await readFile(new URL(`../../data/plan_wayfinding/sources/ilc/detailed-${floor.id}.svg`, import.meta.url),'utf8');
+    assert.match(detailed, /viewBox="0 0 1536 1280"/);
+    assert.match(detailed, />1 2</);
+    assert.match(detailed, />3</);
+    assert.match(detailed, />4</);
+    if (floor.id === '2') {
+      assert.match(detailed, />S241</);
+      assert.match(detailed, />S225</);
+      assert.doesNotMatch(detailed, />S211<|>S275</);
+      // This multi-level room has no floor-2 routing node, but its traced area
+      // must still appear in both display maps rather than as empty hallway.
+      const auditorium = floor.vectorPlan.zones.find(zone => zone.kind === 'auditorium');
+      assert.ok(auditorium);
+      assert.ok(detailed.includes(`<polygon points="${auditorium.points}"`));
+      assert.match(detailed, />N151 auditorium</);
+      assert.match(detailed, />Upper level</);
+      assert.match(output[1], />N151 auditorium</);
+      assert.match(output[1], />Upper level</);
+    }
+  }
+  assert.equal(resolveMapStyle({rawImage:'/floor.png'}).id, 'original');
+  assert.equal(resolveMapStyle({rawImage:'/floor.png'},'original',['/floor.png']), null);
 });
 
 test('arrival handoff never falls back to a location picker without an explicit choice', async () => {

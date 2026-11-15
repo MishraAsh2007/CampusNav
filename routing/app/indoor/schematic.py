@@ -39,7 +39,8 @@ def _short_door(name: str) -> str:
     return re.sub(r"\s*\(.*\)\s*$", "", name)
 
 
-def render(model, floor_id: str, width: int = 1536, height: int = 1280) -> Optional[str]:
+def render(model, floor_id: str, width: int = 1536, height: int = 1280,
+           display_zones: list[dict] | None = None) -> str | None:
     traced = ((model.ov.get("traced_floors") or {}).get(floor_id)) or None
     of = outline_file(model.key, floor_id)
     if not traced or of is None:
@@ -66,6 +67,21 @@ def render(model, floor_id: str, width: int = 1536, height: int = 1280) -> Optio
             pts = " ".join(f"{x:.1f},{y:.1f}" for x, y in r["polygon"])
             fill = "#eef3fa" if "restroom" in (nodes[nid].get("label") or "").lower() else "#ffffff"
             out.append(f'<polygon points="{pts}" fill="{fill}" stroke="#aeb7c2" stroke-width="3" stroke-linejoin="round"/>')
+
+    # Source-traced display areas may span floors without having a routing node
+    # on each floor (for example N151's upper auditorium level).
+    for zone in display_zones or []:
+        out.append(f'<g data-display-zone="{escape(zone["label"], quote=True)}">')
+        out.append(f'<polygon points="{escape(zone["points"], quote=True)}" '
+                   'fill="#eef3fa" stroke="#aeb7c2" stroke-width="3" stroke-linejoin="round"/>')
+        x, y = zone["at"]
+        out.append(f'<text x="{x}" y="{y}" text-anchor="middle" font-family="{FONT}" '
+                   f'font-size="20" font-weight="650" fill="#34404d">{escape(zone["label"])}</text>')
+        if zone.get("subtitle"):
+            out.append(f'<text x="{x}" y="{y + 22}" text-anchor="middle" '
+                       f'font-family="{FONT}" '
+                       f'font-size="15" fill="#5f6b78">{escape(zone["subtitle"])}</text>')
+        out.append('</g>')
 
     # hallways: edges between non-room nodes; doorway stubs to rooms
     halls, stubs = [], []
