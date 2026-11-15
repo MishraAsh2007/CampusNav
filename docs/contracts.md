@@ -362,3 +362,42 @@ if (r.ok && validRemote(remote, endPoint)) { ... }          // step_free
 |---|---|
 | 422 | invalid body (bad lat/lon, grade out of range, closure without a location) or start/end outside the campus area |
 | 503 | graph not loaded (run `python scripts/build_graph.py`) |
+
+
+## `POST /api/indoor-route` (second stage: entrance to room)
+
+Called when the user asks for indoor directions after the outdoor route. Send the entrance the
+outdoor route ended at (`destination.end` from `/api/route`) and the same closures.
+
+```jsonc
+{
+  "building_id": "ilc",                       // id, name or alias (see indoor_overrides.json)
+  "building": { ... },                        // optional: the map UI / backend building (elevator flags)
+  "entrance": { "lat": 42.390887, "lng": -72.525402 },   // optional: omit to pick the best door
+  "room": "N151",                             // or "floor": "5th floor", or "node_id"
+  "preferences": { "step_free": true },       // default true
+  "closures": [ ... ]                         // same list as /api/route
+}
+```
+
+Every outcome is HTTP 200; check `status`:
+
+| status | meaning |
+|---|---|
+| `ok` | `entrance`, `destination`, `total_m`, `steps[]` (text), `legs[]` (per floor, with `points` in that floor's coordinates and its `image_url`), `elevators[]`, `warnings[]` |
+| `no_route` | `message` says why (for example every elevator bank is out); `elevators[]` shows each bank |
+| `not_found` | the room or floor isn't on the map |
+| `not_public` | the floor isn't a visitor destination (Du Bois 3rd floor) |
+| `no_map` | no indoor map for that building yet (Campus Center is a draft) |
+
+How it works:
+- Maps come from `routing/data/indoor/*.json` (the scraper's indoor maps, not committed here). Corrections
+  from `routing/data/indoor_overrides.json` apply on top: doors with their real floor, elevator cars,
+  non-public floors.
+- The given `entrance` is matched to an indoor door within 30 m. If no route exists from it (for
+  example it opens onto floor 1 and the room is upstairs with the elevators out), the router
+  falls back to the best door and says so in `warnings`.
+- Elevators are grouped into banks. A bank is skipped when none of its cars certainly runs: with
+  one unattributed outage, a bank of one car is skipped and a bank of two stays.
+- Doors with an unconfirmed step-free approach rank after confirmed ones and get a warning.
+- The maps are sketches (simplified corridors), so distances are approximate.

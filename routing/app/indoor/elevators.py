@@ -32,6 +32,7 @@ class Car:
     lat: Optional[float] = None
     lng: Optional[float] = None
     out: bool = False
+    id: Optional[str] = None
 
     @property
     def bank(self):
@@ -52,7 +53,7 @@ def build_cars(b: DestinationBuilding) -> tuple[list[Car], str, int]:
     if spec.get("cars"):
         pos = spec.get("position") or {}
         cars = [Car(c.get("label") or c.get("id") or f"Elevator {i}", c.get("number"),
-                    c.get("lat", pos.get("lat")), c.get("lng", pos.get("lng")))
+                    c.get("lat", pos.get("lat")), c.get("lng", pos.get("lng")), id=c.get("id"))
                 for i, c in enumerate(spec["cars"], 1)]
         flagged = sum(1 for c in _building_cars(b) if c.out)
         return cars, "override", flagged
@@ -68,8 +69,33 @@ def build_cars(b: DestinationBuilding) -> tuple[list[Car], str, int]:
     return cars, "building", 0
 
 
+@dataclass
+class Assessment:
+    cars: list[Car]
+    status: ElevatorStatus
+    working: list[tuple[float, float]]
+    all_out: bool
+    unattributed: int
+
+    def bank_usable(self, car_ids: Optional[list[str]]) -> bool:
+        """Is at least one car in the bank certainly running, whichever unknown cars are the ones out?
+
+        ``car_ids`` None means the whole building. Unattributed outages could all be in this bank,
+        so they are subtracted from its free cars.
+        """
+        if self.all_out:
+            return False
+        bank = [c for c in self.cars if car_ids is None or c.id in car_ids]
+        return len([c for c in bank if not c.out]) - self.unattributed > 0
+
+
 def evaluate(b: DestinationBuilding, active: list[Closure]) -> tuple[ElevatorStatus, list[tuple[float, float]]]:
     """Returns the status and the coordinates of cars that are (probably) working."""
+    a = assess(b, active)
+    return a.status, a.working
+
+
+def assess(b: DestinationBuilding, active: list[Closure]) -> Assessment:
     cars, source, flagged_unattributed = build_cars(b)
     total = len(cars)
     all_out = False
@@ -127,4 +153,4 @@ def evaluate(b: DestinationBuilding, active: list[Closure]) -> tuple[ElevatorSta
         out_cars=[k.label for k in known_out] if not all_out else [k.label for k in cars],
         unattributed_out=0 if all_out else min(unattributed, max(total - len(known_out), 0)),
     )
-    return status, working
+    return Assessment(cars, status, working, all_out, 0 if all_out else status.unattributed_out)

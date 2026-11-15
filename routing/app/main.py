@@ -12,6 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from . import config
 from .frontend_api import router as frontend_router
 from .graph.load import load_graph
+from .indoor_api import router as indoor_router
 from .routing.pathfinding import plan_routes
 from .schemas import HealthResponse, RouteRequest, RouteResponse
 
@@ -37,6 +38,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.include_router(frontend_router)  # POST /api/route for the map UI
+app.include_router(indoor_router)  # POST /api/indoor-route (entrance -> room)
 
 
 @app.get("/health", response_model=HealthResponse)

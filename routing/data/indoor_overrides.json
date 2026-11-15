@@ -42,7 +42,19 @@
         },
         "serves": "all_floors",
         "verified": true,
-        "source": "On-site check by the team, 2026-11-14: five cars in the same lobby, numbered 1-5, all serving every floor. Consistent with UMass SIN #813 ('State elevator inspection (#5)'). The ArcGIS layer and the routing-scraper map show a single marker for the lobby."
+        "source": "On-site check by the team, 2026-11-14: five cars in the same lobby, numbered 1-5, all serving every floor. Consistent with UMass SIN #813 ('State elevator inspection (#5)'). The ArcGIS layer and the routing-scraper map show a single marker for the lobby.",
+        "banks": {
+          "library-elevator-main": {
+            "label": "Main elevators (cars 1-5)",
+            "cars": [
+              "library-elevator-1",
+              "library-elevator-2",
+              "library-elevator-3",
+              "library-elevator-4",
+              "library-elevator-5"
+            ]
+          }
+        }
       },
       "non_public_floors": {
         "3rd-floor": "Staff offices; no student-facing destination. Elevators may still stop here."
@@ -70,7 +82,13 @@
           "lng": -72.525402,
           "nearest_elevator": "ilc-elevator-east",
           "source": "On-site check by the team, 2026-11-14: the door on North Pleasant St (you face west on entering, photo taken) opens straight onto floor 2, with an elevator immediately to the right. The ArcGIS east elevator is 2 m from this door.",
-          "replaces_portal": "ilc-portal-west"
+          "replaces_portal": "ilc-portal-west",
+          "connects_to": {
+            "node": "ilc-elev-east-f2",
+            "length_m": 3.0,
+            "source": "Elevator is immediately to the right of the door (team, 2026-11-14)."
+          },
+          "name": "Southeast door (North Pleasant St)"
         },
         "ilc-sw": {
           "floor": "2",
@@ -79,7 +97,13 @@
           "lng": -72.526256,
           "step_free_approach": true,
           "source": "On-site check by the team, 2026-11-14 (photo): glass door onto the paved plaza between the ILC and Du Bois (the Du Bois tower is reflected behind the photographer). No stairs; opens onto floor 2.",
-          "replaces_portal": "ilc-portal-south"
+          "replaces_portal": "ilc-portal-south",
+          "connects_to": {
+            "node": "ilc-junction-f2",
+            "length_m": 19.7,
+            "source": "Length of the scraper map's south-door corridor to the main junction (the replaced portal's)."
+          },
+          "name": "Southwest door (plaza facing Du Bois)"
         },
         "ilc-nw": {
           "floor": "2",
@@ -99,7 +123,13 @@
           "lng": -72.526301,
           "step_free_approach": true,
           "approach": "level paved walkway at ground level; the footbridge to the Campus Center rises on the left as you exit",
-          "source": "On-site photo by the team, 2026-11-14 (looking out from this door: Campus Center ahead, bridge on the left, flat walkway to the right), matched to the floor-1 plan's door vestibule at the north end of the north wing. Position is read off the plan (about +/-3 m). Door threshold not checked."
+          "source": "On-site photo by the team, 2026-11-14 (looking out from this door: Campus Center ahead, bridge on the left, flat walkway to the right), matched to the floor-1 plan's door vestibule at the north end of the north wing. Position is read off the plan (about +/-3 m). Door threshold not checked.",
+          "connects_to": {
+            "node": "ilc-junction-f1",
+            "length_m": 71.0,
+            "source": "Straight-line pixel distance on the floor-1 plan (475 px x 0.15 m/px); the real corridor path is not traced."
+          },
+          "name": "North door (ground level)"
         },
         "ilc-west-floor1": {
           "floor": "1",
@@ -107,7 +137,13 @@
           "lat": 42.391059,
           "lng": -72.526322,
           "step_free_approach": null,
-          "source": "Team member reports a second floor-1 door on the west side of the north wing. The floor-1 plan shows a vestibule there (N199C) whose doors face west; the team member remembers it facing north. Floor and position come from the plan; facing direction and step-free approach are unconfirmed (the plan also shows an exterior stair just south of it)."
+          "source": "Team member reports a second floor-1 door on the west side of the north wing. The floor-1 plan shows a vestibule there (N199C) whose doors face west; the team member remembers it facing north. Floor and position come from the plan; facing direction and step-free approach are unconfirmed (the plan also shows an exterior stair just south of it).",
+          "connects_to": {
+            "node": "ilc-elev-west-f1",
+            "length_m": 35.0,
+            "source": "Pixel distance on the floor-1 plan (235 px x 0.15 m/px); path not traced."
+          },
+          "name": "West door (ground level)"
         }
       },
       "elevators": {
@@ -138,7 +174,23 @@
           }
         ],
         "gis_note": "UMass GIS puts one marker per elevator lobby, not per car: the ILC's 'west' marker (42.3908828, -72.5259219) stands for the adjacent pair, and Du Bois's single marker stands for its five cars. Do not read a car count from GIS markers.",
-        "source": "Team member, on site 2026-11-14 (corrected from an earlier 'two'): three elevators, two right next to each other and one beside the North Pleasant St entrance. Matches the frontend's mockBuildings.ts (3) and the floor-1 plan (a pair of shaft symbols in the south wing's core, one at the east end). Core pair position is read off the plan (+/-5 m). Which car is out of service today is unknown."
+        "source": "Team member, on site 2026-11-14 (corrected from an earlier 'two'): three elevators, two right next to each other and one beside the North Pleasant St entrance. Matches the frontend's mockBuildings.ts (3) and the floor-1 plan (a pair of shaft symbols in the south wing's core, one at the east end). Core pair position is read off the plan (+/-5 m). Which car is out of service today is unknown.",
+        "banks": {
+          "ilc-elevator-east": {
+            "label": "East elevator (by the North Pleasant St door)",
+            "cars": [
+              "ilc-elevator-east"
+            ]
+          },
+          "ilc-elevator-west": {
+            "label": "Core elevators (the adjacent pair)",
+            "cars": [
+              "ilc-elevator-core-a",
+              "ilc-elevator-core-b"
+            ]
+          }
+        },
+        "banks_note": "Maps the scraper map's elevator assets (east, west) onto cars. The map's 'west' elevator is the adjacent core pair."
       }
     }
   }
