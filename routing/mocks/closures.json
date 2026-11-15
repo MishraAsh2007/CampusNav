@@ -1,0 +1,24 @@
+[
+  {
+    "id": "mock-ramp-1",
+    "type": "ramp_blocked",
+    "lat": 42.391924,
+    "lon": -72.525591,
+    "radius_m": 15,
+    "description": "Ramp blocked by delivery truck (mock; sits on the ILC -> Campus Center accessible route)",
+    "reported_at": "2026-11-13T21:30:00-05:00",
+    "confirmed_at": "2026-11-13T22:05:00-05:00",
+    "expires_at": null
+  },
+  {
+    "id": "mock-expired-1",
+    "type": "construction",
+    "lat": 42.3891,
+    "lon": -72.5283,
+    "radius_m": 30,
+    "description": "Old construction report; must be ignored because it expired",
+    "reported_at": "2020-01-01T08:00:00-05:00",
+    "confirmed_at": "2020-01-01T08:00:00-05:00",
+    "expires_at": "2020-01-02T08:00:00-05:00"
+  }
+]

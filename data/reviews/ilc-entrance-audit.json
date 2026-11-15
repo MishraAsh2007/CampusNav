@@ -1,0 +1,93 @@
+{
+  "building_id": "ilc",
+  "source_observed_on": "2026-11-15",
+  "entrances": [
+    {
+      "name": "North",
+      "official_record_id": 55,
+      "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/55",
+      "record_date": "2019-07-26",
+      "documents_opener": true,
+      "documents_all_floor_access": true,
+      "official_record_floor": null,
+      "current_operation_verified": false,
+      "peer_door_evidence": [],
+      "position": {
+        "x": -72.52628443172752,
+        "y": 42.391415781763754
+      },
+      "candidate_osm_node": null,
+      "candidate_floor": "1",
+      "existing_indoor_node": "ilc-entrance-north-f1",
+      "point_offset_m": null,
+      "outdoor_graph_contains_node": false,
+      "outgoing_edges": 0,
+      "missing": "Plan doorway has no exact connected outdoor threshold. Establish the outer door position and intervening path; the current indoor landmark is inside the lobby.",
+      "automatic_promotion": false
+    },
+    {
+      "name": "Southwest",
+      "official_record_id": 56,
+      "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/56",
+      "record_date": "2019-07-26",
+      "documents_opener": true,
+      "documents_all_floor_access": true,
+      "official_record_floor": null,
+      "current_operation_verified": false,
+      "peer_door_evidence": [
+        {
+          "id": "ilc-southwest-opener-2026-11-15",
+          "building_id": "ilc",
+          "entrance_id": "osm-entrance-6382267406",
+          "floor_id": "2",
+          "position": {
+            "lat": 42.3908286,
+            "lng": -72.5262556
+          },
+          "door_type": "push-button",
+          "source": "community_peer_report",
+          "reported_on": "2026-11-15",
+          "observed_on": null,
+          "current_operation_verified": false,
+          "note": "The user confirmed their friend saw or used a push-button opener at the southwest doorway entering floor 2. The observation date and an operating test were not specified. This confirms opener presence at this doorway; it does not measure approach grade, door clearance, or interior access."
+        }
+      ],
+      "position": {
+        "x": -72.5262464325227,
+        "y": 42.39078755027407
+      },
+      "candidate_osm_node": 6382267406,
+      "candidate_floor": "2",
+      "existing_indoor_node": "ilc-entrance-south",
+      "point_offset_m": 4.63,
+      "outdoor_graph_contains_node": true,
+      "outgoing_edges": 1,
+      "missing": "OSM threshold and floor-2 plan are matched. A peer independently confirmed opener presence at this floor-2 doorway, relayed 15 November 2026. The historical GIS point remains offset and is not a routing alias. The final mapped path has an estimated 6.5% grade, retained by routing.",
+      "automatic_promotion": false
+    },
+    {
+      "name": "Southeast / North Pleasant Street",
+      "official_record_id": 57,
+      "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/57",
+      "record_date": "2019-07-26",
+      "documents_opener": true,
+      "documents_all_floor_access": true,
+      "official_record_floor": null,
+      "current_operation_verified": false,
+      "peer_door_evidence": [],
+      "position": {
+        "x": -72.52530959506659,
+        "y": 42.39087833808397
+      },
+      "candidate_osm_node": 6382267407,
+      "candidate_floor": "2",
+      "existing_indoor_node": null,
+      "point_offset_m": 7.66,
+      "outdoor_graph_contains_node": false,
+      "outgoing_edges": 0,
+      "missing": "OSM labels the doorway level 2 but has no attached walking way. Trace the floor-2 vestibule/corridor and establish a real outdoor approach, including stairs, slope and door identity, before enabling a handoff.",
+      "automatic_promotion": false
+    }
+  ],
+  "rule": "A documented opener at an offset point is not a surveyed doorway identity."
+}

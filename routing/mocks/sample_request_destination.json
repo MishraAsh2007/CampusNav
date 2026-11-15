@@ -1,0 +1,27 @@
+{
+  "_note": "Elevator coordinates are from the UMass accessibility GIS layer (2022). Entrance coordinates are PLACEHOLDERS on the north and south sides of the ILC, for testing only. Replace with the backend's verified /buildings data.",
+  "start": { "lat": 42.38970, "lon": -72.52790 },
+  "destination": {
+    "needs_elevator": true,
+    "room": "ILC S331",
+    "building": {
+      "id": "integrative-learning-center",
+      "name": "Integrative Learning Center",
+      "lat": 42.3910469,
+      "lng": -72.5259246,
+      "entrances": [
+        { "name": "North entrance (placeholder)", "lat": 42.39140, "lng": -72.52590, "step_free": true, "hasAutoDoorOpener": true, "isAccessibleToAllFloors": true, "IsKeyCardRequired": false },
+        { "name": "South entrance (placeholder)", "lat": 42.39065, "lng": -72.52570, "step_free": true, "hasAutoDoorOpener": false, "isAccessibleToAllFloors": true, "IsKeyCardRequired": false }
+      ],
+      "elevator_count": 2,
+      "elevators": [
+        { "location": "East elevator (GIS id 187)", "lat": 42.3908924, "lng": -72.5254216 },
+        { "location": "West elevator (GIS id 188)", "lat": 42.3908828, "lng": -72.5259219 }
+      ]
+    }
+  },
+  "max_grade_pct": 5.0,
+  "avoid_steps": true,
+  "include_standard": true,
+  "closures": []
+}

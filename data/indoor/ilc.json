@@ -1,0 +1,1445 @@
+{
+  "version": 1,
+  "building_id": "ilc",
+  "name": "Integrative Learning Center",
+  "synthetic": false,
+  "status": "draft",
+  "reviewed_at": null,
+  "review_notes": "WITHDRAWN after user-relayed peer observations on 2026-11-15: southwest entrance enters floor 2, the entrance called West could not be located, and an unnamed north elevator serving floors 1-2 is unmatched. Previous corridor geometry, entrance/GIS joins, and elevator stops require review. See docs/ILC_FIELD_REVIEW.md and data/reviews/ilc-field-review.json. No ILC indoor routes may be served from this draft.",
+  "sources": [
+    {
+      "id": "ilc-classrooms",
+      "url": "https://www.umass.edu/registrar/room-types-and-capacities-ilc",
+      "edition": "Not stated by source",
+      "observed_at": "2026-11-14T17:09:12.137445Z"
+    },
+    {
+      "id": "umass-arcgis-access",
+      "url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services",
+      "edition": "2024 UMass Campus Accessibility Map",
+      "observed_at": "2026-11-14T17:09:12.137445Z"
+    },
+    {
+      "id": "ilc-floorplans",
+      "url": "https://tiles.arcgis.com/tiles/2gdL2gxYNFY2TOUb/arcgis/rest/services/Integrated_Learning_Center_First_Floor_Scaled/MapServer",
+      "edition": "Public UMass ArcGIS floor-plan layers",
+      "observed_at": "2026-11-14T17:09:12.137445Z"
+    },
+    {
+      "id": "umass-entrances-pnts",
+      "url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0",
+      "edition": "Historical entrance records dated 2019-07-26; current operation unverified",
+      "observed_at": "2026-11-15T05:56:40.046589+00:00"
+    }
+  ],
+  "floors": [
+    {
+      "id": "1",
+      "label": "1st Floor",
+      "coordinate_system": "image_pixels",
+      "image_url": "https://tiles.arcgis.com/tiles/2gdL2gxYNFY2TOUb/arcgis/rest/services/Integrated_Learning_Center_First_Floor_Scaled/MapServer",
+      "image_width": 1536,
+      "image_height": 1280,
+      "source_id": "ilc-floorplans",
+      "aliases": [
+        "floor 1",
+        "1st floor"
+      ]
+    },
+    {
+      "id": "2",
+      "label": "2nd Floor",
+      "coordinate_system": "image_pixels",
+      "image_url": "https://tiles.arcgis.com/tiles/2gdL2gxYNFY2TOUb/arcgis/rest/services/Integrated_Learning_Center_Second_Floor_Reup/MapServer",
+      "image_width": 1536,
+      "image_height": 1280,
+      "source_id": "ilc-floorplans",
+      "aliases": [
+        "floor 2",
+        "2nd floor"
+      ]
+    },
+    {
+      "id": "3",
+      "label": "3rd Floor",
+      "coordinate_system": "local_meters",
+      "image_url": null,
+      "image_width": null,
+      "image_height": null,
+      "source_id": "ilc-classrooms",
+      "aliases": [
+        "floor 3",
+        "3rd floor"
+      ]
+    },
+    {
+      "id": "4",
+      "label": "4th Floor",
+      "coordinate_system": "local_meters",
+      "image_url": null,
+      "image_width": null,
+      "image_height": null,
+      "source_id": "ilc-classrooms",
+      "aliases": [
+        "floor 4",
+        "4th floor"
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "ilc-elev-east-f1",
+      "label": "East Elevator, 1st Floor",
+      "floor_id": "1",
+      "kind": "elevator_stop",
+      "x": 805.0,
+      "y": 715.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "ilc-elev-west-f1",
+      "label": "West Elevator, 1st Floor",
+      "floor_id": "1",
+      "kind": "elevator_stop",
+      "x": 690.0,
+      "y": 715.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "ilc-junction-f1",
+      "label": "Main Corridor, 1st Floor",
+      "floor_id": "1",
+      "kind": "junction",
+      "x": 748.0,
+      "y": 770.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "ilc-elev-east-f2",
+      "label": "East Elevator, 2nd Floor",
+      "floor_id": "2",
+      "kind": "elevator_stop",
+      "x": 805.0,
+      "y": 730.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "ilc-elev-west-f2",
+      "label": "West Elevator, 2nd Floor",
+      "floor_id": "2",
+      "kind": "elevator_stop",
+      "x": 690.0,
+      "y": 730.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "ilc-junction-f2",
+      "label": "Main Corridor, 2nd Floor",
+      "floor_id": "2",
+      "kind": "junction",
+      "x": 750.0,
+      "y": 780.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "ilc-elev-east-f3",
+      "label": "East Elevator, 3rd Floor",
+      "floor_id": "3",
+      "kind": "elevator_stop",
+      "x": 30.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "ilc-elev-west-f3",
+      "label": "West Elevator, 3rd Floor",
+      "floor_id": "3",
+      "kind": "elevator_stop",
+      "x": -10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "ilc-junction-f3",
+      "label": "Main Corridor, 3rd Floor",
+      "floor_id": "3",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "ilc-elev-east-f4",
+      "label": "East Elevator, 4th Floor",
+      "floor_id": "4",
+      "kind": "elevator_stop",
+      "x": 30.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "ilc-elev-west-f4",
+      "label": "West Elevator, 4th Floor",
+      "floor_id": "4",
+      "kind": "elevator_stop",
+      "x": -10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "ilc-junction-f4",
+      "label": "Main Corridor, 4th Floor",
+      "floor_id": "4",
+      "kind": "junction",
+      "x": 10.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "umass-arcgis-access",
+      "aliases": [],
+      "source_record_ids": []
+    },
+    {
+      "id": "ilc-entrance-south",
+      "label": "ILC Southwest Entrance (reported floor 2; position unreviewed)",
+      "floor_id": "2",
+      "kind": "entrance",
+      "x": 770.0,
+      "y": 900.0,
+      "position": {
+        "lat": 42.390788,
+        "lng": -72.526246
+      },
+      "source_id": "umass-entrances-pnts",
+      "aliases": [
+        "southwest entrance",
+        "south entrance"
+      ],
+      "source_record_ids": [
+        "umass-legacy-entrance-56"
+      ]
+    },
+    {
+      "id": "ilc-source-n111-f1",
+      "label": "ILC N111, 1st Floor entryway",
+      "floor_id": "1",
+      "kind": "room",
+      "x": 555.0,
+      "y": 775.0,
+      "position": null,
+      "source_id": "ilc-classrooms",
+      "aliases": [
+        "ilc n111  1st floor entryway",
+        "ilc",
+        "n111",
+        "1st",
+        "floor",
+        "entryway"
+      ],
+      "source_record_ids": [
+        "af8dc9352e4898983061"
+      ]
+    },
+    {
+      "id": "ilc-source-n155-f1",
+      "label": "ILC N155, 1st Floor entryway",
+      "floor_id": "1",
+      "kind": "room",
+      "x": 590.0,
+      "y": 405.0,
+      "position": null,
+      "source_id": "ilc-classrooms",
+      "aliases": [
+        "ilc n155  1st floor entryway",
+        "ilc",
+        "n155",
+        "1st",
+        "floor",
+        "entryway"
+      ],
+      "source_record_ids": [
+        "b1d05d8ac3ef7b2b9ed6"
+      ]
+    },
+    {
+      "id": "ilc-source-n101-f1",
+      "label": "ILC N101, 1st Floor entryway",
+      "floor_id": "1",
+      "kind": "room",
+      "x": 555.0,
+      "y": 965.0,
+      "position": null,
+      "source_id": "ilc-classrooms",
+      "aliases": [
+        "ilc n101  1st floor entryway",
+        "ilc",
+        "n101",
+        "1st",
+        "floor",
+        "entryway"
+      ],
+      "source_record_ids": [
+        "e1282fde41af69212a9f"
+      ]
+    },
+    {
+      "id": "ilc-source-s140-f1",
+      "label": "ILC S140, 1st Floor entryway",
+      "floor_id": "1",
+      "kind": "room",
+      "x": 690.0,
+      "y": 965.0,
+      "position": null,
+      "source_id": "ilc-classrooms",
+      "aliases": [
+        "ilc s140  1st floor entryway",
+        "ilc",
+        "s140",
+        "1st",
+        "floor",
+        "entryway"
+      ],
+      "source_record_ids": [
+        "d8a6c8854e346e4f2fd6"
+      ]
+    },
+    {
+      "id": "ilc-source-s120-f1",
+      "label": "ILC S120, 1st Floor entryway",
+      "floor_id": "1",
+      "kind": "room",
+      "x": 835.0,
+      "y": 960.0,
+      "position": null,
+      "source_id": "ilc-classrooms",
+      "aliases": [
+        "ilc s120  1st floor entryway",
+        "ilc",
+        "s120",
+        "1st",
+        "floor",
+        "entryway"
+      ],
+      "source_record_ids": [
+        "8a4511cf3a1b6db7cd24"
+      ]
+    },
+    {
+      "id": "ilc-source-s131-f1",
+      "label": "ILC S131, 1st Floor entryway",
+      "floor_id": "1",
+      "kind": "room",
+      "x": 900.0,
+      "y": 770.0,
+      "position": null,
+      "source_id": "ilc-classrooms",
+      "aliases": [
+        "ilc s131  1st floor entryway",
+        "ilc",
+        "s131",
+        "1st",
+        "floor",
+        "entryway"
+      ],
+      "source_record_ids": [
+        "a589e703dccb4a0dbac5"
+      ]
+    },
+    {
+      "id": "ilc-source-s110-f1",
+      "label": "ILC S110, 1st Floor entryway",
+      "floor_id": "1",
+      "kind": "room",
+      "x": 1030.0,
+      "y": 955.0,
+      "position": null,
+      "source_id": "ilc-classrooms",
+      "aliases": [
+        "ilc s110  1st floor entryway",
+        "ilc",
+        "s110",
+        "1st",
+        "floor",
+        "entryway"
+      ],
+      "source_record_ids": [
+        "cc8f860293e105073977"
+      ]
+    },
+    {
+      "id": "ilc-source-n255-f2",
+      "label": "ILC N255, 2nd Floor entryway",
+      "floor_id": "2",
+      "kind": "room",
+      "x": 585.0,
+      "y": 405.0,
+      "position": null,
+      "source_id": "ilc-classrooms",
+      "aliases": [
+        "ilc n255  2nd floor entryway",
+        "ilc",
+        "n255",
+        "2nd",
+        "floor",
+        "entryway"
+      ],
+      "source_record_ids": [
+        "ba0013ea35ecfd62cc0a"
+      ]
+    },
+    {
+      "id": "ilc-source-s240-f2",
+      "label": "ILC S240, 2nd Floor entryway",
+      "floor_id": "2",
+      "kind": "room",
+      "x": 700.0,
+      "y": 930.0,
+      "position": null,
+      "source_id": "ilc-classrooms",
+      "aliases": [
+        "ilc s240  2nd floor entryway",
+        "ilc",
+        "s240",
+        "2nd",
+        "floor",
+        "entryway"
+      ],
+      "source_record_ids": [
+        "dd1c23f2f1cebc06a6a7"
+      ]
+    },
+    {
+      "id": "ilc-source-n211-f2",
+      "label": "ILC N211, 2nd Floor entryway",
+      "floor_id": "2",
+      "kind": "room",
+      "x": 555.0,
+      "y": 805.0,
+      "position": null,
+      "source_id": "ilc-classrooms",
+      "aliases": [
+        "ilc n211  2nd floor entryway",
+        "ilc",
+        "n211",
+        "2nd",
+        "floor",
+        "entryway"
+      ],
+      "source_record_ids": [
+        "5237750a3905660d5aff"
+      ]
+    },
+    {
+      "id": "ilc-source-s220-f2",
+      "label": "ILC S220, 2nd Floor entryway",
+      "floor_id": "2",
+      "kind": "room",
+      "x": 965.0,
+      "y": 930.0,
+      "position": null,
+      "source_id": "ilc-classrooms",
+      "aliases": [
+        "ilc s220  2nd floor entryway",
+        "ilc",
+        "s220",
+        "2nd",
+        "floor",
+        "entryway"
+      ],
+      "source_record_ids": [
+        "54dae2d9c1c86603f876"
+      ]
+    },
+    {
+      "id": "ilc-source-s211-f2",
+      "label": "ILC S211, 2nd Floor entryway",
+      "floor_id": "2",
+      "kind": "room",
+      "x": 1040.0,
+      "y": 755.0,
+      "position": null,
+      "source_id": "ilc-classrooms",
+      "aliases": [
+        "ilc s211  2nd floor entryway",
+        "ilc",
+        "s211",
+        "2nd",
+        "floor",
+        "entryway"
+      ],
+      "source_record_ids": [
+        "679ad4ed42ddd0ddd01b"
+      ]
+    },
+    {
+      "id": "ilc-source-s231-f2",
+      "label": "ILC S231, 2nd Floor entryway",
+      "floor_id": "2",
+      "kind": "room",
+      "x": 870.0,
+      "y": 755.0,
+      "position": null,
+      "source_id": "ilc-classrooms",
+      "aliases": [
+        "ilc s231  2nd floor entryway",
+        "ilc",
+        "s231",
+        "2nd",
+        "floor",
+        "entryway"
+      ],
+      "source_record_ids": [
+        "60fee2a08c1e09f19d54"
+      ]
+    },
+    {
+      "id": "ilc-source-s311-f3",
+      "label": "ILC S311, 3rd Floor entryway",
+      "floor_id": "3",
+      "kind": "room",
+      "x": 35.0,
+      "y": 15.0,
+      "position": null,
+      "source_id": "ilc-classrooms",
+      "aliases": [
+        "ilc s311  3rd floor entryway",
+        "ilc",
+        "s311",
+        "3rd",
+        "floor",
+        "entryway"
+      ],
+      "source_record_ids": [
+        "08718a62c841e76f7129"
+      ]
+    },
+    {
+      "id": "ilc-source-s331-f3",
+      "label": "ILC S331, 3rd Floor entryway",
+      "floor_id": "3",
+      "kind": "room",
+      "x": 35.0,
+      "y": 23.0,
+      "position": null,
+      "source_id": "ilc-classrooms",
+      "aliases": [
+        "ilc s331  3rd floor entryway",
+        "ilc",
+        "s331",
+        "3rd",
+        "floor",
+        "entryway"
+      ],
+      "source_record_ids": [
+        "7b143d7104bea7017cfd"
+      ]
+    },
+    {
+      "id": "ilc-source-n151-f2",
+      "label": "ILC N151, 2nd Floor entryway",
+      "floor_id": "2",
+      "kind": "room",
+      "x": 610.0,
+      "y": 560.0,
+      "position": null,
+      "source_id": "ilc-classrooms",
+      "aliases": [
+        "ilc n151  2nd floor entryway",
+        "ilc",
+        "n151",
+        "2nd",
+        "floor",
+        "entryway"
+      ],
+      "source_record_ids": [
+        "05a7c749f805a0bf74bc"
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "ilc-elevator-east",
+      "label": "ILC East Elevator",
+      "kind": "elevator",
+      "position": {
+        "lat": 42.390892,
+        "lng": -72.525422
+      },
+      "source_id": "umass-arcgis-access",
+      "aliases": [
+        "east elevator"
+      ]
+    },
+    {
+      "id": "ilc-elevator-west",
+      "label": "ILC West Elevator",
+      "kind": "elevator",
+      "position": {
+        "lat": 42.390883,
+        "lng": -72.525922
+      },
+      "source_id": "umass-arcgis-access",
+      "aliases": [
+        "west elevator"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "ilc-corridor-west-junc-f1",
+      "start": "ilc-elev-west-f1",
+      "end": "ilc-junction-f1",
+      "kind": "corridor",
+      "length_m": 11.93,
+      "geometry": [
+        [
+          690.0,
+          715.0
+        ],
+        [
+          748.0,
+          770.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    },
+    {
+      "id": "ilc-corridor-junc-east-f1",
+      "start": "ilc-junction-f1",
+      "end": "ilc-elev-east-f1",
+      "kind": "corridor",
+      "length_m": 11.83,
+      "geometry": [
+        [
+          748.0,
+          770.0
+        ],
+        [
+          805.0,
+          715.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    },
+    {
+      "id": "ilc-corridor-west-junc-f2",
+      "start": "ilc-elev-west-f2",
+      "end": "ilc-junction-f2",
+      "kind": "corridor",
+      "length_m": 11.66,
+      "geometry": [
+        [
+          690.0,
+          730.0
+        ],
+        [
+          750.0,
+          780.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    },
+    {
+      "id": "ilc-corridor-junc-east-f2",
+      "start": "ilc-junction-f2",
+      "end": "ilc-elev-east-f2",
+      "kind": "corridor",
+      "length_m": 11.1,
+      "geometry": [
+        [
+          750.0,
+          780.0
+        ],
+        [
+          805.0,
+          730.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    },
+    {
+      "id": "ilc-corridor-west-junc-f3",
+      "start": "ilc-elev-west-f3",
+      "end": "ilc-junction-f3",
+      "kind": "corridor",
+      "length_m": 2.99,
+      "geometry": [
+        [
+          -10.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Unverified hackathon pilot approach. No floor-plan trace is available for this floor; geometry and metric distances require review."
+    },
+    {
+      "id": "ilc-corridor-junc-east-f3",
+      "start": "ilc-junction-f3",
+      "end": "ilc-elev-east-f3",
+      "kind": "corridor",
+      "length_m": 2.99,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          30.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Unverified hackathon pilot approach. No floor-plan trace is available for this floor; geometry and metric distances require review."
+    },
+    {
+      "id": "ilc-corridor-west-junc-f4",
+      "start": "ilc-elev-west-f4",
+      "end": "ilc-junction-f4",
+      "kind": "corridor",
+      "length_m": 2.99,
+      "geometry": [
+        [
+          -10.0,
+          0.0
+        ],
+        [
+          10.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Unverified hackathon pilot approach. No floor-plan trace is available for this floor; geometry and metric distances require review."
+    },
+    {
+      "id": "ilc-corridor-junc-east-f4",
+      "start": "ilc-junction-f4",
+      "end": "ilc-elev-east-f4",
+      "kind": "corridor",
+      "length_m": 2.99,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          30.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Unverified hackathon pilot approach. No floor-plan trace is available for this floor; geometry and metric distances require review."
+    },
+    {
+      "id": "ilc-elev-east-f1-f2",
+      "start": "ilc-elev-east-f1",
+      "end": "ilc-elev-east-f2",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "ilc-elevator-east",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 86: ILC Elevator mapped on accessibility layer."
+    },
+    {
+      "id": "ilc-elev-east-f2-f3",
+      "start": "ilc-elev-east-f2",
+      "end": "ilc-elev-east-f3",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "ilc-elevator-east",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 86: ILC Elevator mapped on accessibility layer."
+    },
+    {
+      "id": "ilc-elev-east-f3-f4",
+      "start": "ilc-elev-east-f3",
+      "end": "ilc-elev-east-f4",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "ilc-elevator-east",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 86: ILC Elevator mapped on accessibility layer."
+    },
+    {
+      "id": "ilc-elev-west-f1-f2",
+      "start": "ilc-elev-west-f1",
+      "end": "ilc-elev-west-f2",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "ilc-elevator-west",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 87: ILC Elevator mapped on accessibility layer."
+    },
+    {
+      "id": "ilc-elev-west-f2-f3",
+      "start": "ilc-elev-west-f2",
+      "end": "ilc-elev-west-f3",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "ilc-elevator-west",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 87: ILC Elevator mapped on accessibility layer."
+    },
+    {
+      "id": "ilc-elev-west-f3-f4",
+      "start": "ilc-elev-west-f3",
+      "end": "ilc-elev-west-f4",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "ilc-elevator-west",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": null,
+      "width_m": null,
+      "door_type": "automatic",
+      "source_id": "umass-arcgis-access",
+      "evidence": "ArcGIS elevator OID 87: ILC Elevator mapped on accessibility layer."
+    },
+    {
+      "id": "ilc-source-n111-f1-edge",
+      "start": "ilc-junction-f1",
+      "end": "ilc-source-n111-f1",
+      "kind": "corridor",
+      "length_m": 28.84,
+      "geometry": [
+        [
+          748,
+          770
+        ],
+        [
+          690,
+          770
+        ],
+        [
+          620,
+          775
+        ],
+        [
+          555,
+          775
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    },
+    {
+      "id": "ilc-source-n155-f1-edge",
+      "start": "ilc-junction-f1",
+      "end": "ilc-source-n155-f1",
+      "kind": "corridor",
+      "length_m": 59.54,
+      "geometry": [
+        [
+          748,
+          770
+        ],
+        [
+          690,
+          650
+        ],
+        [
+          625,
+          520
+        ],
+        [
+          590,
+          405
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    },
+    {
+      "id": "ilc-source-n101-f1-edge",
+      "start": "ilc-junction-f1",
+      "end": "ilc-source-n101-f1",
+      "kind": "corridor",
+      "length_m": 41.03,
+      "geometry": [
+        [
+          748,
+          770
+        ],
+        [
+          690,
+          820
+        ],
+        [
+          610,
+          900
+        ],
+        [
+          555,
+          965
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    },
+    {
+      "id": "ilc-source-s140-f1-edge",
+      "start": "ilc-junction-f1",
+      "end": "ilc-source-s140-f1",
+      "kind": "corridor",
+      "length_m": 30.51,
+      "geometry": [
+        [
+          748,
+          770
+        ],
+        [
+          700,
+          900
+        ],
+        [
+          690,
+          965
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    },
+    {
+      "id": "ilc-source-s120-f1-edge",
+      "start": "ilc-junction-f1",
+      "end": "ilc-source-s120-f1",
+      "kind": "corridor",
+      "length_m": 32.75,
+      "geometry": [
+        [
+          748,
+          770
+        ],
+        [
+          790,
+          820
+        ],
+        [
+          835,
+          885
+        ],
+        [
+          835,
+          960
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    },
+    {
+      "id": "ilc-source-s131-f1-edge",
+      "start": "ilc-junction-f1",
+      "end": "ilc-source-s131-f1",
+      "kind": "corridor",
+      "length_m": 22.69,
+      "geometry": [
+        [
+          748,
+          770
+        ],
+        [
+          850,
+          770
+        ],
+        [
+          900,
+          770
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    },
+    {
+      "id": "ilc-source-s110-f1-edge",
+      "start": "ilc-junction-f1",
+      "end": "ilc-source-s110-f1",
+      "kind": "corridor",
+      "length_m": 51.38,
+      "geometry": [
+        [
+          748,
+          770
+        ],
+        [
+          830,
+          810
+        ],
+        [
+          965,
+          875
+        ],
+        [
+          1030,
+          955
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    },
+    {
+      "id": "ilc-source-n255-f2-edge",
+      "start": "ilc-junction-f2",
+      "end": "ilc-source-n255-f2",
+      "kind": "corridor",
+      "length_m": 61.24,
+      "geometry": [
+        [
+          750,
+          780
+        ],
+        [
+          690,
+          665
+        ],
+        [
+          635,
+          540
+        ],
+        [
+          585,
+          405
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    },
+    {
+      "id": "ilc-source-s240-f2-edge",
+      "start": "ilc-junction-f2",
+      "end": "ilc-source-s240-f2",
+      "kind": "corridor",
+      "length_m": 23.6,
+      "geometry": [
+        [
+          750,
+          780
+        ],
+        [
+          720,
+          870
+        ],
+        [
+          700,
+          930
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    },
+    {
+      "id": "ilc-source-n211-f2-edge",
+      "start": "ilc-junction-f2",
+      "end": "ilc-source-n211-f2",
+      "kind": "corridor",
+      "length_m": 29.86,
+      "geometry": [
+        [
+          750,
+          780
+        ],
+        [
+          700,
+          780
+        ],
+        [
+          640,
+          805
+        ],
+        [
+          555,
+          805
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    },
+    {
+      "id": "ilc-source-s220-f2-edge",
+      "start": "ilc-junction-f2",
+      "end": "ilc-source-s220-f2",
+      "kind": "corridor",
+      "length_m": 39.59,
+      "geometry": [
+        [
+          750,
+          780
+        ],
+        [
+          820,
+          810
+        ],
+        [
+          900,
+          865
+        ],
+        [
+          965,
+          930
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    },
+    {
+      "id": "ilc-source-s211-f2-edge",
+      "start": "ilc-junction-f2",
+      "end": "ilc-source-s211-f2",
+      "kind": "corridor",
+      "length_m": 43.65,
+      "geometry": [
+        [
+          750,
+          780
+        ],
+        [
+          820,
+          780
+        ],
+        [
+          950,
+          755
+        ],
+        [
+          1040,
+          755
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    },
+    {
+      "id": "ilc-source-s231-f2-edge",
+      "start": "ilc-junction-f2",
+      "end": "ilc-source-s231-f2",
+      "kind": "corridor",
+      "length_m": 18.56,
+      "geometry": [
+        [
+          750,
+          780
+        ],
+        [
+          820,
+          755
+        ],
+        [
+          870,
+          755
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    },
+    {
+      "id": "ilc-source-s311-f3-edge",
+      "start": "ilc-junction-f3",
+      "end": "ilc-source-s311-f3",
+      "kind": "corridor",
+      "length_m": 4.35,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          35.0,
+          15.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Unverified hackathon pilot approach. No floor-plan trace is available for this floor; geometry and metric distances require review."
+    },
+    {
+      "id": "ilc-source-s331-f3-edge",
+      "start": "ilc-junction-f3",
+      "end": "ilc-source-s331-f3",
+      "kind": "corridor",
+      "length_m": 5.07,
+      "geometry": [
+        [
+          10.0,
+          0.0
+        ],
+        [
+          35.0,
+          23.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "umass-arcgis-access",
+      "evidence": "Unverified hackathon pilot approach. No floor-plan trace is available for this floor; geometry and metric distances require review."
+    },
+    {
+      "id": "ilc-source-n151-f2-edge",
+      "start": "ilc-junction-f2",
+      "end": "ilc-source-n151-f2",
+      "kind": "corridor",
+      "length_m": 39.06,
+      "geometry": [
+        [
+          750,
+          780
+        ],
+        [
+          700,
+          700
+        ],
+        [
+          665,
+          630
+        ],
+        [
+          610,
+          560
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "unknown",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    }
+  ],
+  "portals": [],
+  "maneuvers": []
+}

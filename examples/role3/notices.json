@@ -1,0 +1,26 @@
+[
+  {
+    "id": "clear-outage",
+    "building": "Demo Center",
+    "text": "The east elevator is out of service.",
+    "observed_at": "2026-11-14T11:00:00Z",
+    "start_time": "2026-11-14T10:00:00Z",
+    "end_time": "2026-11-14T22:00:00Z"
+  },
+  {
+    "id": "ambiguous-inspection",
+    "building": "Demo Center",
+    "text": "One car may be affected while the elevator team works in phases.",
+    "observed_at": "2026-11-14T11:00:00Z",
+    "start_time": "2026-11-14T10:00:00Z",
+    "end_time": "2026-11-14T22:00:00Z"
+  },
+  {
+    "id": "water-only",
+    "building": "Demo Center",
+    "text": "Hot water service will be interrupted for a plumbing repair.",
+    "observed_at": "2026-11-14T11:00:00Z",
+    "start_time": "2026-11-14T10:00:00Z",
+    "end_time": "2026-11-14T22:00:00Z"
+  }
+]

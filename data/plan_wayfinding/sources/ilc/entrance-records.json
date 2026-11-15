@@ -1,0 +1,226 @@
+{
+  "objectIdFieldName": "OBJECTID_1",
+  "uniqueIdField": {
+    "name": "OBJECTID_1",
+    "isSystemMaintained": true
+  },
+  "globalIdFieldName": "GlobalID",
+  "geometryType": "esriGeometryPoint",
+  "spatialReference": {
+    "wkid": 4326,
+    "latestWkid": 4326
+  },
+  "fields": [
+    {
+      "name": "GlobalID",
+      "type": "esriFieldTypeGlobalID",
+      "alias": "GlobalID",
+      "sqlType": "sqlTypeOther",
+      "length": 38,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "hasAutoDoorOpener",
+      "type": "esriFieldTypeSmallInteger",
+      "alias": "hasAutoDoorOpener",
+      "sqlType": "sqlTypeOther",
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "isAccessibleToAllFloors",
+      "type": "esriFieldTypeSmallInteger",
+      "alias": "isAccessibleToAllFloors",
+      "sqlType": "sqlTypeOther",
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "isKeyCardRequired",
+      "type": "esriFieldTypeSmallInteger",
+      "alias": "isKeyCardRequired",
+      "sqlType": "sqlTypeOther",
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeInteger",
+      "alias": "OBJECTID",
+      "sqlType": "sqlTypeOther",
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "isAccessible",
+      "type": "esriFieldTypeSmallInteger",
+      "alias": "isAccessible",
+      "sqlType": "sqlTypeOther",
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "LocationID",
+      "type": "esriFieldTypeString",
+      "alias": "LocationID",
+      "sqlType": "sqlTypeOther",
+      "length": 50,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "FacilityID",
+      "type": "esriFieldTypeString",
+      "alias": "FacilityID",
+      "sqlType": "sqlTypeOther",
+      "length": 50,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "Comments",
+      "type": "esriFieldTypeString",
+      "alias": "Comments",
+      "sqlType": "sqlTypeOther",
+      "length": 100,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "PhotoURL",
+      "type": "esriFieldTypeString",
+      "alias": "PhotoURL",
+      "sqlType": "sqlTypeOther",
+      "length": 50,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "Subtype",
+      "type": "esriFieldTypeSmallInteger",
+      "alias": "Subtype",
+      "sqlType": "sqlTypeOther",
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "created_user",
+      "type": "esriFieldTypeString",
+      "alias": "created_user",
+      "sqlType": "sqlTypeOther",
+      "length": 255,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "created_date",
+      "type": "esriFieldTypeDate",
+      "alias": "created_date",
+      "sqlType": "sqlTypeOther",
+      "length": 8,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "last_edited_user",
+      "type": "esriFieldTypeString",
+      "alias": "last_edited_user",
+      "sqlType": "sqlTypeOther",
+      "length": 255,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "last_edited_date",
+      "type": "esriFieldTypeDate",
+      "alias": "last_edited_date",
+      "sqlType": "sqlTypeOther",
+      "length": 8,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "OBJECTID_1",
+      "type": "esriFieldTypeOID",
+      "alias": "OBJECTID",
+      "sqlType": "sqlTypeOther",
+      "domain": null,
+      "defaultValue": null
+    }
+  ],
+  "features": [
+    {
+      "attributes": {
+        "GlobalID": "4f97fb60-a952-4a1a-b665-bc831fa9305f",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "OBJECTID": 55,
+        "isAccessible": 1,
+        "LocationID": null,
+        "FacilityID": null,
+        "Comments": null,
+        "PhotoURL": null,
+        "Subtype": null,
+        "created_user": "mtaftferguso_umafm",
+        "created_date": 1564162947000,
+        "last_edited_user": "mtaftferguso_umafm",
+        "last_edited_date": 1564162947000,
+        "OBJECTID_1": 55
+      },
+      "geometry": {
+        "x": -72.52628443172752,
+        "y": 42.391415781763754
+      }
+    },
+    {
+      "attributes": {
+        "GlobalID": "da2d3d28-e4cf-4d8e-9e93-34c9c9a1743c",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "OBJECTID": 56,
+        "isAccessible": 1,
+        "LocationID": null,
+        "FacilityID": null,
+        "Comments": null,
+        "PhotoURL": null,
+        "Subtype": null,
+        "created_user": "mtaftferguso_umafm",
+        "created_date": 1564162947000,
+        "last_edited_user": "mtaftferguso_umafm",
+        "last_edited_date": 1564162947000,
+        "OBJECTID_1": 56
+      },
+      "geometry": {
+        "x": -72.5262464325227,
+        "y": 42.39078755027407
+      }
+    },
+    {
+      "attributes": {
+        "GlobalID": "1b2d0aad-53fc-49e3-ac22-58d19b735557",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "OBJECTID": 57,
+        "isAccessible": 1,
+        "LocationID": null,
+        "FacilityID": null,
+        "Comments": null,
+        "PhotoURL": null,
+        "Subtype": null,
+        "created_user": "mtaftferguso_umafm",
+        "created_date": 1564162947000,
+        "last_edited_user": "mtaftferguso_umafm",
+        "last_edited_date": 1564162947000,
+        "OBJECTID_1": 57
+      },
+      "geometry": {
+        "x": -72.52530959506659,
+        "y": 42.39087833808397
+      }
+    }
+  ]
+}

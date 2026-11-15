@@ -1,0 +1,5660 @@
+{
+  "observed_at": "2026-11-15T05:56:40.046589+00:00",
+  "source_url": "https://www.arcgis.com/home/item.html?id=88ffb7cddec243b9b6cebe80ccde1416",
+  "current_map_entrances": 215,
+  "historical_entrances": 279,
+  "note": "Collection time is not field confirmation. Older evidence only fills gaps.",
+  "records": [
+    {
+      "attributes": {
+        "OBJECTID_1": 1,
+        "OBJECTID": 1,
+        "GlobalID": "c8ab804a-b85f-4003-82ac-a8bc308ee910",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52866868719711,
+        "y": 42.38341014056165
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 2,
+        "OBJECTID": 2,
+        "GlobalID": "a63353ac-efaf-4e70-b63d-c4164f1600ba",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52369766785097,
+        "y": 42.394400451494725
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 3,
+        "OBJECTID": 3,
+        "GlobalID": "fda53be0-18de-4b61-a28e-9b717c3c2777",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52390295139523,
+        "y": 42.395204994840284
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 4,
+        "OBJECTID": 4,
+        "GlobalID": "8808e576-3113-4943-9034-acaf938f882e",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52452045227359,
+        "y": 42.39569305375476
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 5,
+        "OBJECTID": 5,
+        "GlobalID": "dd6e9f55-ac94-4ba7-bae7-4419da96a7e8",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52501484366772,
+        "y": 42.3955287664872
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 6,
+        "OBJECTID": 6,
+        "GlobalID": "36a41ee1-53cc-42da-9c9e-84dd59ba45b9",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5249939549503,
+        "y": 42.3939476739508
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 7,
+        "OBJECTID": 7,
+        "GlobalID": "6cdcd1b9-fad8-4800-9bf3-eda88e561d3a",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52431689534058,
+        "y": 42.39430512869715
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 8,
+        "OBJECTID": 8,
+        "GlobalID": "b794bd4e-71db-47ef-b58b-0296e23b854b",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.51831930822547,
+        "y": 42.388569603730446
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 9,
+        "OBJECTID": 9,
+        "GlobalID": "1539a59a-c125-4573-a524-3bd5f02e4c55",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52853939655589,
+        "y": 42.38807412407404
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 10,
+        "OBJECTID": 10,
+        "GlobalID": "381693d0-2cb1-4618-8ae2-9cc1e97477da",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52510040974533,
+        "y": 42.38857263014675
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 11,
+        "OBJECTID": 11,
+        "GlobalID": "112ac8be-b09e-4476-89cb-9715e70f0bc5",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52614679916675,
+        "y": 42.3883339036512
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 12,
+        "OBJECTID": 12,
+        "GlobalID": "a041b7d8-f250-4031-81c4-b95008c03a42",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52662147916872,
+        "y": 42.38782568700731
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 13,
+        "OBJECTID": 13,
+        "GlobalID": "e1e7f1ff-a032-4e0c-b45e-5c0aea03ef60",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52888836697107,
+        "y": 42.394181122948325
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 14,
+        "OBJECTID": 14,
+        "GlobalID": "827f0074-7bc8-4e1e-9c61-21c66dcd647b",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52389249825178,
+        "y": 42.39032502785881
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 15,
+        "OBJECTID": 15,
+        "GlobalID": "f14fc00d-3812-4a53-ad3f-04aab94a59d3",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52358403332039,
+        "y": 42.39033156824082
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 16,
+        "OBJECTID": 16,
+        "GlobalID": "164e5372-052f-4349-94b9-0bb1eced3fa3",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5292033484373,
+        "y": 42.390251750334045
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 17,
+        "OBJECTID": 17,
+        "GlobalID": "a06ad93d-0ed8-4447-97a4-c5d85af965c1",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52595880985349,
+        "y": 42.39168874447769
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 18,
+        "OBJECTID": 18,
+        "GlobalID": "66c7654d-9336-43c9-b361-988ecbf5b1fe",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52568020845477,
+        "y": 42.39185862616933
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 19,
+        "OBJECTID": 19,
+        "GlobalID": "bb8218dc-e4cb-4682-b047-8216a38357dc",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52406281943668,
+        "y": 42.39102408591183
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 20,
+        "OBJECTID": 20,
+        "GlobalID": "45467eb3-7ff4-441f-be26-9d742ab7a51a",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52853151256707,
+        "y": 42.38545460506655
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 21,
+        "OBJECTID": 21,
+        "GlobalID": "e6605dde-0d3a-43cb-8909-f8f25d925ec6",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52405148422802,
+        "y": 42.39200645158186
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 22,
+        "OBJECTID": 22,
+        "GlobalID": "6dea9b65-2cb3-44d4-827d-a1e127fc4c75",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52328739698923,
+        "y": 42.39146511541298
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 23,
+        "OBJECTID": 23,
+        "GlobalID": "f5a33115-443d-431b-98ee-0cd11c91021f",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52365432871274,
+        "y": 42.39217466074313
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 24,
+        "OBJECTID": 24,
+        "GlobalID": "2aae3dc3-08da-4d71-b533-6e2d5ec97410",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52388831016262,
+        "y": 42.392708949030656
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 25,
+        "OBJECTID": 25,
+        "GlobalID": "549863d4-37a6-4440-8dee-04d28b2bf631",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53037564384816,
+        "y": 42.38710990611982
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 26,
+        "OBJECTID": 26,
+        "GlobalID": "47a07102-a48e-414e-9a82-b581d8a3d335",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53001031099066,
+        "y": 42.388293335486516
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 27,
+        "OBJECTID": 27,
+        "GlobalID": "c3bb1f23-f960-4098-b922-69c687afbdb0",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52974472650364,
+        "y": 42.388288083303195
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 28,
+        "OBJECTID": 28,
+        "GlobalID": "af5d04da-f4ff-4353-bd45-32cc98e9fe84",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53031862464856,
+        "y": 42.38845232613563
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 29,
+        "OBJECTID": 29,
+        "GlobalID": "9fd55a26-03f9-45e7-b56a-b8d5b6cda635",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53103177385944,
+        "y": 42.38810977656223
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 30,
+        "OBJECTID": 30,
+        "GlobalID": "a2c215c9-fb74-411f-8db8-81447133c805",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53070593123265,
+        "y": 42.3878771972215
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 31,
+        "OBJECTID": 31,
+        "GlobalID": "bb885885-2dd5-4dd4-85e6-5859795ad29c",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53042818844314,
+        "y": 42.3875809167093
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 32,
+        "OBJECTID": 32,
+        "GlobalID": "44f86dbf-0a52-4126-83a6-0d9f835f034e",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53060115596271,
+        "y": 42.38806868881492
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 33,
+        "OBJECTID": 33,
+        "GlobalID": "ff3981da-ca2a-4240-b7c4-e62bc807b18f",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53012727333127,
+        "y": 42.388106442314864
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 34,
+        "OBJECTID": 34,
+        "GlobalID": "67530985-d9da-46ad-81dc-9eea79674dcb",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53083011889163,
+        "y": 42.38829247854404
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 35,
+        "OBJECTID": 35,
+        "GlobalID": "52ee5406-a0f3-4b31-b2d3-c047071f9d17",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53027323613185,
+        "y": 42.38819866161385
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 36,
+        "OBJECTID": 36,
+        "GlobalID": "df092e71-43bf-470a-af29-ab2bb92df332",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53004143119982,
+        "y": 42.388579490492916
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 37,
+        "OBJECTID": 37,
+        "GlobalID": "03daad2c-1866-4f54-b582-3801855cedce",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53044168244548,
+        "y": 42.38960470314111
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 38,
+        "OBJECTID": 38,
+        "GlobalID": "b2848ff3-46c1-4846-85ce-f089d2f12f0e",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52154838722831,
+        "y": 42.38941861407387
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 39,
+        "OBJECTID": 39,
+        "GlobalID": "49df1b37-da8e-4302-bace-c9876b77f2d7",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52572992557485,
+        "y": 42.39406288527423
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 40,
+        "OBJECTID": 40,
+        "GlobalID": "e1381c22-3104-4bb6-820c-ebee293060d6",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5290163863805,
+        "y": 42.38382335155101
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 41,
+        "OBJECTID": 41,
+        "GlobalID": "c9afdc23-da78-4e45-8cc5-80bea3c2c368",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52490307329809,
+        "y": 42.39200843449602
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 42,
+        "OBJECTID": 42,
+        "GlobalID": "8b73fd7b-b03b-4200-a730-b489e8901c82",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5258933328481,
+        "y": 42.393930463748816
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 43,
+        "OBJECTID": 43,
+        "GlobalID": "99c66d19-898e-41a7-be40-603efb50696e",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52111108045106,
+        "y": 42.38988766844397
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 44,
+        "OBJECTID": 44,
+        "GlobalID": "ec9ee99f-35b8-466f-bde3-f3d84a5eaa2a",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52148252284954,
+        "y": 42.38972438334045
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 45,
+        "OBJECTID": 45,
+        "GlobalID": "9f113ab4-3ea0-4a08-89df-fdd6b52a73a3",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52844611900038,
+        "y": 42.38158157769723
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 46,
+        "OBJECTID": 46,
+        "GlobalID": "a39f53fe-3c91-4f9c-b888-d50e60f9c4a8",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52495465104518,
+        "y": 42.397616382073195
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 47,
+        "OBJECTID": 47,
+        "GlobalID": "2b70eab6-2975-4fcc-aba8-ea3cfd1c2358",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52400084026404,
+        "y": 42.39764983822749
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 48,
+        "OBJECTID": 48,
+        "GlobalID": "1c1ef2ce-e88b-4836-bb7e-1d78499b1aa2",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52404921281925,
+        "y": 42.39682373516802
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 49,
+        "OBJECTID": 49,
+        "GlobalID": "e1a5388f-cad3-42ff-bf8e-c5a2eda6e2e4",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52519780977144,
+        "y": 42.39754974926126
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 50,
+        "OBJECTID": 50,
+        "GlobalID": "6c982e73-dcad-4b0c-8b5c-188f3e5727d6",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52523768619369,
+        "y": 42.39672165586618
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 51,
+        "OBJECTID": 51,
+        "GlobalID": "1b265470-2436-4083-abdf-e604a3969812",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52424664172636,
+        "y": 42.39757486211714
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 52,
+        "OBJECTID": 52,
+        "GlobalID": "b9a9d90d-93f0-41c6-9c58-d8b7f97f21a9",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52429494377348,
+        "y": 42.39674460899046
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 53,
+        "OBJECTID": 53,
+        "GlobalID": "68c3dd63-8f81-4b75-8216-ae59e7dc41d7",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52499178812155,
+        "y": 42.39679039838253
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 54,
+        "OBJECTID": 54,
+        "GlobalID": "78388a26-dec5-42e6-8f20-00bc0e22d6d6",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53007041926847,
+        "y": 42.38103154057676
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 55,
+        "OBJECTID": 55,
+        "GlobalID": "4f97fb60-a952-4a1a-b665-bc831fa9305f",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52628443172752,
+        "y": 42.391415781763754
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 56,
+        "OBJECTID": 56,
+        "GlobalID": "da2d3d28-e4cf-4d8e-9e93-34c9c9a1743c",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5262464325227,
+        "y": 42.39078755027407
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 57,
+        "OBJECTID": 57,
+        "GlobalID": "1b2d0aad-53fc-49e3-ac22-58d19b735557",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52530959506659,
+        "y": 42.39087833808397
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 58,
+        "OBJECTID": 58,
+        "GlobalID": "d5d237a7-f6f2-47ce-b241-853ca67e8536",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52693209392686,
+        "y": 42.38626200598045
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 59,
+        "OBJECTID": 59,
+        "GlobalID": "a57dee48-6575-4150-ac9e-65985c49d011",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53003348761871,
+        "y": 42.38834722662551
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 60,
+        "OBJECTID": 60,
+        "GlobalID": "830d5cbc-4299-4408-a050-ec517ce21391",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53065774263801,
+        "y": 42.387451825524174
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 61,
+        "OBJECTID": 61,
+        "GlobalID": "ae6b1b06-c06f-4105-8496-e7a73a4c68f8",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53053816833871,
+        "y": 42.387514061109435
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 62,
+        "OBJECTID": 62,
+        "GlobalID": "b9d2542a-7f07-4d5d-a1bd-8ef3d05b5f4d",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53093350299505,
+        "y": 42.38782105067677
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 63,
+        "OBJECTID": 63,
+        "GlobalID": "a256efcd-9b55-4622-9954-a5b7426b97fd",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53080131269314,
+        "y": 42.38788810563882
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 64,
+        "OBJECTID": 64,
+        "GlobalID": "4108f166-a92c-4c3c-93d7-b5c22acec931",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52980069830173,
+        "y": 42.38841226478206
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 65,
+        "OBJECTID": 65,
+        "GlobalID": "0ad99b4a-63a9-4789-9daf-3bb92e6f25e0",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52436213079285,
+        "y": 42.39024021983228
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 66,
+        "OBJECTID": 66,
+        "GlobalID": "2f6a7090-dfa0-4272-a824-8e7d94859314",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53095780037475,
+        "y": 42.3896854056502
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 67,
+        "OBJECTID": 67,
+        "GlobalID": "0bea4317-4dbc-410a-bbbd-b9bd0f6c00cf",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53084319080229,
+        "y": 42.38951491812441
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 68,
+        "OBJECTID": 68,
+        "GlobalID": "a7ecf921-6343-4038-a2da-29b07c82b09e",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52243305389692,
+        "y": 42.38794006513948
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 69,
+        "OBJECTID": 69,
+        "GlobalID": "d7d38b86-2612-4df0-986b-8fa2bc2294f8",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52790113279849,
+        "y": 42.39413090127179
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 70,
+        "OBJECTID": 70,
+        "GlobalID": "80b0d5f2-a10e-4775-a8d8-cffcfaf4eb14",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52483106954845,
+        "y": 42.39254785626903
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 71,
+        "OBJECTID": 71,
+        "GlobalID": "26b4969a-a9fa-4b78-abdc-17ce3789c6ea",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52509041232045,
+        "y": 42.39258014243786
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 72,
+        "OBJECTID": 72,
+        "GlobalID": "24b8d55b-e487-4522-91a1-f96219329b39",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52434080612055,
+        "y": 42.39275350919582
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 73,
+        "OBJECTID": 73,
+        "GlobalID": "4b560b8e-9fdc-4c04-bcc3-b72cbca11256",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5273554304164,
+        "y": 42.393529054061474
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 74,
+        "OBJECTID": 74,
+        "GlobalID": "dbd60593-521c-4581-8efe-91be12867660",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52279692744548,
+        "y": 42.387598629146936
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 75,
+        "OBJECTID": 75,
+        "GlobalID": "658f2a54-6e98-4216-8729-b64f4acf2f5c",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5225317977971,
+        "y": 42.38747534996929
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 76,
+        "OBJECTID": 76,
+        "GlobalID": "11988284-6688-4dae-934e-a6c3d462ea90",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52448413364655,
+        "y": 42.391408639881625
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 77,
+        "OBJECTID": 77,
+        "GlobalID": "850d567b-6c0a-4eca-b034-b38451bb9f18",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52483578376409,
+        "y": 42.39182862074972
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 78,
+        "OBJECTID": 78,
+        "GlobalID": "3d9be662-0ee0-441b-8e9d-8ab1f0677ba7",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52628765336422,
+        "y": 42.385888616696846
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 79,
+        "OBJECTID": 79,
+        "GlobalID": "5a4089a3-970c-44b1-9417-83f13385c0ff",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5271135436883,
+        "y": 42.38600650343916
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 80,
+        "OBJECTID": 80,
+        "GlobalID": "83073a3b-0f3b-45b2-beef-1c68db431d6e",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52815986691562,
+        "y": 42.3896703409757
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 81,
+        "OBJECTID": 81,
+        "GlobalID": "cf261ace-4529-4d2e-add6-7225d0f5c2f0",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5216383186561,
+        "y": 42.39024800631013
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 82,
+        "OBJECTID": 82,
+        "GlobalID": "f31b33de-8a72-4e1c-8e33-845f5e89508b",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52195384442723,
+        "y": 42.39033334362214
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 83,
+        "OBJECTID": 83,
+        "GlobalID": "f0e84831-12fb-419d-b5a2-99b2e8d44a15",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52912247101479,
+        "y": 42.387608046839226
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 84,
+        "OBJECTID": 84,
+        "GlobalID": "8803d5f9-dc6b-4c8b-9511-0d74ff56d716",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52791711161359,
+        "y": 42.39087882999695
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 85,
+        "OBJECTID": 85,
+        "GlobalID": "690fcc4c-b3d8-4caf-a958-4ff9ff9c55e8",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.529565636171,
+        "y": 42.39215798019725
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 86,
+        "OBJECTID": 86,
+        "GlobalID": "ecd15459-d371-4310-ba10-a4f4fd0e933c",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52771830337976,
+        "y": 42.388387701398095
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 87,
+        "OBJECTID": 87,
+        "GlobalID": "9245442c-9238-4878-8696-4f7a84d1e49d",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52518085864163,
+        "y": 42.3871008713153
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 88,
+        "OBJECTID": 88,
+        "GlobalID": "6987213d-ddd4-4103-9cda-d0aa6a365b79",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52744663882221,
+        "y": 42.393903259663816
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 89,
+        "OBJECTID": 89,
+        "GlobalID": "ea834a98-0a48-40ae-a873-c041be241116",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52594255623563,
+        "y": 42.39447681274428
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 90,
+        "OBJECTID": 90,
+        "GlobalID": "0d55b515-0a71-4f50-a066-e4538c87be16",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52997984180702,
+        "y": 42.393405027202945
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 91,
+        "OBJECTID": 91,
+        "GlobalID": "162c9c7e-43e3-4e78-9e97-05721ae80f5d",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52743681048949,
+        "y": 42.39787619677887
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 92,
+        "OBJECTID": 92,
+        "GlobalID": "e3772b55-d317-49c5-a3ee-88458b24ff2c",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52687548198969,
+        "y": 42.398196684027745
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 93,
+        "OBJECTID": 93,
+        "GlobalID": "d878ac64-23bc-4e3f-9f3a-d35ef9807d45",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52648065467567,
+        "y": 42.39884417262512
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 94,
+        "OBJECTID": 94,
+        "GlobalID": "a1edc661-65c6-4d26-9a51-410e739d3147",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52595917330036,
+        "y": 42.397806703512515
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 95,
+        "OBJECTID": 95,
+        "GlobalID": "0684c4a3-ac57-4333-b7b1-58a0396b98c2",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52679305816956,
+        "y": 42.39800160638577
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 96,
+        "OBJECTID": 96,
+        "GlobalID": "187cfbc9-5843-4afc-bc76-72174ba6df83",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52698343160112,
+        "y": 42.3871623640285
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 97,
+        "OBJECTID": 97,
+        "GlobalID": "71d77566-dbbf-4f64-9476-2c5c44210234",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52716922335033,
+        "y": 42.391844107079336
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 98,
+        "OBJECTID": 98,
+        "GlobalID": "d3ff0e3c-470e-4b9f-89b6-a1fbc2f08750",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52700667574153,
+        "y": 42.39397220245557
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 99,
+        "OBJECTID": 99,
+        "GlobalID": "223a26f4-d2a5-4a70-9407-a61ddb6a1aa5",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52889496625227,
+        "y": 42.38971857513755
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 100,
+        "OBJECTID": 100,
+        "GlobalID": "8b1c07c7-1ab9-4869-83c2-dbda7a2ad75d",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52937724470175,
+        "y": 42.389455321518604
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 101,
+        "OBJECTID": 101,
+        "GlobalID": "9bdf8258-af2f-4d5d-b4f1-41ba3f4d8b79",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52986693889163,
+        "y": 42.38944439841245
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 102,
+        "OBJECTID": 102,
+        "GlobalID": "8ed81c33-9a17-4769-a993-7f50fb387260",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52695583648234,
+        "y": 42.39342764095718
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 103,
+        "OBJECTID": 103,
+        "GlobalID": "b0420e70-3252-4d91-9b78-3b295a1e768c",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.527086652327,
+        "y": 42.39362216065325
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 104,
+        "OBJECTID": 104,
+        "GlobalID": "a3ebf271-cfa6-41ea-a53f-4762035832a3",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52626598837085,
+        "y": 42.39365016379914
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 105,
+        "OBJECTID": 105,
+        "GlobalID": "9efde699-d250-46cb-8370-95721fa103b3",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5323158899389,
+        "y": 42.39134929270568
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 106,
+        "OBJECTID": 106,
+        "GlobalID": "bf450612-3fc8-4975-a6ae-24072b59a9f2",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53216950800865,
+        "y": 42.39082626441516
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 107,
+        "OBJECTID": 107,
+        "GlobalID": "8fcc8d37-aef2-40a7-aa0a-2c2938afbf56",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.524065042241,
+        "y": 42.38669818445156
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 108,
+        "OBJECTID": 108,
+        "GlobalID": "3c24e181-42ad-47c6-8873-0c254ef86e91",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52866257892047,
+        "y": 42.387595430318754
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 109,
+        "OBJECTID": 109,
+        "GlobalID": "f8b3adcf-d7ec-4fb6-9e60-50c2d6bc6f3b",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52670118547097,
+        "y": 42.38826667613841
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 110,
+        "OBJECTID": 111,
+        "GlobalID": "ed108a83-1730-4347-8af3-3c3aae59c539",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52553793657844,
+        "y": 42.39606664371851
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 111,
+        "OBJECTID": 112,
+        "GlobalID": "841a6c01-a43e-4897-bdec-47f33fdbd7cf",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52283778038215,
+        "y": 42.3890591227386
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 112,
+        "OBJECTID": 113,
+        "GlobalID": "7f69b992-fa74-4a38-8d5c-0d6da0ba85a9",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52217280944025,
+        "y": 42.38911021661684
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 113,
+        "OBJECTID": 114,
+        "GlobalID": "c4de8fc2-dd0f-4b3d-8f16-5afafef62ce4",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52473975972077,
+        "y": 42.38888518438005
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 114,
+        "OBJECTID": 115,
+        "GlobalID": "ce7b03b1-b175-41a5-9202-9e3d34d2e360",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52524846535442,
+        "y": 42.388161173829445
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 115,
+        "OBJECTID": 116,
+        "GlobalID": "8b82fc07-e0be-4de7-9cdf-7a2bf0c19c49",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52681554432287,
+        "y": 42.38822714094347
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 116,
+        "OBJECTID": 117,
+        "GlobalID": "8567c895-10dd-4abf-888e-ac3efe4ed1c4",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52607524668716,
+        "y": 42.38796958895862
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 117,
+        "OBJECTID": 118,
+        "GlobalID": "082e9aaf-8721-4ce7-af87-99bbe0f282bf",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53068564592445,
+        "y": 42.389099277584634
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 118,
+        "OBJECTID": 119,
+        "GlobalID": "82aa9fc8-faca-4ffe-a473-0e1aa72fee7a",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52858543243393,
+        "y": 42.39047767858676
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 119,
+        "OBJECTID": 120,
+        "GlobalID": "81dc4ebe-c62b-4c7a-b8a2-764cb8446ba8",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52703773663085,
+        "y": 42.38773515783927
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 120,
+        "OBJECTID": 121,
+        "GlobalID": "e6c485de-5c3a-452e-abbb-49f5ced6e8f9",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52749943307767,
+        "y": 42.38767148180266
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 121,
+        "OBJECTID": 122,
+        "GlobalID": "6152a6b4-ccf6-4603-8285-7d5bc86bac03",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52946162742498,
+        "y": 42.38596543054323
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 122,
+        "OBJECTID": 123,
+        "GlobalID": "2338625b-1839-4358-9175-2bf88898f92a",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52818923996338,
+        "y": 42.38681489227376
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 123,
+        "OBJECTID": 124,
+        "GlobalID": "fd93240e-05ad-474b-88e9-c59e9d995da3",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53114537768421,
+        "y": 42.38967352661351
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 124,
+        "OBJECTID": 125,
+        "GlobalID": "235d193c-e4ce-4f38-8b16-0545c690b07e",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53055053462921,
+        "y": 42.39020502435958
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 125,
+        "OBJECTID": 126,
+        "GlobalID": "5f8822a6-fa48-4856-846d-3f15e7f838ba",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52467842858609,
+        "y": 42.39346993050758
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 126,
+        "OBJECTID": 127,
+        "GlobalID": "95e4a9d1-3be7-4fb1-9f51-5555ab7d47b8",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52420110281774,
+        "y": 42.3939099475179
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 127,
+        "OBJECTID": 128,
+        "GlobalID": "1f80d45f-fc75-4132-aaee-50cfbf5d4dfd",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52968033965092,
+        "y": 42.38996891813205
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 128,
+        "OBJECTID": 129,
+        "GlobalID": "59eea51f-2b8f-4603-843e-2ceaa0365dc5",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52879908379279,
+        "y": 42.389597979644265
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 129,
+        "OBJECTID": 130,
+        "GlobalID": "52383f67-c292-46cb-9a73-02281d14f38e",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52377165072393,
+        "y": 42.391009048407476
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 130,
+        "OBJECTID": 131,
+        "GlobalID": "a4909bd9-6df4-44c0-9459-006eac5c393c",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52846177466145,
+        "y": 42.39343474078681
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 131,
+        "OBJECTID": 132,
+        "GlobalID": "3d62a0e5-e768-409b-93d2-3383564b6072",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52401191789022,
+        "y": 42.38655345530362
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 132,
+        "OBJECTID": 133,
+        "GlobalID": "634e2a7a-ffe6-44e7-995c-d0dbe32b338e",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52442466737152,
+        "y": 42.38654197229711
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 133,
+        "OBJECTID": 134,
+        "GlobalID": "2cc7a43f-eb9e-4d6c-ab62-fd62b5dcceda",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52931870763065,
+        "y": 42.39031628188492
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 134,
+        "OBJECTID": 135,
+        "GlobalID": "e60a970d-e4c5-4342-b9a2-e9b6ce5718d9",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52979081626181,
+        "y": 42.3902030193242
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 135,
+        "OBJECTID": 136,
+        "GlobalID": "72dad88c-9210-457d-8a70-1f3da5967141",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52987468839403,
+        "y": 42.39163213994659
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 136,
+        "OBJECTID": 137,
+        "GlobalID": "94c25efb-a1c1-48db-8418-46ad0038dfaa",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5300867976084,
+        "y": 42.394886803333655
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 137,
+        "OBJECTID": 138,
+        "GlobalID": "adf6d983-1d77-42e1-b36a-dfdecf330176",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53010915710887,
+        "y": 42.388981521690546
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 138,
+        "OBJECTID": 139,
+        "GlobalID": "9aa96015-8ea4-4f1d-8b98-48bfa626c13d",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53045787924029,
+        "y": 42.38675556703415
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 139,
+        "OBJECTID": 140,
+        "GlobalID": "3cf6a7b8-f7d8-4bbe-8712-52bbf38e860f",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53177724992685,
+        "y": 42.39270982647558
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 140,
+        "OBJECTID": 141,
+        "GlobalID": "53b77612-81f6-4ede-a18c-df617aa2c74d",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52895388105159,
+        "y": 42.385328093305915
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 141,
+        "OBJECTID": 142,
+        "GlobalID": "a73eafeb-ebd3-494f-bdff-2c71763baf4e",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52361531436473,
+        "y": 42.38985451555653
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 142,
+        "OBJECTID": 144,
+        "GlobalID": "75a57d52-b501-4124-a746-ace37c74dc7f",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52864622058925,
+        "y": 42.384954731554785
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 143,
+        "OBJECTID": 145,
+        "GlobalID": "fdc61dbd-c743-4fc9-8054-6828f866423f",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52863764691708,
+        "y": 42.39367539445282
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 144,
+        "OBJECTID": 146,
+        "GlobalID": "cbe9367e-294f-4c0c-aaa8-bb82460a1a58",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52713446642824,
+        "y": 42.38770000676416
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 145,
+        "OBJECTID": 147,
+        "GlobalID": "48e8596c-3d97-442f-a595-83aa84e828f5",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52681086603717,
+        "y": 42.397835144653214
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 146,
+        "OBJECTID": 148,
+        "GlobalID": "3d641441-52e7-4e8c-8c74-daacacca308b",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5285868654427,
+        "y": 42.38249592402715
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 147,
+        "OBJECTID": 149,
+        "GlobalID": "e1293d0c-7470-40ac-bab8-ed530d35d873",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5294390261145,
+        "y": 42.38284959279678
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 148,
+        "OBJECTID": 150,
+        "GlobalID": "c9590748-ba93-48f3-b1ff-e9fc0bf90db2",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.51823297751146,
+        "y": 42.38987440627719
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 149,
+        "OBJECTID": 151,
+        "GlobalID": "756561f6-69ef-4055-b620-93c659dfb64d",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.51858081373412,
+        "y": 42.390321552448306
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 150,
+        "OBJECTID": 152,
+        "GlobalID": "6522121c-7878-4978-bd9b-92996ac0df8e",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52143192121898,
+        "y": 42.38910220815705
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 151,
+        "OBJECTID": 153,
+        "GlobalID": "07a5e122-1094-4866-b4e4-4a757943fbea",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52563223954401,
+        "y": 42.395017194270515
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 152,
+        "OBJECTID": 154,
+        "GlobalID": "1deb661e-fa9b-4bb9-b386-b48c9f2f336b",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52622190662379,
+        "y": 42.394882120092824
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 153,
+        "OBJECTID": 155,
+        "GlobalID": "46f8748f-7473-4c8f-8152-6a9a29872e27",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52518357942411,
+        "y": 42.39405431042404
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 154,
+        "OBJECTID": 156,
+        "GlobalID": "edb32f37-8478-4344-9d21-d5fc77f4af70",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.51920076826579,
+        "y": 42.38936605889607
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 155,
+        "OBJECTID": 157,
+        "GlobalID": "74a53bf6-83f1-4c3f-9c8d-7ecfcbad75c1",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52110078781078,
+        "y": 42.38750689138401
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 156,
+        "OBJECTID": 158,
+        "GlobalID": "3d81af2a-834d-4145-b69a-33b06d2632ff",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.51972917090815,
+        "y": 42.38964645241033
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 157,
+        "OBJECTID": 159,
+        "GlobalID": "300d9f60-452d-492a-817c-41e6b56a22d5",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52089570915913,
+        "y": 42.38752357133235
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 158,
+        "OBJECTID": 160,
+        "GlobalID": "21a970a6-ac22-4a05-9ae6-ec3ade861943",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5216466645173,
+        "y": 42.390005263521275
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 159,
+        "OBJECTID": 161,
+        "GlobalID": "2cd91402-150f-452f-9854-66ed0761c4e9",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52277666581294,
+        "y": 42.397319084921826
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 160,
+        "OBJECTID": 162,
+        "GlobalID": "bb94f1f3-99b7-433d-b290-50c6e144bdd8",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.51951867551371,
+        "y": 42.39147182503756
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 161,
+        "OBJECTID": 163,
+        "GlobalID": "8f755882-8b96-4ba5-9cb6-2aeb34e6a8e6",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.51891647689759,
+        "y": 42.391513116054234
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 162,
+        "OBJECTID": 164,
+        "GlobalID": "ac2a9ab2-d302-4ce8-9cb6-9769c5d0b833",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5310865569522,
+        "y": 42.38411701296592
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 163,
+        "OBJECTID": 165,
+        "GlobalID": "b6885cc0-50bb-44ab-a484-41ce87fbcf5f",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5298609812056,
+        "y": 42.38356024816891
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 164,
+        "OBJECTID": 166,
+        "GlobalID": "218e1d8f-b39a-440a-a90e-1de883f7b53c",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52959684058789,
+        "y": 42.38399754280224
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 165,
+        "OBJECTID": 167,
+        "GlobalID": "020de1b0-bd93-4a03-bade-fee917e976fb",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53127383216867,
+        "y": 42.38352573007105
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 166,
+        "OBJECTID": 168,
+        "GlobalID": "d7b2189a-e1ad-4b6f-afbd-7d9f7cfd4c6f",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52963350449905,
+        "y": 42.3842169532387
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 167,
+        "OBJECTID": 169,
+        "GlobalID": "a4537ba1-55cf-4ad4-9eb3-57bcef7f91a1",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52988029087894,
+        "y": 42.383783575519544
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 168,
+        "OBJECTID": 170,
+        "GlobalID": "9f46a61a-4757-4470-9b0d-f402fda9b4c5",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52899118032052,
+        "y": 42.38226218889898
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 169,
+        "OBJECTID": 171,
+        "GlobalID": "33506264-395e-4d3d-b289-48e149849c01",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52898028845284,
+        "y": 42.383369987234175
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 170,
+        "OBJECTID": 172,
+        "GlobalID": "5041479c-9404-4610-8714-9ac13613f19f",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52899118032052,
+        "y": 42.38226218889898
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 171,
+        "OBJECTID": 173,
+        "GlobalID": "7709d9f0-c54a-47d7-95d3-ba0079b11327",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52879972661471,
+        "y": 42.381751738577705
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 172,
+        "OBJECTID": 174,
+        "GlobalID": "34bc6391-52df-46d2-869f-6937b789b15a",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52931935999545,
+        "y": 42.38169706490906
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 173,
+        "OBJECTID": 175,
+        "GlobalID": "71875512-84c4-4287-9695-686a74dc5c0d",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53073591007144,
+        "y": 42.38214436102849
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 174,
+        "OBJECTID": 176,
+        "GlobalID": "99a402cb-3d09-478f-9221-864057d976c1",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53094213578004,
+        "y": 42.38144886982665
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 175,
+        "OBJECTID": 177,
+        "GlobalID": "9827287c-0111-47f1-9100-61b0392494d5",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52929961390362,
+        "y": 42.38147093762752
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 176,
+        "OBJECTID": 178,
+        "GlobalID": "08c8e0f1-33a4-4c13-8bc1-faf38b999067",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.51869139413867,
+        "y": 42.39173598309402
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 177,
+        "OBJECTID": 179,
+        "GlobalID": "4e38f002-85df-435e-84d4-a0e5f458ebd9",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.51898052378387,
+        "y": 42.39257664348595
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 178,
+        "OBJECTID": 180,
+        "GlobalID": "c47dc0fe-dc48-41a8-b2c2-9f47b8185b58",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5197333687724,
+        "y": 42.392135689645606
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 179,
+        "OBJECTID": 181,
+        "GlobalID": "62c095e0-b0e0-478f-8c95-71dd6331a67d",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5220938168687,
+        "y": 42.397833250071805
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 180,
+        "OBJECTID": 182,
+        "GlobalID": "5384eac0-4e43-4c3e-8342-636f8db6c13c",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52161693782517,
+        "y": 42.39739123181657
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 181,
+        "OBJECTID": 183,
+        "GlobalID": "9e7a1e65-cb85-4684-b207-81c329ac939e",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 1,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52881054329991,
+        "y": 42.38365486094173
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 182,
+        "OBJECTID": 184,
+        "GlobalID": "cbeae68d-1e26-456e-b38c-53960566963c",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52928362439455,
+        "y": 42.394666180119884
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 183,
+        "OBJECTID": 185,
+        "GlobalID": "f9ed1738-d70a-4f08-b551-b76f6ed92e97",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53095821564537,
+        "y": 42.39404569569727
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 184,
+        "OBJECTID": 186,
+        "GlobalID": "dfdc9358-b9fb-48c6-938d-af074e4a8d66",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53093942700565,
+        "y": 42.39205328684881
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 185,
+        "OBJECTID": 187,
+        "GlobalID": "4761ad84-3a69-4928-abe8-babbe20c24ed",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52950981158412,
+        "y": 42.387331825843006
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 186,
+        "OBJECTID": 188,
+        "GlobalID": "19fa3e55-58fa-4d2a-ae88-7a9639ea0fd3",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52724873350759,
+        "y": 42.38761976765791
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 187,
+        "OBJECTID": 189,
+        "GlobalID": "996a4cb9-683e-4333-8dc9-022f4f53b8cd",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52726051258212,
+        "y": 42.394920308521144
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 188,
+        "OBJECTID": 190,
+        "GlobalID": "24cf83b0-3a94-42b1-aa71-8be9f8ffb9b2",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53090637216995,
+        "y": 42.38960582639534
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 189,
+        "OBJECTID": 191,
+        "GlobalID": "ff90a9e8-79a8-424e-a631-a0453852fd1d",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53147819079356,
+        "y": 42.389200500301854
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 190,
+        "OBJECTID": 192,
+        "GlobalID": "e69f36cd-4c23-486d-851e-18aae26527af",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52865720680215,
+        "y": 42.391314571434094
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 191,
+        "OBJECTID": 193,
+        "GlobalID": "351440f2-b095-4312-9a85-06930e06f66d",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53207840347176,
+        "y": 42.39226290984018
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 192,
+        "OBJECTID": 194,
+        "GlobalID": "6533ba87-5a8f-4ec8-99eb-4500104fdb9e",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53161965558387,
+        "y": 42.39227274089824
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 193,
+        "OBJECTID": 195,
+        "GlobalID": "079a9df2-4c64-423e-9b20-09b30256aec0",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53313189420653,
+        "y": 42.39436361640393
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 194,
+        "OBJECTID": 196,
+        "GlobalID": "bb53ce71-cec0-4694-9384-b92c6dde13b6",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5309604897211,
+        "y": 42.39509431411401
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 195,
+        "OBJECTID": 197,
+        "GlobalID": "8cf6bb9d-444b-4407-ae0d-5fc65b26481d",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52959963270436,
+        "y": 42.39441472313644
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 196,
+        "OBJECTID": 198,
+        "GlobalID": "77114ba4-71b9-439b-8135-5a1e6a3b5ffe",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52733174053687,
+        "y": 42.3876348652567
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 197,
+        "OBJECTID": 199,
+        "GlobalID": "a7af8e2c-0b5f-44e5-a964-f34888b4a76a",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53015553753953,
+        "y": 42.38174437056512
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 198,
+        "OBJECTID": 200,
+        "GlobalID": "c793fa44-68af-447c-9a3c-daed70891c91",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52945050828141,
+        "y": 42.382055596870025
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 199,
+        "OBJECTID": 201,
+        "GlobalID": "3bc92227-d6d4-4aca-adfd-6cfa9f107ed2",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52237310933707,
+        "y": 42.38775201134952
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 200,
+        "OBJECTID": 202,
+        "GlobalID": "3501a49a-8260-4033-a71d-bbd81d4f13e2",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52307646291257,
+        "y": 42.38777801740339
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 201,
+        "OBJECTID": 203,
+        "GlobalID": "f839571c-4453-446e-b8ce-7bdda9a750f6",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52524119072834,
+        "y": 42.38503416485691
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 202,
+        "OBJECTID": 204,
+        "GlobalID": "1e39c93d-1009-4b20-8d04-76c6f053980f",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52532803583682,
+        "y": 42.38522942248608
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 203,
+        "OBJECTID": 205,
+        "GlobalID": "47716c9c-9ca3-4425-b4e1-ca1c6c46686e",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53331857276221,
+        "y": 42.39354303457401
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 204,
+        "OBJECTID": 206,
+        "GlobalID": "9527969f-e645-401d-9637-3cdf8a08e248",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52992183753801,
+        "y": 42.394717964110335
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 205,
+        "OBJECTID": 207,
+        "GlobalID": "9da75e81-4ecf-41e2-880b-6c5b150df8cb",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53007386551953,
+        "y": 42.39440762022891
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 206,
+        "OBJECTID": 208,
+        "GlobalID": "c1a3f9d4-9d6b-4920-b272-fac830c1aebd",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53077431069468,
+        "y": 42.39530997952718
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 207,
+        "OBJECTID": 209,
+        "GlobalID": "9f01a33d-02cc-46f7-9bc5-17b174480af3",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53147819079356,
+        "y": 42.389200500301854
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 208,
+        "OBJECTID": 210,
+        "GlobalID": "4bc3cb04-b4b8-4481-a4fb-2b2a5b949ba2",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53212520323741,
+        "y": 42.3890419313555
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 209,
+        "OBJECTID": 211,
+        "GlobalID": "45c93d65-f462-4cb4-a4ea-13ed2e624df5",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5373198567488,
+        "y": 42.38935605565195
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 210,
+        "OBJECTID": 212,
+        "GlobalID": "f8457fe0-392e-4747-8384-7ed4495e7781",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52440046000333,
+        "y": 42.391626498402466
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 211,
+        "OBJECTID": 213,
+        "GlobalID": "07808949-8efa-440f-a61c-d8ae3d872c50",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52492184252094,
+        "y": 42.39157919916242
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 212,
+        "OBJECTID": 214,
+        "GlobalID": "f2ecf1d9-675e-4415-aa96-8c4c8ce8f595",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5336452100975,
+        "y": 42.389965951602605
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 213,
+        "OBJECTID": 215,
+        "GlobalID": "8228383b-36cd-4062-9ca8-76eb3b19322e",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53371347140497,
+        "y": 42.39011701925314
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 214,
+        "OBJECTID": 216,
+        "GlobalID": "97349906-f093-48c3-85fe-72854229b5e2",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52054452347924,
+        "y": 42.38898510063626
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 215,
+        "OBJECTID": 217,
+        "GlobalID": "0cdaff92-f43e-4ead-a6d0-f3b8bf56bb30",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52864482025718,
+        "y": 42.3933754982991
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 216,
+        "OBJECTID": 218,
+        "GlobalID": "58f982cf-c2b0-43d4-b882-58386d9ae737",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52928736291521,
+        "y": 42.39318225266229
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 217,
+        "OBJECTID": 219,
+        "GlobalID": "61f36407-fcbe-4dd6-a142-1f8d7a9be816",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52110213052559,
+        "y": 42.38700058286023
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 218,
+        "OBJECTID": 220,
+        "GlobalID": "19234a20-52d8-4d66-aa77-603c3b77774a",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53130487876841,
+        "y": 42.39236131981945
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 219,
+        "OBJECTID": 221,
+        "GlobalID": "264fa3fa-c6c1-4fd4-9b7a-89cd23c4be14",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53107584727553,
+        "y": 42.391370573661916
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 220,
+        "OBJECTID": 222,
+        "GlobalID": "13cfc6ba-45e6-4fdb-93fa-ffc39c5a54e1",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52809207938886,
+        "y": 42.39452495099034
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 221,
+        "OBJECTID": 223,
+        "GlobalID": "15018c3d-efbd-48f2-9f5c-b30086ac85f7",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52843721377798,
+        "y": 42.39461979642057
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 222,
+        "OBJECTID": 224,
+        "GlobalID": "0fdbeb71-fe78-4183-9c52-3d652716b7d7",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53108919933969,
+        "y": 42.39455382836459
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 223,
+        "OBJECTID": 225,
+        "GlobalID": "47b9748b-d2db-42d1-83f4-4d2ca49d20d2",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53142846943987,
+        "y": 42.394637213805254
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 224,
+        "OBJECTID": 226,
+        "GlobalID": "96833356-6c07-4b11-9d21-8d73f7fb574d",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5313201342203,
+        "y": 42.395296724657136
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 225,
+        "OBJECTID": 227,
+        "GlobalID": "3b992811-f25d-4d05-bf85-2f913e143b6c",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53117658080423,
+        "y": 42.39501701782031
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 226,
+        "OBJECTID": 228,
+        "GlobalID": "1a3de831-fa22-4424-ab46-38227da0b98c",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5332741004935,
+        "y": 42.3938620886071
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 227,
+        "OBJECTID": 229,
+        "GlobalID": "bba07cf3-017b-45b4-931b-0e981d3a205d",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53160836314275,
+        "y": 42.391116323179574
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 228,
+        "OBJECTID": 230,
+        "GlobalID": "0c25831f-209e-488b-9b4f-7377a7841aff",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53202029481814,
+        "y": 42.39088257570099
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 229,
+        "OBJECTID": 231,
+        "GlobalID": "f8fdfd14-cfec-41cd-b28a-b6c8355760ff",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52934219116622,
+        "y": 42.39019169193676
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 230,
+        "OBJECTID": 232,
+        "GlobalID": "077f6a83-f2af-44e5-96d9-a8dc960cc4df",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52941390875003,
+        "y": 42.390297478342674
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 231,
+        "OBJECTID": 233,
+        "GlobalID": "85b73fbd-97c6-440d-9aed-61cdf9ac6dc8",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52730427134202,
+        "y": 42.39060084738348
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 232,
+        "OBJECTID": 234,
+        "GlobalID": "dd10a6db-f5e5-4982-a70f-b979015b4b4a",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52753090961288,
+        "y": 42.390553366495766
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 233,
+        "OBJECTID": 235,
+        "GlobalID": "e71dcea0-4b70-4c65-95d0-dd13c371705b",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52426177076613,
+        "y": 42.38964136897164
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 234,
+        "OBJECTID": 236,
+        "GlobalID": "74ff63f6-efe4-4f97-9bfe-91d2a6683c5a",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52896892499975,
+        "y": 42.39415296032621
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 235,
+        "OBJECTID": 237,
+        "GlobalID": "7e645e56-f7e1-4a36-8c05-c7ca4e646181",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52514425465762,
+        "y": 42.386261971726135
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 236,
+        "OBJECTID": 238,
+        "GlobalID": "a0f1d87c-e20a-4468-9a36-6615864c0a3b",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5248045975145,
+        "y": 42.38615747299519
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 237,
+        "OBJECTID": 239,
+        "GlobalID": "457b3b42-16ba-489f-8be3-ba5b5a20873d",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52490018629062,
+        "y": 42.38637822891748
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 238,
+        "OBJECTID": 240,
+        "GlobalID": "19d1cbcf-a8a2-4345-9187-120a15f83bf8",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52514189824,
+        "y": 42.386989758432385
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 239,
+        "OBJECTID": 241,
+        "GlobalID": "22821f8d-66ff-4331-85de-75b865eff14e",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52652502621739,
+        "y": 42.3918716415351
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 240,
+        "OBJECTID": 242,
+        "GlobalID": "5a8a4c73-0003-4f45-a54d-8ca83c3ad46f",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5273783579554,
+        "y": 42.394517121969066
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 241,
+        "OBJECTID": 243,
+        "GlobalID": "d5a7575d-b8ca-4e9a-88c9-d5d3e65ea697",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.530790009143,
+        "y": 42.392822222648256
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 242,
+        "OBJECTID": 244,
+        "GlobalID": "ac90b77a-78f2-4cb5-9b66-d612d81f05ff",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52732639983289,
+        "y": 42.38735004237068
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 243,
+        "OBJECTID": 245,
+        "GlobalID": "fc90710d-8e91-4412-8b7a-87d77dc101d8",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52739987396714,
+        "y": 42.38746672285493
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 244,
+        "OBJECTID": 246,
+        "GlobalID": "96b48ccf-a4f3-4980-a39a-31b79fbb0957",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52719767083347,
+        "y": 42.38698142555776
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 245,
+        "OBJECTID": 247,
+        "GlobalID": "ae3b1bbf-d4a5-48f1-9a95-32538fd6fa6a",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5270554849889,
+        "y": 42.387411675411585
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 246,
+        "OBJECTID": 248,
+        "GlobalID": "425c3c30-fb5c-4e94-bc7d-e1b83fb80343",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52943640650265,
+        "y": 42.394914883728596
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 247,
+        "OBJECTID": 249,
+        "GlobalID": "da083289-3fb3-4275-b215-debe075a6637",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52934876587696,
+        "y": 42.38888953470532
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 248,
+        "OBJECTID": 250,
+        "GlobalID": "d7f30ae1-424a-4036-be1f-ca69de023628",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5273763280138,
+        "y": 42.393582195326765
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 249,
+        "OBJECTID": 251,
+        "GlobalID": "a175869c-a684-4b31-b490-97fea80eed0f",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5302539157621,
+        "y": 42.39439100146728
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 250,
+        "OBJECTID": 252,
+        "GlobalID": "11d1e77e-de7a-4326-8c49-ef89493242bf",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53018833027073,
+        "y": 42.39179826526575
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 251,
+        "OBJECTID": 253,
+        "GlobalID": "6d3c24fa-962b-4af8-8f15-2c32c7144677",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52956640863833,
+        "y": 42.39342892448365
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 252,
+        "OBJECTID": 254,
+        "GlobalID": "67b947ab-c1dd-4169-bddd-39c2d4e1865c",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52978362060539,
+        "y": 42.393256338026106
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 253,
+        "OBJECTID": 255,
+        "GlobalID": "e8f765d9-6db0-4ceb-aa60-7b23bedb93b2",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53010558216135,
+        "y": 42.39326100637421
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 254,
+        "OBJECTID": 256,
+        "GlobalID": "802a47ae-2b0c-4e45-afa7-e7a56d5053c3",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52661457513503,
+        "y": 42.39144920300925
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 255,
+        "OBJECTID": 257,
+        "GlobalID": "0b0182e5-dfe7-4f1b-8a92-9416c557e2b0",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53501366013658,
+        "y": 42.392636006013994
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 256,
+        "OBJECTID": 258,
+        "GlobalID": "e3bc8789-1298-4fcf-b9db-d85bedd7be54",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.535442724876,
+        "y": 42.39392399736893
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 257,
+        "OBJECTID": 259,
+        "GlobalID": "4d5fe01a-aa40-4998-8704-582be255fbf7",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.534127457313,
+        "y": 42.38958728362296
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 258,
+        "OBJECTID": 260,
+        "GlobalID": "98247042-f0ce-4654-b14a-b27b1392d222",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53220127798352,
+        "y": 42.388170062476064
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 259,
+        "OBJECTID": 261,
+        "GlobalID": "bb9c0afd-2f0c-4f50-8830-6abdc1faeea8",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53311318617484,
+        "y": 42.388450511980245
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 260,
+        "OBJECTID": 262,
+        "GlobalID": "7eca4e39-5dbd-4ef1-bf9e-978bdf52d60b",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53262622514363,
+        "y": 42.388070406491764
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 261,
+        "OBJECTID": 263,
+        "GlobalID": "c6f34036-a3bd-407c-97e3-cc0610254ab5",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53281848827426,
+        "y": 42.38802531684579
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 262,
+        "OBJECTID": 264,
+        "GlobalID": "5d3594bf-855b-48da-852b-db5b55bfe430",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53306768582917,
+        "y": 42.38817612096694
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 263,
+        "OBJECTID": 265,
+        "GlobalID": "931729d7-2fe0-40da-a40d-e2fb64175df9",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5317478317856,
+        "y": 42.38921666475826
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 264,
+        "OBJECTID": 266,
+        "GlobalID": "0ade22c2-7e25-489f-912a-4b10b1f55f02",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52973630904755,
+        "y": 42.38250871259486
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 265,
+        "OBJECTID": 267,
+        "GlobalID": "8270cb8e-6102-4e2a-84f0-0daac7b1c744",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52449354315037,
+        "y": 42.38919491607065
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 266,
+        "OBJECTID": 269,
+        "GlobalID": "aacc6125-2f3c-4aca-b5e8-7e87406be383",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5271547890955,
+        "y": 42.388283455915435
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 267,
+        "OBJECTID": 273,
+        "GlobalID": "e66bf80a-a771-428b-8d41-9158ccba1fd7",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52559007339435,
+        "y": 42.38794152422317
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 268,
+        "OBJECTID": 274,
+        "GlobalID": "e0fc885d-4514-44d2-97cc-ce43141255f4",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52494809053199,
+        "y": 42.388333845501876
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 269,
+        "OBJECTID": 279,
+        "GlobalID": "ee47d1f6-4bfc-4b13-a81d-81601099309d",
+        "hasAutoDoorOpener": null,
+        "isAccessibleToAllFloors": null,
+        "isKeyCardRequired": null,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53412136253803,
+        "y": 42.38126277250334
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 270,
+        "OBJECTID": 280,
+        "GlobalID": "581e6d64-6e6b-44ef-a333-0531a3b6a164",
+        "hasAutoDoorOpener": null,
+        "isAccessibleToAllFloors": null,
+        "isKeyCardRequired": null,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5344016960224,
+        "y": 42.381364165006474
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 271,
+        "OBJECTID": 281,
+        "GlobalID": "76f97214-ce64-4e0e-ad0a-76258e51fd64",
+        "hasAutoDoorOpener": null,
+        "isAccessibleToAllFloors": null,
+        "isKeyCardRequired": null,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53456143041669,
+        "y": 42.38114700260955
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 272,
+        "OBJECTID": 282,
+        "GlobalID": "9b242ff2-c264-4d37-a9d7-4c971c09cc6d",
+        "hasAutoDoorOpener": null,
+        "isAccessibleToAllFloors": null,
+        "isKeyCardRequired": null,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52073490548986,
+        "y": 42.38284213260811
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 273,
+        "OBJECTID": 283,
+        "GlobalID": "9e918ce3-f768-47e4-a582-1f7da7f693b9",
+        "hasAutoDoorOpener": null,
+        "isAccessibleToAllFloors": null,
+        "isKeyCardRequired": null,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.51697211809584,
+        "y": 42.401651369120145
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 274,
+        "OBJECTID": 284,
+        "GlobalID": "728f842b-51f1-40b5-b0b4-59f7bc8a3973",
+        "hasAutoDoorOpener": null,
+        "isAccessibleToAllFloors": null,
+        "isKeyCardRequired": null,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.51117345033127,
+        "y": 42.39468971307748
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 275,
+        "OBJECTID": 285,
+        "GlobalID": "fea19546-524b-49a9-ace9-9e936e9a3c39",
+        "hasAutoDoorOpener": null,
+        "isAccessibleToAllFloors": null,
+        "isKeyCardRequired": null,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.51197327255989,
+        "y": 42.39852831359029
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 276,
+        "OBJECTID": 286,
+        "GlobalID": "ca6a5cce-db25-4b5e-a866-c5b4aa631179",
+        "hasAutoDoorOpener": null,
+        "isAccessibleToAllFloors": null,
+        "isKeyCardRequired": null,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53544713086251,
+        "y": 42.376132803502124
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 277,
+        "OBJECTID": 287,
+        "GlobalID": "ede1dd7a-d47a-439d-a221-9b2ff49a6aa8",
+        "hasAutoDoorOpener": null,
+        "isAccessibleToAllFloors": null,
+        "isKeyCardRequired": null,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.53680280018038,
+        "y": 42.37621025324233
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 278,
+        "OBJECTID": 292,
+        "GlobalID": "48e7544d-f5dc-4bad-879b-d84642c79843",
+        "hasAutoDoorOpener": 0,
+        "isAccessibleToAllFloors": 0,
+        "isKeyCardRequired": 0,
+        "isAccessible": 1,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.5222207004226,
+        "y": 42.38950523628636
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID_1": 279,
+        "OBJECTID": 293,
+        "GlobalID": "5f48ce6d-7ddb-4475-9df4-e75747a3f6d1",
+        "hasAutoDoorOpener": 1,
+        "isAccessibleToAllFloors": 1,
+        "isKeyCardRequired": 0,
+        "isAccessible": null,
+        "last_edited_date": 1564162947000
+      },
+      "geometry": {
+        "x": -72.52790643564443,
+        "y": 42.38887035486771
+      }
+    }
+  ],
+  "audit": {
+    "buildings": [
+      {
+        "record_id": 9,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/9",
+        "source_record_date": "2019-07-26",
+        "building_code": "107",
+        "building_name": "Bartlett Hall",
+        "footprint_gap_m": 8.22,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 10,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/10",
+        "source_record_date": "2019-07-26",
+        "building_code": "420",
+        "building_name": "The Randolph W. Bromery Center for the Arts",
+        "footprint_gap_m": 0.89,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 11,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/11",
+        "source_record_date": "2019-07-26",
+        "building_code": "420",
+        "building_name": "The Randolph W. Bromery Center for the Arts",
+        "footprint_gap_m": 1.32,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 12,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/12",
+        "source_record_date": "2019-07-26",
+        "building_code": "420",
+        "building_name": "The Randolph W. Bromery Center for the Arts",
+        "footprint_gap_m": 0.0,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 13,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/13",
+        "source_record_date": "2019-07-26",
+        "building_code": "343",
+        "building_name": "Marcus Hall",
+        "footprint_gap_m": 0.0,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 14,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/14",
+        "source_record_date": "2019-07-26",
+        "building_code": "169",
+        "building_name": "Wilder Hall",
+        "footprint_gap_m": 4.71,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 15,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/15",
+        "source_record_date": "2019-07-26",
+        "building_code": "169",
+        "building_name": "Wilder Hall",
+        "footprint_gap_m": 5.79,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 16,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/16",
+        "source_record_date": "2019-07-26",
+        "building_code": "111",
+        "building_name": "Machmer Hall",
+        "footprint_gap_m": 1.14,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 17,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/17",
+        "source_record_date": "2019-07-26",
+        "building_code": "318",
+        "building_name": "Hasbrouck Laboratory Addition",
+        "footprint_gap_m": 0.62,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 18,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/18",
+        "source_record_date": "2019-07-26",
+        "building_code": "318",
+        "building_name": "Hasbrouck Laboratory Addition",
+        "footprint_gap_m": 5.39,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 19,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/19",
+        "source_record_date": "2019-07-26",
+        "building_code": "126",
+        "building_name": "Morrill Science Center I",
+        "footprint_gap_m": 3.43,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 20,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/20",
+        "source_record_date": "2019-07-26",
+        "building_code": "009",
+        "building_name": "Middlesex House",
+        "footprint_gap_m": 1.65,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 55,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/55",
+        "source_record_date": "2019-07-26",
+        "building_code": "704",
+        "building_name": "Integrative Learning Center",
+        "footprint_gap_m": 2.05,
+        "decision": "added_dated_entrance",
+        "entrance_id": "umass-legacy-entrance-55"
+      },
+      {
+        "record_id": 56,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/56",
+        "source_record_date": "2019-07-26",
+        "building_code": "704",
+        "building_name": "Integrative Learning Center",
+        "footprint_gap_m": 0.75,
+        "decision": "added_dated_entrance",
+        "entrance_id": "umass-legacy-entrance-56"
+      },
+      {
+        "record_id": 57,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/57",
+        "source_record_date": "2019-07-26",
+        "building_code": "704",
+        "building_name": "Integrative Learning Center",
+        "footprint_gap_m": 4.04,
+        "decision": "added_dated_entrance",
+        "entrance_id": "umass-legacy-entrance-57"
+      },
+      {
+        "record_id": 58,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/58",
+        "source_record_date": "2019-07-26",
+        "building_code": "388",
+        "building_name": "Whitmore Hall",
+        "footprint_gap_m": 3.06,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 59,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/59",
+        "source_record_date": "2019-07-26",
+        "building_code": "708",
+        "building_name": "Elm House",
+        "footprint_gap_m": 1.8,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 60,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/60",
+        "source_record_date": "2019-07-26",
+        "building_code": "709",
+        "building_name": "Maple House",
+        "footprint_gap_m": 0.0,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 61,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/61",
+        "source_record_date": "2019-07-26",
+        "building_code": "709",
+        "building_name": "Maple House",
+        "footprint_gap_m": 0.7,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 62,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/62",
+        "source_record_date": "2019-07-26",
+        "building_code": "709",
+        "building_name": "Maple House",
+        "footprint_gap_m": 2.44,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 63,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/63",
+        "source_record_date": "2019-07-26",
+        "building_code": "709",
+        "building_name": "Maple House",
+        "footprint_gap_m": 3.39,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 64,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/64",
+        "source_record_date": "2019-07-26",
+        "building_code": "708",
+        "building_name": "Elm House",
+        "footprint_gap_m": 1.02,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 65,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/65",
+        "source_record_date": "2019-07-26",
+        "building_code": "127",
+        "building_name": "Morrill Science Center II",
+        "footprint_gap_m": 3.71,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 66,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/66",
+        "source_record_date": "2019-07-26",
+        "building_code": "696",
+        "building_name": "Parks, George N. Minuteman Marching Band Building",
+        "footprint_gap_m": 3.23,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 67,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/67",
+        "source_record_date": "2019-07-26",
+        "building_code": "696",
+        "building_name": "Parks, George N. Minuteman Marching Band Building",
+        "footprint_gap_m": 0.81,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 68,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/68",
+        "source_record_date": "2019-07-26",
+        "building_code": "677",
+        "building_name": "Studio Arts Building",
+        "footprint_gap_m": 4.11,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 69,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/69",
+        "source_record_date": "2019-07-26",
+        "building_code": "502",
+        "building_name": "Lederle Graduate Research Center Addition",
+        "footprint_gap_m": 1.57,
+        "decision": "ambiguous_building"
+      },
+      {
+        "record_id": 70,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/70",
+        "source_record_date": "2019-07-26",
+        "building_code": "676",
+        "building_name": "Integrated Sciences Building",
+        "footprint_gap_m": 1.95,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 71,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/71",
+        "source_record_date": "2019-07-26",
+        "building_code": "676",
+        "building_name": "Integrated Sciences Building",
+        "footprint_gap_m": 0.36,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 72,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/72",
+        "source_record_date": "2019-07-26",
+        "building_code": "676",
+        "building_name": "Integrated Sciences Building",
+        "footprint_gap_m": 1.17,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 73,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/73",
+        "source_record_date": "2019-07-26",
+        "building_code": "082",
+        "building_name": "Goessmann Laboratory Addition",
+        "footprint_gap_m": 0.0,
+        "decision": "ambiguous_building"
+      },
+      {
+        "record_id": 74,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/74",
+        "source_record_date": "2019-07-26",
+        "building_code": "677",
+        "building_name": "Studio Arts Building",
+        "footprint_gap_m": 3.75,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 75,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/75",
+        "source_record_date": "2019-07-26",
+        "building_code": "677",
+        "building_name": "Studio Arts Building",
+        "footprint_gap_m": 1.9,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 76,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/76",
+        "source_record_date": "2019-07-26",
+        "building_code": "128",
+        "building_name": "Skinner Hall",
+        "footprint_gap_m": 0.59,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 77,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/77",
+        "source_record_date": "2019-07-26",
+        "building_code": "128",
+        "building_name": "Skinner Hall",
+        "footprint_gap_m": 2.24,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 78,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/78",
+        "source_record_date": "2019-07-26",
+        "building_code": "388",
+        "building_name": "Whitmore Hall",
+        "footprint_gap_m": 3.92,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 79,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/79",
+        "source_record_date": "2019-07-26",
+        "building_code": "388",
+        "building_name": "Whitmore Hall",
+        "footprint_gap_m": 2.53,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 80,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/80",
+        "source_record_date": "2019-07-26",
+        "building_code": "417",
+        "building_name": "DuBois Library",
+        "footprint_gap_m": 0.0,
+        "decision": "added_dated_entrance",
+        "entrance_id": "umass-legacy-entrance-80"
+      },
+      {
+        "record_id": 81,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/81",
+        "source_record_date": "2019-07-26",
+        "building_code": "291",
+        "building_name": "University Health Center - UHC",
+        "footprint_gap_m": 1.52,
+        "decision": "ambiguous_building"
+      },
+      {
+        "record_id": 82,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/82",
+        "source_record_date": "2019-07-26",
+        "building_code": "418",
+        "building_name": "University Health Center Addition - UHCA",
+        "footprint_gap_m": 0.86,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 83,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/83",
+        "source_record_date": "2019-07-26",
+        "building_code": "415",
+        "building_name": "Tobin Hall",
+        "footprint_gap_m": 0.0,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 84,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/84",
+        "source_record_date": "2019-07-26",
+        "building_code": "131",
+        "building_name": "Student Union",
+        "footprint_gap_m": 0.0,
+        "decision": "added_dated_entrance",
+        "entrance_id": "umass-legacy-entrance-84"
+      },
+      {
+        "record_id": 85,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/85",
+        "source_record_date": "2019-07-26",
+        "building_code": "130",
+        "building_name": "Stockbridge Hall",
+        "footprint_gap_m": 1.08,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 86,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/86",
+        "source_record_date": "2019-07-26",
+        "building_code": "115",
+        "building_name": "Memorial Hall",
+        "footprint_gap_m": 2.71,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 87,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/87",
+        "source_record_date": "2019-07-26",
+        "building_code": "317",
+        "building_name": "Isenberg School of Management Building",
+        "footprint_gap_m": 3.6,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 88,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/88",
+        "source_record_date": "2019-07-26",
+        "building_code": "412",
+        "building_name": "Lederle Graduate Research Center",
+        "footprint_gap_m": 0.0,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 89,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/89",
+        "source_record_date": "2019-07-26",
+        "building_code": "002",
+        "building_name": "Arnold House",
+        "footprint_gap_m": 3.75,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 90,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/90",
+        "source_record_date": "2019-07-26",
+        "building_code": "120",
+        "building_name": "Paige Laboratory",
+        "footprint_gap_m": 2.43,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 91,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/91",
+        "source_record_date": "2019-07-26",
+        "building_code": "289",
+        "building_name": "Furcolo Hall",
+        "footprint_gap_m": 1.94,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 92,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/92",
+        "source_record_date": "2019-07-26",
+        "building_code": "289",
+        "building_name": "Furcolo Hall",
+        "footprint_gap_m": 0.7,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 93,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/93",
+        "source_record_date": "2019-07-26",
+        "building_code": "289",
+        "building_name": "Furcolo Hall",
+        "footprint_gap_m": 1.83,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 94,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/94",
+        "source_record_date": "2019-07-26",
+        "building_code": "289",
+        "building_name": "Furcolo Hall",
+        "footprint_gap_m": 0.0,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 95,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/95",
+        "source_record_date": "2019-07-26",
+        "building_code": "289",
+        "building_name": "Furcolo Hall",
+        "footprint_gap_m": 0.17,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 96,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/96",
+        "source_record_date": "2019-07-26",
+        "building_code": "406",
+        "building_name": "Herter Hall",
+        "footprint_gap_m": 0.63,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 97,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/97",
+        "source_record_date": "2019-07-26",
+        "building_code": "413",
+        "building_name": "Lincoln Campus Center",
+        "footprint_gap_m": 0.0,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 98,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/98",
+        "source_record_date": "2019-07-26",
+        "building_code": "412",
+        "building_name": "Lederle Graduate Research Center",
+        "footprint_gap_m": 0.0,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 99,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/99",
+        "source_record_date": "2019-07-26",
+        "building_code": "129",
+        "building_name": "South College",
+        "footprint_gap_m": 0.0,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 100,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/100",
+        "source_record_date": "2019-07-26",
+        "building_code": "129",
+        "building_name": "South College",
+        "footprint_gap_m": 0.0,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 101,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/101",
+        "source_record_date": "2019-07-26",
+        "building_code": "129",
+        "building_name": "South College",
+        "footprint_gap_m": 0.0,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 102,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/102",
+        "source_record_date": "2019-07-26",
+        "building_code": "715",
+        "building_name": "Physical Sciences Building",
+        "footprint_gap_m": 0.0,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 103,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/103",
+        "source_record_date": "2019-07-26",
+        "building_code": "715",
+        "building_name": "Physical Sciences Building",
+        "footprint_gap_m": 0.0,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 104,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/104",
+        "source_record_date": "2019-07-26",
+        "building_code": "715",
+        "building_name": "Physical Sciences Building",
+        "footprint_gap_m": 0.08,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 105,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/105",
+        "source_record_date": "2019-07-26",
+        "building_code": "398",
+        "building_name": "Physical Plant Building Addition",
+        "footprint_gap_m": 1.94,
+        "decision": "ambiguous_building"
+      },
+      {
+        "record_id": 106,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/106",
+        "source_record_date": "2019-07-26",
+        "building_code": "398",
+        "building_name": "Physical Plant Building Addition",
+        "footprint_gap_m": 1.01,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 279,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/279",
+        "source_record_date": "2019-07-26",
+        "building_code": "080",
+        "building_name": "Chapel",
+        "footprint_gap_m": 0.0,
+        "decision": "outside_selected_nonresidential_catalog"
+      }
+    ],
+    "residence_buildings": [
+      {
+        "record_id": 9,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/9",
+        "source_record_date": "2019-07-26",
+        "building_code": "107",
+        "building_name": "Bartlett Hall",
+        "footprint_gap_m": 8.22,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 10,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/10",
+        "source_record_date": "2019-07-26",
+        "building_code": "420",
+        "building_name": "The Randolph W. Bromery Center for the Arts",
+        "footprint_gap_m": 0.89,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 11,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/11",
+        "source_record_date": "2019-07-26",
+        "building_code": "420",
+        "building_name": "The Randolph W. Bromery Center for the Arts",
+        "footprint_gap_m": 1.32,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 12,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/12",
+        "source_record_date": "2019-07-26",
+        "building_code": "420",
+        "building_name": "The Randolph W. Bromery Center for the Arts",
+        "footprint_gap_m": 0.0,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 13,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/13",
+        "source_record_date": "2019-07-26",
+        "building_code": "343",
+        "building_name": "Marcus Hall",
+        "footprint_gap_m": 0.0,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 14,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/14",
+        "source_record_date": "2019-07-26",
+        "building_code": "169",
+        "building_name": "Wilder Hall",
+        "footprint_gap_m": 4.71,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 15,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/15",
+        "source_record_date": "2019-07-26",
+        "building_code": "169",
+        "building_name": "Wilder Hall",
+        "footprint_gap_m": 5.79,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 16,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/16",
+        "source_record_date": "2019-07-26",
+        "building_code": "111",
+        "building_name": "Machmer Hall",
+        "footprint_gap_m": 1.14,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 17,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/17",
+        "source_record_date": "2019-07-26",
+        "building_code": "318",
+        "building_name": "Hasbrouck Laboratory Addition",
+        "footprint_gap_m": 0.62,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 18,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/18",
+        "source_record_date": "2019-07-26",
+        "building_code": "318",
+        "building_name": "Hasbrouck Laboratory Addition",
+        "footprint_gap_m": 5.39,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 19,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/19",
+        "source_record_date": "2019-07-26",
+        "building_code": "126",
+        "building_name": "Morrill Science Center I",
+        "footprint_gap_m": 3.43,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 20,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/20",
+        "source_record_date": "2019-07-26",
+        "building_code": "009",
+        "building_name": "Middlesex House",
+        "footprint_gap_m": 1.65,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 55,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/55",
+        "source_record_date": "2019-07-26",
+        "building_code": "704",
+        "building_name": "Integrative Learning Center",
+        "footprint_gap_m": 2.05,
+        "decision": "added_dated_entrance",
+        "entrance_id": "umass-legacy-entrance-55"
+      },
+      {
+        "record_id": 56,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/56",
+        "source_record_date": "2019-07-26",
+        "building_code": "704",
+        "building_name": "Integrative Learning Center",
+        "footprint_gap_m": 0.75,
+        "decision": "added_dated_entrance",
+        "entrance_id": "umass-legacy-entrance-56"
+      },
+      {
+        "record_id": 57,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/57",
+        "source_record_date": "2019-07-26",
+        "building_code": "704",
+        "building_name": "Integrative Learning Center",
+        "footprint_gap_m": 4.04,
+        "decision": "added_dated_entrance",
+        "entrance_id": "umass-legacy-entrance-57"
+      },
+      {
+        "record_id": 58,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/58",
+        "source_record_date": "2019-07-26",
+        "building_code": "388",
+        "building_name": "Whitmore Hall",
+        "footprint_gap_m": 3.06,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 59,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/59",
+        "source_record_date": "2019-07-26",
+        "building_code": "708",
+        "building_name": "Elm House",
+        "footprint_gap_m": 1.8,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 60,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/60",
+        "source_record_date": "2019-07-26",
+        "building_code": "709",
+        "building_name": "Maple House",
+        "footprint_gap_m": 0.0,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 61,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/61",
+        "source_record_date": "2019-07-26",
+        "building_code": "709",
+        "building_name": "Maple House",
+        "footprint_gap_m": 0.7,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 62,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/62",
+        "source_record_date": "2019-07-26",
+        "building_code": "709",
+        "building_name": "Maple House",
+        "footprint_gap_m": 2.44,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 63,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/63",
+        "source_record_date": "2019-07-26",
+        "building_code": "709",
+        "building_name": "Maple House",
+        "footprint_gap_m": 3.39,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 64,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/64",
+        "source_record_date": "2019-07-26",
+        "building_code": "708",
+        "building_name": "Elm House",
+        "footprint_gap_m": 1.02,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 65,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/65",
+        "source_record_date": "2019-07-26",
+        "building_code": "127",
+        "building_name": "Morrill Science Center II",
+        "footprint_gap_m": 3.71,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 66,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/66",
+        "source_record_date": "2019-07-26",
+        "building_code": "696",
+        "building_name": "Parks, George N. Minuteman Marching Band Building",
+        "footprint_gap_m": 3.23,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 67,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/67",
+        "source_record_date": "2019-07-26",
+        "building_code": "696",
+        "building_name": "Parks, George N. Minuteman Marching Band Building",
+        "footprint_gap_m": 0.81,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 68,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/68",
+        "source_record_date": "2019-07-26",
+        "building_code": "677",
+        "building_name": "Studio Arts Building",
+        "footprint_gap_m": 4.11,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 69,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/69",
+        "source_record_date": "2019-07-26",
+        "building_code": "502",
+        "building_name": "Lederle Graduate Research Center Addition",
+        "footprint_gap_m": 1.57,
+        "decision": "ambiguous_building"
+      },
+      {
+        "record_id": 70,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/70",
+        "source_record_date": "2019-07-26",
+        "building_code": "676",
+        "building_name": "Integrated Sciences Building",
+        "footprint_gap_m": 1.95,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 71,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/71",
+        "source_record_date": "2019-07-26",
+        "building_code": "676",
+        "building_name": "Integrated Sciences Building",
+        "footprint_gap_m": 0.36,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 72,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/72",
+        "source_record_date": "2019-07-26",
+        "building_code": "676",
+        "building_name": "Integrated Sciences Building",
+        "footprint_gap_m": 1.17,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 73,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/73",
+        "source_record_date": "2019-07-26",
+        "building_code": "082",
+        "building_name": "Goessmann Laboratory Addition",
+        "footprint_gap_m": 0.0,
+        "decision": "ambiguous_building"
+      },
+      {
+        "record_id": 74,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/74",
+        "source_record_date": "2019-07-26",
+        "building_code": "677",
+        "building_name": "Studio Arts Building",
+        "footprint_gap_m": 3.75,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 75,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/75",
+        "source_record_date": "2019-07-26",
+        "building_code": "677",
+        "building_name": "Studio Arts Building",
+        "footprint_gap_m": 1.9,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 76,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/76",
+        "source_record_date": "2019-07-26",
+        "building_code": "128",
+        "building_name": "Skinner Hall",
+        "footprint_gap_m": 0.59,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 77,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/77",
+        "source_record_date": "2019-07-26",
+        "building_code": "128",
+        "building_name": "Skinner Hall",
+        "footprint_gap_m": 2.24,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 78,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/78",
+        "source_record_date": "2019-07-26",
+        "building_code": "388",
+        "building_name": "Whitmore Hall",
+        "footprint_gap_m": 3.92,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 79,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/79",
+        "source_record_date": "2019-07-26",
+        "building_code": "388",
+        "building_name": "Whitmore Hall",
+        "footprint_gap_m": 2.53,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 80,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/80",
+        "source_record_date": "2019-07-26",
+        "building_code": "417",
+        "building_name": "DuBois Library",
+        "footprint_gap_m": 0.0,
+        "decision": "added_dated_entrance",
+        "entrance_id": "umass-legacy-entrance-80"
+      },
+      {
+        "record_id": 81,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/81",
+        "source_record_date": "2019-07-26",
+        "building_code": "291",
+        "building_name": "University Health Center - UHC",
+        "footprint_gap_m": 1.52,
+        "decision": "ambiguous_building"
+      },
+      {
+        "record_id": 82,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/82",
+        "source_record_date": "2019-07-26",
+        "building_code": "418",
+        "building_name": "University Health Center Addition - UHCA",
+        "footprint_gap_m": 0.86,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 83,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/83",
+        "source_record_date": "2019-07-26",
+        "building_code": "415",
+        "building_name": "Tobin Hall",
+        "footprint_gap_m": 0.0,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 84,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/84",
+        "source_record_date": "2019-07-26",
+        "building_code": "131",
+        "building_name": "Student Union",
+        "footprint_gap_m": 0.0,
+        "decision": "added_dated_entrance",
+        "entrance_id": "umass-legacy-entrance-84"
+      },
+      {
+        "record_id": 85,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/85",
+        "source_record_date": "2019-07-26",
+        "building_code": "130",
+        "building_name": "Stockbridge Hall",
+        "footprint_gap_m": 1.08,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 86,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/86",
+        "source_record_date": "2019-07-26",
+        "building_code": "115",
+        "building_name": "Memorial Hall",
+        "footprint_gap_m": 2.71,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 87,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/87",
+        "source_record_date": "2019-07-26",
+        "building_code": "317",
+        "building_name": "Isenberg School of Management Building",
+        "footprint_gap_m": 3.6,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 88,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/88",
+        "source_record_date": "2019-07-26",
+        "building_code": "412",
+        "building_name": "Lederle Graduate Research Center",
+        "footprint_gap_m": 0.0,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 89,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/89",
+        "source_record_date": "2019-07-26",
+        "building_code": "002",
+        "building_name": "Arnold House",
+        "footprint_gap_m": 3.75,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 90,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/90",
+        "source_record_date": "2019-07-26",
+        "building_code": "120",
+        "building_name": "Paige Laboratory",
+        "footprint_gap_m": 2.43,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 91,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/91",
+        "source_record_date": "2019-07-26",
+        "building_code": "289",
+        "building_name": "Furcolo Hall",
+        "footprint_gap_m": 1.94,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 92,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/92",
+        "source_record_date": "2019-07-26",
+        "building_code": "289",
+        "building_name": "Furcolo Hall",
+        "footprint_gap_m": 0.7,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 93,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/93",
+        "source_record_date": "2019-07-26",
+        "building_code": "289",
+        "building_name": "Furcolo Hall",
+        "footprint_gap_m": 1.83,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 94,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/94",
+        "source_record_date": "2019-07-26",
+        "building_code": "289",
+        "building_name": "Furcolo Hall",
+        "footprint_gap_m": 0.0,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 95,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/95",
+        "source_record_date": "2019-07-26",
+        "building_code": "289",
+        "building_name": "Furcolo Hall",
+        "footprint_gap_m": 0.17,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 96,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/96",
+        "source_record_date": "2019-07-26",
+        "building_code": "406",
+        "building_name": "Herter Hall",
+        "footprint_gap_m": 0.63,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 97,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/97",
+        "source_record_date": "2019-07-26",
+        "building_code": "413",
+        "building_name": "Lincoln Campus Center",
+        "footprint_gap_m": 0.0,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 98,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/98",
+        "source_record_date": "2019-07-26",
+        "building_code": "412",
+        "building_name": "Lederle Graduate Research Center",
+        "footprint_gap_m": 0.0,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 99,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/99",
+        "source_record_date": "2019-07-26",
+        "building_code": "129",
+        "building_name": "South College",
+        "footprint_gap_m": 0.0,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 100,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/100",
+        "source_record_date": "2019-07-26",
+        "building_code": "129",
+        "building_name": "South College",
+        "footprint_gap_m": 0.0,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 101,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/101",
+        "source_record_date": "2019-07-26",
+        "building_code": "129",
+        "building_name": "South College",
+        "footprint_gap_m": 0.0,
+        "decision": "outside_selected_nonresidential_catalog"
+      },
+      {
+        "record_id": 102,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/102",
+        "source_record_date": "2019-07-26",
+        "building_code": "715",
+        "building_name": "Physical Sciences Building",
+        "footprint_gap_m": 0.0,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 103,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/103",
+        "source_record_date": "2019-07-26",
+        "building_code": "715",
+        "building_name": "Physical Sciences Building",
+        "footprint_gap_m": 0.0,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 104,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/104",
+        "source_record_date": "2019-07-26",
+        "building_code": "715",
+        "building_name": "Physical Sciences Building",
+        "footprint_gap_m": 0.08,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 105,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/105",
+        "source_record_date": "2019-07-26",
+        "building_code": "398",
+        "building_name": "Physical Plant Building Addition",
+        "footprint_gap_m": 1.94,
+        "decision": "ambiguous_building"
+      },
+      {
+        "record_id": 106,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/106",
+        "source_record_date": "2019-07-26",
+        "building_code": "398",
+        "building_name": "Physical Plant Building Addition",
+        "footprint_gap_m": 1.01,
+        "decision": "current_map_takes_precedence"
+      },
+      {
+        "record_id": 279,
+        "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/279",
+        "source_record_date": "2019-07-26",
+        "building_code": "080",
+        "building_name": "Chapel",
+        "footprint_gap_m": 0.0,
+        "decision": "added_dated_entrance",
+        "entrance_id": "umass-legacy-entrance-279"
+      }
+    ]
+  }
+}

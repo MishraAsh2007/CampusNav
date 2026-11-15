@@ -1,0 +1,17 @@
+{
+  "sources": [
+    {
+      "id": "umass-maintenance",
+      "kind": "sharepoint",
+      "site_url": "https://umass.sharepoint.com/sites/impactnotices",
+      "list_id": "73963677-5e24-4eac-96a3-95a82dc03118",
+      "storage_state": "../../data/private/sharepoint-session.json",
+      "cache": "../../data/private/sharepoint-notices.json",
+      "fallback": {
+        "kind": "xlsx",
+        "path": "PUT_THE_ABSOLUTE_PATH_TO_YOUR_FALLBACK_EXPORT_HERE.xlsx",
+        "sheet": "query"
+      }
+    }
+  ]
+}

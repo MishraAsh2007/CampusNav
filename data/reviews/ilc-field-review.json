@@ -1,0 +1,201 @@
+{
+  "building_id": "ilc",
+  "reported_on": "2026-11-15",
+  "provenance": "User-relayed peer observations; not an independent survey",
+  "observations": [
+    {
+      "id": "southwest-floor",
+      "reported": "The entrance called south is southwest and enters floor 2.",
+      "status": "floor and label corrected; geographic identity and floor-plan position unresolved"
+    },
+    {
+      "id": "west-entrance",
+      "reported": "The friend could not find the entrance called west.",
+      "status": "withdrawn pending doorway identification"
+    },
+    {
+      "id": "north-elevator",
+      "reported": "An unnamed north elevator connects floors 1 and 2.",
+      "floors_served": [
+        "1",
+        "2"
+      ],
+      "position": null,
+      "matches_existing_asset": null,
+      "status": "Identity confirmed by user: north shaft beside N155/N255; floor 1-2 service reported. Corridor approaches pending trace.",
+      "online_candidate": {
+        "description": "Matching lift-shaft symbols beside N155 on floor 1 and N255 on floor 2 in the original public ArcGIS tiles",
+        "floor_1_item": "b3d4d6b388c149bf8b9e76bc9d460c45",
+        "floor_2_item": "131a52d2430b45c3b27f9e7294a3800f",
+        "peer_match_confirmed": true,
+        "routing_enabled": false
+      },
+      "proposed_asset_id": "ilc-elevator-north",
+      "proposed_display_name": "North elevator beside N155 / N255"
+    },
+    {
+      "id": "central-elevator-pair",
+      "reported": "Two elevators opposite S140 and S142, separate from the north elevator.",
+      "peer_match_confirmed": true,
+      "online_evidence": "Public floor-1 plan shows two adjacent shaft symbols across the hall from S142/S140. Floor-2 plan shows the corresponding pair beside the corridor above S240.",
+      "individual_shaft_identity": "Plan labels appear S199Q/S199P on floor 1 and S299Q/S299P on floor 2; preserve these as plan identifiers, not official elevator names.",
+      "proposed_display_name": "Elevator pair opposite S140 / S142",
+      "higher_floor_service": "unconfirmed",
+      "matches_old_east_west_assets": "Not yet established; do not transfer old GIS/outage IDs by guess.",
+      "routing_enabled": false
+    },
+    {
+      "id": "crossed-box-elevator-symbols",
+      "reported": "The crossed boxes in the floor plans are elevators.",
+      "recorded_on": "2026-11-15",
+      "action": "Aligned simple-map elevator icons with crossed-box shaft centers on floors 1 and 2; hallway-side route endpoints are distinct from shaft centers."
+    }
+  ],
+  "previous_status": "reviewed",
+  "previous_review_notes": "Topology authored from ArcGIS accessibility layer elevator and entrance positions, matched to OSM outdoor graph. Corridors are simplified; room-level detail is not yet mapped. Includes the source-linked N151 2nd-floor entryway pilot waypoint; its doorway position is not survey-grade and must be field-verified. Includes the source-linked N151 2nd-floor entryway pilot waypoint; its doorway position is not survey-grade and must be field-verified. Expanded to 16 source-linked classroom records across documented pilot floors; coordinates are hackathon pilot approximations requiring field verification. Expanded to 16 source-linked classroom records across documented pilot floors; coordinates are hackathon pilot approximations requiring field verification. Public floor-plan assets are registered; corridor and doorway topology still requires explicit tracing from those plans. Public floor-plan assets are registered; corridor and doorway topology still requires explicit tracing from those plans. ILC floors 1 and 2 are now anchored to the public scaled ArcGIS floor plans with explicit room-to-corridor polylines. Doorway clearance and obstruction status still require field verification.",
+  "original_entrance_nodes": [
+    {
+      "id": "ilc-entrance-south",
+      "label": "ILC South Entrance",
+      "floor_id": "1",
+      "kind": "entrance",
+      "x": 770.0,
+      "y": 900.0,
+      "position": {
+        "lat": 42.390788,
+        "lng": -72.526246
+      },
+      "source_id": "umass-entrances-pnts",
+      "aliases": [
+        "south entrance",
+        "main entrance"
+      ],
+      "source_record_ids": [
+        "umass-legacy-entrance-56"
+      ]
+    },
+    {
+      "id": "ilc-entrance-west",
+      "label": "ILC West Entrance",
+      "floor_id": "1",
+      "kind": "entrance",
+      "x": 485.0,
+      "y": 700.0,
+      "position": {
+        "lat": 42.390878,
+        "lng": -72.52531
+      },
+      "source_id": "umass-entrances-pnts",
+      "aliases": [
+        "west entrance"
+      ],
+      "source_record_ids": [
+        "umass-legacy-entrance-57"
+      ]
+    }
+  ],
+  "withdrawn_edges": [
+    {
+      "id": "ilc-corridor-south-junc",
+      "start": "ilc-entrance-south",
+      "end": "ilc-junction-f1",
+      "kind": "corridor",
+      "length_m": 19.68,
+      "geometry": [
+        [
+          770.0,
+          900.0
+        ],
+        [
+          748.0,
+          770.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "automatic",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    },
+    {
+      "id": "ilc-corridor-west-entrance-junc",
+      "start": "ilc-entrance-west",
+      "end": "ilc-elev-west-f1",
+      "kind": "corridor",
+      "length_m": 30.69,
+      "geometry": [
+        [
+          485.0,
+          700.0
+        ],
+        [
+          690.0,
+          715.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 2.5,
+      "door_type": "automatic",
+      "source_id": "ilc-floorplans",
+      "evidence": "Corridor polyline traced against the public scaled ILC floor plan; doorway clearance and current obstruction status require field verification."
+    }
+  ],
+  "withdrawn_portals": [
+    {
+      "id": "ilc-portal-south",
+      "indoor_node_id": "ilc-entrance-south",
+      "outdoor_node_id": 12878112836,
+      "geometry": [
+        [
+          -72.526246,
+          42.390788
+        ],
+        [
+          -72.5262648,
+          42.3907945
+        ]
+      ],
+      "length_m": 2.0,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 1.0,
+      "width_m": 2.0,
+      "door_type": "automatic",
+      "asset_id": null,
+      "source_id": "umass-entrances-pnts",
+      "evidence": "ArcGIS entrance OID 56 to nearest OSM walking path node 12878112836 (1.7m). Exact source: https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/56. Record dated 2019-07-26; current operation unverified."
+    },
+    {
+      "id": "ilc-portal-west",
+      "indoor_node_id": "ilc-entrance-west",
+      "outdoor_node_id": 13082573896,
+      "geometry": [
+        [
+          -72.52531,
+          42.390878
+        ],
+        [
+          -72.5252971,
+          42.3909265
+        ]
+      ],
+      "length_m": 6.0,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 2.0,
+      "width_m": 2.0,
+      "door_type": "automatic",
+      "asset_id": null,
+      "source_id": "umass-entrances-pnts",
+      "evidence": "ArcGIS entrance OID 57 to nearest OSM walking path node 13082573896 (5.5m). Exact source: https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/57. Record dated 2019-07-26; current operation unverified."
+    }
+  ]
+}

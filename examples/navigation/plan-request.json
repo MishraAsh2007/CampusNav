@@ -1,0 +1,23 @@
+{
+  "max_grade": 5.0,
+  "no_stairs": true,
+  "allow_unknown_access": false,
+  "allow_unknown_grade": false,
+  "need_automatic_door": false,
+  "min_width_m": null,
+  "origin": {
+    "text": "second floor of the library",
+    "building_id": null,
+    "floor_id": null,
+    "node_id": "a2",
+    "outdoor": null
+  },
+  "destination": {
+    "text": "ILC",
+    "building_id": null,
+    "floor_id": null,
+    "node_id": null,
+    "outdoor": null
+  },
+  "closures": null
+}

@@ -1,0 +1,243 @@
+/* Map overlays shared by the Google and Leaflet renderers */
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  font-family: inherit;
+  background: #eceae4;
+}
+/* Soften OSM's saturated palette so the route reads first */
+.leaflet-tile-pane {
+  filter: saturate(0.55) brightness(1.04) contrast(0.95);
+}
+html.hc .leaflet-tile-pane {
+  filter: grayscale(1) contrast(1.15);
+}
+.leaflet-control-attribution {
+  font-size: 10px !important;
+  background: rgba(255, 255, 255, 0.7) !important;
+  border-radius: 8px 0 0 0;
+}
+.leaflet-div-icon.au-icon {
+  background: none;
+  border: none;
+}
+
+/* ---------- markers ---------- */
+.au-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  color: #fff;
+  font: 600 13px/1 Inter, system-ui, sans-serif;
+  border: 3px solid #fff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+}
+.au-pin.a {
+  background: #1d1d1f;
+}
+.au-pin.b {
+  background: #2a9d64;
+}
+
+.au-route-step { position: relative; width: 24px; height: 24px; }
+.au-route-step-dot { display: block; width: 24px; height: 24px; border: 4px solid white; border-radius: 50%; background: #0369a1; box-shadow: 0 0 0 7px #0369a130, 0 2px 8px #0f172a50; }
+.au-route-step-label { position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%); padding: 5px 9px; border-radius: 10px; background: #075985; color: white; font: 600 12px/1.3 Inter, system-ui, sans-serif; white-space: nowrap; box-shadow: 0 2px 8px #0f172a30; }
+
+.au-building {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px 3px 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.12);
+  font: 600 11px/1 Inter, system-ui, sans-serif;
+  color: #1d1d1f;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s;
+}
+.au-building:hover {
+  transform: translateY(-1px) scale(1.04);
+}
+.au-building .dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: #fff;
+  background: #2a9d64;
+}
+.au-building.partial .dot {
+  background: #f0a020;
+}
+.au-building.limited .dot {
+  background: #e5484d;
+}
+.au-building.selected {
+  background: #1d1d1f;
+  color: #fff;
+}
+
+.au-entrance {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 2.5px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+.au-entrance.ok {
+  background: #2a9d64;
+}
+.au-entrance.manual {
+  background: #f0a020;
+}
+.au-entrance.no {
+  background: #9a9aa0;
+}
+.au-entrance.broken {
+  background: #e5484d;
+}
+.au-entrance.chosen {
+  width: 20px;
+  height: 20px;
+  box-shadow: 0 0 0 4px rgba(42, 157, 100, 0.28), 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.au-closure {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  border: 2.5px solid #fff;
+  box-shadow: 0 4px 14px rgba(229, 72, 77, 0.45);
+  background: #e5484d;
+  cursor: pointer;
+}
+.au-closure.degraded {
+  background: #f0a020;
+  box-shadow: 0 4px 14px rgba(240, 160, 32, 0.45);
+}
+.au-closure.live::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 999px;
+  border: 2px solid currentColor;
+  color: #e5484d;
+  animation: au-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.au-closure.degraded.live::after {
+  color: #f0a020;
+}
+/* Ranks: high alert (Facilities + students) is larger with a double ring */
+.au-closure.sev-high {
+  width: 36px;
+  height: 36px;
+  background: #c4262b;
+  box-shadow: 0 0 0 4px rgba(229, 72, 77, 0.28), 0 6px 18px rgba(196, 38, 43, 0.5);
+}
+.au-closure.sev-reported:not(.road) {
+  background: #f2777a;
+}
+.au-closure.road {
+  background: #5b6b8c;
+  box-shadow: 0 4px 14px rgba(91, 107, 140, 0.45);
+}
+.au-closure.road.live::after {
+  color: #5b6b8c;
+}
+.au-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 3px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 700 10px/1 Inter, system-ui, sans-serif;
+  color: #fff;
+}
+.au-badge.high {
+  background: #1d1d1f;
+}
+.au-badge.official {
+  background: #0a84ff;
+}
+.au-badge .au-svg {
+  width: 9px;
+  height: 9px;
+  stroke-width: 3;
+}
+.au-closure > svg {
+  position: relative;
+}
+.au-tag.bus {
+  background: #eef1f7;
+  color: #33405c;
+  cursor: pointer;
+}
+@keyframes au-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  80%,
+  100% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+}
+
+.au-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  font: 600 10.5px/1 Inter, system-ui, sans-serif;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+  border: 1.5px solid #fff;
+}
+.au-tag.stairs {
+  background: #fdecec;
+  color: #a8262b;
+}
+.au-tag.lift {
+  background: #6e56cf;
+  color: #fff;
+}
+.au-tag.steep {
+  background: #fdf4e3;
+  color: #8a5a00;
+}
+
+.au-svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.au-pick-cursor {
+  cursor: crosshair !important;
+}

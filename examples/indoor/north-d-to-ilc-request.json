@@ -1,0 +1,17 @@
+{
+  "origin": {
+    "kind": "drawing",
+    "building_id": "north-d",
+    "node_id": "apartment-513-5"
+  },
+  "destination": {
+    "kind": "indoor",
+    "building_id": "ilc",
+    "node_id": "ilc-source-n111-f1"
+  },
+  "accept_drawing_only": true,
+  "resident_access_confirmed": true,
+  "max_grade": 5,
+  "no_stairs": true,
+  "closures": []
+}

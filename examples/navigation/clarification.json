@@ -1,0 +1,43 @@
+{
+  "status": "needs_input",
+  "code": "choose_landmark",
+  "field": "origin.node_id",
+  "question": "Which room, entrance, or labeled elevator landing are you at? A floor alone does not identify your position.",
+  "choices": [
+    {
+      "node_id": "hall2",
+      "floor_id": "2",
+      "label": "HALL landing"
+    },
+    {
+      "node_id": "a2",
+      "floor_id": "2",
+      "label": "Demo elevator A landing"
+    },
+    {
+      "node_id": "b2",
+      "floor_id": "2",
+      "label": "Demo elevator B landing"
+    },
+    {
+      "node_id": "room-201",
+      "floor_id": "2",
+      "label": "Demo room 201"
+    }
+  ],
+  "location": {
+    "text": "second floor of the library",
+    "building_id": "library",
+    "floor_id": "2"
+  },
+  "coverage": {
+    "building_id": "library",
+    "status": "reviewed",
+    "routable": true,
+    "synthetic": true,
+    "mapped_nodes": 8,
+    "mapped_connections": 9,
+    "entrance_connections": 1
+  },
+  "message": null
+}

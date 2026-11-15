@@ -1,0 +1,237 @@
+{
+  "$defs": {
+    "Closure": {
+      "properties": {
+        "lat": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Lat",
+          "type": "number"
+        },
+        "lng": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Lng",
+          "type": "number"
+        },
+        "radius": {
+          "description": "Affected radius in meters",
+          "exclusiveMinimum": 0,
+          "maximum": 1000,
+          "title": "Radius",
+          "type": "number"
+        },
+        "type": {
+          "enum": [
+            "elevator",
+            "ramp",
+            "path"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "closed",
+            "degraded"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "official",
+            "community",
+            "verified"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "start_time": {
+          "format": "date-time",
+          "title": "Start Time",
+          "type": "string"
+        },
+        "end_time": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "End Time"
+        },
+        "last_confirmed": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Last Confirmed"
+        },
+        "asset_id": {
+          "anyOf": [
+            {
+              "maxLength": 150,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Asset Id"
+        },
+        "building_id": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Building Id"
+        },
+        "floor_id": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Floor Id"
+        }
+      },
+      "required": [
+        "lat",
+        "lng",
+        "radius",
+        "type",
+        "status",
+        "source",
+        "start_time",
+        "end_time",
+        "last_confirmed"
+      ],
+      "title": "Closure",
+      "type": "object"
+    },
+    "Place": {
+      "additionalProperties": false,
+      "properties": {
+        "lat": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Lat",
+          "type": "number"
+        },
+        "lng": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Lng",
+          "type": "number"
+        },
+        "name": {
+          "default": "Map pin",
+          "maxLength": 150,
+          "title": "Name",
+          "type": "string"
+        },
+        "building_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Building Id"
+        },
+        "entrance_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entrance Id"
+        }
+      },
+      "required": [
+        "lat",
+        "lng"
+      ],
+      "title": "Place",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "origin": {
+      "$ref": "#/$defs/Place"
+    },
+    "destination": {
+      "$ref": "#/$defs/Place"
+    },
+    "max_grade": {
+      "default": 5,
+      "maximum": 100,
+      "minimum": 0,
+      "title": "Max Grade",
+      "type": "number"
+    },
+    "no_stairs": {
+      "default": true,
+      "title": "No Stairs",
+      "type": "boolean"
+    },
+    "need_automatic_door": {
+      "default": false,
+      "title": "Need Automatic Door",
+      "type": "boolean"
+    },
+    "allow_keycard_entrance_approach": {
+      "default": false,
+      "title": "Allow Keycard Entrance Approach",
+      "type": "boolean"
+    },
+    "prefer_indoor_entrance": {
+      "default": false,
+      "title": "Prefer Indoor Entrance",
+      "type": "boolean"
+    },
+    "closures": {
+      "items": {
+        "$ref": "#/$defs/Closure"
+      },
+      "maxItems": 500,
+      "title": "Closures",
+      "type": "array"
+    }
+  },
+  "required": [
+    "origin",
+    "destination"
+  ],
+  "title": "TripRequest",
+  "type": "object"
+}

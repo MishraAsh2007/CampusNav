@@ -1,0 +1,1472 @@
+{
+  "building_id": "ilc",
+  "floor_id": null,
+  "floor_sources": {
+    "1": {
+      "local_image": "data/plan_wayfinding/sources/ilc/floor-1.png",
+      "source_url": "https://tiles.arcgis.com/tiles/2gdL2gxYNFY2TOUb/arcgis/rest/services/Integrated_Learning_Center_First_Floor_Scaled/MapServer",
+      "source_sha256": "78084f764b092a811fa966f143c3bb626341def418dd6b777d192d177e2a87e4",
+      "width": "1536",
+      "height": "1280",
+      "route_overlay": "original_mosaic_pixels",
+      "extent": "{\"xmin\": -8073661.116279913, \"ymax\": 5219846.447611859, \"xmax\": -8073431.805195129, \"ymin\": 5219655.355041204}"
+    },
+    "2": {
+      "local_image": "data/plan_wayfinding/sources/ilc/floor-2.png",
+      "source_url": "https://tiles.arcgis.com/tiles/2gdL2gxYNFY2TOUb/arcgis/rest/services/Integrated_Learning_Center_Second_Floor_Reup/MapServer",
+      "source_sha256": "c08ff754d00360fe3e3bb367ed84bf6b336ce7bbeda42d948ffe01f24cb0295c",
+      "width": "1536",
+      "height": "1280",
+      "route_overlay": "original_mosaic_pixels",
+      "extent": "{\"xmin\": -8073661.116279913, \"ymax\": 5219846.447611859, \"xmax\": -8073431.805195129, \"ymin\": 5219655.355041204}"
+    }
+  },
+  "source_url": "https://tiles.arcgis.com/tiles/2gdL2gxYNFY2TOUb/arcgis/rest/services/Integrated_Learning_Center_First_Floor_Scaled/MapServer",
+  "source_sha256": "ef42ab446b415ac2cc417a41c7dcf15ad0399cfe2fe1b25a9308cd67ed3e2db3",
+  "drawing_review": "UMass plan tiles traced on 2026-11-15; expanded with Ash_ver's source-aligned corridor and room traces. Four elevators confirmed by the user, including the North Pleasant Street shaft. Southwest doorway on floor 2. Selected approaches only; no floors 3/4.",
+  "physical_verification": false,
+  "coordinate_system": "image_pixels",
+  "resident_access_required": false,
+  "source_warnings": [
+    "Published-plan directions; current access, doors, widths and grades are unverified.",
+    "Floors 1-2 only. Confirm the listed hallway destination and floor signs.",
+    "Location is manual; the selected-step marker is not a GPS position."
+  ],
+  "nodes": [
+    {
+      "id": "ilc-north-f1",
+      "label": "North lobby beside N155",
+      "x": 502.0,
+      "y": 440.0,
+      "floor_id": "1",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-north-bend-f1",
+      "label": "North lobby corner",
+      "x": 485.0,
+      "y": 475.0,
+      "floor_id": "1",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-foyer-f1",
+      "label": "Open foyer beside N151",
+      "x": 510.0,
+      "y": 590.0,
+      "floor_id": "1",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-foyer-south-f1",
+      "label": "South end of the foyer",
+      "x": 552.0,
+      "y": 685.0,
+      "floor_id": "1",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-north-junction-f1",
+      "label": "Hall junction above N111",
+      "x": 595.0,
+      "y": 721.0,
+      "floor_id": "1",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-west-core-f1",
+      "label": "Hall beside the restrooms",
+      "x": 643.0,
+      "y": 737.0,
+      "floor_id": "1",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-west-hall-f1",
+      "label": "Hall beside N111",
+      "x": 655.0,
+      "y": 802.0,
+      "floor_id": "1",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-south-junction-f1",
+      "label": "Hall junction below N111",
+      "x": 665.0,
+      "y": 866.0,
+      "floor_id": "1",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-lift-lobby-f1",
+      "label": "Elevator lobby opposite S140 / S142",
+      "x": 727.0,
+      "y": 861.0,
+      "floor_id": "1",
+      "kind": "elevator_stop"
+    },
+    {
+      "id": "ilc-south-hall-f1",
+      "label": "Hall beside S120",
+      "x": 804.0,
+      "y": 853.0,
+      "floor_id": "1",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-east-hall-f1",
+      "label": "Hall toward S110",
+      "x": 970.0,
+      "y": 843.0,
+      "floor_id": "1",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-north-f2",
+      "label": "North lobby beside N255",
+      "x": 500.0,
+      "y": 443.0,
+      "floor_id": "2",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-north-bend-f2",
+      "label": "Hall west of the auditorium",
+      "x": 445.0,
+      "y": 493.0,
+      "floor_id": "2",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-foyer-f2",
+      "label": "Hall beside N151 upper level",
+      "x": 465.0,
+      "y": 586.0,
+      "floor_id": "2",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-foyer-south-f2",
+      "label": "Hall bend beside N151 upper level",
+      "x": 503.0,
+      "y": 733.0,
+      "floor_id": "2",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-north-junction-f2",
+      "label": "Hall junction above N211",
+      "x": 551.0,
+      "y": 729.0,
+      "floor_id": "2",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-west-core-f2",
+      "label": "Hall beside the restrooms",
+      "x": 610.0,
+      "y": 711.0,
+      "floor_id": "2",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-west-hall-f2",
+      "label": "Hall beside N211",
+      "x": 625.0,
+      "y": 794.0,
+      "floor_id": "2",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-south-junction-f2",
+      "label": "Open lobby below N211",
+      "x": 642.0,
+      "y": 875.0,
+      "floor_id": "2",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-lift-lobby-f2",
+      "label": "Central elevator lobby on floor 2",
+      "x": 719.0,
+      "y": 861.0,
+      "floor_id": "2",
+      "kind": "elevator_stop"
+    },
+    {
+      "id": "ilc-south-hall-f2",
+      "label": "Hall above S240",
+      "x": 803.0,
+      "y": 850.0,
+      "floor_id": "2",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-east-hall-f2",
+      "label": "Hall toward S220",
+      "x": 968.0,
+      "y": 828.0,
+      "floor_id": "2",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-lift-north-f1",
+      "label": "North elevator beside N155",
+      "x": 512.0,
+      "y": 419.0,
+      "floor_id": "1",
+      "kind": "elevator_stop"
+    },
+    {
+      "id": "ilc-lift-central-q-f1",
+      "label": "Central elevator nearest S187",
+      "x": 716.0,
+      "y": 848.0,
+      "floor_id": "1",
+      "kind": "elevator_stop"
+    },
+    {
+      "id": "ilc-lift-central-p-f1",
+      "label": "Central elevator nearest S131",
+      "x": 740.0,
+      "y": 844.0,
+      "floor_id": "1",
+      "kind": "elevator_stop"
+    },
+    {
+      "id": "ilc-lift-north-f2",
+      "label": "North elevator beside N255",
+      "x": 511.0,
+      "y": 416.0,
+      "floor_id": "2",
+      "kind": "elevator_stop"
+    },
+    {
+      "id": "ilc-lift-central-q-f2",
+      "label": "Central elevator nearest S281",
+      "x": 706.0,
+      "y": 846.0,
+      "floor_id": "2",
+      "kind": "elevator_stop"
+    },
+    {
+      "id": "ilc-lift-central-p-f2",
+      "label": "Central elevator nearest S231",
+      "x": 730.0,
+      "y": 842.0,
+      "floor_id": "2",
+      "kind": "elevator_stop"
+    },
+    {
+      "id": "ilc-door-n155-f1",
+      "label": "N155 doorway",
+      "x": 548.0,
+      "y": 442.0,
+      "floor_id": "1",
+      "kind": "room"
+    },
+    {
+      "id": "ilc-door-n111-f1",
+      "label": "N111 north doorway",
+      "x": 525.0,
+      "y": 751.0,
+      "floor_id": "1",
+      "kind": "room"
+    },
+    {
+      "id": "ilc-door-s142-f1",
+      "label": "S142 doorway opposite the elevators",
+      "x": 699.0,
+      "y": 874.0,
+      "floor_id": "1",
+      "kind": "room"
+    },
+    {
+      "id": "ilc-door-s140-f1",
+      "label": "S140 hallway approach via S140C",
+      "x": 690.0,
+      "y": 881.0,
+      "floor_id": "1",
+      "kind": "room"
+    },
+    {
+      "id": "ilc-door-s120-f1",
+      "label": "S120 hallway approach via S120D",
+      "x": 786.0,
+      "y": 855.0,
+      "floor_id": "1",
+      "kind": "room"
+    },
+    {
+      "id": "ilc-door-n255-f2",
+      "label": "N255 doorway",
+      "x": 549.0,
+      "y": 454.0,
+      "floor_id": "2",
+      "kind": "room"
+    },
+    {
+      "id": "ilc-door-n211-f2",
+      "label": "N211 south doorway",
+      "x": 606.0,
+      "y": 854.0,
+      "floor_id": "2",
+      "kind": "room"
+    },
+    {
+      "id": "ilc-door-s240-f2",
+      "label": "S240 hallway approach",
+      "x": 690.0,
+      "y": 866.0,
+      "floor_id": "2",
+      "kind": "room"
+    },
+    {
+      "id": "ilc-door-s220-f2",
+      "label": "S220 north hallway approach",
+      "x": 863.0,
+      "y": 842.0,
+      "floor_id": "2",
+      "kind": "room"
+    },
+    {
+      "id": "ilc-entrance-south",
+      "label": "Southwest entrance - floor 2",
+      "x": 508.0,
+      "y": 943.0,
+      "floor_id": "2",
+      "kind": "entrance"
+    },
+    {
+      "id": "ilc-sw-lobby-f2",
+      "label": "Southwest lobby beside N201",
+      "x": 563.0,
+      "y": 930.0,
+      "floor_id": "2",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-sw-junction-f2",
+      "label": "Lobby junction near S240",
+      "x": 610.0,
+      "y": 908.0,
+      "floor_id": "2",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-entrance-north-f1",
+      "label": "North entrance beside N155 - floor 1",
+      "x": 476.0,
+      "y": 400.0,
+      "floor_id": "1",
+      "kind": "entrance"
+    },
+    {
+      "id": "f1-lobby-n",
+      "label": "North lobby (N199G), 1st Floor",
+      "x": 470.0,
+      "y": 440.0,
+      "floor_id": "1",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-f1-n140",
+      "label": "ILC N140 (commons and café)",
+      "x": 470.0,
+      "y": 600.0,
+      "floor_id": "1",
+      "kind": "room"
+    },
+    {
+      "id": "f1-s-mid",
+      "label": "Corridor by N101, 1st Floor",
+      "x": 545.0,
+      "y": 880.0,
+      "floor_id": "1",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-f1-n101",
+      "label": "ILC N101",
+      "x": 545.0,
+      "y": 905.0,
+      "floor_id": "1",
+      "kind": "room"
+    },
+    {
+      "id": "f1-core-mid",
+      "label": "Corridor by the restrooms, 1st Floor",
+      "x": 650.0,
+      "y": 760.0,
+      "floor_id": "1",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-f1-restrooms",
+      "label": "Restrooms, 1st Floor",
+      "x": 668.0,
+      "y": 760.0,
+      "floor_id": "1",
+      "kind": "room"
+    },
+    {
+      "id": "f1-main-3",
+      "label": "Main corridor, 1st Floor",
+      "x": 772.0,
+      "y": 851.0,
+      "floor_id": "1",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-f1-s131",
+      "label": "ILC S131",
+      "x": 772.0,
+      "y": 832.0,
+      "floor_id": "1",
+      "kind": "room"
+    },
+    {
+      "id": "f1-main-s122",
+      "label": "Main corridor, 1st Floor",
+      "x": 850.0,
+      "y": 848.0,
+      "floor_id": "1",
+      "kind": "junction"
+    },
+    {
+      "id": "f1-main-4",
+      "label": "Main corridor, 1st Floor",
+      "x": 905.0,
+      "y": 845.0,
+      "floor_id": "1",
+      "kind": "junction"
+    },
+    {
+      "id": "f1-main-s112",
+      "label": "Main corridor, 1st Floor",
+      "x": 1020.0,
+      "y": 840.0,
+      "floor_id": "1",
+      "kind": "junction"
+    },
+    {
+      "id": "f1-main-5",
+      "label": "Main corridor, 1st Floor",
+      "x": 1057.0,
+      "y": 838.0,
+      "floor_id": "1",
+      "kind": "junction"
+    },
+    {
+      "id": "f1-main-e",
+      "label": "Main corridor, 1st Floor (east end)",
+      "x": 1100.0,
+      "y": 836.0,
+      "floor_id": "1",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-f1-s122",
+      "label": "ILC S122",
+      "x": 850.0,
+      "y": 858.0,
+      "floor_id": "1",
+      "kind": "room"
+    },
+    {
+      "id": "ilc-f1-s112",
+      "label": "ILC S112",
+      "x": 1020.0,
+      "y": 848.0,
+      "floor_id": "1",
+      "kind": "room"
+    },
+    {
+      "id": "ilc-f1-s110",
+      "label": "ILC S110",
+      "x": 1057.0,
+      "y": 852.0,
+      "floor_id": "1",
+      "kind": "room"
+    },
+    {
+      "id": "ilc-f2-n201",
+      "label": "ILC N201",
+      "x": 560.0,
+      "y": 955.0,
+      "floor_id": "2",
+      "kind": "room"
+    },
+    {
+      "id": "f2-core-mid",
+      "label": "Corridor by the restrooms, 2nd Floor",
+      "x": 638.0,
+      "y": 760.0,
+      "floor_id": "2",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-f2-restrooms",
+      "label": "Restrooms, 2nd Floor",
+      "x": 650.0,
+      "y": 760.0,
+      "floor_id": "2",
+      "kind": "room"
+    },
+    {
+      "id": "f2-main-s275",
+      "label": "Main corridor, 2nd Floor",
+      "x": 775.0,
+      "y": 848.0,
+      "floor_id": "2",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-door-s225-f2",
+      "label": "S225 hallway approach",
+      "x": 775.0,
+      "y": 812.0,
+      "floor_id": "2",
+      "kind": "room"
+    },
+    {
+      "id": "f2-main-b",
+      "label": "Main corridor, 2nd Floor",
+      "x": 830.0,
+      "y": 845.0,
+      "floor_id": "2",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-f2-s231",
+      "label": "ILC S231",
+      "x": 830.0,
+      "y": 822.0,
+      "floor_id": "2",
+      "kind": "room"
+    },
+    {
+      "id": "f2-main-d",
+      "label": "Main corridor, 2nd Floor",
+      "x": 940.0,
+      "y": 838.0,
+      "floor_id": "2",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-door-s241-f2",
+      "label": "S241 hallway approach",
+      "x": 940.0,
+      "y": 808.0,
+      "floor_id": "2",
+      "kind": "room"
+    },
+    {
+      "id": "f2-main-e",
+      "label": "Main corridor, 2nd Floor (east end)",
+      "x": 1095.0,
+      "y": 830.0,
+      "floor_id": "2",
+      "kind": "junction"
+    },
+    {
+      "id": "f2-lobby-se",
+      "label": "Southeast lobby (S299B), 2nd Floor",
+      "x": 1102.0,
+      "y": 890.0,
+      "floor_id": "2",
+      "kind": "junction"
+    },
+    {
+      "id": "ilc-lift-east-f1",
+      "label": "North Pleasant Street elevator beside S110",
+      "x": 1110.0,
+      "y": 839.0,
+      "floor_id": "1",
+      "kind": "elevator_stop"
+    },
+    {
+      "id": "ilc-lift-east-f2",
+      "label": "North Pleasant Street elevator beside S220",
+      "x": 1110.0,
+      "y": 843.0,
+      "floor_id": "2",
+      "kind": "elevator_stop"
+    }
+  ],
+  "connections": [
+    {
+      "id": "ilc-north-f1--ilc-north-bend-f1",
+      "start": "ilc-north-f1",
+      "end": "ilc-north-bend-f1",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-north-f1--ilc-north-bend-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-north-bend-f1--ilc-foyer-f1",
+      "start": "ilc-north-bend-f1",
+      "end": "ilc-foyer-f1",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-north-bend-f1--ilc-foyer-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-foyer-f1--ilc-foyer-south-f1",
+      "start": "ilc-foyer-f1",
+      "end": "ilc-foyer-south-f1",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-foyer-f1--ilc-foyer-south-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-foyer-south-f1--ilc-north-junction-f1",
+      "start": "ilc-foyer-south-f1",
+      "end": "ilc-north-junction-f1",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-foyer-south-f1--ilc-north-junction-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-north-junction-f1--ilc-west-core-f1",
+      "start": "ilc-north-junction-f1",
+      "end": "ilc-west-core-f1",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-north-junction-f1--ilc-west-core-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-west-core-f1--ilc-west-hall-f1",
+      "start": "ilc-west-core-f1",
+      "end": "ilc-west-hall-f1",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-west-core-f1--ilc-west-hall-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-west-hall-f1--ilc-south-junction-f1",
+      "start": "ilc-west-hall-f1",
+      "end": "ilc-south-junction-f1",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-west-hall-f1--ilc-south-junction-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-south-junction-f1--ilc-lift-lobby-f1",
+      "start": "ilc-south-junction-f1",
+      "end": "ilc-lift-lobby-f1",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-south-junction-f1--ilc-lift-lobby-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-lift-lobby-f1--ilc-south-hall-f1",
+      "start": "ilc-lift-lobby-f1",
+      "end": "ilc-south-hall-f1",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-lift-lobby-f1--ilc-south-hall-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-south-hall-f1--ilc-east-hall-f1",
+      "start": "ilc-south-hall-f1",
+      "end": "ilc-east-hall-f1",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-south-hall-f1--ilc-east-hall-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-north-f2--ilc-north-bend-f2",
+      "start": "ilc-north-f2",
+      "end": "ilc-north-bend-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-north-f2--ilc-north-bend-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-north-bend-f2--ilc-foyer-f2",
+      "start": "ilc-north-bend-f2",
+      "end": "ilc-foyer-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-north-bend-f2--ilc-foyer-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-foyer-f2--ilc-foyer-south-f2",
+      "start": "ilc-foyer-f2",
+      "end": "ilc-foyer-south-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-foyer-f2--ilc-foyer-south-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-foyer-south-f2--ilc-north-junction-f2",
+      "start": "ilc-foyer-south-f2",
+      "end": "ilc-north-junction-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-foyer-south-f2--ilc-north-junction-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-north-junction-f2--ilc-west-core-f2",
+      "start": "ilc-north-junction-f2",
+      "end": "ilc-west-core-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-north-junction-f2--ilc-west-core-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-west-core-f2--ilc-west-hall-f2",
+      "start": "ilc-west-core-f2",
+      "end": "ilc-west-hall-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-west-core-f2--ilc-west-hall-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-west-hall-f2--ilc-south-junction-f2",
+      "start": "ilc-west-hall-f2",
+      "end": "ilc-south-junction-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-west-hall-f2--ilc-south-junction-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-south-junction-f2--ilc-lift-lobby-f2",
+      "start": "ilc-south-junction-f2",
+      "end": "ilc-lift-lobby-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-south-junction-f2--ilc-lift-lobby-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-lift-lobby-f2--ilc-south-hall-f2",
+      "start": "ilc-lift-lobby-f2",
+      "end": "ilc-south-hall-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-lift-lobby-f2--ilc-south-hall-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-south-hall-f2--ilc-east-hall-f2",
+      "start": "ilc-south-hall-f2",
+      "end": "ilc-east-hall-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-south-hall-f2--ilc-east-hall-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-north-f1--ilc-lift-north-f1",
+      "start": "ilc-north-f1",
+      "end": "ilc-lift-north-f1",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-north-f1--ilc-lift-north-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-lift-lobby-f1--ilc-lift-central-q-f1",
+      "start": "ilc-lift-lobby-f1",
+      "end": "ilc-lift-central-q-f1",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-lift-lobby-f1--ilc-lift-central-q-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-lift-lobby-f1--ilc-lift-central-p-f1",
+      "start": "ilc-lift-lobby-f1",
+      "end": "ilc-lift-central-p-f1",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-lift-lobby-f1--ilc-lift-central-p-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-north-f2--ilc-lift-north-f2",
+      "start": "ilc-north-f2",
+      "end": "ilc-lift-north-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-north-f2--ilc-lift-north-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-lift-lobby-f2--ilc-lift-central-q-f2",
+      "start": "ilc-lift-lobby-f2",
+      "end": "ilc-lift-central-q-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-lift-lobby-f2--ilc-lift-central-q-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-lift-lobby-f2--ilc-lift-central-p-f2",
+      "start": "ilc-lift-lobby-f2",
+      "end": "ilc-lift-central-p-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-lift-lobby-f2--ilc-lift-central-p-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-lift-north-f1--ilc-lift-north-f2",
+      "start": "ilc-lift-north-f1",
+      "end": "ilc-lift-north-f2",
+      "kind": "elevator",
+      "evidence": "Matching shaft/landing symbols on both plans; user confirms north shaft and separate central pair. Current service is unverified.",
+      "asset_id": "ilc-lift-north",
+      "asset_aliases": [
+        "ilc-elevator-north"
+      ],
+      "served_floor_evidence": "Matching shaft/landing symbols on both plans; user confirms north shaft and separate central pair. Current service is unverified.",
+      "forward_instruction": "Take North elevator beside N155 to floor 2. Confirm the floor sign before continuing.",
+      "reverse_instruction": "Take North elevator beside N255 to floor 1. Confirm the floor sign before continuing."
+    },
+    {
+      "id": "ilc-lift-central-q-f1--ilc-lift-central-q-f2",
+      "start": "ilc-lift-central-q-f1",
+      "end": "ilc-lift-central-q-f2",
+      "kind": "elevator",
+      "evidence": "Matching shaft/landing symbols on both plans; user confirms north shaft and separate central pair. Current service is unverified.",
+      "asset_id": "ilc-lift-central-q",
+      "asset_aliases": [
+        "ilc-elevator-core-a"
+      ],
+      "served_floor_evidence": "Matching shaft/landing symbols on both plans; user confirms north shaft and separate central pair. Current service is unverified.",
+      "forward_instruction": "Take Central elevator nearest S187 to floor 2. Confirm the floor sign before continuing.",
+      "reverse_instruction": "Take Central elevator nearest S281 to floor 1. Confirm the floor sign before continuing."
+    },
+    {
+      "id": "ilc-lift-central-p-f1--ilc-lift-central-p-f2",
+      "start": "ilc-lift-central-p-f1",
+      "end": "ilc-lift-central-p-f2",
+      "kind": "elevator",
+      "evidence": "Matching shaft/landing symbols on both plans; user confirms north shaft and separate central pair. Current service is unverified.",
+      "asset_id": "ilc-lift-central-p",
+      "asset_aliases": [
+        "ilc-elevator-core-b"
+      ],
+      "served_floor_evidence": "Matching shaft/landing symbols on both plans; user confirms north shaft and separate central pair. Current service is unverified.",
+      "forward_instruction": "Take Central elevator nearest S131 to floor 2. Confirm the floor sign before continuing.",
+      "reverse_instruction": "Take Central elevator nearest S231 to floor 1. Confirm the floor sign before continuing."
+    },
+    {
+      "id": "ilc-north-f1--ilc-door-n155-f1",
+      "start": "ilc-north-f1",
+      "end": "ilc-door-n155-f1",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-north-f1--ilc-door-n155-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-north-junction-f1--ilc-door-n111-f1",
+      "start": "ilc-north-junction-f1",
+      "end": "ilc-door-n111-f1",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-north-junction-f1--ilc-door-n111-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-lift-lobby-f1--ilc-door-s142-f1",
+      "start": "ilc-lift-lobby-f1",
+      "end": "ilc-door-s142-f1",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-lift-lobby-f1--ilc-door-s142-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-south-junction-f1--ilc-door-s140-f1",
+      "start": "ilc-south-junction-f1",
+      "end": "ilc-door-s140-f1",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-south-junction-f1--ilc-door-s140-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-south-hall-f1--ilc-door-s120-f1",
+      "start": "ilc-south-hall-f1",
+      "end": "ilc-door-s120-f1",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-south-hall-f1--ilc-door-s120-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-north-f2--ilc-door-n255-f2",
+      "start": "ilc-north-f2",
+      "end": "ilc-door-n255-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-north-f2--ilc-door-n255-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-south-junction-f2--ilc-door-n211-f2",
+      "start": "ilc-south-junction-f2",
+      "end": "ilc-door-n211-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-south-junction-f2--ilc-door-n211-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-south-junction-f2--ilc-door-s240-f2",
+      "start": "ilc-south-junction-f2",
+      "end": "ilc-door-s240-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-south-junction-f2--ilc-door-s240-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-south-hall-f2--ilc-door-s220-f2",
+      "start": "ilc-south-hall-f2",
+      "end": "ilc-door-s220-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-south-hall-f2--ilc-door-s220-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-entrance-south--ilc-sw-lobby-f2",
+      "start": "ilc-entrance-south",
+      "end": "ilc-sw-lobby-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-entrance-south--ilc-sw-lobby-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-sw-lobby-f2--ilc-sw-junction-f2",
+      "start": "ilc-sw-lobby-f2",
+      "end": "ilc-sw-junction-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-sw-lobby-f2--ilc-sw-junction-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-sw-junction-f2--ilc-south-junction-f2",
+      "start": "ilc-sw-junction-f2",
+      "end": "ilc-south-junction-f2",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-sw-junction-f2--ilc-south-junction-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-entrance-north-f1--ilc-north-f1",
+      "start": "ilc-entrance-north-f1",
+      "end": "ilc-north-f1",
+      "kind": "corridor",
+      "evidence": "Hallway traced on original UMass ArcGIS mosaic; physical clearance unverified.",
+      "asset_id": "ilc-entrance-north-f1--ilc-north-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-ilc-north-f1--f1-lobby-n",
+      "start": "ilc-north-f1",
+      "end": "f1-lobby-n",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-ilc-north-f1--f1-lobby-n",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-f1-lobby-n--ilc-f1-n140",
+      "start": "f1-lobby-n",
+      "end": "ilc-f1-n140",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-f1-lobby-n--ilc-f1-n140",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-ilc-south-junction-f1--f1-s-mid",
+      "start": "ilc-south-junction-f1",
+      "end": "f1-s-mid",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-ilc-south-junction-f1--f1-s-mid",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-f1-s-mid--ilc-f1-n101",
+      "start": "f1-s-mid",
+      "end": "ilc-f1-n101",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-f1-s-mid--ilc-f1-n101",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-ilc-west-hall-f1--f1-core-mid",
+      "start": "ilc-west-hall-f1",
+      "end": "f1-core-mid",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-ilc-west-hall-f1--f1-core-mid",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-f1-core-mid--ilc-f1-restrooms",
+      "start": "f1-core-mid",
+      "end": "ilc-f1-restrooms",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-f1-core-mid--ilc-f1-restrooms",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-ilc-south-hall-f1--f1-main-3",
+      "start": "ilc-south-hall-f1",
+      "end": "f1-main-3",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-ilc-south-hall-f1--f1-main-3",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-f1-main-3--ilc-f1-s131",
+      "start": "f1-main-3",
+      "end": "ilc-f1-s131",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-f1-main-3--ilc-f1-s131",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-ilc-south-hall-f1--f1-main-s122",
+      "start": "ilc-south-hall-f1",
+      "end": "f1-main-s122",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-ilc-south-hall-f1--f1-main-s122",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-f1-main-s122--f1-main-4",
+      "start": "f1-main-s122",
+      "end": "f1-main-4",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-f1-main-s122--f1-main-4",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-f1-main-4--f1-main-s112",
+      "start": "f1-main-4",
+      "end": "f1-main-s112",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-f1-main-4--f1-main-s112",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-f1-main-s112--f1-main-5",
+      "start": "f1-main-s112",
+      "end": "f1-main-5",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-f1-main-s112--f1-main-5",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-f1-main-5--f1-main-e",
+      "start": "f1-main-5",
+      "end": "f1-main-e",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-f1-main-5--f1-main-e",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-f1-main-s122--ilc-f1-s122",
+      "start": "f1-main-s122",
+      "end": "ilc-f1-s122",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-f1-main-s122--ilc-f1-s122",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-f1-main-s112--ilc-f1-s112",
+      "start": "f1-main-s112",
+      "end": "ilc-f1-s112",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-f1-main-s112--ilc-f1-s112",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-f1-main-5--ilc-f1-s110",
+      "start": "f1-main-5",
+      "end": "ilc-f1-s110",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-f1-main-5--ilc-f1-s110",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-ilc-sw-lobby-f2--ilc-f2-n201",
+      "start": "ilc-sw-lobby-f2",
+      "end": "ilc-f2-n201",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-ilc-sw-lobby-f2--ilc-f2-n201",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-ilc-west-hall-f2--f2-core-mid",
+      "start": "ilc-west-hall-f2",
+      "end": "f2-core-mid",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-ilc-west-hall-f2--f2-core-mid",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-f2-core-mid--ilc-f2-restrooms",
+      "start": "f2-core-mid",
+      "end": "ilc-f2-restrooms",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-f2-core-mid--ilc-f2-restrooms",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-ilc-south-hall-f2--f2-main-s275",
+      "start": "ilc-south-hall-f2",
+      "end": "f2-main-s275",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-ilc-south-hall-f2--f2-main-s275",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-f2-main-s275--ilc-door-s225-f2",
+      "start": "f2-main-s275",
+      "end": "ilc-door-s225-f2",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-f2-main-s275--ilc-door-s225-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-ilc-south-hall-f2--f2-main-b",
+      "start": "ilc-south-hall-f2",
+      "end": "f2-main-b",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-ilc-south-hall-f2--f2-main-b",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-f2-main-b--ilc-f2-s231",
+      "start": "f2-main-b",
+      "end": "ilc-f2-s231",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-f2-main-b--ilc-f2-s231",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-ilc-east-hall-f2--f2-main-d",
+      "start": "ilc-east-hall-f2",
+      "end": "f2-main-d",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-ilc-east-hall-f2--f2-main-d",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-f2-main-d--ilc-door-s241-f2",
+      "start": "f2-main-d",
+      "end": "ilc-door-s241-f2",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-f2-main-d--ilc-door-s241-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-ilc-east-hall-f2--f2-main-e",
+      "start": "ilc-east-hall-f2",
+      "end": "f2-main-e",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-ilc-east-hall-f2--f2-main-e",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-f2-main-e--f2-lobby-se",
+      "start": "f2-main-e",
+      "end": "f2-lobby-se",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-f2-main-e--f2-lobby-se",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-f1-main-e--ilc-lift-east-f1",
+      "start": "f1-main-e",
+      "end": "ilc-lift-east-f1",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-f1-main-e--ilc-lift-east-f1",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ash-f2-main-e--ilc-lift-east-f2",
+      "start": "f2-main-e",
+      "end": "ilc-lift-east-f2",
+      "kind": "corridor",
+      "evidence": "Ash_ver floor-plan trace, checked in the identical UMass mosaic coordinate frame on 2026-11-15. Hallway approach; access unmeasured.",
+      "asset_id": "ash-f2-main-e--ilc-lift-east-f2",
+      "asset_aliases": [],
+      "served_floor_evidence": null,
+      "forward_instruction": null,
+      "reverse_instruction": null
+    },
+    {
+      "id": "ilc-lift-east-f1--ilc-lift-east-f2",
+      "start": "ilc-lift-east-f1",
+      "end": "ilc-lift-east-f2",
+      "kind": "elevator",
+      "evidence": "Matching east shaft on both UMass plans; Ash_ver on-site identification and user confirmation of four ILC elevators on 2026-11-15. Only floors 1-2 are enabled; current operation unverified.",
+      "asset_id": "ilc-lift-east",
+      "asset_aliases": [
+        "ilc-elevator-east",
+        "umass-elevator-187"
+      ],
+      "served_floor_evidence": "Matching east shaft on both UMass plans; Ash_ver on-site identification and user confirmation of four ILC elevators on 2026-11-15. Only floors 1-2 are enabled; current operation unverified.",
+      "forward_instruction": "Take the North Pleasant Street elevator beside S110 to floor 2. Confirm the floor sign before continuing.",
+      "reverse_instruction": "Take the North Pleasant Street elevator beside S220 to floor 1. Confirm the floor sign before continuing."
+    }
+  ]
+}

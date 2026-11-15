@@ -1,0 +1,15 @@
+{
+  "_readme": "Ground-truth overrides from teammates who physically checked entrances/elevators. See app/graph/overrides.py for the schema. Rebuild the graph after editing: python scripts/build_graph.py",
+  "links": [],
+  "edge_tags": [
+    {
+      "id": "dubois-main-entrance-ramp",
+      "lat": 42.3896631,
+      "lon": -72.5281582,
+      "radius_m": 2,
+      "set": { "kind": "ramp", "grade_pct": 4.2 },
+      "source": "role-2-map-ui mockBuildings.ts: lib-main has_ramp, ramp_grade_pct 4.2. Both 1 m lidar graphs read this 8.8 m approach as ~25% (likely the plaza deck). NOT yet verified on site."
+    }
+  ],
+  "entrances": []
+}

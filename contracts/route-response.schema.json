@@ -1,0 +1,266 @@
+{
+  "$defs": {
+    "Coordinate": {
+      "additionalProperties": false,
+      "properties": {
+        "lat": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Lat",
+          "type": "number"
+        },
+        "lng": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Lng",
+          "type": "number"
+        }
+      },
+      "required": [
+        "lat",
+        "lng"
+      ],
+      "title": "Coordinate",
+      "type": "object"
+    },
+    "LineString": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "LineString",
+          "default": "LineString",
+          "title": "Type",
+          "type": "string"
+        },
+        "coordinates": {
+          "description": "[longitude, latitude]",
+          "items": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array"
+          },
+          "minItems": 2,
+          "title": "Coordinates",
+          "type": "array"
+        }
+      },
+      "required": [
+        "coordinates"
+      ],
+      "title": "LineString",
+      "type": "object"
+    },
+    "RouteManeuver": {
+      "additionalProperties": false,
+      "properties": {
+        "instruction": {
+          "title": "Instruction",
+          "type": "string"
+        },
+        "maneuver": {
+          "enum": [
+            "depart",
+            "straight",
+            "left",
+            "right",
+            "slight-left",
+            "slight-right",
+            "sharp-left",
+            "sharp-right",
+            "u-turn",
+            "stairs",
+            "ramp",
+            "elevator",
+            "arrive"
+          ],
+          "title": "Maneuver",
+          "type": "string"
+        },
+        "distance_m": {
+          "minimum": 0,
+          "title": "Distance M",
+          "type": "number"
+        },
+        "at": {
+          "description": "[longitude, latitude] at the maneuver",
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "At",
+          "type": "array"
+        },
+        "geometry": {
+          "items": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array"
+          },
+          "minItems": 2,
+          "title": "Geometry",
+          "type": "array"
+        },
+        "grade_pct": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Grade Pct"
+        }
+      },
+      "required": [
+        "instruction",
+        "maneuver",
+        "distance_m",
+        "at",
+        "geometry",
+        "grade_pct"
+      ],
+      "title": "RouteManeuver",
+      "type": "object"
+    },
+    "RouteProperties": {
+      "additionalProperties": false,
+      "properties": {
+        "total_distance": {
+          "description": "Network distance in meters",
+          "minimum": 0,
+          "title": "Total Distance",
+          "type": "number"
+        },
+        "max_grade": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "null if any route segment has unknown grade",
+          "title": "Max Grade"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        },
+        "directions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Directions",
+          "type": "array"
+        },
+        "maneuvers": {
+          "items": {
+            "$ref": "#/$defs/RouteManeuver"
+          },
+          "title": "Maneuvers",
+          "type": "array"
+        },
+        "graph_source": {
+          "title": "Graph Source",
+          "type": "string"
+        },
+        "uses_stairs": {
+          "title": "Uses Stairs",
+          "type": "boolean"
+        },
+        "uses_elevator": {
+          "title": "Uses Elevator",
+          "type": "boolean"
+        },
+        "snapped_start": {
+          "$ref": "#/$defs/Coordinate"
+        },
+        "snapped_end": {
+          "$ref": "#/$defs/Coordinate"
+        },
+        "start_snap_distance": {
+          "minimum": 0,
+          "title": "Start Snap Distance",
+          "type": "number"
+        },
+        "end_snap_distance": {
+          "minimum": 0,
+          "title": "End Snap Distance",
+          "type": "number"
+        },
+        "routing_cost": {
+          "default": 0,
+          "description": "Search cost including degraded-edge penalties",
+          "minimum": 0,
+          "title": "Routing Cost",
+          "type": "number"
+        }
+      },
+      "required": [
+        "total_distance",
+        "max_grade",
+        "warnings",
+        "directions",
+        "graph_source",
+        "uses_stairs",
+        "uses_elevator",
+        "snapped_start",
+        "snapped_end",
+        "start_snap_distance",
+        "end_snap_distance"
+      ],
+      "title": "RouteProperties",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "const": "Feature",
+      "default": "Feature",
+      "title": "Type",
+      "type": "string"
+    },
+    "geometry": {
+      "$ref": "#/$defs/LineString"
+    },
+    "properties": {
+      "$ref": "#/$defs/RouteProperties"
+    }
+  },
+  "required": [
+    "geometry",
+    "properties"
+  ],
+  "title": "RouteResponse",
+  "type": "object"
+}

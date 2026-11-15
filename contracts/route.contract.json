@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Route Response Contract",
+  "description": "Standard schema returned by the Routing Engine (Role 1) to the Map UI (Role 2) formatted in RFC 7946 GeoJSON.",
+  "type": "object",
+  "required": ["type", "features", "summary", "steps"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["FeatureCollection"]
+    },
+    "summary": {
+      "type": "object",
+      "required": ["total_distance_m", "total_duration_s", "max_grade_pct", "is_step_free", "warnings"],
+      "properties": {
+        "total_distance_m": {
+          "type": "number",
+          "description": "Total route distance in meters"
+        },
+        "total_duration_s": {
+          "type": "number",
+          "description": "Estimated transit duration in seconds (assumes ~1.1 m/s accessible walk pace)"
+        },
+        "max_grade_pct": {
+          "type": "number",
+          "description": "Highest slope steepness percentage on any edge in the path"
+        },
+        "avg_grade_pct": {
+          "type": "number"
+        },
+        "elevation_gain_m": {
+          "type": "number"
+        },
+        "is_step_free": {
+          "type": "boolean"
+        },
+        "stair_count": {
+          "type": "integer"
+        },
+        "warnings": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Notice strings such as 'Steep grade near O-Hill (7.2%)' or 'Rerouted around broken elevator'"
+        }
+      }
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "geometry", "properties"],
+        "properties": {
+          "type": { "type": "string", "enum": ["Feature"] },
+          "geometry": {
+            "type": "object",
+            "required": ["type", "coordinates"],
+            "properties": {
+              "type": { "type": "string", "enum": ["LineString", "Point"] },
+              "coordinates": { "type": "array" }
+            }
+          },
+          "properties": {
+            "type": "object",
+            "properties": {
+              "grade": { "type": "number" },
+              "surface": { "type": "string" },
+              "is_step": { "type": "boolean" },
+              "is_ramp": { "type": "boolean" },
+              "segment_name": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["instruction", "distance_m", "grade_pct"],
+        "properties": {
+          "instruction": {
+            "type": "string",
+            "description": "Actionable direction text, e.g. 'Continue 150 ft, ramp on your right, 3.8% grade'"
+          },
+          "distance_m": { "type": "number" },
+          "grade_pct": { "type": "number" },
+          "icon": { "type": "string" },
+          "accessible_landmark": { "type": "string" }
+        }
+      }
+    }
+  }
+}
