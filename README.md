@@ -57,7 +57,9 @@ Starting the app does not download a new walking network or start background scr
 
 The integrated map and routing engine share the Data API's active closures. Official coverage
 is shown as unavailable until a scrape is published. In memory mode publication lasts until
-the server stops.
+the server stops. The map refreshes closures and scheduled notices when it opens, when you
+return to its tab, after a report is submitted, and when you open the indoor arrival dialog.
+The Python router checks active closures when planning routes and confirming indoor arrival.
 
 ## How routing works
 
