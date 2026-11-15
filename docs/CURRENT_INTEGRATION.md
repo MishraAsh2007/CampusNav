@@ -41,19 +41,22 @@ For exact dashboard settings and the `Command "None" exited with 127` fix, see
 [the backend Vercel guide](VERCEL_BACKEND.md). Root `vercel.json` explicitly selects
 FastAPI and disables a custom build command; dependency installation stays automatic.
 
-The upstream Vercel configuration is preserved: root `pyproject.toml` selects
-`backend.main:app`; root `requirements.txt` supplies runtime dependencies; the
-Data API allows cross-origin frontend requests by default. Set `CORS_ORIGINS`
-to restrict origins when needed.
+Root `pyproject.toml` now selects `campus_routing.integrated:app`, so the same
+backend Vercel project serves the Data API, outdoor routing, and available indoor
+navigation. The Data API remains mounted at `/api/data`. The committed residence
+graph and building catalog are selected by default; existing path environment
+overrides still work. Root `requirements.txt` supplies runtime dependencies.
 
-This entrypoint serves the **Data API**, not the Python routing application.
-For the new backend turn instructions, `/plan`, `/journey`, and indoor endpoints,
-the frontend must also reach a deployment of `campus_routing.integrated:app`
-(or a separate routing API). Configure `VITE_API_BASE_URL` for the Data API and
-`VITE_ROUTING_API_URL` / `VITE_INDOOR_API_URL` for the routing deployment when the
-services are separate. Do not set `VITE_CAMPUSNAV_INTEGRATED=1` on that separately
-hosted frontend: it forces same-origin API URLs. The existing standalone-Data-API
-fallback remains available, but it does not expose the Python routing endpoints.
+Deploy the frontend as a second Vercel project rooted at `frontend`. Set
+`VITE_API_BASE_URL`, `VITE_ROUTING_API_URL`, and `VITE_INDOOR_API_URL` to the same
+backend domain. Set `VITE_ROUTING_ENGINE=remote`; remove `VITE_CAMPUSNAV_INTEGRATED`
+and `VITE_CAMPUSNAV_DEMO` if they were set to `1`. Redeploy the frontend after
+setting these build-time URLs. Only two projects are needed for this arrangement.
+
+The outer routing application inherits `CORS_ORIGINS` from the shared Data API,
+defaulting to `*` in the combined service. Set it to the frontend origin to
+restrict access. `ROUTING_CORS_ORIGINS`, if set, takes precedence. Allowed methods
+and headers cover routing, report resolution, and authenticated Data API requests.
 
 The local checks validate both application entrypoints and the frontend build;
 they do not constitute a successful hosted Vercel deployment.

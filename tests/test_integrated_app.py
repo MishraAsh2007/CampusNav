@@ -13,6 +13,53 @@ from scripts.post_scraped_data import building_uploads
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def test_separate_frontend_can_route_and_resolve_reports_through_outer_cors(monkeypatch):
+    monkeypatch.setenv("CAMPUSNAV_MEMORY", "1")
+    monkeypatch.setenv("CORS_ORIGINS", "https://campusnav-ui.vercel.app")
+    monkeypatch.delenv("ROUTING_CORS_ORIGINS", raising=False)
+    with TestClient(create_app(data_app=data_app)) as client:
+        for method, path in [("POST", "/plan"), ("DELETE", "/api/data/community-reports/test")]:
+            result = client.options(
+                path,
+                headers={
+                    "Origin": "https://campusnav-ui.vercel.app",
+                    "Access-Control-Request-Method": method,
+                    "Access-Control-Request-Headers": "Content-Type,X-Admin-Key",
+                },
+            )
+            assert result.status_code == 200
+            assert (
+                result.headers["access-control-allow-origin"] == "https://campusnav-ui.vercel.app"
+            )
+        assert (
+            client.options(
+                "/plan",
+                headers={
+                    "Origin": "https://unrelated.example",
+                    "Access-Control-Request-Method": "POST",
+                },
+            ).status_code
+            == 400
+        )
+
+
+def test_routing_specific_origins_override_the_shared_api_setting(monkeypatch):
+    monkeypatch.setenv("CAMPUSNAV_MEMORY", "1")
+    monkeypatch.setenv("CORS_ORIGINS", "*")
+    monkeypatch.setenv("ROUTING_CORS_ORIGINS", "https://campusnav-ui.vercel.app")
+    with TestClient(create_app(data_app=data_app)) as client:
+        assert (
+            client.options(
+                "/plan",
+                headers={
+                    "Origin": "https://unrelated.example",
+                    "Access-Control-Request-Method": "POST",
+                },
+            ).status_code
+            == 400
+        )
+
+
 def test_drawing_pilots_and_combined_journeys_use_the_shared_outage_feed(monkeypatch, tmp_path):
     from campus_notices.cache import atomic_json
     from scripts.build_additional_wayfinding import old_chapel

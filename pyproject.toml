@@ -25,10 +25,10 @@ pipeline = [
 scraper = ["playwright>=1.51,<2"]
 data = ["pymongo>=4.11,<5", "python-dotenv>=1,<2"]
 
-# Vercel (FastAPI preset, Root Directory ./): load `app` from backend/main.py. The project root stays
-# on the import path, so `campus_routing`, `campus_notices` and files under `data/` keep working.
+# Vercel (FastAPI preset, Root Directory ./): serve routing and the shared Data API together.
+# The project root stays on the import path for campus_routing, campus_notices, and data/.
 [tool.vercel]
-entrypoint = "backend.main:app"
+entrypoint = "campus_routing.integrated:app"
 
 [tool.setuptools.packages.find]
 include = ["campus_routing*", "campus_notices*", "backend*"]

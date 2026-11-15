@@ -122,13 +122,18 @@ def create_app(
     )
     origins = os.getenv(
         "ROUTING_CORS_ORIGINS",
-        "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173,http://127.0.0.1:3000",
+        os.getenv(
+            "CORS_ORIGINS",
+            "*"
+            if bridge is not None
+            else "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173,http://127.0.0.1:3000",
+        ),
     )
     app.add_middleware(
         CORSMiddleware,
         allow_origins=[s.strip() for s in origins.split(",")],
-        allow_methods=["GET", "POST"],
-        allow_headers=["Content-Type"],
+        allow_methods=["GET", "POST", "PUT", "DELETE"],
+        allow_headers=["Content-Type", "X-Admin-Key"],
         expose_headers=[
             "X-Closures-Stale",
             "X-Closures-Status",
