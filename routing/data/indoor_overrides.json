@@ -110,7 +110,22 @@
           "source": "Team member reports a second floor-1 door on the west side of the north wing. The floor-1 plan shows a vestibule there (N199C) whose doors face west; the team member remembers it facing north. Floor and position come from the plan; facing direction and step-free approach are unconfirmed (the plan also shows an exterior stair just south of it)."
         }
       },
-      "elevator_count_note": "UMass GIS lists 2 ILC elevators, the frontend lists 3, and the floor plans show box-with-X shafts at the north wing's north end, the south wing's central core (a pair) and the east end. Real count unconfirmed."
+      "elevators": {
+        "car_count": 2,
+        "verified": true,
+        "cars": [
+          {
+            "id": "ilc-elevator-east",
+            "label": "East elevator",
+            "near_entrance": "ilc-se"
+          },
+          {
+            "id": "ilc-elevator-west",
+            "label": "West elevator"
+          }
+        ],
+        "source": "Team member has seen two ILC elevators (on site, 2026-11-14). Matches UMass GIS (two) and routing-scraper's map (ilc-elevator-east, ilc-elevator-west). The frontend's mockBuildings.ts lists three (adds a 'Service elevator'); the floor plans show extra box-with-X shafts that may be service or other shafts."
+      }
     }
   }
 }
