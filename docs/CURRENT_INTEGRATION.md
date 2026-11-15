@@ -93,9 +93,10 @@ mapped image-plan geometry with a known incoming direction. Source-authored
 maneuvers take precedence. Missing corridors are not guessed.
 
 The indoor view keeps its visible current-step panel and optional spoken
-instructions. Source-based maps use 2D manual progression; indoor GPS and synthetic
-3D views are not offered for these plans. Sample 3D navigation remains available
-in explicit demo mode and the separate `/indoor.html` sample.
+instructions. Device location is available through **Follow me** in the outdoor
+guide and stops when you open indoor directions. Source-based maps use 2D manual
+progression. Sample 3D navigation remains available in explicit demo mode and
+the separate `/indoor.html` sample, with a simulated position.
 
 ## Automatic entrance handoff
 
