@@ -29,7 +29,7 @@ export function TopBar(p: Props) {
       <button
         onClick={p.onAbout}
         className="glass pointer-events-auto flex items-center gap-2.5 rounded-full py-1.5 pl-1.5 pr-4 transition hover:shadow-lift"
-        aria-label="About CampusNav"
+        aria-label="About UMassNav"
       >
         <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand text-white">
           <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -39,7 +39,7 @@ export function TopBar(p: Props) {
           </svg>
         </span>
         <span className="text-left">
-          <span className="block font-display text-[15px] font-semibold leading-tight tracking-tight text-ink">CampusNav</span>
+          <span className="block font-display text-[15px] font-semibold leading-tight tracking-tight text-ink">UMassNav</span>
           <span className="hidden text-[11px] leading-tight text-ink-3 sm:block">Routes that know what's broken today</span>
         </span>
       </button>
@@ -47,7 +47,7 @@ export function TopBar(p: Props) {
       <div className="pointer-events-auto flex items-center gap-1.5">
         <div
           className="glass hidden items-center gap-2 rounded-full px-3.5 py-2 text-[12px] text-ink-2 md:flex"
-          title={p.live ? 'Connected to the CampusNav backend' : DEMO_MODE
+          title={p.live ? 'Connected to the UMassNav backend' : DEMO_MODE
             ? 'Backend unreachable: using cached reports and the in-browser router' : 'Official closure data is stale or unavailable'}
         >
           <span className="relative flex h-2 w-2">
