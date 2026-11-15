@@ -523,15 +523,15 @@ def export_map(model: Model, base_url: str, has_plan) -> dict[str, Any]:
     """The model as an indoor-map document (contracts/indoor-map.schema.json shape), status "engine".
 
     Built without closures and with stairs, so every node and edge a route can use has an id here.
-    Floors with a plan image point at /api/indoor-plan/... so viewers draw the real plan.
+    ``has_plan(floor_id)`` gives the floor's image path (/api/indoor-plan/...) or None.
     """
     m = model.map
     floors = []
     for fid, f in model.floors.items():
         f = dict(f)
-        if has_plan(fid):
-            f.update(coordinate_system="image_pixels", image_url=f"{base_url}/api/indoor-plan/{model.key}/{fid}.png",
-                     image_width=1536, image_height=1280)
+        url = has_plan(fid)
+        if url:
+            f.update(coordinate_system="image_pixels", image_url=f"{base_url}{url}", image_width=1536, image_height=1280)
         floors.append(f)
     door_by_node = {d.node: d for d in model.doors}
     nodes = []
