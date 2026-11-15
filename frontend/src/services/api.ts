@@ -407,7 +407,7 @@ type OutdoorPlan = {
   accessible: WireRoute | null; standard: WireRoute | null;
   start_entrance: Entrance | null; end_entrance: Entrance | null;
   indoor_arrival?: {node_id: string; label: string; portal_id: string} | null;
-  notes: string[]; failure?: string | null;
+  notes: string[]; failure?: string | null; failure_code?: string | null;
 };
 type ReviewedPlan = {
   status: string; message?: string; question?: string;
@@ -508,6 +508,7 @@ async function requestRemotePlan(
       portalId: walk.data?.indoor_arrival?.portal_id} : undefined,
     notes: walk.data?.notes ?? [],
     failure: walk.data?.failure || walk.message || (!walk.ok ? 'Routing service is unavailable.' : undefined),
+    failureCode: walk.data?.failure_code ?? undefined,
   };
 }
 

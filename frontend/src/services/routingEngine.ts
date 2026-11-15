@@ -719,6 +719,7 @@ export interface RouteBundle {
   standard: RouteResponse | null;
   /** Why no accessible route exists, when it does not. */
   failure?: string;
+  failureCode?: string;
   /** The chosen destination entrance id, if any. */
   endEndpointId?: string;
   startEndpointId?: string;

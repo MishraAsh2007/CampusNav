@@ -67,7 +67,7 @@ export function NeedsMenu({ prefs, onChange, open, onToggle }: Props) {
             {profileLabel(prefs.mobility_preset)}
             {isEdited(prefs) && <span className="font-normal text-ink-3"> · edited</span>}
           </span>
-          <span className="block truncate text-[12px] text-ink-3">{chips.filter((c) => c !== 'Wheelchair').join(' · ')}</span>
+          <span className="block text-[12px] text-ink-3">{chips.filter((c) => c !== 'Wheelchair').join(' · ')}</span>
         </span>
         <ChevronDown className={cx('h-4 w-4 text-ink-3 transition-transform duration-300 ease-soft', open && 'rotate-180')} />
       </button>
@@ -184,8 +184,8 @@ export function NeedsMenu({ prefs, onChange, open, onToggle }: Props) {
             />
             <Switch
               icon={<DoorOpen className="h-4 w-4" />}
-              label="Automatic doors"
-              hint="Route to a powered entrance"
+              label="Require automatic doors"
+              hint="Only entrances with a documented opener; unknown door types are excluded"
               checked={prefs.need_automatic_door}
               onChange={(v) => set({ need_automatic_door: v })}
             />

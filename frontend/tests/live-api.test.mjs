@@ -62,6 +62,26 @@ test('the outdoor route carries an exact indoor entrance into the arrival view',
   assert.equal(plan.arrivalPoint.label, 'South entrance');
 });
 
+test('automatic-door failure is preserved without silently relaxing route requirements', async () => {
+  const requests = [];
+  mockRouting((url, init) => {
+    const body = JSON.parse(init.body);
+    requests.push(body);
+    return response(body.need_automatic_door
+      ? {accessible: null, standard: wire, notes: [], failure: 'Automatic doors are required.',
+        failure_code: 'automatic_door_unconfirmed'}
+      : {accessible: wire, standard: wire, notes: []});
+  });
+  const strict = await api.planRoutes(start, end, {...prefs, need_automatic_door: true}, [], []);
+  assert.equal(strict.accessible, null);
+  assert.equal(strict.failureCode, 'automatic_door_unconfirmed');
+  assert.equal(requests.length, 1);
+  const relaxed = await api.planRoutes(start, end, {...prefs, need_automatic_door: false}, [], []);
+  assert.ok(relaxed.accessible);
+  assert.equal(requests[1].no_stairs, requests[0].no_stairs);
+  assert.equal(requests[1].max_grade, requests[0].max_grade);
+});
+
 test('drawing journeys retain the indoor itinerary and send consent, with server-owned live closures', async () => {
   let payload;
   globalThis.fetch = async (url, init) => {

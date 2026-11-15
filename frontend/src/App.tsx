@@ -546,13 +546,14 @@ export function App() {
               {leg.kind === 'portal' && <p className="text-sm">{String(leg.instruction || '')}</p>}
             </details>)}
           </section>}
-          {plan?.failure && !activeRoute && <p role="alert" className="rounded-xl bg-red-50 p-3 text-sm text-red-900">{plan.failure}</p>}
           <NeedsMenu prefs={prefs} onChange={setPrefs} open={needsOpen} onToggle={() => setNeedsOpen((o) => !o)} />
           {origin && destination && (
             <RouteSummary
               accessible={plan?.accessible ?? null}
               standard={plan?.standard ?? null}
               failure={plan?.failure}
+              failureCode={plan?.failureCode}
+              onAllowUnverifiedDoors={() => setPrefs(current => ({...current, need_automatic_door: false}))}
               notes={[...(plan?.notes ?? []), ...busStopNotes]}
               tab={tab}
               onTab={(next) => {

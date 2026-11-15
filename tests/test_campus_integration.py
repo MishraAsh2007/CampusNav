@@ -120,8 +120,29 @@ def test_plan_keeps_constraints_and_flags_unknown_door_access(engine):
     assert any("unverified" in note for note in result["notes"])
     strict = plan_trip(engine, data, request.model_copy(update={"need_automatic_door": True}))
     assert strict["accessible"] is None
-    assert "No mapped public entrance" in strict["failure"]
+    assert strict["failure_code"] == "automatic_door_unconfirmed"
+    assert "Start building" in strict["failure"]
+    assert "Automatic doors are required" in strict["failure"]
     assert strict["standard"] is not None
+
+
+def test_powered_entrance_requirement_does_not_hide_other_access_restrictions(engine):
+    data = catalog(engine)
+    request = TripRequest(
+        origin=Place(**coord(engine, 1).model_dump(), building_id="start"),
+        destination=Place(**coord(engine, 2).model_dump(), building_id="end"),
+        need_automatic_door=True,
+    )
+    entry = data["buildings"][0]["entrances"][0]
+    for key, value in [("keycard_required", True), ("step_free", False)]:
+        changed = json.loads(json.dumps(data))
+        changed["buildings"][0]["entrances"][0][key] = value
+        assert plan_trip(engine, changed, request)["failure_code"] == "no_entrance"
+    entry["door_type"] = "push-button"
+    routed = plan_trip(engine, data, request)
+    assert routed["accessible"] is not None
+    assert routed["failure_code"] is None
+    assert not routed["accessible"].properties.uses_stairs
 
 
 def test_no_centroid_fallback_or_entrance_id_in_another_building(engine):

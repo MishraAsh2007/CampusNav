@@ -55,13 +55,23 @@ def choices(place, catalog, *, step_free, automatic, allow_keycard_approach=Fals
         if (allow_keycard_approach or not e.get("keycard_required"))
         and e.get("in_routing_area", True)
         and (not step_free or e["step_free"] is not False)
-        and (not automatic or e["door_type"] in ("automatic", "push-button"))
     ]
     if not usable:
         raise RoutingError(
             "no_entrance",
             f"No mapped public entrance at {building['name']} matches these requirements.",
         )
+    if automatic:
+        powered = [e for e in usable if e["door_type"] in ("automatic", "push-button")]
+        if not powered:
+            raise RoutingError(
+                "automatic_door_unconfirmed",
+                f"Automatic doors are required, but none of the eligible mapped entrances "
+                f"at {building['name']} has a documented automatic door or push-button opener. "
+                "Door records may be incomplete; this does not establish that the building "
+                "has no accessible entrance.",
+            )
+        return powered
     return usable
 
 
@@ -117,9 +127,11 @@ def plan_trip(engine, catalog, request, *, now=None):
         return result, starts[si], ends[ei]
 
     failure = None
+    failure_code = None
     try:
         accessible = best(True)
         if accessible is None:
+            failure_code = "no_route"
             failure = (
                 "No mapped route satisfies the selected entrances, slope limit, "
                 "stairs preference, and active closures."
@@ -128,6 +140,7 @@ def plan_trip(engine, catalog, request, *, now=None):
         if exc.status == 422:
             raise
         accessible, failure = None, exc.message
+        failure_code = exc.code
     try:
         standard = best(False)
     except RoutingError:
@@ -152,5 +165,6 @@ def plan_trip(engine, catalog, request, *, now=None):
         "end_entrance": accessible[2] if accessible else None,
         "notes": notes,
         "failure": failure,
+        "failure_code": failure_code,
         "graph_edges": engine.graph.number_of_edges(),
     }

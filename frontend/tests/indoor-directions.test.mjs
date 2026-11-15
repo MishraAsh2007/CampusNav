@@ -83,3 +83,18 @@ test('regular route card and map line remain hidden until comparison is requeste
   assert.equal(buildScene(sceneProps).lines.some(line => line.id.startsWith('std-')), false);
   assert.equal(buildScene({...sceneProps, showStandard: true}).lines.some(line => line.id.startsWith('std-')), true);
 });
+
+test('door-data failures explain the active requirement and offer an explicit choice', async () => {
+  const {RouteSummary} = await server.ssrLoadModule('/src/components/RouteSummary.tsx');
+  const props = {accessible: null, standard: null, loading: false, engine: 'remote',
+    failure: 'Automatic doors are required.', failureCode: 'automatic_door_unconfirmed',
+    prefs: {need_automatic_door: true}, onAllowUnverifiedDoors() {}};
+  const html = renderToStaticMarkup(React.createElement(RouteSummary, props));
+  assert.match(html, /Automatic-door access is not confirmed/);
+  assert.match(html, /Allow manual or unverified doors/);
+  assert.match(html, /stairs and slope limits stay unchanged/);
+  assert.doesNotMatch(html, /No step-free route available/);
+  const otherFailure = renderToStaticMarkup(React.createElement(RouteSummary,
+    {...props, failureCode: 'no_route', failure: 'No path matches the slope limit.'}));
+  assert.doesNotMatch(otherFailure, /Allow manual or unverified doors/);
+});

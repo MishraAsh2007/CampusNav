@@ -7,6 +7,8 @@ interface Props {
   accessible: RouteResponse | null;
   standard: RouteResponse | null;
   failure?: string;
+  failureCode?: string;
+  onAllowUnverifiedDoors?: () => void;
   notes: string[];
   tab: 'accessible' | 'standard';
   onTab: (t: 'accessible' | 'standard') => void;
@@ -37,6 +39,7 @@ export function RouteSummary(p: Props) {
   }
 
   if (!a) {
+    const doorBlocked = p.failureCode === 'automatic_door_unconfirmed' && p.prefs.need_automatic_door;
     return (
       <div className="rounded-3xl bg-stop-soft p-4 animate-rise" role="alert">
         <div className="mb-2 flex justify-end">
@@ -46,9 +49,16 @@ export function RouteSummary(p: Props) {
           <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-stop" />
           <div className="space-y-2 text-[13px] text-ink-2">
             <p className="text-[15px] font-medium text-ink">
-              {p.engine === 'remote' ? 'No step-free route available via Main routing engine' : 'No route that fits your needs'}
+              {doorBlocked ? 'Automatic-door access is not confirmed' : 'Could not plan a route with these requirements'}
             </p>
             <p>{p.failure ?? 'Try relaxing the slope limit.'}</p>
+            {doorBlocked && p.onAllowUnverifiedDoors && <div className="space-y-2">
+              <p>If you can use a manual door or arrange assistance, you can allow manual or unverified doors. Your stairs and slope limits stay unchanged.</p>
+              <button type="button" onClick={p.onAllowUnverifiedDoors}
+                className="rounded-xl bg-white px-3 py-2 text-left font-semibold text-ink shadow-ring hover:bg-black/5">
+                Allow manual or unverified doors
+              </button>
+            </div>}
             <p>
               UMass runs an{' '}
               <a
