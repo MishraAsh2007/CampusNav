@@ -36,6 +36,8 @@ GROUND_TRUTH_PATH = DATA_DIR / "ground_truth.json"
 INDOOR_OVERRIDES_PATH = DATA_DIR / "indoor_overrides.json"
 # Indoor maps from the scraper, committed on main in <repo>/data/indoor. INDOOR_MAPS_DIR overrides.
 INDOOR_MAPS_DIR = Path(os.getenv("INDOOR_MAPS_DIR", REPO_ROOT / "data" / "indoor"))
+# Floor-plan images (PNG) per building and floor: <dir>/<building_id>/<floor_id>.png
+INDOOR_PLANS_DIR = DATA_DIR / "plans"
 
 # --------------------------------------------------------------------------
 # Area of interest: UMass Amherst central campus

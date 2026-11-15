@@ -511,3 +511,55 @@ def build_legs(model: Model, found: Found, dest: dict, reverse: bool = False) ->
     else:
         steps.append(f"Arrive at {dest['label']} ({_floor_label(model, dest['floor_id'])}).")
     return legs, steps
+
+
+# ------------------------------------------------------------------ export
+def edge_id(model: Model, a: str, b: str) -> Optional[str]:
+    e = model.G[a][b].get("edge")
+    return e.get("id") if e else None
+
+
+def export_map(model: Model, base_url: str, has_plan) -> dict[str, Any]:
+    """The model as an indoor-map document (contracts/indoor-map.schema.json shape), status "engine".
+
+    Built without closures and with stairs, so every node and edge a route can use has an id here.
+    Floors with a plan image point at /api/indoor-plan/... so viewers draw the real plan.
+    """
+    m = model.map
+    floors = []
+    for fid, f in model.floors.items():
+        f = dict(f)
+        if has_plan(fid):
+            f.update(coordinate_system="image_pixels", image_url=f"{base_url}/api/indoor-plan/{model.key}/{fid}.png",
+                     image_width=1536, image_height=1280)
+        floors.append(f)
+    door_by_node = {d.node: d for d in model.doors}
+    nodes = []
+    for n in model.nodes.values():
+        d = door_by_node.get(n["id"])
+        node = {"id": n["id"], "label": n.get("label") or n["id"], "floor_id": n["floor_id"],
+                "kind": "entrance" if d else n["kind"], "x": n.get("x"), "y": n.get("y"),
+                "position": {"lat": d.lat, "lng": d.lng} if d and d.lat is not None else n.get("position"),
+                "aliases": n.get("aliases", []), "source_id": n.get("source_id")}
+        if d:
+            node["step_free"] = d.step_free is not False
+        nodes.append(node)
+    edges = []
+    for a, b, data in model.G.edges(data=True):
+        e = data.get("edge")
+        if not e:
+            continue
+        pts = [[model.nodes[x]["x"], model.nodes[x]["y"]] for x in (e["start"], e["end"])
+               if model.nodes[x].get("x") is not None]
+        edges.append({"id": e["id"], "start": e["start"], "end": e["end"], "kind": e["kind"],
+                      "length_m": float(e.get("length_m") or 0.0), "geometry": pts if len(pts) == 2 else None,
+                      "asset_id": e.get("asset_id"), "bidirectional": True, "public_access": True,
+                      "step_free": e.get("step_free", True) is not False and e["kind"] != "steps",
+                      "grade_percent": 0.0, "width_m": 2.0, "door_type": "unknown"})
+    assets = [{"id": b.asset_id, "label": b.label, "kind": "elevator", "position": None, "aliases": []}
+              for b in model.banks.values()]
+    return {"version": 1, "building_id": model.key, "name": m.get("name", model.key), "synthetic": False,
+            "status": "engine", "reviewed_at": m.get("reviewed_at"), "sources": m.get("sources", []),
+            "review_notes": "Served by the CampusNav routing engine: scraper map plus indoor_overrides.json "
+                            "(traced floors, doors, elevator cars).",
+            "floors": floors, "nodes": nodes, "assets": assets, "edges": edges, "portals": [], "maneuvers": []}

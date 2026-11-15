@@ -430,3 +430,17 @@ has the reason, and a warning is added to the route. The indoor router does the 
 (`ilc-elevator-west`, the core pair), one car in the bank is out, and which one is unknown unless
 only one is still free. Other ids are ignored and the closure is matched by location as before.
 `/api/indoor-route` reads closures the same way when `closures` is omitted.
+
+
+### Map export for the map UI's indoor viewer
+
+| Endpoint | Returns |
+|---|---|
+| `GET /indoor/status` | `{buildings: [{building_id, name, routable, status: "engine"}]}` |
+| `GET /indoor/maps/{building_id}` | The indoor map as this engine routes it (scraper map plus `indoor_overrides.json`: traced floors, doors, elevator cars), in the `contracts/indoor-map.schema.json` shape, `status: "engine"` |
+| `GET /api/indoor-plan/{building_id}/{floor_id}.png` | The floor-plan image a traced floor's `image_url` points at (ILC floors 1–2, stitched from the public ArcGIS plans) |
+
+These are the same paths the viewer reads from the `campus_routing` server, so pointing
+`VITE_INDOOR_API_URL` at this engine makes the viewer load this engine's maps. `POST /api/indoor-route`
+also returns `node_path` and `edge_ids` (one per step between nodes); every id exists in the
+`/indoor/maps` document, so a viewer can draw exactly the route the engine chose.
