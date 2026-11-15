@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { LocateFixed } from 'lucide-react';
 import { displayInstruction, formatDistance } from './services/displayUnits';
 import { routeStepPosition } from './services/routeSteps';
 import type { Building, BuildingEntrance, Closure, Place, RouteResponse, RouteStep, UserPreferences, UserReportPayload } from './types';
@@ -211,7 +212,8 @@ export function App() {
   const [reportBuildingId, setReportBuildingId] = useState<string | null>(null);
   const [reportPoint, setReportPoint] = useState<{ lat: number; lng: number } | null>(null);
   const [aboutOpen, setAboutOpen] = useState(false);
-  const [guiding, setGuiding] = useState(false);
+  const [guideMode, setGuideMode] = useState<'manual' | 'location' | null>(null);
+  const guiding = guideMode !== null;
   const [indoorDirOpen, setIndoorDirOpen] = useState(false);
   const [focus, setFocus] = useState<{ lat: number; lng: number; key: number } | null>(null);
 
@@ -404,6 +406,9 @@ export function App() {
   const indoorBuildingId = destIndoorMap ? destination?.building_id ?? null : null;
   const [viewState, setViewState] = useState<ViewState>('outdoor');
   useEffect(() => {
+    if (viewState !== 'outdoor') setGuideMode(null);
+  }, [viewState]);
+  useEffect(() => {
     if (viewState === 'transition_modal') refreshOnVisit();
   }, [viewState, refreshOnVisit]);
   // ?indoor=<building id or map id> jumps straight to the arrival modal (demo / testing).
@@ -470,6 +475,17 @@ export function App() {
     return result;
   };
 
+  const guideActions = activeRoute && viewState === 'outdoor' && !picking && (
+    <div className="grid grid-cols-2 gap-2">
+      <button type="button" className="btn btn-primary min-h-11 leading-tight" onClick={() => setGuideMode('manual')}>
+        Start guided directions
+      </button>
+      <button type="button" className="btn btn-quiet min-h-11 leading-tight" onClick={() => setGuideMode('location')}>
+        <LocateFixed size={16} className="shrink-0" aria-hidden /> Use my location
+      </button>
+    </div>
+  );
+
   return (
     <IndoorCatalogContext.Provider value={indoorCatalog}>
     <div className="fixed inset-0 overflow-hidden bg-canvas">
@@ -515,8 +531,8 @@ export function App() {
 
       {activeRoute && viewState === 'outdoor' && !guiding && (
         <div className="fixed right-4 top-[152px] z-30 hidden max-h-[calc(100dvh-176px)] w-[360px] overflow-y-auto rounded-3xl lg:block" aria-label="Current route directions">
+          {guideActions && <div className="mb-2 rounded-3xl bg-white p-2 shadow-ring">{guideActions}</div>}
           <Directions key={routeKey(activeRoute)} steps={activeRoute.steps} activeStep={activeStep} onFocusStep={focusStep} />
-          <button type="button" className="btn btn-primary mt-2 w-full justify-center" onClick={() => setGuiding(true)}>Start guided directions</button>
         </div>
       )}
 
@@ -529,7 +545,7 @@ export function App() {
         </div>
       )}
 
-      {!guiding && <MobileTripSheet hasRoute={!!activeRoute} picking={!!picking}
+      {!guiding && <MobileTripSheet hasRoute={!!activeRoute} picking={!!picking} actions={guideActions}
         title={activeRoute ? `Step ${activeStep + 1} of ${activeRoute.steps.length}` : loading ? 'Finding a route…' : 'Trip details'}
         detail={activeRoute?.steps[activeStep] ? displayInstruction(activeRoute.steps[activeStep].instruction) : destination ? `To ${destination.name}` : 'Choose your start and destination'}
         onNext={activeRoute && activeStep < activeRoute.steps.length - 1
@@ -544,7 +560,6 @@ export function App() {
           {activeRoute && mobilePanel === 'directions' && <div className="space-y-3 lg:hidden">
             <p className="text-sm font-semibold">To {destination?.name} <span className="font-normal text-slate-600"> · {formatDistance(activeRoute.summary.total_distance_m)}</span></p>
             <Directions key={routeKey(activeRoute)} steps={activeRoute.steps} activeStep={activeStep} onFocusStep={focusStep} />
-            <button type="button" className="btn btn-primary w-full justify-center" onClick={() => setGuiding(true)}>Start guided directions</button>
             {arrivedAtIndoorBuilding && <button type="button" className="min-h-11 w-full rounded-xl bg-emerald-700 px-3 py-3 text-sm font-semibold text-white" onClick={() => {setInspectedLeg(null); setViewState('transition_modal');}}>{indoorActionLabel}</button>}
           </div>}
           <div className={cx('space-y-4', activeRoute && mobilePanel === 'directions' && 'hidden lg:block')}>
@@ -626,12 +641,14 @@ export function App() {
 
       {guiding && viewState === 'outdoor' && <OutdoorGuide route={activeRoute} loading={loading}
         active={activeStep} destinationName={destination?.name || 'your destination'}
+        locationEnabled={guideMode === 'location'}
+        onToggleLocation={() => setGuideMode(current => current === 'location' ? 'manual' : 'location')}
         canGoInside={tab === 'accessible' && !!indoorBuildingId && indoorHandoffReady}
-        onGoInside={() => {setGuiding(false); setInspectedLeg(null); setViewState('transition_modal');}}
+        onGoInside={() => {setGuideMode(null); setInspectedLeg(null); setViewState('transition_modal');}}
         onStep={index => {if (activeRoute?.steps[index]) setRouteProgress({route: activeRoute, index});}}
         onFocus={(lat, lng) => setFocus({lat, lng, key: Date.now()})}
         onRerouteFrom={(lat, lng) => {setOriginTarget(null); setOrigin({name: 'Your location', lat, lng});}}
-        onStop={() => setGuiding(false)} />}
+        onStop={() => setGuideMode(null)} />}
 
       <BuildingSheet
         building={selectedBuilding}

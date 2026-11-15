@@ -10,6 +10,7 @@ import {cx} from './ui';
 
 interface Props {
   route: RouteResponse | null; loading?: boolean; active: number; destinationName: string;
+  locationEnabled: boolean; onToggleLocation: () => void;
   canGoInside: boolean; onGoInside: () => void; onStep: (index: number) => void;
   onFocus: (lat: number, lng: number) => void;
   onRerouteFrom: (lat: number, lng: number) => void; onStop: () => void;
@@ -36,13 +37,12 @@ function useGps(on: boolean) {
 
 /** Ash's guided mode, sharing the existing selected-step marker and exact indoor handoff. */
 export function OutdoorGuide(props: Props) {
-  const {route, loading, active, destinationName, canGoInside, onStop} = props;
+  const {route, loading, active, destinationName, canGoInside, locationEnabled: gpsOn, onToggleLocation, onStop} = props;
   const steps = route?.steps ?? [], last = steps.length - 1;
   const index = Math.max(0, Math.min(active, last)), step = steps[index];
   const arrived = !!step && index === last;
   const geo = useMemo(() => routeGeometry(route), [route]);
   const [voice, setVoice] = useState(true);
-  const [gpsOn, setGpsOn] = useState(false);
   const [now, setNow] = useState(Date.now());
   const {fix, error} = useGps(gpsOn);
   const callbacks = useRef(props); callbacks.current = props;
@@ -103,7 +103,10 @@ export function OutdoorGuide(props: Props) {
     {arrived && !loading && canGoInside && <div className="px-4 pb-3"><button type="button" className="btn btn-primary min-h-11 w-full justify-center" onClick={props.onGoInside}><DoorOpen size={18} />Go inside</button></div>}
     <div className="grid grid-cols-4 gap-1 border-t border-hairline p-2">
       <button type="button" className="btn btn-quiet min-h-11 !px-1" disabled={loading || !step || index === 0} onClick={() => go(index - 1)}><ChevronLeft size={16} />Back</button>
-      <button type="button" className="btn btn-quiet min-h-11 !px-1" aria-pressed={gpsOn} onClick={() => setGpsOn(on => !on)}>{gpsOn ? <LocateFixed size={16} /> : <LocateOff size={16} />}<span className="text-xs">{gpsOn ? 'GPS on' : 'Follow me'}</span></button>
+      <button type="button" className="btn btn-quiet min-h-11 !gap-1 !px-1" aria-label="Use my location" aria-pressed={gpsOn} onClick={onToggleLocation}>
+        {gpsOn ? <LocateFixed size={16} className="shrink-0" aria-hidden /> : <LocateOff size={16} className="shrink-0" aria-hidden />}
+        <span className="text-xs leading-tight">{gpsOn ? 'Location on' : 'Use my location'}</span>
+      </button>
       <button type="button" className="btn btn-quiet min-h-11 !px-1" aria-label={voice ? 'Mute voice' : 'Unmute voice'} aria-pressed={voice} onClick={() => {setVoiceMuted(voice); if (!voice && step) speak(displayInstruction(step.instruction), {priority: true}); setVoice(!voice);}}>{voice ? <Volume2 size={18} /> : <VolumeX size={18} />}</button>
       <button type="button" className="btn btn-primary min-h-11 !px-1" disabled={loading || !step || arrived} onClick={() => go(index + 1)}>Next<ChevronRight size={16} /></button>
     </div>

@@ -399,11 +399,14 @@ test('guided mode shares the selected instruction and preserves loading and arri
     {instruction:'Turn right.',at:[-72.5275,42.39],icon:'turn-right',grade_pct:0},
     {instruction:'Arrive at ILC.',at:[-72.527,42.39],icon:'destination',grade_pct:0},
   ]};
-  const props = {route,active:1,destinationName:'ILC',canGoInside:true,onGoInside(){},onStep(){},onFocus(){},onRerouteFrom(){},onStop(){}};
+  const props = {route,active:1,destinationName:'ILC',canGoInside:true,locationEnabled:false,onToggleLocation(){},onGoInside(){},onStep(){},onFocus(){},onRerouteFrom(){},onStop(){}};
   const html = renderToStaticMarkup(React.createElement(OutdoorGuide,props));
   assert.match(html,/Turn right/);
   assert.match(html,/Step 2 of 3/);
-  assert.match(html,/Follow me/);
+  assert.match(html,/aria-label="Use my location" aria-pressed="false"/);
+  const withLocation = renderToStaticMarkup(React.createElement(OutdoorGuide,{...props,locationEnabled:true}));
+  assert.match(withLocation,/aria-label="Use my location" aria-pressed="true"/);
+  assert.match(withLocation,/Location on/);
   assert.match(html,/Mute voice/);
   assert.doesNotMatch(html,/>Go inside</);
   const arrived = renderToStaticMarkup(React.createElement(OutdoorGuide,{...props,active:2}));
