@@ -9,17 +9,17 @@
 <polygon points="870.0,674.0 890.0,674.0 892.0,682.0 904.0,682.0 918.0,808.0 902.0,808.0 902.0,796.0 886.0,796.0 828.0,804.0 828.0,818.0 814.0,820.0 800.0,694.0 812.0,692.0 812.0,682.0 818.0,680.0 846.0,678.0 848.0,682.0 854.0,682.0 854.0,676.0 870.0,674.0" fill="#ffffff" stroke="#aeb7c2" stroke-width="3" stroke-linejoin="round"/>
 <polygon points="828.0,866.0 842.0,866.0 844.0,888.0 850.0,888.0 852.0,896.0 852.0,914.0 858.0,946.0 858.0,968.0 854.0,968.0 856.0,984.0 810.0,988.0 802.0,990.0 802.0,994.0 776.0,998.0 714.0,1000.0 700.0,882.0 722.0,880.0 722.0,886.0 766.0,882.0 766.0,874.0 778.0,872.0 790.0,872.0 790.0,878.0 822.0,876.0 824.0,868.0 828.0,866.0" fill="#ffffff" stroke="#aeb7c2" stroke-width="3" stroke-linejoin="round"/>
 <polygon points="782.0,686.0 788.0,686.0 790.0,692.0 800.0,790.0 774.0,792.0 768.0,794.0 768.0,798.0 754.0,798.0 754.0,788.0 750.0,784.0 742.0,786.0 742.0,808.0 726.0,806.0 714.0,716.0 714.0,710.0 720.0,708.0 720.0,692.0 732.0,692.0 732.0,696.0 742.0,696.0 742.0,692.0 782.0,690.0 782.0,686.0" fill="#ffffff" stroke="#aeb7c2" stroke-width="3" stroke-linejoin="round"/>
-<polygon points="634.0,721.0 726.0,721.0 726.0,783.0 634.0,783.0" fill="#eef3fa" stroke="#aeb7c2" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="626.0,713.0 708.0,705.0 724.0,811.0 641.0,822.0" fill="#eef3fa" stroke="#aeb7c2" stroke-width="3" stroke-linejoin="round"/>
 <g data-display-zone="N151 auditorium">
-<polygon points="477,484 526,469 619,488 642,478 686,626 645,659 603,699 563,713 526,700" fill="#eef3fa" stroke="#aeb7c2" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="477,484 526,469 632,489 670,612 591,697 514,717" fill="#eef3fa" stroke="#aeb7c2" stroke-width="3" stroke-linejoin="round"/>
 <text x="588" y="582" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="17" font-weight="650" fill="#34404d">N151 auditorium</text>
 <text x="588" y="604" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="15" fill="#5f6b78">Upper level</text>
 </g>
 <line x1="500.0" y1="443.0" x2="445.0" y2="493.0" stroke="#e4e9ee" stroke-width="10" stroke-linecap="round"/>
 <line x1="445.0" y1="493.0" x2="465.0" y2="586.0" stroke="#e4e9ee" stroke-width="10" stroke-linecap="round"/>
-<line x1="465.0" y1="586.0" x2="495.0" y2="675.0" stroke="#e4e9ee" stroke-width="10" stroke-linecap="round"/>
-<line x1="495.0" y1="675.0" x2="551.0" y2="716.0" stroke="#e4e9ee" stroke-width="10" stroke-linecap="round"/>
-<line x1="551.0" y1="716.0" x2="610.0" y2="711.0" stroke="#e4e9ee" stroke-width="10" stroke-linecap="round"/>
+<line x1="465.0" y1="586.0" x2="503.0" y2="733.0" stroke="#e4e9ee" stroke-width="10" stroke-linecap="round"/>
+<line x1="503.0" y1="733.0" x2="551.0" y2="729.0" stroke="#e4e9ee" stroke-width="10" stroke-linecap="round"/>
+<line x1="551.0" y1="729.0" x2="610.0" y2="711.0" stroke="#e4e9ee" stroke-width="10" stroke-linecap="round"/>
 <line x1="610.0" y1="711.0" x2="625.0" y2="794.0" stroke="#e4e9ee" stroke-width="10" stroke-linecap="round"/>
 <line x1="625.0" y1="794.0" x2="642.0" y2="875.0" stroke="#e4e9ee" stroke-width="10" stroke-linecap="round"/>
 <line x1="642.0" y1="875.0" x2="719.0" y2="861.0" stroke="#e4e9ee" stroke-width="10" stroke-linecap="round"/>
@@ -60,8 +60,10 @@
 <circle cx="1110" cy="843" r="2.5" fill="#6d4fd6"/>
 <rect x="1146.0" y="806" width="24" height="24" rx="6" fill="#6d4fd6" stroke="white" stroke-width="1.5"/>
 <text x="1158" y="823" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" fill="#ffffff">3</text>
-<rect x="703.0" y="810" width="40" height="24" rx="6" fill="#6d4fd6" stroke="white" stroke-width="1.5"/>
-<text x="723" y="827" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" fill="#ffffff">1 2</text>
+<path d="M780,825 L723,824" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+<circle cx="723" cy="824" r="2.5" fill="#6d4fd6"/>
+<rect x="760.0" y="813" width="40" height="24" rx="6" fill="#6d4fd6" stroke="white" stroke-width="1.5"/>
+<text x="780" y="830" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" fill="#ffffff">1 2</text>
 <path d="M516,379 L527,410" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
 <circle cx="527" cy="410" r="2.5" fill="#6d4fd6"/>
 <rect x="504.0" y="367" width="24" height="24" rx="6" fill="#6d4fd6" stroke="white" stroke-width="1.5"/>

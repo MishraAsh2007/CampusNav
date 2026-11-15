@@ -148,8 +148,8 @@
     {
       "id": "ilc-foyer-south-f2",
       "label": "Hall bend beside N151 upper level",
-      "x": 495.0,
-      "y": 675.0,
+      "x": 503.0,
+      "y": 733.0,
       "floor_id": "2",
       "kind": "junction"
     },
@@ -157,7 +157,7 @@
       "id": "ilc-north-junction-f2",
       "label": "Hall junction above N211",
       "x": 551.0,
-      "y": 716.0,
+      "y": 729.0,
       "floor_id": "2",
       "kind": "junction"
     },

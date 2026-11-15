@@ -41,7 +41,8 @@ def _short_door(name: str) -> str:
 
 def render(model, floor_id: str, width: int = 1536, height: int = 1280,
            display_zones: list[dict] | None = None,
-           display_layout: dict | None = None, circulation: list[dict] | None = None) -> str | None:
+           display_layout: dict | None = None, circulation: list[dict] | None = None,
+           room_shapes: dict | None = None) -> str | None:
     traced = ((model.ov.get("traced_floors") or {}).get(floor_id)) or None
     of = outline_file(model.key, floor_id)
     if not traced or of is None:
@@ -63,7 +64,9 @@ def render(model, floor_id: str, width: int = 1536, height: int = 1280,
     # rooms: shapes read off the plan (scripts/plan_outline.py --rooms), else none
     rf = config.INDOOR_PLANS_DIR / model.key / f"{floor_id}.rooms.json"
     if rf.is_file():
-        for nid, r in json.loads(rf.read_text(encoding="utf-8")).items():
+        shapes = json.loads(rf.read_text(encoding="utf-8"))
+        shapes.update(room_shapes or {})
+        for nid, r in shapes.items():
             if nid not in nodes:
                 continue
             pts = " ".join(f"{x:.1f},{y:.1f}" for x, y in r["polygon"])

@@ -16,6 +16,10 @@ background and selected route no longer show two offset editions of the paths.
 Thin strokes, smaller in-room labels and compact elevator badges keep junctions
 clear. Badge leaders point to source-traced shafts; these display placements do
 not move walls, doorways or routing endpoints. Stroke width is not corridor width.
+The floor-2 hall now follows the bend below N151 instead of cutting its lower
+corner. Its upper-level outline was retraced against the original plan. Detailed
+restroom outlines use the same traced service-area boundaries as the Simple map,
+replacing Ash's rectangular placeholders so the hall is visibly outside them.
 Elevator icons mark the centers of the crossed shaft boxes on the source plans,
 as confirmed by the user. Routing endpoints remain on the hallway side of the
 elevator doors; they are deliberately distinct from the shaft-center icons.

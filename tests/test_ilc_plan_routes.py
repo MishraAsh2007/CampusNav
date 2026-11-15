@@ -1,4 +1,5 @@
 import hashlib
+import json
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
@@ -28,6 +29,27 @@ def request(**updates):
             **updates,
         )
     )
+
+
+def test_hallway_strokes_clear_auditorium_and_restroom_outlines():
+    from shapely.geometry import LineString, Polygon
+
+    plan = data()
+    nodes = {node.id: node for node in plan.nodes}
+    display = json.loads((ROOT / "data/plan_wayfinding/sources/ilc/display-trace.json")
+                         .read_text(encoding="utf-8"))
+    for floor, label in [("2", "N151 auditorium"), ("1", "Restrooms")]:
+        zone = next(z for z in display["floors"][floor]["zones"] if z["label"] == label)
+        polygon = Polygon([tuple(map(float, p.split(","))) for p in zone["points"].split()])
+        for edge in plan.connections:
+            a, b = nodes[edge.start], nodes[edge.end]
+            if (a.floor_id != floor or b.floor_id != floor or edge.kind != "corridor"
+                    or "room" in (a.kind, b.kind)):
+                continue
+            path = LineString([(a.x, a.y), (b.x, b.y)])
+            # Background half-width 5px + 1px clearance; doorway approaches
+            # intentionally terminate at rooms and are checked separately.
+            assert path.distance(polygon) >= 6, (label, edge.id)
 
 
 def test_every_listed_destination_reachable_from_corrected_floor_2_entrance():
