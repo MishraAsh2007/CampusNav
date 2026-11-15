@@ -37,6 +37,10 @@ and `/plan-wayfinding`. Separate routing/data/indoor base URLs remain supported.
 
 ### Vercel deployment configuration
 
+For exact dashboard settings and the `Command "None" exited with 127` fix, see
+[the backend Vercel guide](VERCEL_BACKEND.md). Root `vercel.json` explicitly selects
+FastAPI and disables a custom build command; dependency installation stays automatic.
+
 The upstream Vercel configuration is preserved: root `pyproject.toml` selects
 `backend.main:app`; root `requirements.txt` supplies runtime dependencies; the
 Data API allows cross-origin frontend requests by default. Set `CORS_ORIGINS`
