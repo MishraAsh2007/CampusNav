@@ -20,6 +20,12 @@ The floor-2 hall now follows the bend below N151 instead of cutting its lower
 corner. Its upper-level outline was retraced against the original plan. Detailed
 restroom outlines use the same traced service-area boundaries as the Simple map,
 replacing Ash's rectangular placeholders so the hall is visibly outside them.
+Both drawn views now include the same traced room outlines and area landmarks,
+including S103/S105/S109/S142, S242/S241A, the open foyer, southwest lobby and
+service rooms. The detailed renderer reads these display-only additions from
+`display-trace.json`, including rooms without routing nodes. All four shaft
+symbols remain visible with a numbered elevator legend. Added display landmarks
+do not create new room destinations, graph connections or entrance joins.
 Elevator icons mark the centers of the crossed shaft boxes on the source plans,
 as confirmed by the user. Routing endpoints remain on the hallway side of the
 elevator doors; they are deliberately distinct from the shaft-center icons.

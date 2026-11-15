@@ -5,6 +5,8 @@ compute current journeys. Image fingerprints must match the reviewed mosaics.
 """
 
 import json
+from copy import deepcopy
+from html import escape
 from pathlib import Path
 
 from routing.app.indoor import router, schematic
@@ -17,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 LABEL_LAYOUTS = {
     "1": {
         "rooms": {
-            "ilc-f1-n140": {"at": [445, 540], "subtitle": "Commons / café"},
+            "ilc-f1-n140": {"at": [433, 540], "subtitle_lines": ["Commons", "Café"]},
             "ilc-f1-n151": {"at": [598, 565]},
             "ilc-f1-n155": {"at": [592, 405]},
             "ilc-f1-s112": {"at": [1018, 866], "size": 12},
@@ -29,6 +31,11 @@ LABEL_LAYOUTS = {
             "ilc-elev-north-f1": {"at": [516, 381], "anchor": [526, 412]},
             "ilc-elev-west-f1": {"at": [780, 827], "anchor": [727, 825]},
             "ilc-elev-east-f1": {"at": [1157, 816], "anchor": [1110, 839]},
+        },
+        "zones": {
+            "Open foyer": {"hide_label": True},
+            "S142": {"size": 10},
+            "Service rooms": {"text": "Service", "subtitle": "rooms", "size": 9},
         },
     },
     "2": {
@@ -48,7 +55,11 @@ LABEL_LAYOUTS = {
             "ilc-se": {"at": [1117, 935]},
             "ilc-nw": {"at": [412, 421]},
         },
-        "zones": {"N151 auditorium": {"at": [588, 582], "size": 17}},
+        "zones": {
+            "N151 auditorium": {"at": [588, 582], "size": 17},
+            "S242": {"size": 9}, "S241A": {"size": 9},
+            "Service rooms": {"text": "Service", "subtitle": "rooms", "size": 9},
+        },
     },
 }
 
@@ -67,14 +78,34 @@ def build():
     plan = json.loads((ROOT / "data/plan_wayfinding/ilc.json").read_text(encoding="utf-8"))
     nodes = {node["id"]: node for node in plan["nodes"]}
     for floor in ("1", "2"):
-        restrooms = next(zone for zone in display["floors"][floor]["zones"]
+        floor_display = display["floors"][floor]
+        entrance = floor_display["entrance"]
+        entrance_id = "ilc-north-floor1" if floor == "1" else "ilc-sw"
+        model.nodes[entrance_id].update(x=entrance["x"], y=entrance["y"])
+        layout = deepcopy(LABEL_LAYOUTS[floor])
+        layout.setdefault("doors", {})[entrance_id] = {
+            "at": entrance["label"], "text": entrance["text"],
+        }
+        restrooms = next(zone for zone in floor_display["zones"]
                          if zone["label"] == "Restrooms")
         room_shapes = {f"ilc-f{floor}-restrooms": {
             "polygon": [[float(v) for v in point.split(",")]
                         for point in restrooms["points"].split()],
         }}
-        zones = [zone for zone in display["floors"][floor]["zones"]
-                 if zone["kind"] == "auditorium"]
+        zones = [zone for zone in floor_display["zones"] if zone["label"] != "Restrooms"]
+        # The Simple map includes display landmarks without a routing node.
+        # Render those too, and replace old box fallbacks with traced walls.
+        named = {schematic._names(n["label"])[0]: ident
+                 for ident, n in model.nodes.items()
+                 if n["floor_id"] == floor and n["kind"] == "room"}
+        for name, points, at in floor_display["rooms"]:
+            if name in named:
+                room_shapes[named[name]] = {
+                    "polygon": [[float(v) for v in p.split(",")] for p in points.split()]}
+            else:
+                zones.append({"label": name, "points": points,
+                              "at": list(map(float, at.split(","))),
+                              "kind": "room"})
         circulation = []
         for edge in plan["connections"]:
             a, b = nodes[edge["start"]], nodes[edge["end"]]
@@ -83,10 +114,33 @@ def build():
             circulation.append({"points": [a["x"], a["y"], b["x"], b["y"]],
                                 "doorway": "room" in (a["kind"], b["kind"])})
         svg = schematic.render(model, floor, display_zones=zones,
-                               display_layout=LABEL_LAYOUTS[floor], circulation=circulation,
+                               display_layout=layout, circulation=circulation,
                                room_shapes=room_shapes)
         if not svg:
             raise ValueError(f"Missing detailed ILC floor {floor}")
+        # Keep all four shaft symbols visible, even where a badge groups cars 1/2.
+        details = ['<g aria-label="Elevator shafts and entrance reference">']
+        for lift in floor_display["lifts"]:
+            x, y = lift["x"], lift["y"]
+            details.append(f'<g data-shaft="{escape(lift["id"])}">')
+            details.append(f'<rect x="{x - 5}" y="{y - 6}" width="10" height="12" '
+                           'rx="2" fill="#6d4fd6" stroke="white" stroke-width="1"/>')
+            details.append(f'<path d="M{x - 2},{y - 1} l2,-3 2,3 M{x - 2},{y + 1} l2,3 2,-3" '
+                           'fill="white" stroke="white" stroke-width="0.5"/>')
+            details.append('</g>')
+        legend = "1–2 Central elevators · 3 East elevator · 4 North elevator"
+        details.append(f'<text x="755" y="1070" text-anchor="middle" '
+                       f'font-family="{schematic.FONT}" font-size="12" fill="#6d4fd6">'
+                       f'{escape(legend)}</text>')
+        x, y = entrance["x"], entrance["y"]
+        lx, ly = entrance["label"]
+        details.append(f'<path d="M{lx},{ly + 7} L{x},{y}" fill="none" '
+                       'stroke="#16834c" stroke-width="1"/>')
+        # Name the exact threshold used by our source-plan guide. Other doors
+        # remain in Ash's display, without adding automatic routing joins.
+        details.append(f'<title>{escape(entrance["text"])}: {escape(entrance["floor"])}</title>')
+        details.append('</g>')
+        svg = svg.replace('</svg>', '\n'.join(details) + '\n</svg>')
         (output / f"detailed-{floor}.svg").write_text(svg + "\n", encoding="utf-8")
     return output
 

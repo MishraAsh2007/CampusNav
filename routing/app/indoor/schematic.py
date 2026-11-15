@@ -75,20 +75,32 @@ def render(model, floor_id: str, width: int = 1536, height: int = 1280,
 
     # Source-traced display areas may span floors without having a routing node
     # on each floor (for example N151's upper auditorium level).
+    zone_labels = []
     for zone in display_zones or []:
         out.append(f'<g data-display-zone="{escape(zone["label"], quote=True)}">')
+        kind = zone.get("kind")
+        fill = {"open": "#f0fdfa", "service": "#eef2f6", "room": "#ffffff"}.get(kind, "#eef3fa")
+        stroke = 3 if kind in ("auditorium", "room") else 1.5
+        border = "none" if kind == "open" else "#aeb7c2"
         out.append(f'<polygon points="{escape(zone["points"], quote=True)}" '
-                   'fill="#eef3fa" stroke="#aeb7c2" stroke-width="3" stroke-linejoin="round"/>')
+                   f'fill="{fill}" stroke="{border}" stroke-width="{stroke}" '
+                   'stroke-linejoin="round"/>')
         label = layout.get("zones", {}).get(zone["label"], {})
+        if label.get("hide_label"):
+            out.append('</g>')
+            continue
         x, y = label.get("at", zone["at"])
-        size = label.get("size", 20)
-        out.append(f'<text x="{x}" y="{y}" text-anchor="middle" font-family="{FONT}" '
+        size = label.get("size", 12 if kind in ("open", "service", "room") else 20)
+        zone_labels.append(f'<text x="{x}" y="{y}" text-anchor="middle" font-family="{FONT}" '
                    f'font-size="{size}" font-weight="650" '
-                   f'fill="#34404d">{escape(zone["label"])}</text>')
-        if zone.get("subtitle"):
-            out.append(f'<text x="{x}" y="{y + 22}" text-anchor="middle" '
+                   f'fill="#34404d">{escape(label.get("text", zone["label"]))}</text>')
+        subtitle = label.get("subtitle", zone.get("subtitle"))
+        if subtitle:
+            dy = 13 if kind == "service" else 22
+            subsize = size if kind == "service" else 15
+            zone_labels.append(f'<text x="{x}" y="{y + dy}" text-anchor="middle" '
                        f'font-family="{FONT}" '
-                       f'font-size="15" fill="#5f6b78">{escape(zone["subtitle"])}</text>')
+                       f'font-size="{subsize}" fill="#5f6b78">{escape(subtitle)}</text>')
         out.append('</g>')
 
     # hallways: edges between non-room nodes; doorway stubs to rooms
@@ -109,7 +121,8 @@ def render(model, floor_id: str, width: int = 1536, height: int = 1280,
             out.append(f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{color}" stroke-width="{w}" '
                        f'stroke-linecap="round"/>')
 
-    # rooms: a dot at the door, the name at the room
+    out.extend(zone_labels)
+    # rooms: the name stays inside the room; destination dots belong to the route.
     spec_nodes = traced.get("nodes", {})
     for nid, n in nodes.items():
         if n["kind"] != "room":
@@ -124,9 +137,10 @@ def render(model, floor_id: str, width: int = 1536, height: int = 1280,
         sub = label.get("subtitle", sub)
         out.append(f'<text x="{lx}" y="{ly}" text-anchor="middle" font-family="{FONT}" font-size="{size}" '
                    f'font-weight="650" fill="#34404d">{escape(main)}</text>')
-        if sub:
-            out.append(f'<text x="{lx}" y="{ly + 17}" text-anchor="middle" font-family="{FONT}" font-size="12" '
-                       f'fill="#5f6b78">{escape(sub)}</text>')
+        subtitles = label.get("subtitle_lines", [sub] if sub else [])
+        for i, subtitle in enumerate(subtitles, start=1):
+            out.append(f'<text x="{lx}" y="{ly + 17 * i}" text-anchor="middle" font-family="{FONT}" font-size="12" '
+                       f'fill="#5f6b78">{escape(subtitle)}</text>')
 
     # elevators: a purple tile per stop, numbered by car
     ev = model.ov.get("elevators") or {}
@@ -170,6 +184,7 @@ def render(model, floor_id: str, width: int = 1536, height: int = 1280,
         lx, ly = label.get("at", [n["x"], n["y"] - 20])
         out.append(f'<text x="{lx}" y="{ly}" text-anchor="middle" '
                    f'font-family="{FONT}" font-size="12" '
-                   f'font-weight="600" fill="{"#16794a" if ok else "#6b7682"}">{escape(_short_door(d.name))}</text>')
+                   f'font-weight="600" fill="{"#16794a" if ok else "#6b7682"}">'
+                   f'{escape(label.get("text", _short_door(d.name)))}</text>')
     out.append("</svg>")
     return "\n".join(out)

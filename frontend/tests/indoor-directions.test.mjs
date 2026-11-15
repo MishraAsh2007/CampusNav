@@ -94,6 +94,14 @@ test('detailed, simple and original views preserve the same floor route and step
     assert.match(detailed, />1 2</);
     assert.match(detailed, />3</);
     assert.match(detailed, />4</);
+    for (const [label] of floor.vectorPlan.rooms) {
+      assert.ok(detailed.includes(`>${label}</text>`), `Detailed floor ${floor.id} is missing ${label}`);
+    }
+    for (const zone of floor.vectorPlan.zones.filter(z => z.label !== 'Restrooms')) {
+      assert.ok(detailed.includes(`data-display-zone="${zone.label}"`), `Missing zone ${zone.label}`);
+    }
+    for (const lift of floor.vectorPlan.lifts) assert.ok(detailed.includes(`data-shaft="${lift.id}"`));
+    assert.ok(detailed.includes(`>${floor.vectorPlan.entrance.text}</text>`));
     if (floor.id === '2') {
       assert.match(detailed, />S241</);
       assert.match(detailed, />S225</);
