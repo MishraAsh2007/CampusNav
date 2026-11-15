@@ -4,6 +4,7 @@
  */
 import type { Building, BuildingEntrance, Closure, Place, RouteResponse } from '../../types';
 import { getDistanceMeters } from '../../services/routingEngine';
+import type { Incident } from '../../services/incidents';
 import { closureIcon, ICONS } from './icons';
 
 export type LatLng = [number, number];
@@ -60,8 +61,9 @@ export interface SceneInput {
   chosenEntranceIds: string[];
   selectedBuildingId: string | null;
   highContrast: boolean;
+  incidents: Incident[];
   onSelectBuilding: (b: Building) => void;
-  onSelectClosure: (c: Closure) => void;
+  onSelectIncident: (inc: Incident) => void;
   onSelectEntrance: (b: Building, e: BuildingEntrance) => void;
 }
 
@@ -71,9 +73,8 @@ function routeLatLngs(r: RouteResponse): LatLng[][] {
   return r.features.map((f) => f.geometry.coordinates.map(([lng, lat]) => [lat, lng] as LatLng));
 }
 
-export function entranceState(b: Building, e: BuildingEntrance, closures: Closure[]): 'ok' | 'manual' | 'no' | 'broken' | 'unknown' {
-  if (e.step_free === false) return 'no';
-  if (e.step_free === null || e.door_type === 'unknown') return 'unknown';
+export function entranceState(b: Building, e: BuildingEntrance, closures: Closure[]): 'ok' | 'manual' | 'no' | 'broken' {
+  if (!e.step_free) return 'no';
   const issue = closures.find(
     (c) => c.status !== 'repaired' && c.type === 'automatic_door' && getDistanceMeters(c.lat, c.lng, e.lat, e.lng) <= Math.max(15, c.radius)
   );
@@ -161,21 +162,55 @@ export function buildScene(i: SceneInput): Scene {
     });
   }
 
-  // Closures
+  // Closure areas
   for (const c of i.closures) {
     if (c.status === 'repaired') continue;
+    const road = c.affects === 'road';
     const degraded = c.status === 'degraded';
-    circles.push({ id: `cz-${c.id}`, center: [c.lat, c.lng], radius: c.radius, color: degraded ? '#f0a020' : '#e5484d', dashed: degraded });
-    const fresh = c.last_confirmed !== null && Date.now() - Date.parse(c.last_confirmed) < 2 * 3600_000;
-    markers.push({
-      id: `c-${c.id}`,
-      position: [c.lat, c.lng],
-      html: `<div class="au-closure ${degraded ? 'degraded' : ''} ${fresh ? 'live' : ''}" aria-label="${esc(c.title)}">${closureIcon(c.type)}</div>`,
-      zIndex: 60,
-      anchor: 'center',
-      title: c.title,
-      onClick: () => i.onSelectClosure(c)
+    circles.push({
+      id: `cz-${c.id}`,
+      center: [c.lat, c.lng],
+      radius: Math.max(6, c.radius),
+      color: road ? '#5b6b8c' : degraded ? '#f0a020' : '#e5484d',
+      dashed: degraded || road
     });
+  }
+
+  // One marker per incident (an official notice and student reports of the same problem share one)
+  for (const inc of i.incidents) {
+    const c = inc.primary;
+    const roadOnly = inc.isRoad && inc.all.every((x) => x.affects === 'road');
+    const degraded = inc.all.every((x) => x.status === 'degraded');
+    const fresh = Date.now() - new Date(inc.lastConfirmed).getTime() < 2 * 3600_000;
+    const cls = ['au-closure', `sev-${inc.severity}`, roadOnly && 'road', degraded && 'degraded', fresh && 'live'].filter(Boolean).join(' ');
+    const badge =
+      inc.severity === 'high'
+        ? '<span class="au-badge high">!</span>'
+        : inc.official.length
+          ? `<span class="au-badge official">${ICONS.shield}</span>`
+          : '';
+    markers.push({
+      id: `c-${inc.id}`,
+      position: [c.lat, c.lng],
+      html: `<div class="${cls}" aria-label="${esc(c.title)}">${roadOnly ? ICONS.bus : closureIcon(c.type)}${badge}</div>`,
+      zIndex: inc.severity === 'high' ? 70 : 60,
+      anchor: 'center',
+      title: `${c.title} (${inc.severity === 'high' ? 'High alert' : inc.official.length ? 'Facilities notice' : 'Student report'})`,
+      onClick: () => i.onSelectIncident(inc)
+    });
+    if (inc.bus?.routes.length) {
+      const shown = inc.bus.routes.slice(0, 4).join(' · ');
+      const more = inc.bus.routes.length > 4 ? ` +${inc.bus.routes.length - 4}` : '';
+      markers.push({
+        id: `bus-${inc.id}`,
+        position: [c.lat - 0.00012, c.lng],
+        html: `<div class="au-tag bus">${ICONS.bus}${shown}${more}</div>`,
+        zIndex: 55,
+        anchor: 'center',
+        title: `Bus routes ${inc.bus.certain ? 'detoured' : 'possibly affected'}: ${inc.bus.routes.join(', ')}`,
+        onClick: () => i.onSelectIncident(inc)
+      });
+    }
   }
 
   // Buildings + entrances
@@ -188,7 +223,7 @@ export function buildScene(i: SceneInput): Scene {
       html: `<div class="au-building ${access} ${sel ? 'selected' : ''}"><span class="dot">${access === 'good' ? '✓' : access === 'partial' ? '!' : '–'}</span>${esc(b.code)}</div>`,
       zIndex: sel ? 30 : 10,
       anchor: 'center',
-      title: `${b.name}: ${access === 'good' ? 'source documents step-free access; check current status' : access === 'partial' ? 'reported access issue' : 'access data limited or unverified'}`,
+      title: `${b.name}: ${access === 'good' ? 'step-free access' : access === 'partial' ? 'access issue today' : 'limited access'}`,
       onClick: () => i.onSelectBuilding(b)
     });
     for (const e of b.entrances) {
@@ -200,7 +235,7 @@ export function buildScene(i: SceneInput): Scene {
         html: `<div class="au-entrance ${st} ${chosen ? 'chosen' : ''}"></div>`,
         zIndex: chosen ? 50 : 20,
         anchor: 'center',
-        title: `${b.name}, ${e.name}: ${st === 'unknown' ? 'entrance access unverified' : st === 'ok' ? 'step-free, powered door' : st === 'manual' ? 'step-free, manual door' : st === 'broken' ? 'door reported broken' : 'not step-free'}`,
+        title: `${b.name}, ${e.name}: ${st === 'ok' ? 'step-free, powered door' : st === 'manual' ? 'step-free, manual door' : st === 'broken' ? 'door reported broken' : 'not step-free'}`,
         onClick: () => i.onSelectEntrance(b, e),
         minZoom: chosen || sel ? undefined : 17
       });

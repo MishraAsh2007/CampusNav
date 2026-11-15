@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Check, Crosshair, MoveVertical, Route, TrendingUp } from 'lucide-react';
+import { Check, Crosshair, DoorOpen, Construction, MoveVertical, Phone, Route, TrendingUp } from 'lucide-react';
 import type { BarrierType, Building, UserReportPayload } from '../types';
 import { Sheet, cx } from './ui';
 
@@ -10,18 +10,21 @@ interface Props {
   initialBuildingId: string | null;
   pickedPoint: { lat: number; lng: number } | null;
   onPickOnMap: () => void;
-  onSubmit: (p: UserReportPayload) => Promise<void>;
+  onSubmit: (p: UserReportPayload) => Promise<{browserOnly?: boolean}>;
 }
 
 const TYPES: { id: BarrierType; label: string; icon: JSX.Element }[] = [
   { id: 'elevator', label: 'Elevator', icon: <MoveVertical className="h-4 w-4" /> },
+  { id: 'automatic_door', label: 'Door opener', icon: <DoorOpen className="h-4 w-4" /> },
   { id: 'ramp', label: 'Ramp', icon: <TrendingUp className="h-4 w-4" /> },
   { id: 'path', label: 'Path or curb cut', icon: <Route className="h-4 w-4" /> },
+  { id: 'construction', label: 'Construction', icon: <Construction className="h-4 w-4" /> }
 ];
 
 const STATUSES = [
   { id: 'broken', label: 'Not working' },
   { id: 'blocked', label: 'Blocked (snow, ice, cars)' },
+  { id: 'working', label: 'Fixed now' }
 ] as const;
 
 export function ReportSheet({ open, onClose, buildings, initialBuildingId, pickedPoint, onPickOnMap, onSubmit }: Props) {
@@ -32,6 +35,7 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
   const [details, setDetails] = useState('');
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
+  const [browserOnly, setBrowserOnly] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -45,13 +49,12 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
   const b = buildings.find((x) => x.id === buildingId);
   const lifts = b?.elevators.list ?? [];
   const lift = lifts.find((l) => l.id === liftId) ?? lifts[0];
-  const where = type === 'elevator' && lift?.lat !== undefined && lift?.lng !== undefined
-    ? {lat: lift.lat, lng: lift.lng} : pickedPoint;
+  const where = pickedPoint ?? (b ? b.location : null);
 
   const title = useMemo(() => {
     const t = TYPES.find((x) => x.id === type)!.label;
     const place = type === 'elevator' && lift ? `${b?.name} ${lift.name.toLowerCase()}` : b?.name ?? 'Campus';
-    const s = status === 'blocked' ? 'blocked' : 'not working';
+    const s = status === 'working' ? 'working again' : status === 'blocked' ? 'blocked' : 'not working';
     return `${place}${type === 'elevator' && lift ? '' : ` ${t.toLowerCase()}`} ${s}`;
   }, [type, status, b, lift]);
 
@@ -61,7 +64,8 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
     if (!where) return;
     setBusy(true);
     setError('');
-    try { await onSubmit({
+    try {
+      const result = await onSubmit({
       lat: where.lat,
       lng: where.lng,
       type,
@@ -72,11 +76,13 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
       connector_id: type === 'elevator' ? lift?.connector_id : undefined,
       reporter_device_id: 'web',
       timestamp: new Date().toISOString()
-    });
-    setDone(true);
-    setTimeout(onClose, 1400);
-    } catch (e) {setError(e instanceof Error ? e.message : 'Report could not be saved.');}
-    finally {setBusy(false);}
+      });
+      setBrowserOnly(!!result.browserOnly);
+      setDone(true);
+      setTimeout(onClose, result.browserOnly ? 2600 : 1400);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'The report could not be saved.');
+    } finally {setBusy(false);}
   };
 
   return (
@@ -99,12 +105,11 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
             <Check className="h-7 w-7" />
           </div>
           <p className="text-[17px] font-medium text-ink">Thanks. Routes are updating.</p>
-          <p className="mt-1 text-[13px] text-ink-3">The backend saved your report. Routing uses it where it matches a mapped path; interior elevator connections are not mapped yet.</p>
+          <p className="mt-1 text-[13px] text-ink-3">{browserOnly ? 'This report applies only in this browser.' : 'Anyone heading this way is rerouted now.'}</p>
         </div>
       ) : (
         <div className="space-y-5">
-          {error && <p role="alert" className="rounded-xl bg-stop-soft p-3 text-sm">{error}</p>}
-          {!where && <p className="text-sm">Select a mapped elevator, or choose the exact problem location on the map. A building center is not a path location.</p>}
+          {error && <p role="alert" className="text-sm text-stop">{error}</p>}
           <div className="grid grid-cols-2 gap-1.5">
             {TYPES.map((t) => (
               <button
@@ -132,7 +137,7 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
                 onClick={() => setStatus(s.id)}
                 className={cx(
                   'rounded-full px-3 py-1.5 text-[13px] transition',
-                  status === s.id ? 'bg-stop text-white' : 'bg-black/[0.04] text-ink-2'
+                  status === s.id ? (s.id === 'working' ? 'bg-go text-white' : 'bg-stop text-white') : 'bg-black/[0.04] text-ink-2'
                 )}
               >
                 {s.label}
@@ -182,6 +187,9 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
             <p className="mt-2 text-[12px] text-ink-3">Will post as: “{title}”</p>
           </div>
 
+          <a href="tel:+14135456401" className="flex items-center gap-2 text-[12px] text-ink-3">
+            <Phone className="h-3.5 w-3.5" /> Trapped in an elevator? Call Facilities 24/7 at 413-545-6401.
+          </a>
         </div>
       )}
     </Sheet>

@@ -5,11 +5,12 @@ import { formatFreshness } from '../data/mockClosures';
 
 interface Props {
   activeIssues: number;
+  highAlerts: number;
   live: boolean;
   lastSync: number | null;
   onReport: () => void;
   onAbout: () => void;
-  onJudge?: () => void;
+  onJudge: () => void;
   judgeOpen: boolean;
   highContrast: boolean;
   onHighContrast: () => void;
@@ -45,16 +46,21 @@ export function TopBar(p: Props) {
       <div className="pointer-events-auto flex items-center gap-1.5">
         <div
           className="glass hidden items-center gap-2 rounded-full px-3.5 py-2 text-[12px] text-ink-2 md:flex"
-          title={p.live ? 'Latest official notice refresh succeeded' : 'Source coverage needs attention; check Sources and upcoming notices'}
+          title={p.live ? 'Connected to the CampusNav backend' : 'Official closure data is stale or unavailable'}
         >
           <span className="relative flex h-2 w-2">
             {p.live && <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-go opacity-60" />}
             <span className={cx('relative inline-flex h-2 w-2 rounded-full', p.live ? 'bg-go' : 'bg-warn')} />
           </span>
           <span className="tabular-nums">
-            {p.activeIssues} mapped active issue{p.activeIssues === 1 ? '' : 's'}
+            {p.activeIssues} issue{p.activeIssues === 1 ? '' : 's'} today
             {p.lastSync ? ` · ${formatFreshness(new Date(p.lastSync).toISOString())}` : ''}
           </span>
+          {p.highAlerts > 0 && (
+            <span className="rounded-full bg-stop px-2 py-0.5 text-[11px] font-semibold text-white" title="Reported by both UMass Facilities and students">
+              {p.highAlerts} high alert{p.highAlerts === 1 ? '' : 's'}
+            </span>
+          )}
         </div>
 
         <div ref={ref} className="relative">
@@ -86,7 +92,7 @@ export function TopBar(p: Props) {
           )}
         </div>
 
-        {p.onJudge && <button
+        <button
           onClick={p.onJudge}
           className={cx('glass btn h-10 !px-3 text-ink', p.judgeOpen && '!bg-ink !text-white')}
           aria-pressed={p.judgeOpen}
@@ -94,7 +100,7 @@ export function TopBar(p: Props) {
         >
           <Sparkles className="h-4 w-4" />
           <span className="hidden sm:inline">Demo</span>
-        </button>}
+        </button>
 
         <button onClick={p.onReport} className="btn h-10 bg-stop !px-4 text-white shadow-float hover:brightness-105">
           <AlertTriangle className="h-4 w-4" />

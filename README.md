@@ -64,8 +64,11 @@ the server stops.
 5. Indoor graphs explicitly connect corridors, doors and elevator stops. Reviewed portals
    bind those graphs to exact outdoor graph nodes. Floor-plan images alone cannot route.
 
-Choose a room in the trip planner to get an approach to a reviewed entry portal. Confirm
-arrival at that entrance to refresh closures and continue with the indoor route.
+In the trip planner's destination search, enter a room or a building and room (for
+example, `ILC N151`). Follow the outdoor route to the selected entrance, then tap
+**Go inside** and choose **2D Floor Plan** or **3D Immersive View**. Choosing the
+indoor view confirms arrival and refreshes closures before calculating the indoor route.
+Buildings without reviewed indoor coverage may show a labeled sample layout.
 
 ## Where the web scraper is
 

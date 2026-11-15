@@ -1,15 +1,66 @@
+import { ExternalLink } from 'lucide-react';
 import { Sheet } from './ui';
-import type { Health } from '../services/api';
-export function AboutSheet({open, onClose, graphMeta, provider}: {open: boolean; onClose: () => void; graphMeta: Health | null; provider: 'google' | 'osm'}) {
-  return <Sheet open={open} onClose={onClose} side="center" eyebrow="About and sources" title="Campus routes with current notice data">
-    <div className="space-y-4 text-sm">
-      <p>Choose buildings or map pins. The Python routing engine compares outdoor routes with your stairs, slope, and entrance requirements.</p>
-      <p>{graphMeta?.nodes.toLocaleString()} mapped points and {graphMeta?.edges.toLocaleString()} directed path segments from OpenStreetMap. Grades use terrain elevation estimates from Open Topo Data NED 10 m, not surveyed sidewalk slopes.</p>
-      <p>Building footprints, access details, and elevator locations come from the UMass accessibility map (labeled August 2022). OpenStreetMap adds entrance positions. Unknown access is kept unknown; indoor floor and elevator connections are not yet mapped.</p>
-      <p>The authenticated maintenance scraper refreshes notices separately. The app reads its saved results and sends active mapped closures with each route request. Public-source complaints remain in review.</p>
-      <p>Basemap: {provider === 'google' ? 'Google Maps' : 'OpenStreetMap'}. Community reports are stored in the local backend and expire after 24 hours unless reconfirmed.</p>
-      <a className="block underline" href="https://www.umass.edu/accessibility/accommodations-and-access" target="_blank" rel="noreferrer">UMass accessibility sources</a>
-      <a className="block underline" href="/backend">Backend diagnostics</a>
-    </div>
-  </Sheet>;
+import { CAMPUS_RESEARCH } from '../data/mockBuildings';
+
+interface Props {
+  open: boolean;
+  onClose: () => void;
+  graphMeta: { vertices: number; edges: number; staircases: number; total_steps: number; walkway_km: number } | null;
+  provider: 'google' | 'osm';
+}
+
+export function AboutSheet({ open, onClose, graphMeta, provider }: Props) {
+  return (
+    <Sheet open={open} onClose={onClose} side="center" eyebrow="About" title="Maps know where ramps are. Not what's broken today.">
+      <div className="space-y-5 text-[14px] leading-relaxed text-ink-2">
+        <p>
+          A broken elevator or a dead door opener is an inconvenience for most students. For a wheelchair user it can mean missing class. CampusNav routes around today's
+          outages, on the real campus path network, and lets anyone report a problem in two taps.
+        </p>
+
+        <section>
+          <h3 className="eyebrow mb-2">What students have reported</h3>
+          <ul className="space-y-2">
+            {CAMPUS_RESEARCH.map((r, i) => (
+              <li key={i} className="rounded-2xl bg-black/[0.03] p-3">
+                <p className="text-[13px] text-ink-2">{r.finding}</p>
+                <a href={r.url} target="_blank" rel="noreferrer" className="mt-1 flex items-center gap-1 text-[11px] text-sky-ink">
+                  {r.source} <ExternalLink className="h-3 w-3" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {graphMeta && (
+          <section>
+            <h3 className="eyebrow mb-2">The data underneath</h3>
+            <div className="grid grid-cols-3 gap-2 text-center">
+              {[
+                [graphMeta.edges.toLocaleString(), 'path segments'],
+                [graphMeta.staircases.toString(), 'staircases'],
+                [graphMeta.total_steps.toLocaleString(), 'steps mapped']
+              ].map(([v, l]) => (
+                <div key={l} className="rounded-2xl bg-black/[0.03] py-3">
+                  <div className="font-display text-[20px] font-semibold text-ink tabular-nums">{v}</div>
+                  <div className="text-[11px] text-ink-3">{l}</div>
+                </div>
+              ))}
+            </div>
+            <p className="mt-2 text-[12px] text-ink-3">
+              {graphMeta.walkway_km} km of walkways from OpenStreetMap, with step counts, handrails and surfaces. Slopes from USGS 3DEP 1 m lidar at every intersection. Basemap:{' '}
+              {provider === 'google' ? 'Google Maps' : 'OpenStreetMap'}.
+            </p>
+          </section>
+        )}
+
+        <p className="text-[12px] text-ink-3">
+          Need a ride instead? The UMass Accessible Van Service serves students with permanent or temporary mobility impairments.{' '}
+          <a className="text-sky-ink underline" href="https://www.umass.edu/disability-services/current-students/physical-access-accommodations" target="_blank" rel="noreferrer">
+            Disability Services
+          </a>
+        </p>
+      </div>
+    </Sheet>
+  );
 }

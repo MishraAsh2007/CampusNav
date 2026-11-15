@@ -20,7 +20,7 @@ export function buildingPlaces(buildings: Building[]): PickablePlace[] {
     name: b.name,
     code: b.code,
     kind: 'building',
-    subtitle: b.step_free_entrances.length ? `${b.step_free_entrances.length} source-documented step-free entrances` : 'Mapped entrances; step-free door access unverified',
+    subtitle: `${b.step_free_entrances.length} step-free ${b.step_free_entrances.length === 1 ? 'entrance' : 'entrances'}`,
     lat: b.location.lat,
     lng: b.location.lng,
     building_id: b.id

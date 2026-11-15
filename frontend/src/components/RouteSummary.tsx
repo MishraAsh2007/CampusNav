@@ -39,10 +39,15 @@ export function RouteSummary(p: Props) {
   if (!a) {
     return (
       <div className="rounded-3xl bg-stop-soft p-4 animate-rise" role="alert">
+        <div className="mb-2 flex justify-end">
+          <EngineBadge engine={p.engine} />
+        </div>
         <div className="flex items-start gap-3">
           <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-stop" />
           <div className="space-y-2 text-[13px] text-ink-2">
-            <p className="text-[15px] font-medium text-ink">No route that fits your needs</p>
+            <p className="text-[15px] font-medium text-ink">
+              {p.engine === 'remote' ? 'No step-free route available via Main routing engine' : 'No route that fits your needs'}
+            </p>
             <p>{p.failure ?? 'Try relaxing the slope limit.'}</p>
             <p>
               UMass runs an{' '}
@@ -60,7 +65,7 @@ export function RouteSummary(p: Props) {
         </div>
         {s && (
           <p className="mt-3 flex items-center gap-1.5 border-t border-black/5 pt-3 text-[12px] text-ink-3">
-            <Bus className="h-3.5 w-3.5" /> An unconstrained route takes about {mins(s.summary.total_duration_s)} min and {s.summary.is_step_free ? 'has no mapped stairs' : 'includes stairs'}.
+            <Bus className="h-3.5 w-3.5" /> A regular map would say {mins(s.summary.total_duration_s)} min with {s.summary.stair_count ?? 'an unknown number of'} steps.
           </p>
         )}
       </div>
@@ -76,6 +81,9 @@ export function RouteSummary(p: Props) {
 
   return (
     <div className="space-y-3">
+      <div className="flex justify-end">
+        <EngineBadge engine={p.engine} />
+      </div>
       {reroute && (
         <div
           className={cx('flex items-start gap-2.5 rounded-2xl bg-lift-soft px-3.5 py-3 text-[13px] text-lift-ink', p.justRerouted && 'animate-pop')}
@@ -98,14 +106,14 @@ export function RouteSummary(p: Props) {
           )}
         >
           <span className="flex items-center gap-1.5 text-[12px] font-medium text-go-ink">
-            <CheckCircle2 className="h-3.5 w-3.5" /> Your preferences
+            <CheckCircle2 className="h-3.5 w-3.5" /> Works for you
           </span>
           <span className="mt-1 block font-display text-[26px] font-semibold leading-none tracking-tight text-ink tabular-nums">
             {mins(a.summary.total_duration_s)}
             <span className="ml-0.5 text-[15px] font-medium text-ink-3"> min</span>
           </span>
           <span className="mt-1.5 block text-[12px] text-ink-3 tabular-nums">
-            {a.summary.total_distance_m} m · estimated max {a.summary.max_grade_pct === null ? 'unknown' : `${a.summary.max_grade_pct.toFixed(1)}%`}
+            {a.summary.total_distance_m} m · {a.summary.max_grade_pct === null ? 'slope unknown' : `max ${a.summary.max_grade_pct}%`}
           </span>
         </button>
         {s && (
@@ -119,14 +127,14 @@ export function RouteSummary(p: Props) {
             )}
           >
             <span className="flex items-center gap-1.5 text-[12px] font-medium text-stop-ink">
-              <Footprints className="h-3.5 w-3.5" /> Shortest
+              <Footprints className="h-3.5 w-3.5" /> Regular map
             </span>
             <span className="mt-1 block font-display text-[26px] font-semibold leading-none tracking-tight text-ink tabular-nums">
               {mins(s.summary.total_duration_s)}
               <span className="ml-0.5 text-[15px] font-medium text-ink-3"> min</span>
             </span>
             <span className="mt-1.5 block text-[12px] text-ink-3 tabular-nums">
-              {s.summary.is_step_free ? 'no mapped stairs' : 'includes stairs'} · max {s.summary.max_grade_pct === null ? 'unknown' : `${s.summary.max_grade_pct.toFixed(1)}%`}
+              {s.summary.stair_count === null ? 'stairs' : s.summary.stair_count ? `${s.summary.stair_count} steps` : 'no stairs'} · {s.summary.max_grade_pct === null ? 'slope unknown' : `max ${s.summary.max_grade_pct}%`}
             </span>
           </button>
         )}
@@ -158,7 +166,7 @@ export function RouteSummary(p: Props) {
         <div className="flex items-start gap-2.5 px-1 text-[13px] text-ink-2">
           <DoorOpen className="mt-0.5 h-4 w-4 shrink-0 text-go" />
           <span>
-            Approach the <span className="font-medium text-ink">{p.arrivalEntrance.name.toLowerCase()}</span> ({p.arrivalEntrance.door === 'unknown' ? 'door access unverified' : `${p.arrivalEntrance.door} door`} ).
+            Arrive at the <span className="font-medium text-ink">{p.arrivalEntrance.name.toLowerCase()}</span> ({p.arrivalEntrance.door} door).
           </span>
         </div>
       )}
@@ -170,9 +178,8 @@ export function RouteSummary(p: Props) {
         </div>
       ))}
 
-      {a.profile && a.summary.max_grade_pct !== null && a.summary.elevation_gain_m !== null && p.tab === 'accessible' && <ElevationProfile profile={a.profile} maxGrade={a.summary.max_grade_pct} gain={a.summary.elevation_gain_m} />}
-      {s?.profile && s.summary.max_grade_pct !== null && s.summary.elevation_gain_m !== null && p.tab === 'standard' && <ElevationProfile profile={s.profile} maxGrade={s.summary.max_grade_pct} gain={s.summary.elevation_gain_m} color="#e5484d" />}
-      <p className="text-[11px] text-ink-3">Time is an estimate at 1 m/s. Distances cover mapped outdoor paths; any gap to the doorway is listed above.</p>
+      {a.profile && p.tab === 'accessible' && a.summary.max_grade_pct !== null && a.summary.elevation_gain_m !== null && <ElevationProfile profile={a.profile} maxGrade={a.summary.max_grade_pct} gain={a.summary.elevation_gain_m} />}
+      {s?.profile && p.tab === 'standard' && s.summary.max_grade_pct !== null && s.summary.elevation_gain_m !== null && <ElevationProfile profile={s.profile} maxGrade={s.summary.max_grade_pct} gain={s.summary.elevation_gain_m} color="#e5484d" />}
 
       <div className="flex items-center justify-between gap-2 px-1">
         <button onClick={p.onToggleStandard} className="btn-ghost -ml-2 !px-2 !py-1 text-[12px]">
@@ -181,9 +188,26 @@ export function RouteSummary(p: Props) {
         </button>
         <span className="flex items-center gap-1 text-[11px] text-ink-4" title="Routing engine and graph size">
           <Info className="h-3 w-3" />
-          {p.engine === 'remote' ? 'Role 1 engine' : `${(a.summary.compute_ms ?? 0) < 1 ? '<1' : a.summary.compute_ms} ms`} · {p.graphEdges.toLocaleString()} paths
+          {p.engine === 'remote' ? 'Main routing engine' : `In-browser router · ${(a.summary.compute_ms ?? 0) < 1 ? '<1' : a.summary.compute_ms} ms`} · {p.graphEdges.toLocaleString()} paths
         </span>
       </div>
     </div>
+  );
+}
+
+/** Which router produced this answer: the Role 1 engine (VITE_ROUTING_API_URL) or the fallback in this browser. */
+export function EngineBadge({ engine }: { engine: 'local' | 'remote' }) {
+  const remote = engine === 'remote';
+  return (
+    <span
+      className={cx(
+        'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold',
+        remote ? 'bg-go-soft text-go-ink' : 'bg-black/[0.05] text-ink-3'
+      )}
+      title={remote ? 'Route computed by the main routing engine (server)' : 'Main routing engine unreachable: route computed in this browser'}
+    >
+      <span className={cx('h-1.5 w-1.5 rounded-full', remote ? 'bg-go' : 'bg-ink-4')} aria-hidden="true" />
+      {remote ? 'Main routing engine' : 'In-browser router'}
+    </span>
   );
 }

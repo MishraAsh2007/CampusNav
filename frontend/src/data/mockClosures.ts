@@ -150,10 +150,9 @@ export const DEMO_ELEVATOR_REPORT = {
   description: 'Doors will not open on the concourse level. Sign says technician called.'
 };
 
-export function formatFreshness(isoString: string | null): string {
-  if (!isoString) return 'at an unknown time';
+export function formatFreshness(isoString: string): string {
   const then = new Date(isoString).getTime();
-  if (!Number.isFinite(then)) return 'recently';
+  if (!Number.isFinite(then)) return 'at an unknown time';
   const diffMin = Math.max(0, Math.floor((Date.now() - then) / 60000));
   if (diffMin < 1) return 'just now';
   if (diffMin < 60) return `${diffMin} min ago`;

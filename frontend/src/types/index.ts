@@ -20,34 +20,38 @@ export interface Closure {
   building_name?: string;
   /** Graph connector this closure disables directly (e.g. an elevator). */
   connector_id?: string;
-  /** Scope and provenance fields used by the notices and incident feeds. */
-  asset_id?: string;
   building_id?: string;
+  asset_id?: string;
   floor_id?: string;
+  /**
+   * Who is blocked. 'road' = vehicles and buses only (sidewalks stay open), 'both' = road and sidewalk.
+   * Default: pedestrians.
+   */
   affects?: 'pedestrians' | 'road' | 'both';
+  /** Closed road, for road work notices */
   road_name?: string;
+  /** Bus routes the notice says are detoured. If absent, the UI works them out from OpenStreetMap routes. */
   bus_routes?: string[];
+  /** Link to the original notice */
   source_url?: string;
+  /** Notice number, e.g. a Facilities service interruption id */
   reference?: string;
   start_time: string;
   end_time?: string;
-  last_confirmed: string | null; // ISO timestamp when known
+  last_confirmed: string; // ISO timestamp
   confirmations_count: number;
 }
 
-export type DoorType = 'automatic' | 'push-button' | 'manual' | 'mixed' | 'unknown';
+export type DoorType = 'automatic' | 'push-button' | 'manual' | 'mixed';
 
 export interface BuildingEntrance {
   id: string;
   name: string;
   lat: number;
   lng: number;
-  step_free: boolean | null;
-  door_type: 'automatic' | 'push-button' | 'manual' | 'unknown';
-  has_ramp: boolean | null;
-  keycard_required?: boolean;
-  source?: string;
-  source_url?: string;
+  step_free: boolean;
+  door_type: 'automatic' | 'push-button' | 'manual';
+  has_ramp: boolean;
   ramp_grade_pct?: number;
   level?: string;
   notes?: string;
@@ -62,9 +66,7 @@ export interface BuildingElevator {
   id: string;
   name: string;
   floors: string;
-  status: 'operational' | 'out_of_service' | 'unknown';
-  lat?: number;
-  lng?: number;
+  status: 'operational' | 'out_of_service';
   connector_id?: string;
 }
 
@@ -79,18 +81,13 @@ export interface Building {
   step_free_entrances: BuildingEntrance[];
   door_type: DoorType;
   elevators: {
-    total_count: number | null;
-    working_count: number | null;
-    mapped_locations?: number;
+    total_count: number;
+    working_count: number;
     floors_served: string;
-    status: 'all_operational' | 'partial_outage' | 'all_down' | 'none' | 'unknown';
+    status: 'all_operational' | 'partial_outage' | 'all_down' | 'none';
     list: BuildingElevator[];
   };
-  accessible_restrooms: boolean | null;
-  in_routing_area?: boolean;
-  source_as_of?: string;
-  source_url?: string;
-  access_level?: string;
+  accessible_restrooms: boolean;
   lactation_room?: boolean;
   all_floors_accessible: boolean;
   notes?: string;
@@ -119,7 +116,7 @@ export type StepIcon =
 export interface RouteStep {
   instruction: string;
   distance_m: number;
-  grade_pct: number | null;
+  grade_pct: number;
   icon?: StepIcon;
   accessible_landmark?: string;
   is_indoor?: boolean;
@@ -153,7 +150,7 @@ export interface RouteSummary {
 }
 
 export interface RouteFeatureProperties {
-  grade: number | null;
+  grade: number;
   surface: string;
   is_step: boolean;
   is_ramp: boolean;
@@ -219,8 +216,6 @@ export interface UserReportPayload {
   title: string;
   description: string;
   building_id?: string;
-  asset_id?: string;
-  floor_id?: string;
   connector_id?: string;
   reporter_device_id?: string;
   timestamp: string;

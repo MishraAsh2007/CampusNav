@@ -56,7 +56,7 @@ const tone = (s: RouteStep) =>
       ? 'bg-stop-soft text-stop-ink'
       : s.icon === 'destination'
         ? 'bg-go text-white'
-        : s.grade_pct !== null && s.grade_pct >= 5
+        : s.grade_pct >= 5
           ? 'bg-warn-soft text-warn-ink'
           : 'bg-black/[0.05] text-ink-2';
 
