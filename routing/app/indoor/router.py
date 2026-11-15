@@ -133,6 +133,11 @@ def build_model(key: str, m: dict, active: list[Closure], avoid_steps: bool,
             length = round(math.dist((nodes[a]["x"], nodes[a]["y"]), (nodes[b]["x"], nodes[b]["y"])) * scale, 1)
             map_edges.append({"id": f"trace-{a}-{b}", "start": a, "end": b, "kind": "corridor", "length_m": length,
                               "step_free": True, "public_access": True, "asset_id": None})
+    for lift in (ov.get("traced_floors") or {}).get("elevators") or []:
+        stops = [s for s in lift["stops"] if s in nodes]
+        for a, b in zip(stops, stops[1:]):
+            map_edges.append({"id": f"trace-{a}-{b}", "start": a, "end": b, "kind": "elevator", "length_m": 4.0,
+                              "step_free": True, "public_access": True, "asset_id": lift["asset_id"]})
     ev = ov.get("elevators") or {}
 
     if building is None:
@@ -147,7 +152,7 @@ def build_model(key: str, m: dict, active: list[Closure], avoid_steps: bool,
     assets = {x["id"]: x for x in m.get("assets", []) if x.get("kind") == "elevator"}
     banks: dict[str, Bank] = {}
     spec_banks = ev.get("banks") or {}
-    for asset_id in {e["asset_id"] for e in m["edges"] if e["kind"] == "elevator" and e.get("asset_id")}:
+    for asset_id in {e["asset_id"] for e in map_edges if e["kind"] == "elevator" and e.get("asset_id")}:
         sb = spec_banks.get(asset_id)
         label = (sb or {}).get("label") or (assets.get(asset_id) or {}).get("label") or asset_id
         banks[asset_id] = Bank(asset_id, label, (sb or {}).get("cars"))

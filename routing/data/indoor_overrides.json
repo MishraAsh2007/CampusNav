@@ -162,7 +162,7 @@
         }
       },
       "elevators": {
-        "car_count": 3,
+        "car_count": 4,
         "verified": true,
         "cars": [
           {
@@ -186,10 +186,17 @@
             "lat": 42.390955,
             "lng": -72.525973,
             "gis_marker": false
+          },
+          {
+            "id": "ilc-elevator-north",
+            "label": "North elevator (by N155)",
+            "lat": 42.3913632,
+            "lng": -72.5262317,
+            "gis_marker": false
           }
         ],
         "gis_note": "UMass GIS puts one marker per elevator lobby, not per car: the ILC's 'west' marker (42.3908828, -72.5259219) stands for the adjacent pair, and Du Bois's single marker stands for its five cars. Do not read a car count from GIS markers.",
-        "source": "Team member, on site 2026-11-14 (corrected from an earlier 'two'): three elevators, two right next to each other and one beside the North Pleasant St entrance. Matches the frontend's mockBuildings.ts (3) and the floor-1 plan (a pair of shaft symbols in the south wing's core, one at the east end). Core pair position is read off the plan (+/-5 m). Which car is out of service today is unknown.",
+        "source": "Team member, on site 2026-11-14 (corrected from an earlier 'two'): three elevators, two right next to each other and one beside the North Pleasant St entrance. Matches the frontend's mockBuildings.ts (3) and the floor-1 plan (a pair of shaft symbols in the south wing's core, one at the east end). Core pair position is read off the plan (+/-5 m). Which car is out of service today is unknown. Corrected to four on 2026-11-14: the floor plans show a fourth elevator at the north end (by N155 / N255), which the team then confirmed.",
         "banks": {
           "ilc-elevator-east": {
             "label": "East elevator (by the North Pleasant St door)",
@@ -203,29 +210,27 @@
               "ilc-elevator-core-a",
               "ilc-elevator-core-b"
             ]
+          },
+          "ilc-elevator-north": {
+            "label": "North elevator (by N155)",
+            "cars": [
+              "ilc-elevator-north"
+            ]
           }
         },
         "banks_note": "Maps the scraper map's elevator assets (east, west) onto cars. The map's 'west' elevator is the adjacent core pair.",
-        "plan_note": "The floor plans show the adjacent pair in the south wing's core (plan px ~726,826) and the third at the east end (~1110,840), beside the SE door. A third shaft-like box near N155/N255 at the north end (~522,410) is not counted: the team counted three elevators."
+        "plan_note": "Floor plans: the adjacent pair in the south wing's core (plan px ~726,826), one at the east end (~1110,840) beside the SE door, and one at the north end (~522,410) by N155."
       },
       "room_floor_rule": {
         "pattern": "\\b[NS](\\d)\\d\\d\\b",
         "source": "Team, 2026-11-14: in the ILC the first digit of a room number is its floor (N151 is on floor 1, 2xx on floor 2, 3xx on floor 3). The scraper map's N151 'entryway' sits on floor 2, the only one of its 16 rooms that breaks the rule."
       },
-      "unmapped_places": {
-        "1": [
-          "Café",
-          "Cafe",
-          "Lobby"
-        ]
-      },
-      "unmapped_places_note": "Places the team confirmed on that floor (Role 2's sample map) that the scraper map doesn't have. Directions end at the floor's main corridor.",
       "drop_floors": [
         "4"
       ],
       "drop_floors_note": "Team, 2026-11-14: the ILC has no public 4th floor.",
       "traced_floors": {
-        "_source": "Traced by hand from the public scaled ArcGIS floor plans (Integrated_Learning_Center_First_Floor_Scaled, Integrated_Learning_Center_Second_Floor_Reup), stitched at web-mercator level 20 into the same 1536x1280 pixel frame the scraper map uses. Room points are at or next to each room's door on the corridor, read from the plan; corridors follow the plan's main halls. Accuracy is a few metres. Door clearances are not checked. The commons route (N140) and the 2nd-floor west gallery are assumed walkable.",
+        "_source": "Traced by hand from the public scaled ArcGIS floor plans (Integrated_Learning_Center_First_Floor_Scaled, Integrated_Learning_Center_Second_Floor_Reup), stitched at web-mercator level 20 into the same 1536x1280 pixel frame the scraper map uses. Room points are at or next to each room's door on the corridor, read from the plan; corridors follow the plan's main halls. Accuracy is a few metres. Door clearances are not checked. The team confirmed the N140 commons (with the café) and the 2nd-floor west gallery are walkable.",
         "m_per_px": 0.11026,
         "replaces": "all non-elevator nodes and edges the scraper map has on these floors",
         "1": {
@@ -336,9 +341,14 @@
               "x": 470,
               "y": 600,
               "kind": "room",
-              "label": "ILC N140 (commons)",
+              "label": "ILC N140 (commons and café)",
               "aliases": [
-                "commons"
+                "commons",
+                "café",
+                "cafe",
+                "lobby",
+                "ilc cafe",
+                "ilc café"
               ]
             },
             "ilc-f1-n101": {
@@ -412,6 +422,12 @@
                 "bathroom",
                 "bathrooms"
               ]
+            },
+            "ilc-elev-north-f1": {
+              "x": 522,
+              "y": 411,
+              "kind": "elevator_stop",
+              "label": "North Elevator, 1st Floor"
             }
           },
           "elevator_stops": {
@@ -548,6 +564,10 @@
             [
               "f1-main-e",
               "ilc-elev-east-f1"
+            ],
+            [
+              "f1-lobby-n",
+              "ilc-elev-north-f1"
             ]
           ]
         },
@@ -714,6 +734,12 @@
                 "bathroom",
                 "bathrooms"
               ]
+            },
+            "ilc-elev-north-f2": {
+              "x": 520,
+              "y": 405,
+              "kind": "elevator_stop",
+              "label": "North Elevator, 2nd Floor"
             }
           },
           "elevator_stops": {
@@ -842,9 +868,23 @@
             [
               "f2-lobby-se",
               "ilc-elev-east-f2"
+            ],
+            [
+              "f2-lobby-n",
+              "ilc-elev-north-f2"
             ]
           ]
-        }
+        },
+        "elevators": [
+          {
+            "asset_id": "ilc-elevator-north",
+            "stops": [
+              "ilc-elev-north-f1",
+              "ilc-elev-north-f2"
+            ],
+            "note": "Shaft drawn on the floor 1 and 2 plans; floors above 2 not confirmed."
+          }
+        ]
       }
     }
   }
