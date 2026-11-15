@@ -123,7 +123,8 @@
             "node": "f2-lobby-n",
             "length_m": 11.6,
             "source": "Door position on the traced floor plan, to the lobby it opens onto."
-          }
+          },
+          "name": "Northwest bridge door (from Campus Center)"
         },
         "_note": "Doors are matched by location. routing-scraper's ILC map has two portals on floor 1, ilc-portal-south (4.6 m from ilc-sw) and ilc-portal-west (7.6 m from ilc-se), taken from ArcGIS entrance points that carry no floor. The on-site check found those two doors open onto floor 2, so ilc-sw and ilc-se replace them. The ILC's real floor-1 doors are the two vestibules on the north wing's glass wall (ilc-north-floor1, ilc-west-floor1); ground there is ~65 m, vs 69.5-71.5 m at the floor-2 doors (USGS 3DEP). Neither floor-1 door is in the scraper map or the frontend's building data.",
         "_unchecked": "ilc-ne (push-button, possibly a wheelchair exit) is left out until someone checks it.",
@@ -354,67 +355,111 @@
                 "lobby",
                 "ilc cafe",
                 "ilc café"
+              ],
+              "label_at": [
+                445,
+                570
               ]
             },
             "ilc-f1-n101": {
               "x": 545,
               "y": 905,
               "kind": "room",
-              "label": "ILC N101"
+              "label": "ILC N101",
+              "label_at": [
+                577,
+                963
+              ]
             },
             "ilc-f1-n111": {
               "x": 530,
               "y": 765,
               "kind": "room",
-              "label": "ILC N111"
+              "label": "ILC N111",
+              "label_at": [
+                588,
+                800
+              ]
             },
             "ilc-f1-n151": {
               "x": 655,
               "y": 648,
               "kind": "room",
-              "label": "ILC N151"
+              "label": "ILC N151",
+              "label_at": [
+                636,
+                558
+              ]
             },
             "ilc-f1-n155": {
               "x": 545,
               "y": 440,
               "kind": "room",
-              "label": "ILC N155"
+              "label": "ILC N155",
+              "label_at": [
+                603,
+                401
+              ]
             },
             "ilc-f1-s110": {
               "x": 1057,
               "y": 852,
               "kind": "room",
-              "label": "ILC S110"
+              "label": "ILC S110",
+              "label_at": [
+                1033,
+                928
+              ]
             },
             "ilc-f1-s112": {
               "x": 1020,
               "y": 848,
               "kind": "room",
-              "label": "ILC S112"
+              "label": "ILC S112",
+              "label_at": [
+                1018,
+                862
+              ]
             },
             "ilc-f1-s120": {
               "x": 905,
               "y": 866,
               "kind": "room",
-              "label": "ILC S120"
+              "label": "ILC S120",
+              "label_at": [
+                860,
+                950
+              ]
             },
             "ilc-f1-s122": {
               "x": 850,
               "y": 858,
               "kind": "room",
-              "label": "ILC S122"
+              "label": "ILC S122",
+              "label_at": [
+                848,
+                880
+              ]
             },
             "ilc-f1-s131": {
               "x": 772,
               "y": 832,
               "kind": "room",
-              "label": "ILC S131"
+              "label": "ILC S131",
+              "label_at": [
+                835,
+                773
+              ]
             },
             "ilc-f1-s140": {
               "x": 745,
               "y": 885,
               "kind": "room",
-              "label": "ILC S140"
+              "label": "ILC S140",
+              "label_at": [
+                700,
+                940
+              ]
             },
             "ilc-f1-restrooms": {
               "x": 668,
@@ -426,6 +471,10 @@
                 "restroom",
                 "bathroom",
                 "bathrooms"
+              ],
+              "label_at": [
+                700,
+                762
               ]
             },
             "ilc-elev-north-f1": {
@@ -684,49 +733,81 @@
               "x": 560,
               "y": 955,
               "kind": "room",
-              "label": "ILC N201"
+              "label": "ILC N201",
+              "label_at": [
+                575,
+                982
+              ]
             },
             "ilc-f2-n211": {
               "x": 595,
               "y": 855,
               "kind": "room",
-              "label": "ILC N211"
+              "label": "ILC N211",
+              "label_at": [
+                572,
+                790
+              ]
             },
             "ilc-f2-n255": {
               "x": 555,
               "y": 452,
               "kind": "room",
-              "label": "ILC N255"
+              "label": "ILC N255",
+              "label_at": [
+                600,
+                410
+              ]
             },
             "ilc-f2-s211": {
               "x": 940,
               "y": 808,
               "kind": "room",
-              "label": "ILC S211"
+              "label": "ILC S211",
+              "label_at": [
+                990,
+                760
+              ]
             },
             "ilc-f2-s220": {
               "x": 895,
               "y": 862,
               "kind": "room",
-              "label": "ILC S220"
+              "label": "ILC S220",
+              "label_at": [
+                965,
+                907
+              ]
             },
             "ilc-f2-s231": {
               "x": 830,
               "y": 822,
               "kind": "room",
-              "label": "ILC S231"
+              "label": "ILC S231",
+              "label_at": [
+                860,
+                742
+              ]
             },
             "ilc-f2-s240": {
               "x": 690,
               "y": 880,
               "kind": "room",
-              "label": "ILC S240"
+              "label": "ILC S240",
+              "label_at": [
+                732,
+                940
+              ]
             },
             "ilc-f2-s275": {
               "x": 775,
               "y": 812,
               "kind": "room",
-              "label": "ILC S275"
+              "label": "ILC S275",
+              "label_at": [
+                770,
+                737
+              ]
             },
             "ilc-f2-restrooms": {
               "x": 650,
@@ -738,6 +819,10 @@
                 "restroom",
                 "bathroom",
                 "bathrooms"
+              ],
+              "label_at": [
+                680,
+                752
               ]
             },
             "ilc-elev-north-f2": {

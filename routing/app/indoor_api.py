@@ -20,13 +20,14 @@ from __future__ import annotations
 from typing import Any, Literal, Optional
 
 from fastapi import APIRouter, HTTPException, Request
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from . import backend_client, config
 from .frontend_api import map_building, map_closures
 from .indoor import overrides
 from .indoor import router as ir
+from .indoor import schematic
 from .routing.closures import is_active
 from .schemas import DestinationBuilding
 from .utils.geo import m_to_ft
@@ -188,6 +189,16 @@ def _plan_file(key: str, floor_id: str):
     return p if p.is_file() else None
 
 
+@router.get("/api/indoor-plan/{building_id}/{floor_id}.svg")
+def indoor_plan_svg(building_id: str, floor_id: str):
+    """Clean schematic of a traced floor (footprint, hallways, rooms, elevators, doors)."""
+    key, m = ir.find_map(building_id)
+    svg = schematic.render(ir.build_model(key, m, [], False, None), floor_id) if key else None
+    if svg is None:
+        raise HTTPException(404, detail="No schematic plan for that building and floor.")
+    return Response(svg, media_type="image/svg+xml", headers={"Cache-Control": "no-cache"})
+
+
 @router.get("/api/indoor-plan/{building_id}/{floor_id}.png")
 def indoor_plan(building_id: str, floor_id: str):
     key, m = ir.find_map(building_id)
@@ -213,5 +224,10 @@ def indoor_map(building_id: str, request: Request) -> dict[str, Any]:
     key, m = ir.find_map(building_id)
     if m is None:
         raise HTTPException(404, detail="No indoor map for this building.")
-    return ir.export_map(ir.build_model(key, m, [], False, None), str(request.base_url).rstrip("/"),
-                         lambda fid: _plan_file(key, fid) is not None)
+    def plan_url(fid: str) -> Optional[str]:
+        # Prefer the clean schematic; fall back to the raw plan image.
+        if schematic.outline_file(key, fid) and fid in (overrides.load().get(key, {}).get("traced_floors") or {}):
+            return f"/api/indoor-plan/{key}/{fid}.svg"
+        return f"/api/indoor-plan/{key}/{fid}.png" if _plan_file(key, fid) else None
+
+    return ir.export_map(ir.build_model(key, m, [], False, None), str(request.base_url).rstrip("/"), plan_url)
