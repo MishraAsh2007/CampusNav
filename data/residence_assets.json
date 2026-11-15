@@ -1,0 +1,869 @@
+[
+  {
+    "id": "umass-elevator-141",
+    "name": "Lincoln Campus Center mapped elevator location",
+    "type": "elevator",
+    "lat": 42.39164704619488,
+    "lng": -72.52708074887958,
+    "radius": 4,
+    "building_aliases": [
+      "Campus Center",
+      "Lincoln Campus Center"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/141; point lies in Lincoln Campus Center's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-187",
+    "name": "Integrative Learning Center mapped elevator location",
+    "type": "elevator",
+    "lat": 42.390892431451576,
+    "lng": -72.52542160205012,
+    "radius": 4,
+    "building_aliases": [
+      "ILC",
+      "Integrative Learning Center"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/187; point lies in Integrative Learning Center's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-188",
+    "name": "Integrative Learning Center mapped elevator location",
+    "type": "elevator",
+    "lat": 42.39088281968076,
+    "lng": -72.52592187860468,
+    "radius": 4,
+    "building_aliases": [
+      "ILC",
+      "Integrative Learning Center"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/188; point lies in Integrative Learning Center's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-122",
+    "name": "Student Union mapped elevator location",
+    "type": "elevator",
+    "lat": 42.39094553070591,
+    "lng": -72.52775463191782,
+    "radius": 4,
+    "building_aliases": [
+      "Student Union"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/122; point lies in Student Union's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-121",
+    "name": "W.E.B. Du Bois Library mapped elevator location",
+    "type": "elevator",
+    "lat": 42.389838144417546,
+    "lng": -72.52822985896846,
+    "radius": 4,
+    "building_aliases": [
+      "DuBois",
+      "Du Bois",
+      "Library"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/121; point lies in W.E.B. Du Bois Library's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-120",
+    "name": "Goodell Hall mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38863120368139,
+    "lng": -72.52920106940996,
+    "radius": 4,
+    "building_aliases": [
+      "Goodell"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/120; point lies in Goodell Hall's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-100",
+    "name": "Patterson House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38158465162623,
+    "lng": -72.52831354306397,
+    "radius": 4,
+    "building_aliases": [
+      "Patterson Hall",
+      "Patterson",
+      "Patterson House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/100; point lies in Patterson House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-109",
+    "name": "Grayson House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.39223408704256,
+    "lng": -72.51887171255531,
+    "radius": 4,
+    "building_aliases": [
+      "Grayson Hall",
+      "Grayson",
+      "Grayson House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/109; point lies in Grayson House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-180",
+    "name": "Birch House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.387991217560604,
+    "lng": -72.53140522480258,
+    "radius": 4,
+    "building_aliases": [
+      "Birch Hall",
+      "Birch",
+      "Birch House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/180; point lies in Birch House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-178",
+    "name": "Elm House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38816215096671,
+    "lng": -72.52980024797311,
+    "radius": 4,
+    "building_aliases": [
+      "Elm Hall",
+      "Elm",
+      "Elm House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/178; point lies in Elm House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-195",
+    "name": "Elm House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38835585503582,
+    "lng": -72.52988174759415,
+    "radius": 4,
+    "building_aliases": [
+      "Elm Hall",
+      "Elm",
+      "Elm House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/195; point lies in Elm House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-182",
+    "name": "Linden House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38701531074524,
+    "lng": -72.53097715286405,
+    "radius": 4,
+    "building_aliases": [
+      "Linden Hall",
+      "Linden",
+      "Linden House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/182; point lies in Linden House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-181",
+    "name": "Maple House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.387475995847154,
+    "lng": -72.53113453940904,
+    "radius": 4,
+    "building_aliases": [
+      "Maple Hall",
+      "Maple",
+      "Maple House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/181; point lies in Maple House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-196",
+    "name": "Maple House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.387819796399526,
+    "lng": -72.53080973856943,
+    "radius": 4,
+    "building_aliases": [
+      "Maple Hall",
+      "Maple",
+      "Maple House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/196; point lies in Maple House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-197",
+    "name": "Maple House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38754058731015,
+    "lng": -72.53068937417467,
+    "radius": 4,
+    "building_aliases": [
+      "Maple Hall",
+      "Maple",
+      "Maple House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/197; point lies in Maple House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-183",
+    "name": "Oak House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38748192206273,
+    "lng": -72.53019110603299,
+    "radius": 4,
+    "building_aliases": [
+      "Oak Hall",
+      "Oak",
+      "Oak House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/183; point lies in Oak House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-179",
+    "name": "Sycamore House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38854854647619,
+    "lng": -72.53035836234268,
+    "radius": 4,
+    "building_aliases": [
+      "Sycamore Hall",
+      "Sycamore",
+      "Sycamore House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/179; point lies in Sycamore House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-108",
+    "name": "Brett House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.389695062901936,
+    "lng": -72.5215614793677,
+    "radius": 4,
+    "building_aliases": [
+      "Brett Hall",
+      "Brett",
+      "Brett House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/108; point lies in Brett House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-153",
+    "name": "Brooks House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.389934524033,
+    "lng": -72.52092941546256,
+    "radius": 4,
+    "building_aliases": [
+      "Brooks Hall",
+      "Brooks",
+      "Brooks House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/153; point lies in Brooks House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-145",
+    "name": "North A mapped elevator location",
+    "type": "elevator",
+    "lat": 42.39755551914282,
+    "lng": -72.52412771671703,
+    "radius": 4,
+    "building_aliases": [
+      "North A",
+      "North A",
+      "North A"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/145; point lies in North A's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-146",
+    "name": "North B mapped elevator location",
+    "type": "elevator",
+    "lat": 42.39673845720704,
+    "lng": -72.52417589014631,
+    "radius": 4,
+    "building_aliases": [
+      "North B",
+      "North B",
+      "North B"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/146; point lies in North B's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-147",
+    "name": "North C mapped elevator location",
+    "type": "elevator",
+    "lat": 42.39760350544297,
+    "lng": -72.52505326255967,
+    "radius": 4,
+    "building_aliases": [
+      "North C",
+      "North C",
+      "North C"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/147; point lies in North C's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-148",
+    "name": "North D mapped elevator location",
+    "type": "elevator",
+    "lat": 42.3967596721315,
+    "lng": -72.52510098997027,
+    "radius": 4,
+    "building_aliases": [
+      "North D",
+      "North D",
+      "North D"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/148; point lies in North D's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-152",
+    "name": "Knowlton House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.393813465089714,
+    "lng": -72.52574194395972,
+    "radius": 4,
+    "building_aliases": [
+      "Knowlton Hall",
+      "Knowlton",
+      "Knowlton House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/152; point lies in Knowlton House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-157",
+    "name": "Dickinson House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.39212041643847,
+    "lng": -72.51960258788309,
+    "radius": 4,
+    "building_aliases": [
+      "Dickinson House",
+      "Dickinson House",
+      "Dickinson House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/157; point lies in Dickinson House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-158",
+    "name": "Field House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.39175330756981,
+    "lng": -72.5185477377608,
+    "radius": 4,
+    "building_aliases": [
+      "Field Hall",
+      "Field",
+      "Field House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/158; point lies in Field House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-159",
+    "name": "Webster House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.39150974491854,
+    "lng": -72.51942884630114,
+    "radius": 4,
+    "building_aliases": [
+      "Webster Hall",
+      "Webster",
+      "Webster House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/159; point lies in Webster House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-160",
+    "name": "Cance House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.381111179120616,
+    "lng": -72.53007351351782,
+    "radius": 4,
+    "building_aliases": [
+      "Cance Hall",
+      "Cance",
+      "Cance House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/160; point lies in Cance House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-165",
+    "name": "Coolidge House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.383662869420974,
+    "lng": -72.52987483315212,
+    "radius": 4,
+    "building_aliases": [
+      "Coolidge Hall",
+      "Coolidge",
+      "Coolidge House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/165; point lies in Coolidge House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-176",
+    "name": "Crampton House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38337506189791,
+    "lng": -72.52910843737462,
+    "radius": 4,
+    "building_aliases": [
+      "Crampton Hall",
+      "Crampton",
+      "Crampton House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/176; point lies in Crampton House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-169",
+    "name": "Emerson House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38345376292369,
+    "lng": -72.53088036986453,
+    "radius": 4,
+    "building_aliases": [
+      "Emerson Hall",
+      "Emerson",
+      "Emerson House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/169; point lies in Emerson House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-168",
+    "name": "James House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38420216758582,
+    "lng": -72.53083473310856,
+    "radius": 4,
+    "building_aliases": [
+      "James Hall",
+      "James",
+      "James House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/168; point lies in James House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-161",
+    "name": "Adams, John House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38186100917422,
+    "lng": -72.52880369676875,
+    "radius": 4,
+    "building_aliases": [
+      "John Adams Hall",
+      "John Adams",
+      "Adams, John House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/161; point lies in Adams, John House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-162",
+    "name": "Adams, John Q. House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.382243902058775,
+    "lng": -72.52914087881257,
+    "radius": 4,
+    "building_aliases": [
+      "John Quincy Adams Hall",
+      "John Quincy Adams",
+      "Adams, John Q. House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/162; point lies in Adams, John Q. House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-164",
+    "name": "Kennedy House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38409883083771,
+    "lng": -72.52960559642594,
+    "radius": 4,
+    "building_aliases": [
+      "Kennedy Hall",
+      "Kennedy",
+      "Kennedy House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/164; point lies in Kennedy House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-163",
+    "name": "Mackimmie House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38266333548975,
+    "lng": -72.5285886168239,
+    "radius": 4,
+    "building_aliases": [
+      "Mackimmie Hall",
+      "Mackimmie",
+      "Mackimmie House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/163; point lies in Mackimmie House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-167",
+    "name": "Melville House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38474293709804,
+    "lng": -72.53030050845064,
+    "radius": 4,
+    "building_aliases": [
+      "Melville Hall",
+      "Melville",
+      "Melville House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/167; point lies in Melville House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-156",
+    "name": "Moore House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38215471799128,
+    "lng": -72.53080628850996,
+    "radius": 4,
+    "building_aliases": [
+      "Moore Hall",
+      "Moore",
+      "Moore House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/156; point lies in Moore House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-155",
+    "name": "Pierpont House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38138672895201,
+    "lng": -72.5309583881376,
+    "radius": 4,
+    "building_aliases": [
+      "Pierpont Hall",
+      "Pierpont",
+      "Pierpont House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/155; point lies in Pierpont House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-101",
+    "name": "Prince House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.384293201756705,
+    "lng": -72.52891470269188,
+    "radius": 4,
+    "building_aliases": [
+      "Prince Hall",
+      "Prince",
+      "Prince House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/101; point lies in Prince House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-166",
+    "name": "Thoreau House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38433563106242,
+    "lng": -72.52976368764082,
+    "radius": 4,
+    "building_aliases": [
+      "Thoreau Hall",
+      "Thoreau",
+      "Thoreau House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/166; point lies in Thoreau House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-154",
+    "name": "Washington House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.38158843431622,
+    "lng": -72.52933410332662,
+    "radius": 4,
+    "building_aliases": [
+      "Washington Hall",
+      "Washington",
+      "Washington House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/154; point lies in Washington House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-149",
+    "name": "Brown House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.3973104543854,
+    "lng": -72.52294161562183,
+    "radius": 4,
+    "building_aliases": [
+      "Brown Hall",
+      "Brown",
+      "Brown House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/149; point lies in Brown House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-186",
+    "name": "Brown House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.39741739380068,
+    "lng": -72.52296170086319,
+    "radius": 4,
+    "building_aliases": [
+      "Brown Hall",
+      "Brown",
+      "Brown House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/186; point lies in Brown House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-150",
+    "name": "Cashin House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.39750505134469,
+    "lng": -72.5215625494416,
+    "radius": 4,
+    "building_aliases": [
+      "Cashin Hall",
+      "Cashin",
+      "Cashin House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/150; point lies in Cashin House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  },
+  {
+    "id": "umass-elevator-151",
+    "name": "McNamara House mapped elevator location",
+    "type": "elevator",
+    "lat": 42.397935919345336,
+    "lng": -72.52210304049925,
+    "radius": 4,
+    "building_aliases": [
+      "Mcnamara Hall",
+      "Mcnamara",
+      "McNamara House"
+    ],
+    "asset_phrases": [
+      "elevator"
+    ],
+    "reviewed": true,
+    "synthetic": false,
+    "evidence": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Elevators/FeatureServer/0/151; point lies in McNamara House's official footprint. Map edition August 2022. A map point may represent an elevator bank; no indoor graph connection inferred."
+  }
+]

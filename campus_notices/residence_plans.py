@@ -205,16 +205,31 @@ def refresh_residence_plans(
     """Inventory and download current residence plans using a saved browser session."""
 
     now = now or datetime.now(UTC)
+    previous = json.loads(output.read_text(encoding="utf-8")) if output.exists() else {}
+    old_files = {r["server_relative_url"]: r for r in previous.get("records", [])}
     saved_state, user_agent = read_session(storage_state, now)
     from playwright.sync_api import sync_playwright
 
     with sync_playwright() as playwright:
         request = _FreshSharePointClient(playwright, saved_state, user_agent)
         records = inventory_residence_plans(request, site=site, root_folder=root_folder)
+        if not records:
+            raise ValueError("No residence plans returned; previous inventory retained")
         for record in records:
             relative = record["server_relative_url"]
             if not relative:
                 raise ValueError(f"SharePoint file has no path: {record['name']}")
+            destination = _safe_file_path(
+                download_root, record["area"], record["building"], record["name"]
+            )
+            old = old_files.get(relative)
+            if reusable_plan(record, old, destination):
+                for key in ("sha256", "downloaded_bytes", "extracted", "trace", "downloaded_at"):
+                    if key in old:
+                        record[key] = old[key]
+                record["local_path"] = str(destination)
+                record["fetch_mode"] = "unchanged"
+                continue
             response = request.get(
                 _api_url(site, "GetFileByServerRelativeUrl", relative, "/$value"),
                 headers={"Accept": "application/pdf"},
@@ -226,15 +241,15 @@ def refresh_residence_plans(
                     f"SharePoint plan download failed (HTTP {response.status})"
                 )
             data = response.body()
-            destination = _safe_file_path(
-                download_root, record["area"], record["building"], record["name"]
-            )
+            extracted = extract_plan_metadata(data)
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes(data)
             record["local_path"] = str(destination)
             record["sha256"] = hashlib.sha256(data).hexdigest()
             record["downloaded_bytes"] = len(data)
-            record["extracted"] = extract_plan_metadata(data)
+            record["extracted"] = extracted
+            record["downloaded_at"] = now.isoformat()
+            record["fetch_mode"] = "downloaded"
     payload = {
         "source": "authenticated_umass_sharepoint_residence_plans",
         "site": site,
@@ -246,3 +261,18 @@ def refresh_residence_plans(
     }
     atomic_json(output, payload)
     return payload
+
+
+def reusable_plan(record, previous, destination: Path):
+    """Recheck remote version metadata and local bytes before reusing a reviewed PDF."""
+    return bool(
+        previous
+        and record.get("modified")
+        and record["modified"] == previous.get("modified")
+        and record.get("size_bytes", 0) > 0
+        and record["size_bytes"] == previous.get("size_bytes")
+        and previous.get("extracted")
+        and destination.is_file()
+        and destination.stat().st_size == record["size_bytes"]
+        and hashlib.sha256(destination.read_bytes()).hexdigest() == previous.get("sha256")
+    )

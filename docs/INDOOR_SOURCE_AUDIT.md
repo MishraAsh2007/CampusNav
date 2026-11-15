@@ -38,6 +38,14 @@ Total: **155 references**, including **91 library**, **40 ILC**, and **24 Campus
 These are source records, not counts of unique navigable destinations: sources can overlap.
 Use `.\refresh-indoor.cmd` and inspect `data/indoor_sources.json` or `GET /indoor/sources`.
 
+A separate [library elevator collector](LIBRARY_ELEVATOR_COVERAGE.md) now reads
+the actual StackMap floor-detail pages: 26 floors, 52 grouped elevator regions,
+and a dated directory identifying five cars. These records are stored separately
+in `data/library_elevator_sources.json`; they are not additional production routing
+assets. The owner reports all five cars now serve all floors; the directory's
+2007 express/local restrictions are not applied. See also the
+[central-building source gaps and SharePoint results](INDOOR_COVERAGE_GAPS.md).
+
 One important discrepancy: the study-space layer records **N201 with `Floor: "01"`**.
 We preserve that field; we do not infer floor 2 from the room number. Numeric `01` can be
 normalized to `1`, but `E`, `LL`, `BT` and `Lower Level` are not assumed equivalent without

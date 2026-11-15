@@ -17,8 +17,12 @@ data/official_status.json
 data/notice_review.json
 data/*.lock
 dist/
+data/collected_data.json
+data/scrape_status.json
 tmp/
 
 frontend/node_modules/
+
 frontend/dist/
+
 node_modules/
