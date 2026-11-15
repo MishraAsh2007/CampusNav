@@ -93,7 +93,8 @@ In the trip planner's destination search, enter a room or a building and room (f
 example, `ILC N151`). Follow the outdoor route to the selected entrance, then tap
 **Go inside** and choose **2D Floor Plan** or **3D Immersive View**. Choosing the
 indoor view confirms arrival and refreshes closures before calculating the indoor route.
-Buildings without reviewed indoor coverage may show a labeled sample layout.
+Buildings without source-based indoor coverage remain unavailable in live mode.
+Labeled sample layouts are restricted to the explicit demo experience.
 
 ## Where the web scraper is
 
