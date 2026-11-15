@@ -110,7 +110,7 @@ export function App() {
   const [plan, setPlan] = useState<PlanResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<'accessible' | 'standard'>('accessible');
-  const [showStandard, setShowStandard] = useState(true);
+  const [showStandard, setShowStandard] = useState(false);
   const [needsOpen, setNeedsOpen] = useState(false);
   const [ghost, setGhost] = useState<RouteResponse | null>(null);
   const [justRerouted, setJustRerouted] = useState(false);
@@ -531,9 +531,15 @@ export function App() {
               failure={plan?.failure}
               notes={[...(plan?.notes ?? []), ...busStopNotes]}
               tab={tab}
-              onTab={setTab}
+              onTab={(next) => {
+                setTab(next);
+                if (next === 'standard') setShowStandard(true);
+              }}
               showStandard={showStandard}
-              onToggleStandard={() => setShowStandard((v) => !v)}
+              onToggleStandard={() => {
+                if (showStandard) setTab('accessible');
+                setShowStandard(!showStandard);
+              }}
               prefs={prefs}
               arrivalEntrance={arrival}
               destinationBuilding={destBuilding}
