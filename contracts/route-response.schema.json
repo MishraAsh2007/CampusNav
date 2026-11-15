@@ -58,6 +58,94 @@
       "title": "LineString",
       "type": "object"
     },
+    "RouteManeuver": {
+      "additionalProperties": false,
+      "properties": {
+        "instruction": {
+          "title": "Instruction",
+          "type": "string"
+        },
+        "maneuver": {
+          "enum": [
+            "depart",
+            "straight",
+            "left",
+            "right",
+            "slight-left",
+            "slight-right",
+            "sharp-left",
+            "sharp-right",
+            "u-turn",
+            "stairs",
+            "ramp",
+            "elevator",
+            "arrive"
+          ],
+          "title": "Maneuver",
+          "type": "string"
+        },
+        "distance_m": {
+          "minimum": 0,
+          "title": "Distance M",
+          "type": "number"
+        },
+        "at": {
+          "description": "[longitude, latitude] at the maneuver",
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "At",
+          "type": "array"
+        },
+        "geometry": {
+          "items": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array"
+          },
+          "minItems": 2,
+          "title": "Geometry",
+          "type": "array"
+        },
+        "grade_pct": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Grade Pct"
+        }
+      },
+      "required": [
+        "instruction",
+        "maneuver",
+        "distance_m",
+        "at",
+        "geometry",
+        "grade_pct"
+      ],
+      "title": "RouteManeuver",
+      "type": "object"
+    },
     "RouteProperties": {
       "additionalProperties": false,
       "properties": {
@@ -94,6 +182,13 @@
           "title": "Directions",
           "type": "array"
         },
+        "maneuvers": {
+          "items": {
+            "$ref": "#/$defs/RouteManeuver"
+          },
+          "title": "Maneuvers",
+          "type": "array"
+        },
         "graph_source": {
           "title": "Graph Source",
           "type": "string"
@@ -120,6 +215,13 @@
         "end_snap_distance": {
           "minimum": 0,
           "title": "End Snap Distance",
+          "type": "number"
+        },
+        "routing_cost": {
+          "default": 0,
+          "description": "Search cost including degraded-edge penalties",
+          "minimum": 0,
+          "title": "Routing Cost",
           "type": "number"
         }
       },

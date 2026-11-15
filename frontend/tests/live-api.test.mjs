@@ -38,6 +38,53 @@ test('route adapter preserves unknown grade and the router directions', () => {
   assert.equal(route.steps[0].instruction, 'Continue on the path.');
 });
 
+test('turn-by-turn metadata preserves turn icons, map focus points, and leg distances', () => {
+  const route = api.adaptWireRoute({...wire, properties: {...wire.properties, maneuvers: [
+    {maneuver: 'left', instruction: 'Turn left onto the mapped path, then continue 20 m.',
+      distance_m: 20, at: [-72.528, 42.39], grade_pct: null, geometry: []},
+    {maneuver: 'arrive', instruction: 'Arrive at the mapped endpoint.', distance_m: 0,
+      at: [-72.527, 42.39], grade_pct: null, geometry: []},
+  ]}}, 3);
+  assert.equal(route.steps[0].icon, 'turn-left');
+  assert.equal(route.steps[0].distance_m, 20);
+  assert.deepEqual(route.steps[0].at, [-72.528, 42.39]);
+  assert.equal(route.steps[1].icon, 'destination');
+});
+
+test('the outdoor route carries an exact indoor entrance into the arrival view', async () => {
+  mockRouting(() => response({accessible: wire, standard: wire, notes: [],
+    end_entrance: {id: 'door-b', ...end},
+    indoor_arrival: {node_id: 'ilc-entrance-south', portal_id: 'ilc-portal-south', label: 'South entrance'},
+  }));
+  const plan = await api.planRoutes(start, end, prefs, [], []);
+  assert.equal(plan.arrivalPoint.indoorNodeId, 'ilc-entrance-south');
+  assert.equal(plan.arrivalPoint.portalId, 'ilc-portal-south');
+  assert.equal(plan.arrivalPoint.label, 'South entrance');
+});
+
+test('drawing journeys retain the indoor itinerary and send consent, with server-owned live closures', async () => {
+  let payload;
+  globalThis.fetch = async (url, init) => {
+    assert.equal(url, '/journey');
+    payload = JSON.parse(init.body);
+    return response({complete: true, total_distance: null, warnings: ['Drawing only'], legs: [
+      {kind: 'indoor', building_id: 'north-d', steps: [{instruction: 'Follow the hall to the elevator.'}]},
+      {kind: 'portal', building_id: 'north-d', entrance_id: 'entrance-50', indoor_node_id: 'exit-threshold-1'},
+      {kind: 'outdoor', route: wire},
+    ]});
+  };
+  const plan = await api.planRoutes(start, end, prefs, [official], [], {
+    origin: {kind: 'drawing', building_id: 'north-d', node_id: 'apartment-513-5'},
+    acceptDrawing: true, residentAccess: true,
+  });
+  assert.equal(payload.accept_drawing_only, true);
+  assert.equal(payload.resident_access_confirmed, true);
+  assert.deepEqual(payload.closures, []);
+  assert.equal(plan.journey.legs[0].steps[0].instruction, 'Follow the hall to the elevator.');
+  assert.equal(plan.journey.total_distance, null);
+  assert.ok(plan.notes.some(note => note.includes('distance is unknown')));
+});
+
 test('catalog preserves empty entrance lists and the existing building ID', () => {
   const building = api.normalizeBuilding({id: 'campus-center', name: 'Lincoln Campus Center',
     lat: 42.39, lng: -72.528, entrances: []});

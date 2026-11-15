@@ -42,7 +42,8 @@ def main():
                 "Private data/logs: data/private/collected_data.json and scrape_logs/", flush=True
             )
             print(
-                "Existing routing maps are preserved. Collection does not start the server.",
+                "Reviewed source editions rebuild scoped drawing pilots; changed editions retain "
+                "previous maps. Collection does not start the server.",
                 flush=True,
             )
             if not args.watch:

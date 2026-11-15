@@ -63,7 +63,7 @@ export function RouteSummary(p: Props) {
             </p>
           </div>
         </div>
-        {s && (
+        {s && p.showStandard && (
           <p className="mt-3 flex items-center gap-1.5 border-t border-black/5 pt-3 text-[12px] text-ink-3">
             <Bus className="h-3.5 w-3.5" /> A regular map would say {mins(s.summary.total_duration_s)} min with {s.summary.stair_count ?? 'an unknown number of'} steps.
           </p>
@@ -95,7 +95,7 @@ export function RouteSummary(p: Props) {
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-2" role="tablist" aria-label="Route options">
+      <div className={cx('grid gap-2', s && p.showStandard ? 'grid-cols-2' : 'grid-cols-1')} role="tablist" aria-label="Route options">
         <button
           role="tab"
           aria-selected={p.tab === 'accessible'}
@@ -116,7 +116,7 @@ export function RouteSummary(p: Props) {
             {a.summary.total_distance_m} m · {a.summary.max_grade_pct === null ? 'slope unknown' : `max ${a.summary.max_grade_pct}%`}
           </span>
         </button>
-        {s && (
+        {s && p.showStandard && (
           <button
             role="tab"
             aria-selected={p.tab === 'standard'}

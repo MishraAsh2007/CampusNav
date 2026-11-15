@@ -1,8 +1,53 @@
 {
-  "generated_at": "2026-11-14T23:36:18.243284+00:00",
+  "generated_at": "2026-11-15T02:19:54.383880+00:00",
   "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
   "source_as_of": "August 2022",
   "buildings": [
+    {
+      "id": "old-chapel",
+      "name": "Old Chapel",
+      "code": "CHAP",
+      "category": "student_services",
+      "location": {
+        "lat": 42.38900394904335,
+        "lng": -72.52797306645719
+      },
+      "entrances": [
+        {
+          "id": "osm-entrance-14181661922",
+          "name": "Southeast entrance",
+          "lat": 42.3888694,
+          "lng": -72.5279113,
+          "step_free": null,
+          "door_type": "unknown",
+          "keycard_required": false,
+          "has_ramp": null,
+          "level": null,
+          "osm_id": 14181661922,
+          "source": "OpenStreetMap",
+          "source_url": "https://www.openstreetmap.org/node/14181661922",
+          "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
+          "in_routing_area": true
+        }
+      ],
+      "step_free_entrances": [],
+      "door_type": "unknown",
+      "elevators": {
+        "total_count": null,
+        "working_count": null,
+        "mapped_locations": 0,
+        "floors_served": "Not specified by source",
+        "status": "unknown",
+        "list": []
+      },
+      "accessible_restrooms": null,
+      "all_floors_accessible": true,
+      "access_level": "Fully Accessible",
+      "source_url": "https://www.arcgis.com/apps/instant/basic/index.html?appid=4575634567794afd863c83bc4d6d6d4a",
+      "source_as_of": "August 2022",
+      "in_routing_area": true,
+      "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
+    },
     {
       "id": "campus-center",
       "name": "Lincoln Campus Center",

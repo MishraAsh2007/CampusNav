@@ -8,6 +8,19 @@ gaps. Refresh times indicate when our code read a source, not when somebody insp
 
 ## What each source contributes
 
+The latest additions collect the Old Chapel renovation tour-guide plans, North D's
+authenticated residence plans, and Goodell's March 2025 directory image. Exact links,
+modeled floors, exclusions, and the source-hash validation process are recorded in
+[additional indoor pilots](docs/ADDITIONAL_INDOOR_PILOTS.md). Only North D currently
+has an enabled source-matched outdoor threshold among those three pilots; see
+[drawing journeys](docs/DRAWING_JOURNEYS.md). Collected plans and generated drawing
+maps remain local under ignored `data/private/`.
+
+ILC entrance-to-elevator and elevator-to-room guidance uses the published ArcGIS
+first/second-floor plan trace in `data/indoor/ilc.json`. Relative turns are derived
+only where the stored plan geometry defines the axes and approach; source-authored
+maneuvers take precedence. Floors 3–4 do not have the same plan-based detail.
+
 Use **`.\scrape-all.cmd --rules-only`** to collect these families in one workflow.
 The [unified scraper guide](docs/UNIFIED_SCRAPER.md) explains the combined public/private
 outputs, per-source freshness and unchanged-PDF reuse. This replaces running several

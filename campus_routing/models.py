@@ -68,11 +68,35 @@ class LineString(ContractModel):
     )
 
 
+class RouteManeuver(ContractModel):
+    instruction: str
+    maneuver: Literal[
+        "depart",
+        "straight",
+        "left",
+        "right",
+        "slight-left",
+        "slight-right",
+        "sharp-left",
+        "sharp-right",
+        "u-turn",
+        "stairs",
+        "ramp",
+        "elevator",
+        "arrive",
+    ]
+    distance_m: float = Field(ge=0)
+    at: tuple[float, float] = Field(description="[longitude, latitude] at the maneuver")
+    geometry: list[tuple[float, float]] = Field(min_length=2)
+    grade_pct: float | None = Field(ge=0)
+
+
 class RouteProperties(ContractModel):
     total_distance: float = Field(ge=0, description="Network distance in meters")
     max_grade: float | None = Field(ge=0, description="null if any route segment has unknown grade")
     warnings: list[str]
     directions: list[str]
+    maneuvers: list[RouteManeuver] = Field(default_factory=list)
     graph_source: str
     uses_stairs: bool
     uses_elevator: bool

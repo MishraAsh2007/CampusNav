@@ -167,7 +167,10 @@ def post_uploads(uploads, api_url, key):
                 if not building and exc.response.status_code == 404:
                     print("Restart the Data API to load the new importer.", file=sys.stderr)
                 if exc.response.status_code == 409:
-                    print("The stored schema rejected this upload. Local input retained.", file=sys.stderr)
+                    print(
+                        "The stored schema rejected this upload. Local input retained.",
+                        file=sys.stderr,
+                    )
                 failed = True
             except (httpx.RequestError, AttributeError, ValueError) as exc:
                 print(f"{name} failed ({type(exc).__name__}).", file=sys.stderr)

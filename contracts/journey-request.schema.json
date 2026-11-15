@@ -123,6 +123,44 @@
       "title": "Closure",
       "type": "object"
     },
+    "DrawingEndpoint": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "drawing",
+          "title": "Kind",
+          "type": "string"
+        },
+        "building_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]{0,79}$",
+          "title": "Building Id",
+          "type": "string"
+        },
+        "node_id": {
+          "title": "Node Id",
+          "type": "string"
+        },
+        "portal_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Portal Id"
+        }
+      },
+      "required": [
+        "kind",
+        "building_id",
+        "node_id"
+      ],
+      "title": "DrawingEndpoint",
+      "type": "object"
+    },
     "IndoorEndpoint": {
       "additionalProperties": false,
       "properties": {
@@ -259,6 +297,7 @@
     "origin": {
       "discriminator": {
         "mapping": {
+          "drawing": "#/$defs/DrawingEndpoint",
           "indoor": "#/$defs/IndoorEndpoint",
           "outdoor": "#/$defs/OutdoorEndpoint"
         },
@@ -270,6 +309,9 @@
         },
         {
           "$ref": "#/$defs/IndoorEndpoint"
+        },
+        {
+          "$ref": "#/$defs/DrawingEndpoint"
         }
       ],
       "title": "Origin"
@@ -277,6 +319,7 @@
     "destination": {
       "discriminator": {
         "mapping": {
+          "drawing": "#/$defs/DrawingEndpoint",
           "indoor": "#/$defs/IndoorEndpoint",
           "outdoor": "#/$defs/OutdoorEndpoint"
         },
@@ -288,6 +331,9 @@
         },
         {
           "$ref": "#/$defs/IndoorEndpoint"
+        },
+        {
+          "$ref": "#/$defs/DrawingEndpoint"
         }
       ],
       "title": "Destination"
@@ -299,6 +345,16 @@
       "maxItems": 500,
       "title": "Closures",
       "type": "array"
+    },
+    "accept_drawing_only": {
+      "default": false,
+      "title": "Accept Drawing Only",
+      "type": "boolean"
+    },
+    "resident_access_confirmed": {
+      "default": false,
+      "title": "Resident Access Confirmed",
+      "type": "boolean"
     }
   },
   "required": [

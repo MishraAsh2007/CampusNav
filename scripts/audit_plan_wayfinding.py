@@ -11,6 +11,9 @@ TARGETS = {
     "oak": "exit-threshold",
     "campus-center": "amherst-foyer",
     "student-union": "gallery-235",
+    "old-chapel": "entry-threshold-1",
+    "north-d": "exit-threshold-1",
+    "goodell": "west-entry-3",
 }
 
 
@@ -58,6 +61,9 @@ def main():
     results = []
     for building, target in TARGETS.items():
         path = ROOT / "data/private/plan_wayfinding" / f"{building}.json"
+        if not path.exists():
+            print(building, "not generated; no coverage claim")
+            continue
         data = PlanWayfindingMap.model_validate_json(path.read_text())
         report = audit(data, target)
         results.append(report)
@@ -84,8 +90,8 @@ def main():
             lines.append(f"| {result['building_id']} | {floor} | {len(rows)} | {count} |")
     lines += [
         "",
-        "Oak target: exit-threshold. Campus Center target: amherst-foyer. "
-        "Student Union target: gallery-235. Disconnected floors/areas can still "
+        "Audit targets: " + "; ".join(f"{b}: {t}" for b, t in TARGETS.items()) + ". "
+        "Disconnected floors/areas can still "
         "have same-floor routes; they have no verified connecting link in this map.",
         "",
     ]

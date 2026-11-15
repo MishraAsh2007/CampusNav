@@ -1,12 +1,13 @@
 @echo off
 setlocal
 pushd "%~dp0"
-if not exist "data\private\plan_wayfinding\oak.json" (
+if not exist "data\private\plan_wayfinding\*.json" (
     echo Prepare the indoor sources first. See docs\EXPANDED_INDOOR_PILOTS.md.
     popd
     exit /b 1
 )
 set "PLAN_WAYFINDING_DIR=data/private/plan_wayfinding"
+set "PLAN_PORTALS_PATH=data/private/plan_wayfinding_portals.json"
 set "ROUTING_GRAPH=data/umass-residences.graph.json"
 set "BUILDINGS_PATH=data/residence_buildings.json"
 echo Open http://127.0.0.1:8004/docs for drawing and landmark wayfinding.

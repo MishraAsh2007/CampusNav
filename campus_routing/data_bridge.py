@@ -61,7 +61,9 @@ class DataBridge:
                 row | {"type": "path" if row["type"] == "construction" else row["type"]}
             ) for row in rows]
         except ValidationError:
-            raise HTTPException(503, "A stored closure does not fit the routing contract.") from None
+            raise HTTPException(
+                503, "A stored closure does not fit the routing contract."
+            ) from None
 
     def official(self, *, scheduled=False):
         now = utc_now()
@@ -119,7 +121,9 @@ class DataBridge:
                 }
                 catalog["buildings"].append(row)
             row["name"] = building.name
-            row["database_details"] = {"bathrooms": view["bathrooms"], "elevators": view["elevators"]}
+            row["database_details"] = {
+                "bathrooms": view["bathrooms"], "elevators": view["elevators"]
+            }
             if building.elevator_count is not None:
                 row["elevators"]["total_count"] = building.elevator_count
             lifts = {lift.asset_id: lift for lift in building.elevators if lift.asset_id}
@@ -135,6 +139,8 @@ class DataBridge:
                         entry["keycard_required"] = True
                     if stored.step_free is False:
                         entry["step_free"] = False
-            row["step_free_entrances"] = [entry for entry in row["entrances"]
-                                          if entry["step_free"] is True and not entry.get("keycard_required")]
+            row["step_free_entrances"] = [
+                entry for entry in row["entrances"]
+                if entry["step_free"] is True and not entry.get("keycard_required")
+            ]
         return catalog

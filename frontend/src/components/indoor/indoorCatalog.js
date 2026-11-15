@@ -14,6 +14,7 @@
 import { createContext, useContext, useMemo, useSyncExternalStore } from 'react';
 import { isNavigable, normalizeIndoorMap } from './indoorModel';
 import { sampleIndoorMaps } from './sampleMaps';
+import { drawingDisplayMap } from './backendIndoor';
 import { FLOOR_PLAN_IMAGES } from './floorCalibration';
 import { DEMO_MODE, INDOOR_API_BASE, routingPaths } from '../../services/api';
 
@@ -81,8 +82,19 @@ export function loadIndoorCatalog() {
     return maps.map((m) => (m ? toModel(m, source) : null));
   });
 
-  Promise.all([fromFiles, fromApi]).then(([files, api]) => {
-    set({ models: [...state.models, ...files.filter(Boolean), ...api.filter(Boolean)], loading: false });
+  const fromDrawing = SAMPLES === 'prefer' ? Promise.resolve([]) : Promise.all([
+    fetchJson(`${INDOOR_API_BASE}/plan-wayfinding`, 5000),
+    fetchJson(`${INDOOR_API_BASE}/journey/portals`, 5000),
+  ]).then(async ([catalog, registry]) => {
+    const maps = await Promise.all((catalog?.buildings || []).map(async b => {
+      const raw = await fetchJson(`${INDOOR_API_BASE}/plan-wayfinding/${encodeURIComponent(b.building_id)}`, 5000);
+      return raw ? drawingDisplayMap(raw, registry?.portals || []) : null;
+    }));
+    return maps.filter(Boolean);
+  });
+
+  Promise.all([fromFiles, fromApi, fromDrawing]).then(([files, api, drawing]) => {
+    set({ models: [...state.models, ...files.filter(Boolean), ...api.filter(Boolean), ...drawing], loading: false });
   });
 }
 

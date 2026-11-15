@@ -69,7 +69,7 @@ def plan_trip(engine, catalog, request, *, now=None):
     """Choose the shortest feasible outdoor approach across mapped entrance pairs."""
     notes = [
         "Routes end on the outdoor walking network. "
-        "Indoor floors and elevator connections are not mapped.",
+        "Indoor continuation requires an explicitly matched entrance.",
         "UMass entrance records are labeled August 2022; current door access may differ.",
     ]
     if request.allow_keycard_entrance_approach:

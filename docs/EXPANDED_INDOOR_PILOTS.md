@@ -1,5 +1,9 @@
 # Expanded indoor wayfinding: Oak, Campus Center and Student Union
 
+Also implemented: [Old Chapel, North D and Goodell](ADDITIONAL_INDOOR_PILOTS.md),
+available through the same API and launcher. See that guide for their source collection
+and precise floor/destination scope.
+
 These are Role 1/Role 3 backend implementations. Start/end places are in shared circulation,
 outside private rooms. They provide source-based wayfinding, not verified accessibility
 certification. No new frontend floor view is included.

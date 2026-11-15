@@ -17,6 +17,42 @@ from .engine import RoutingError
 from .models import Closure, ContractModel, Coordinate
 
 
+def corridor_instruction(a, b, floor, distance, points, previous=None, *, leaving_elevator=False):
+    """Describe a mapped walk, including bends only when the plan axes are known.
+
+    Image plans use x-right/y-down. Local coordinate axes are not assumed to be
+    compass bearings. A relative turn needs an actual incoming walking segment;
+    the user is never assigned a heading while standing at an entrance/elevator.
+    """
+    target = (
+        b.label if floor.label.casefold() in b.label.casefold() else f"{b.label} on {floor.label}"
+    )
+    action = f"Follow the mapped corridor {distance:g} m to {target}."
+    if leaving_elevator:
+        action = f"Leave {a.label}. " + action
+    if floor.coordinate_system != "image_pixels" or not points:
+        return action
+
+    def turn(v, w):
+        angle = math.degrees(math.atan2(v[0] * w[1] - v[1] * w[0], v[0] * w[0] + v[1] * w[1]))
+        if 35 <= abs(angle) <= 150:
+            return "right" if angle > 0 else "left"
+        return None
+
+    vectors = [(q[0] - p[0], q[1] - p[1]) for p, q in pairwise(points)]
+    vectors = [v for v in vectors if math.hypot(*v) > 1e-6]
+    incoming = [(q[0] - p[0], q[1] - p[1]) for p, q in pairwise(previous or [])]
+    incoming = [v for v in incoming if math.hypot(*v) > 1e-6]
+    initial = turn(incoming[-1], vectors[0]) if incoming and vectors else None
+    if initial:
+        action = f"At {a.label}, turn {initial}. " + action
+    turns = [direction for v, w in pairwise(vectors) if (direction := turn(v, w))]
+    if turns:
+        cue = ", then ".join(f"turn {turn}" for turn in turns)
+        action += f" Along this mapped approach, {cue}."
+    return action
+
+
 class IndoorSource(ContractModel):
     id: str = Field(min_length=1, max_length=150)
     url: HttpUrl
@@ -316,7 +352,9 @@ class IndoorEngine:
                 )
             for ident in matches:
                 effects[ident] = max(effects.get(ident, 1), math.inf if c.status == "closed" else 5)
-            if matches and (c.last_confirmed is None or now - c.last_confirmed > timedelta(hours=24)):
+            if matches and (
+                c.last_confirmed is None or now - c.last_confirmed > timedelta(hours=24)
+            ):
                 warnings.append("An indoor closure was confirmed more than 24 hours ago.")
             if not matches and c.building_id == self.data.building_id:
                 warnings.append(
@@ -355,6 +393,7 @@ class IndoorEngine:
             ) from exc
         segments, transitions, used, directions, steps = [], [], [], [], []
         cues = {(c.from_node, c.via_node, c.to_node): c for c in self.data.maneuvers}
+        previous_walk = None
         for index, (a_id, b_id) in enumerate(pairwise(path)):
             attrs = graph[a_id][b_id]
             e, a, b = attrs["edge"], self.nodes[a_id], self.nodes[b_id]
@@ -375,6 +414,7 @@ class IndoorEngine:
             )
             steps.append(record)
             if a.floor_id != b.floor_id:
+                previous_walk = None
                 record.update(from_position=[a.x, a.y], to_position=[b.x, b.y])
                 transitions.append(record)
                 directions.append(
@@ -393,9 +433,17 @@ class IndoorEngine:
                     },
                 )
                 segments.append(record)
+                points = record["geometry"]["coordinates"]
                 directions.append(
-                    f"Continue {e.length_m:g} m to {b.label} on {self.floors[b.floor_id].label}."
+                    corridor_instruction(
+                        a, b, self.floors[b.floor_id], e.length_m, points, previous_walk,
+                        leaving_elevator=index > 0 and steps[-2]["kind"] == "elevator",
+                    )
+                    if e.kind == "corridor"
+                    else f"Continue {e.length_m:g} m to {b.label} "
+                    f"on {self.floors[b.floor_id].label}."
                 )
+                previous_walk = points
             cue = cues.get((path[index - 1], a_id, b_id)) if index else None
             if cue:
                 directions[-1] = cue.instruction
