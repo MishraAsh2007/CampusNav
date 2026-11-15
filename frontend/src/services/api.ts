@@ -669,3 +669,53 @@ export function resetClosures(): Closure[] {
 export function getLocalClosures(): Closure[] {
   return [...store];
 }
+
+
+// ---------- indoor directions (Role 1 engine: POST /api/indoor-route) ----------
+
+export interface IndoorDirectionsRequest {
+  buildingId: string;
+  /** The door the outdoor route ends at (arriving) or the exit to leave through (leaving) */
+  door?: Point | null;
+  room?: string | null;
+  floor?: string | null;
+  direction: 'to_room' | 'to_exit';
+  prefs: UserPreferences;
+  closures: Closure[];
+}
+
+export interface IndoorDirections {
+  status: 'ok' | 'no_route' | 'not_found' | 'not_public' | 'no_map' | 'unavailable';
+  message?: string;
+  building?: string;
+  entrance?: { name: string; floor_label: string };
+  exit?: { name: string; floor_label: string };
+  destination?: { label: string; floor_label: string };
+  total_ft?: number;
+  steps?: string[];
+  warnings?: string[];
+  elevators?: { id: string; label: string; usable: boolean }[];
+}
+
+/** True when the routing server offers /api/indoor-route (the Role 1 engine does; the Python /plan server does not). */
+export async function indoorDirectionsAvailable(): Promise<boolean> {
+  if (ROUTING_MODE === 'local') return false;
+  return (await routingPaths()).has('/api/indoor-route');
+}
+
+export async function getIndoorDirections(req: IndoorDirectionsRequest): Promise<IndoorDirections> {
+  const body = {
+    building_id: req.buildingId,
+    ...(req.direction === 'to_exit' ? { exit: req.door ?? undefined } : { entrance: req.door ?? undefined }),
+    room: req.room || undefined,
+    floor: req.floor || undefined,
+    direction: req.direction,
+    preferences: { step_free: req.prefs.no_stairs || req.prefs.wheelchair_required },
+    closures: req.closures.filter(c => c.status !== 'repaired'),
+  };
+  const r = await fetchJson<IndoorDirections>(`${ROUTING_BASE}/api/indoor-route`, {
+    method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body),
+  }, 15000);
+  if (r.data) return r.data;
+  return { status: 'unavailable', message: r.message ?? 'The indoor routing service did not answer.' };
+}

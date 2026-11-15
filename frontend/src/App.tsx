@@ -26,6 +26,7 @@ import { NeedsMenu } from './components/NeedsMenu';
 import { RouteSummary } from './components/RouteSummary';
 import { Narrator } from './components/Narrator';
 import { Directions } from './components/Directions';
+import { IndoorDirectionsSheet, IndoorLeg, useIndoorDirectionsAvailable } from './components/IndoorDirectionsSheet';
 import { OutageList } from './components/OutageList';
 import { BuildingSheet } from './components/BuildingSheet';
 import { ClosureSheet } from './components/ClosureSheet';
@@ -170,6 +171,7 @@ export function App() {
   const [reportBuildingId, setReportBuildingId] = useState<string | null>(null);
   const [reportPoint, setReportPoint] = useState<{ lat: number; lng: number } | null>(null);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const [indoorDirOpen, setIndoorDirOpen] = useState(false);
   const [focus, setFocus] = useState<{ lat: number; lng: number; key: number } | null>(null);
 
   const onSelectBuilding = useCallback((b: Building) => {
@@ -323,6 +325,21 @@ export function App() {
       source: ap.source
     };
   }, [plan, destBuilding]);
+  // Indoor directions from the Role 1 engine (POST /api/indoor-route): the door each outdoor leg ends at
+  const indoorDirAvailable = useIndoorDirectionsAvailable();
+  const arriveLeg = useMemo<IndoorLeg | null>(() => {
+    if (!destBuilding) return null;
+    return { buildingId: destBuilding.id, buildingName: destBuilding.name,
+      door: indoorEntrance ? { lat: indoorEntrance.lat, lng: indoorEntrance.lng, name: indoorEntrance.name } : null };
+  }, [destBuilding, indoorEntrance]);
+  const leaveLeg = useMemo<IndoorLeg | null>(() => {
+    const b = origin?.building_id ? buildings.find((x) => x.id === origin.building_id) : null;
+    if (!b) return null;
+    const e = plan?.startEndpointId ? b.entrances.find((x) => x.id === plan.startEndpointId) : null;
+    return { buildingId: b.id, buildingName: b.name, door: e ? { lat: e.lat, lng: e.lng, name: e.name } : null };
+  }, [origin?.building_id, buildings, plan?.startEndpointId]);
+  const indoorRoomText = indoorTarget?.buildingId === destination?.building_id && indoorTarget
+    ? indoorTarget.label.replace(/^\S+\s/, '') : undefined;
   const chosenEntranceIds = useMemo(() => [plan?.endEndpointId, plan?.startEndpointId].filter(Boolean) as string[], [plan?.endEndpointId, plan?.startEndpointId]);
   const activeIssues = incidents.length;
   const highAlerts = incidents.filter((i) => i.severity === 'high').length;
@@ -498,6 +515,11 @@ export function App() {
             <Narrator route={plan.accessible} originName={origin.name} destinationName={destination.name} prefs={prefs} />
           )}
           {activeRoute && <Directions steps={activeRoute.steps} onFocusStep={focusStep} />}
+          {indoorDirAvailable && plan?.accessible && (arriveLeg || leaveLeg) && (
+            <button type="button" className="btn btn-quiet w-full justify-center" onClick={() => setIndoorDirOpen(true)}>
+              Indoor directions{arriveLeg ? ` ? ${arriveLeg.buildingName}` : ''}
+            </button>
+          )}
           <OutageList incidents={listedIncidents} onSelect={onSelectIncident} live={live} lastSync={lastSync} />
           {provider === 'osm' && reason && (
             <p className="px-1 text-[11px] text-ink-4">
@@ -555,6 +577,17 @@ export function App() {
           setPicking('report');
         }}
         onSubmit={handleReportSubmit}
+      />
+
+      <IndoorDirectionsSheet
+        open={indoorDirOpen}
+        onClose={() => setIndoorDirOpen(false)}
+        arrive={arriveLeg}
+        leave={leaveLeg}
+        initialRoom={indoorRoomText}
+        initialFloor={indoorTarget?.buildingId === destination?.building_id ? indoorTarget?.floorId : null}
+        prefs={prefs}
+        closures={closures}
       />
 
       <AboutSheet open={aboutOpen} onClose={() => setAboutOpen(false)} graphMeta={graph?.meta ?? null} provider={provider} />
