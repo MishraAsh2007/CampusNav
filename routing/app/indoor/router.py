@@ -40,7 +40,7 @@ def _tokens(s: str) -> set[str]:
 
 def load_maps() -> dict[str, dict]:
     """building_id -> indoor map dict (reloaded when a file changes)."""
-    d = config.DATA_DIR / "indoor"
+    d = config.INDOOR_MAPS_DIR
     files = [f for f in sorted(d.glob("*.json")) if not f.name.endswith(".schema.json")] if d.is_dir() else []
     sig = tuple((f.name, f.stat().st_mtime) for f in files)
     if _maps["sig"] != sig:
@@ -424,6 +424,11 @@ def _lc(label: str) -> str:
     return label[0].lower() + label[1:] if len(label) > 1 and label[1].islower() else label
 
 
+def _the(label: str) -> str:
+    """'Elevator 3 (...)' reads as a name; 'Core elevators (...)' needs 'the'."""
+    return label if label.startswith("Elevator") else "the " + _lc(label)
+
+
 def _floor_label(model: Model, fid: str) -> str:
     return model.floors.get(fid, {}).get("label", fid)
 
@@ -468,7 +473,7 @@ def build_legs(model: Model, found: Found, dest: dict, reverse: bool = False) ->
                    "to_floor_label": _floor_label(model, b["floor_id"]), "length_m": round(length, 1),
                    "points": []}
             legs.append(leg)
-            steps.append(f"Take the {_lc(label)} "
+            steps.append(f"Take {_the(label)} "
                          f"from {leg['from_floor_label']} to {leg['to_floor_label']}.")
             i = j
             continue
@@ -494,7 +499,7 @@ def build_legs(model: Model, found: Found, dest: dict, reverse: bool = False) ->
                     nxt = G[path[j]][path[j + 1]]["edge"]
                     bank_next = model.banks.get(nxt.get("asset_id"))
                 if bank_next:
-                    target = "the " + _lc(bank_next.label)
+                    target = _the(bank_next.label)
                 steps.append(f"Walk about {_ft(length)} ft to {target}.")
             elif path[j] != path[-1]:
                 steps.append(f"Walk about {_ft(length)} ft along {_floor_label(model, fid)}.")
