@@ -45,7 +45,7 @@ test('directions show a current instruction and next control without opening all
     {instruction: 'Follow the corridor to the elevator.', distance_m: 0, grade_pct: 0},
     {instruction: 'Take the elevator to floor 2.', distance_m: 0, grade_pct: 0},
   ], onFocusStep() {}}));
-  assert.match(html, /Directions/);
+  assert.match(html, /Turn-by-turn directions/);
   assert.match(html, /Follow the corridor to the elevator/);
   assert.match(html, /Next step/);
   assert.match(html, /Show all steps/);

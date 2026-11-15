@@ -470,6 +470,12 @@ export function App() {
         onLargeText={() => setLargeText((v) => !v)}
       />
 
+      {activeRoute && viewState === 'outdoor' && (
+        <div className="fixed inset-x-3 bottom-[calc(35vh+12px)] z-30 max-h-[calc(65dvh-140px)] overflow-y-auto rounded-3xl lg:inset-x-auto lg:bottom-auto lg:right-4 lg:top-[152px] lg:w-[360px] lg:max-h-[calc(100dvh-176px)]" aria-label="Current route directions">
+          <Directions key={routeKey(activeRoute)} steps={activeRoute.steps} onFocusStep={focusStep} />
+        </div>
+      )}
+
       {picking && (
         <div className="fixed left-1/2 top-[120px] z-40 -translate-x-1/2 rounded-full bg-ink lg:top-[140px] px-4 py-2 text-[13px] text-white shadow-lift animate-pop" role="status">
           Tap the map to set {picking === 'report' ? 'the problem location' : picking === 'origin' ? 'your start' : 'your destination'} ·{' '}
@@ -482,13 +488,15 @@ export function App() {
       <aside
         className={cx(
           'glass fixed z-20 flex flex-col overflow-hidden',
-          'inset-x-0 bottom-0 max-h-[58vh] rounded-t-4xl',
+          'inset-x-0 bottom-0 rounded-t-4xl',
+          activeRoute ? 'max-h-[35vh]' : 'max-h-[58vh]',
           'lg:inset-x-auto lg:bottom-4 lg:left-4 lg:top-[84px] lg:max-h-none lg:w-[400px] lg:rounded-4xl'
         )}
         aria-label="Trip planner"
       >
         <div className="mx-auto mt-2 h-1 w-9 rounded-full bg-black/15 lg:hidden" aria-hidden />
         <div className="scroll-soft flex-1 space-y-4 overflow-y-auto p-4">
+          {arrivedAtIndoorBuilding && <button type="button" className="w-full rounded-xl bg-emerald-700 px-3 py-2 text-sm font-semibold text-white lg:hidden" onClick={() => {setInspectedLeg(null); setViewState('transition_modal');}}>At {destination?.name}? Go inside</button>}
           <TripPlanner
             origin={origin}
             destination={destination}
@@ -504,7 +512,6 @@ export function App() {
             picking={picking === 'origin' || picking === 'destination' ? picking : null}
             onPick={setPicking}
           />
-          {activeRoute && <Directions key={routeKey(activeRoute)} steps={activeRoute.steps} onFocusStep={focusStep} />}
           <div className="space-y-2">
             <p className="text-xs font-semibold">Indoor starting place (optional)</p>
             <DestinationInput placeholder="Start at a building, floor or landmark" value={originTarget?.label}
@@ -633,7 +640,7 @@ export function App() {
         <button
           type="button"
           onClick={() => {setInspectedLeg(null); setViewState('transition_modal');}}
-          className="fixed bottom-6 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 rounded-full bg-emerald-600 px-5 py-3 text-[15px] font-semibold text-white shadow-lift ring-4 ring-white/80 transition hover:bg-emerald-500 active:scale-95 max-lg:bottom-[calc(58vh+12px)] lg:left-[calc(50%+210px)]"
+          className="fixed bottom-6 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 rounded-full bg-emerald-600 px-5 py-3 text-[15px] font-semibold text-white shadow-lift ring-4 ring-white/80 transition hover:bg-emerald-500 active:scale-95 max-lg:hidden lg:left-[calc(50%+210px)]"
         >
           <span aria-hidden="true">🏛️</span> At {destination?.name}? Go inside{indoorTarget ? ` to ${indoorTarget.label.replace(/^\S+\s/, '')}` : ''}
         </button>

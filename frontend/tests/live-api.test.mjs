@@ -38,6 +38,19 @@ test('route adapter preserves unknown grade and the router directions', () => {
   assert.equal(route.steps[0].instruction, 'Continue on the path.');
 });
 
+test('turn-by-turn metadata preserves turn icons, map focus points, and leg distances', () => {
+  const route = api.adaptWireRoute({...wire, properties: {...wire.properties, maneuvers: [
+    {maneuver: 'left', instruction: 'Turn left onto the mapped path, then continue 20 m.',
+      distance_m: 20, at: [-72.528, 42.39], grade_pct: null, geometry: []},
+    {maneuver: 'arrive', instruction: 'Arrive at the mapped endpoint.', distance_m: 0,
+      at: [-72.527, 42.39], grade_pct: null, geometry: []},
+  ]}}, 3);
+  assert.equal(route.steps[0].icon, 'turn-left');
+  assert.equal(route.steps[0].distance_m, 20);
+  assert.deepEqual(route.steps[0].at, [-72.528, 42.39]);
+  assert.equal(route.steps[1].icon, 'destination');
+});
+
 test('the outdoor route carries an exact indoor entrance into the arrival view', async () => {
   mockRouting(() => response({accessible: wire, standard: wire, notes: [],
     end_entrance: {id: 'door-b', ...end},

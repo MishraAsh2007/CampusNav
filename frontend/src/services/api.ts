@@ -7,6 +7,7 @@
  */
 import { Building, BuildingEntrance, Closure, Place, RouteResponse, UserPreferences, UserReportPayload } from '../types';
 import { INITIAL_CLOSURES } from '../data/mockClosures';
+import { routeSteps, type WireManeuver } from './routeSteps';
 import { UMASS_BUILDINGS } from '../data/mockBuildings';
 import { computeRoutes, Endpoint, getDistanceMeters, loadCampusGraph, RouteBundle } from './routingEngine';
 
@@ -391,7 +392,8 @@ type WireRoute = {
   type: 'Feature';
   geometry: {type: 'LineString'; coordinates: [number, number][]};
   properties: {total_distance: number; max_grade: number | null; uses_stairs: boolean;
-    uses_elevator: boolean; warnings: string[]; directions: string[]; snapped_end: Point};
+    uses_elevator: boolean; warnings: string[]; directions: string[]; snapped_end: Point;
+    maneuvers?: WireManeuver[]};
 };
 type OutdoorPlan = {
   accessible: WireRoute | null; standard: WireRoute | null;
@@ -433,7 +435,7 @@ export function adaptWireRoute(route: WireRoute | null | undefined, ms: number):
       grade: p.max_grade ?? 0, surface: 'unknown', is_step: false,
       is_ramp: false, is_elevator: false, segment_name: 'Mapped outdoor route',
     }}],
-    steps: p.directions.map(instruction => ({instruction, distance_m: 0, grade_pct: 0})),
+    steps: routeSteps(p),
   };
 }
 

@@ -11,6 +11,7 @@ from shapely import STRtree, transform
 from shapely.geometry import LineString, Point
 from shapely.ops import substring
 
+from .directions import walking_directions
 from .graph import load_graph
 from .models import Coordinate, RouteProperties, RouteRequest, RouteResponse
 from .models import LineString as RouteLine
@@ -292,24 +293,8 @@ class RoutingEngine:
                     f"{label} snapped {anchor[3]:.1f} m to a mapped path; "
                     "the connection from the pin is not verified or included in distance."
                 )
-        # Group adjacent segments so unsimplified OSM nodes do not produce hundreds of instructions.
-        groups = []
-        for edge in edges:
-            label = (edge.get("name") or "the path", edge.get("kind", "path"))
-            if groups and groups[-1][0] == label:
-                groups[-1][1] += edge["length"]
-            else:
-                groups.append([label, edge["length"]])
-        directions = []
-        for (name, kind), length in groups:
-            if kind == "elevator":
-                directions.append("Use the mapped elevator connection.")
-            else:
-                directions.append(
-                    f"Continue {length:.0f} m along {name}"
-                    + (" (stairs)." if kind == "steps" else ".")
-                )
-        directions.append("Arrive at the destination on the mapped path.")
+        maneuvers = walking_directions(edges, self.to_lnglat, coordinates[-1])
+        directions = [step["instruction"] for step in maneuvers]
 
         def coordinate(anchor):
             lng, lat = self.to_lnglat(anchor[2].x, anchor[2].y)
@@ -324,6 +309,7 @@ class RoutingEngine:
                 else round(max((edge["grade_percent"] for edge in edges), default=0), 4),
                 warnings=list(dict.fromkeys(warnings)),
                 directions=directions,
+                maneuvers=maneuvers,
                 graph_source=source,
                 uses_stairs=uses_stairs,
                 uses_elevator=uses_elevator,

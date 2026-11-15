@@ -35,11 +35,38 @@ use `start-server.cmd` for the full shared application.
 For separate Vite development, the configured proxy also forwards `/journey`
 and `/plan-wayfinding`. Separate routing/data/indoor base URLs remain supported.
 
+### Vercel deployment configuration
+
+The upstream Vercel configuration is preserved: root `pyproject.toml` selects
+`backend.main:app`; root `requirements.txt` supplies runtime dependencies; the
+Data API allows cross-origin frontend requests by default. Set `CORS_ORIGINS`
+to restrict origins when needed.
+
+This entrypoint serves the **Data API**, not the Python routing application.
+For the new backend turn instructions, `/plan`, `/journey`, and indoor endpoints,
+the frontend must also reach a deployment of `campus_routing.integrated:app`
+(or a separate routing API). Configure `VITE_API_BASE_URL` for the Data API and
+`VITE_ROUTING_API_URL` / `VITE_INDOOR_API_URL` for the routing deployment when the
+services are separate. Do not set `VITE_CAMPUSNAV_INTEGRATED=1` on that separately
+hosted frontend: it forces same-origin API URLs. The existing standalone-Data-API
+fallback remains available, but it does not expose the Python routing endpoints.
+
+The local checks validate both application entrypoints and the frontend build;
+they do not constitute a successful hosted Vercel deployment.
+
 ## Directions and elevator approaches
 
-Outdoor directions appear directly below the trip fields, ahead of preferences,
-warnings, and optional narration. The current instruction is always visible, with
-Back / Next buttons and an expandable complete list.
+Outdoor directions have a separate card on the map, outside the scrolling trip
+planner. On phones the planner is shorter while a route is active so the card
+stays visible above it. Back / Next focuses each maneuver's location on the map;
+the current instruction can also be read aloud. Progress is manual.
+
+The router now splits the selected polylines at supported changes in direction,
+including turns within a single unnamed path. Optional `properties.maneuvers`
+contains each turn's type, location, leg distance, geometry, and grade. The legacy
+`properties.directions` string array remains available with the same instructions.
+Sub-meter cartographic zigzags are filtered with a short approach/departure check.
+Directions do not invent crossings, indoor paths, or road names.
 
 Indoor directions use the backend's instructions and path. They include walking
 from the selected entrance to the named elevator, riding it to the required
