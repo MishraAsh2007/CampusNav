@@ -47,7 +47,8 @@ and `/plan-wayfinding`. Separate routing/data/indoor base URLs remain supported.
 
 For exact dashboard settings and the `Command "None" exited with 127` fix, see
 [the backend Vercel guide](VERCEL_BACKEND.md). Root `vercel.json` explicitly selects
-FastAPI and disables a custom build command; dependency installation stays automatic.
+FastAPI and uses JSON `null` for the build command and output directory to retain
+framework defaults. Empty strings skip framework building and must not be used.
 
 Root `pyproject.toml` now selects `campus_routing.integrated:app`, so the same
 backend Vercel project serves the Data API, outdoor routing, and available indoor

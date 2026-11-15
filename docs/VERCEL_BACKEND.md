@@ -5,9 +5,10 @@ branch with **Root Directory `./`**. Keep the frontend project's root at `fronte
 
 The backend uses three configuration files:
 
-- `vercel.json` selects the FastAPI framework and explicitly sets an empty
-  `buildCommand`. This API has no custom compilation step. Dependency installation
-  still runs automatically.
+- `vercel.json` selects the FastAPI framework and sets `buildCommand` and
+  `outputDirectory` to JSON `null`, retaining framework defaults. Do not use an
+  empty string: Vercel's builder detector treats that as a static deployment and
+  skips the FastAPI builder.
 - `pyproject.toml` selects `campus_routing.integrated:app`, which serves both
   the routing endpoints and the existing Data API from this one backend project.
 - `requirements.txt` supplies the Python runtime dependencies.
@@ -31,7 +32,7 @@ In the **backend** project's Settings → Build and Deployment:
 | Install Command | Automatic; leave the override disabled |
 | Output Directory | Default; leave the override disabled |
 
-The repository's empty `buildCommand` overrides the dashboard command for new
+The repository's JSON-null `buildCommand` overrides the dashboard command for new
 deployments. Do not enter the words `None`, `null`, or an `uvicorn` command in
 the Build Command field. Vercel starts the exported app through its Python runtime.
 
@@ -107,6 +108,13 @@ refresh/publication remains a separate process. See [the integration guide](CURR
 
 ## A page is missing or the frontend is blank
 
+- A build that completes in milliseconds without installing Python dependencies
+  can indicate that the framework builder was skipped. The former
+  `"buildCommand": ""` configuration caused this: Vercel's
+  [builder detector](https://github.com/vercel/vercel/blob/main/packages/fs-detectors/src/detect-builders.ts)
+  treats an empty build command or output directory as static-only output.
+  Deploy the corrected configuration with JSON `null` values. Check the new
+  deployment's Resources for a Python function, then request `/health`.
 - Check the latest deployment status for **each** project. A failed build does
   not publish a working app at its deployment URL.
 - Test the backend's `/health`, `/docs`, and `/api/data/health` URLs. The API's
