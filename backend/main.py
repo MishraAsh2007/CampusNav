@@ -488,9 +488,11 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="CampusNav Data API", lifespan=lifespan)
+# Any origin by default, so the separately deployed Vercel frontend (and previews) can call this API.
+# Set CORS_ORIGINS (comma-separated) to restrict it.
 origins = [
     origin.strip()
-    for origin in os.environ.get("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",")
+    for origin in os.environ.get("CORS_ORIGINS", "*").split(",")
     if origin.strip()
 ]
 app.add_middleware(
