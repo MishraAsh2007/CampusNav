@@ -5,7 +5,11 @@
 
 export type BarrierType = 'elevator' | 'ramp' | 'path' | 'construction' | 'automatic_door';
 export type BarrierStatus = 'closed' | 'degraded' | 'repaired';
-export type BarrierSource = 'official' | 'community' | 'verified';
+export type BarrierSource = 'official' | 'community' | 'verified' | 'app';
+
+export function isCommunitySource(source: BarrierSource): boolean {
+  return source === 'community' || source === 'app';
+}
 
 export interface Closure {
   id: string;
@@ -81,7 +85,7 @@ export interface Building {
     total_count: number;
     working_count: number;
     floors_served: string;
-    status: 'all_operational' | 'partial_outage' | 'all_down' | 'none';
+    status: 'all_operational' | 'partial_outage' | 'all_down' | 'none' | 'unknown';
     list: BuildingElevator[];
   };
   accessible_restrooms: boolean;
