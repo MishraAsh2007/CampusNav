@@ -28,6 +28,7 @@ The entry point is `scripts/scrape_all.py`; orchestration and bundling are in
 | `outdoor-osm` | OSM extract for the expanded residence/campus area |
 | `residence-plans` | Authenticated residence-plan inventory and PDFs; unchanged remote versions with intact local hashes reuse existing files |
 | `building-catalogs` | Derived central and residence catalogs, using this run's GIS data and cached OSM; preserves manually maintained registry IDs |
+| `entrance-evidence` | Additional public UMass door-opener records, dated and compared with the current map; fills nonresidential catalog gaps without overriding newer records |
 | `indoor-references` | Library/ILC/Campus Center directories, floor images, restrooms and study-space references |
 | `library-elevators` | StackMap floor-local elevator regions and explicitly historical car references |
 | `central-plans` | Hospitality images, public PDF references and current official Student Union gallery directions |

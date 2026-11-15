@@ -147,6 +147,8 @@ def plan_trip(engine, catalog, request, *, now=None):
         standard = None
     if accessible:
         for label, entrance in zip(("Start", "Destination"), accessible[1:], strict=True):
+            if entrance.get("source_record_date"):
+                notes.append(f"{label}: {entrance['notes']}")
             if entrance.get("approach_only"):
                 notes.append(
                     f"{label}: outdoor meeting point only; the building entrance "

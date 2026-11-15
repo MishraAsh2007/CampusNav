@@ -24,6 +24,12 @@
       "url": "https://tiles.arcgis.com/tiles/2gdL2gxYNFY2TOUb/arcgis/rest/services/Integrated_Learning_Center_First_Floor_Scaled/MapServer",
       "edition": "Public UMass ArcGIS floor-plan layers",
       "observed_at": "2026-11-14T17:09:12.137445Z"
+    },
+    {
+      "id": "umass-entrances-pnts",
+      "url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0",
+      "edition": "Historical entrance records dated 2019-07-26; current operation unverified",
+      "observed_at": "2026-11-15T05:56:40.046589+00:00"
     }
   ],
   "floors": [
@@ -236,12 +242,14 @@
         "lat": 42.390788,
         "lng": -72.526246
       },
-      "source_id": "umass-arcgis-access",
+      "source_id": "umass-entrances-pnts",
       "aliases": [
         "south entrance",
         "main entrance"
       ],
-      "source_record_ids": []
+      "source_record_ids": [
+        "umass-legacy-entrance-56"
+      ]
     },
     {
       "id": "ilc-entrance-west",
@@ -254,11 +262,13 @@
         "lat": 42.390878,
         "lng": -72.52531
       },
-      "source_id": "umass-arcgis-access",
+      "source_id": "umass-entrances-pnts",
       "aliases": [
         "west entrance"
       ],
-      "source_record_ids": []
+      "source_record_ids": [
+        "umass-legacy-entrance-57"
+      ]
     },
     {
       "id": "ilc-source-n111-f1",
@@ -1523,8 +1533,8 @@
       "width_m": 2.0,
       "door_type": "automatic",
       "asset_id": null,
-      "source_id": "umass-arcgis-access",
-      "evidence": "ArcGIS entrance OID 56 to nearest OSM walking path node 12878112836 (1.7m)."
+      "source_id": "umass-entrances-pnts",
+      "evidence": "ArcGIS entrance OID 56 to nearest OSM walking path node 12878112836 (1.7m). Exact source: https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/56. Record dated 2019-07-26; current operation unverified."
     },
     {
       "id": "ilc-portal-west",
@@ -1547,8 +1557,8 @@
       "width_m": 2.0,
       "door_type": "automatic",
       "asset_id": null,
-      "source_id": "umass-arcgis-access",
-      "evidence": "ArcGIS entrance OID 57 to nearest OSM walking path node 13082573896 (5.5m)."
+      "source_id": "umass-entrances-pnts",
+      "evidence": "ArcGIS entrance OID 57 to nearest OSM walking path node 13082573896 (5.5m). Exact source: https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/57. Record dated 2019-07-26; current operation unverified."
     }
   ],
   "maneuvers": []

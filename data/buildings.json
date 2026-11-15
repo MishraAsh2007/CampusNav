@@ -224,10 +224,113 @@
           "source_url": "https://www.openstreetmap.org/node/14185644842",
           "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
           "in_routing_area": true
+        },
+        {
+          "id": "umass-legacy-entrance-55",
+          "name": "Northwest entrance (historical GIS)",
+          "lat": 42.391415781763754,
+          "lng": -72.52628443172752,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": false,
+          "has_ramp": null,
+          "in_routing_area": true,
+          "source": "UMass public Entrances_PNTS (historical GIS)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/55",
+          "source_record_date": "2019-07-26",
+          "source_observed_at": "2026-11-15T05:56:40.046589+00:00",
+          "current_operation_verified": false,
+          "notes": "Door opener documented in a UMass GIS record dated 2019-07-26. Current operation and access are unverified; this record predates later building renovations."
+        },
+        {
+          "id": "umass-legacy-entrance-56",
+          "name": "Southwest entrance (historical GIS)",
+          "lat": 42.39078755027407,
+          "lng": -72.5262464325227,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": false,
+          "has_ramp": null,
+          "in_routing_area": true,
+          "source": "UMass public Entrances_PNTS (historical GIS)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/56",
+          "source_record_date": "2019-07-26",
+          "source_observed_at": "2026-11-15T05:56:40.046589+00:00",
+          "current_operation_verified": false,
+          "notes": "Door opener documented in a UMass GIS record dated 2019-07-26. Current operation and access are unverified; this record predates later building renovations."
+        },
+        {
+          "id": "umass-legacy-entrance-57",
+          "name": "Southeast entrance (historical GIS)",
+          "lat": 42.39087833808397,
+          "lng": -72.52530959506659,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": false,
+          "has_ramp": null,
+          "in_routing_area": true,
+          "source": "UMass public Entrances_PNTS (historical GIS)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/57",
+          "source_record_date": "2019-07-26",
+          "source_observed_at": "2026-11-15T05:56:40.046589+00:00",
+          "current_operation_verified": false,
+          "notes": "Door opener documented in a UMass GIS record dated 2019-07-26. Current operation and access are unverified; this record predates later building renovations."
         }
       ],
-      "step_free_entrances": [],
-      "door_type": "unknown",
+      "step_free_entrances": [
+        {
+          "id": "umass-legacy-entrance-55",
+          "name": "Northwest entrance (historical GIS)",
+          "lat": 42.391415781763754,
+          "lng": -72.52628443172752,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": false,
+          "has_ramp": null,
+          "in_routing_area": true,
+          "source": "UMass public Entrances_PNTS (historical GIS)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/55",
+          "source_record_date": "2019-07-26",
+          "source_observed_at": "2026-11-15T05:56:40.046589+00:00",
+          "current_operation_verified": false,
+          "notes": "Door opener documented in a UMass GIS record dated 2019-07-26. Current operation and access are unverified; this record predates later building renovations."
+        },
+        {
+          "id": "umass-legacy-entrance-56",
+          "name": "Southwest entrance (historical GIS)",
+          "lat": 42.39078755027407,
+          "lng": -72.5262464325227,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": false,
+          "has_ramp": null,
+          "in_routing_area": true,
+          "source": "UMass public Entrances_PNTS (historical GIS)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/56",
+          "source_record_date": "2019-07-26",
+          "source_observed_at": "2026-11-15T05:56:40.046589+00:00",
+          "current_operation_verified": false,
+          "notes": "Door opener documented in a UMass GIS record dated 2019-07-26. Current operation and access are unverified; this record predates later building renovations."
+        },
+        {
+          "id": "umass-legacy-entrance-57",
+          "name": "Southeast entrance (historical GIS)",
+          "lat": 42.39087833808397,
+          "lng": -72.52530959506659,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": false,
+          "has_ramp": null,
+          "in_routing_area": true,
+          "source": "UMass public Entrances_PNTS (historical GIS)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/57",
+          "source_record_date": "2019-07-26",
+          "source_observed_at": "2026-11-15T05:56:40.046589+00:00",
+          "current_operation_verified": false,
+          "notes": "Door opener documented in a UMass GIS record dated 2019-07-26. Current operation and access are unverified; this record predates later building renovations."
+        }
+      ],
+      "door_type": "push-button",
       "elevators": {
         "total_count": null,
         "working_count": null,
@@ -288,10 +391,45 @@
           "source_url": "https://www.openstreetmap.org/node/9733532733",
           "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
           "in_routing_area": true
+        },
+        {
+          "id": "umass-legacy-entrance-84",
+          "name": "Northwest entrance (historical GIS)",
+          "lat": 42.39087882999695,
+          "lng": -72.52791711161359,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": false,
+          "has_ramp": null,
+          "in_routing_area": true,
+          "source": "UMass public Entrances_PNTS (historical GIS)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/84",
+          "source_record_date": "2019-07-26",
+          "source_observed_at": "2026-11-15T05:56:40.046589+00:00",
+          "current_operation_verified": false,
+          "notes": "Door opener documented in a UMass GIS record dated 2019-07-26. Current operation and access are unverified; this record predates later building renovations."
         }
       ],
-      "step_free_entrances": [],
-      "door_type": "unknown",
+      "step_free_entrances": [
+        {
+          "id": "umass-legacy-entrance-84",
+          "name": "Northwest entrance (historical GIS)",
+          "lat": 42.39087882999695,
+          "lng": -72.52791711161359,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": false,
+          "has_ramp": null,
+          "in_routing_area": true,
+          "source": "UMass public Entrances_PNTS (historical GIS)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/84",
+          "source_record_date": "2019-07-26",
+          "source_observed_at": "2026-11-15T05:56:40.046589+00:00",
+          "current_operation_verified": false,
+          "notes": "Door opener documented in a UMass GIS record dated 2019-07-26. Current operation and access are unverified; this record predates later building renovations."
+        }
+      ],
+      "door_type": "push-button",
       "elevators": {
         "total_count": null,
         "working_count": null,
@@ -343,10 +481,45 @@
           "source_url": "https://www.openstreetmap.org/node/8393893355",
           "notes": "Entrance position from OpenStreetMap; door access and operation have not been field verified.",
           "in_routing_area": true
+        },
+        {
+          "id": "umass-legacy-entrance-80",
+          "name": "Northeast entrance (historical GIS)",
+          "lat": 42.3896703409757,
+          "lng": -72.52815986691562,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": false,
+          "has_ramp": null,
+          "in_routing_area": true,
+          "source": "UMass public Entrances_PNTS (historical GIS)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/80",
+          "source_record_date": "2019-07-26",
+          "source_observed_at": "2026-11-15T05:56:40.046589+00:00",
+          "current_operation_verified": false,
+          "notes": "Door opener documented in a UMass GIS record dated 2019-07-26. Current operation and access are unverified; this record predates later building renovations."
         }
       ],
-      "step_free_entrances": [],
-      "door_type": "unknown",
+      "step_free_entrances": [
+        {
+          "id": "umass-legacy-entrance-80",
+          "name": "Northeast entrance (historical GIS)",
+          "lat": 42.3896703409757,
+          "lng": -72.52815986691562,
+          "step_free": true,
+          "door_type": "push-button",
+          "keycard_required": false,
+          "has_ramp": null,
+          "in_routing_area": true,
+          "source": "UMass public Entrances_PNTS (historical GIS)",
+          "source_url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/80",
+          "source_record_date": "2019-07-26",
+          "source_observed_at": "2026-11-15T05:56:40.046589+00:00",
+          "current_operation_verified": false,
+          "notes": "Door opener documented in a UMass GIS record dated 2019-07-26. Current operation and access are unverified; this record predates later building renovations."
+        }
+      ],
+      "door_type": "push-button",
       "elevators": {
         "total_count": null,
         "working_count": null,
@@ -577,5 +750,6 @@
       "in_routing_area": false,
       "notes": "UMass accessibility map with supplemental OSM entrance positions. Routing covers outdoor paths; indoor elevator travel is not modeled."
     }
-  ]
+  ],
+  "entrance_evidence_observed_at": "2026-11-15T05:56:40.046589+00:00"
 }

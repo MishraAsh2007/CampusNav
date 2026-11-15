@@ -59,7 +59,7 @@ PROJECT = Transformer.from_crs(4326, 32618, always_xy=True).transform
 WEST, SOUTH, EAST, NORTH = (-72.536, 42.3835, -72.519, 42.3955)
 
 
-def fetch_layer(client, name, fields):
+def fetch_layer(client, name, fields, *, object_id_field="OBJECTID"):
     url = f"{SERVICE}/{name}/FeatureServer/0/query"
     rows, ids = [], set()
     for offset in range(0, 10000, 1000):
@@ -71,7 +71,7 @@ def fetch_layer(client, name, fields):
                 "outFields": fields,
                 "outSR": "4326",
                 "returnGeometry": "true",
-                "orderByFields": "OBJECTID",
+                "orderByFields": object_id_field,
                 "resultRecordCount": 1000,
                 "resultOffset": offset,
             },
@@ -81,7 +81,7 @@ def fetch_layer(client, name, fields):
         if "error" in data or not isinstance(data.get("features"), list):
             raise ValueError("The public map did not return a complete feature page")
         for row in data["features"]:
-            oid = row["attributes"]["OBJECTID"]
+            oid = row["attributes"][object_id_field]
             if oid in ids:
                 raise ValueError("Repeated source feature; refusing partial data")
             ids.add(oid)

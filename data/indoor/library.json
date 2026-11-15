@@ -30,6 +30,12 @@
       "url": "https://tiles.arcgis.com/tiles/2gdL2gxYNFY2TOUb/arcgis/rest/services/Integrated_Learning_Center_First_Floor_Scaled/MapServer",
       "edition": "Public UMass ArcGIS floor-plan layers",
       "observed_at": "2026-11-14T17:09:12.137445Z"
+    },
+    {
+      "id": "umass-entrances-pnts",
+      "url": "https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0",
+      "edition": "Historical entrance records dated 2019-07-26; current operation unverified",
+      "observed_at": "2026-11-15T05:56:40.046589+00:00"
     }
   ],
   "floors": [
@@ -947,12 +953,14 @@
         "lat": 42.38967,
         "lng": -72.52816
       },
-      "source_id": "umass-arcgis-access",
+      "source_id": "umass-entrances-pnts",
       "aliases": [
         "south entrance",
         "main entrance"
       ],
-      "source_record_ids": []
+      "source_record_ids": [
+        "umass-legacy-entrance-80"
+      ]
     },
     {
       "id": "lib-entrance-west",
@@ -1553,7 +1561,7 @@
     },
     {
       "id": "lib-source-e89f67a5556510f56265",
-      "label": "Info Desk; Procrastination Station CafÃ© (E)",
+      "label": "Info Desk; Procrastination Station CafÃƒÂ© (E)",
       "floor_id": "lower-level",
       "kind": "room",
       "x": 20.0,
@@ -1561,7 +1569,7 @@
       "position": null,
       "source_id": "library-directory",
       "aliases": [
-        "info desk; procrastination station cafÃ© (e)",
+        "info desk; procrastination station cafÃƒÂ© (e)",
         "info",
         "desk",
         "procrastination",
@@ -3559,8 +3567,8 @@
       "width_m": 2.5,
       "door_type": "automatic",
       "asset_id": null,
-      "source_id": "umass-arcgis-access",
-      "evidence": "ArcGIS entrance OID 80 to nearest OSM walking path node 8393893355 (3.6m)."
+      "source_id": "umass-entrances-pnts",
+      "evidence": "ArcGIS entrance OID 80 to nearest OSM walking path node 8393893355 (3.6m). Exact source: https://services.arcgis.com/2gdL2gxYNFY2TOUb/arcgis/rest/services/Entrances_PNTS/FeatureServer/0/80. Record dated 2019-07-26; current operation unverified."
     },
     {
       "id": "lib-portal-west",

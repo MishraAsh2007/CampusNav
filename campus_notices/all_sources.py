@@ -57,6 +57,11 @@ def stages(rules_only=False, rebuild_graphs=False):
             derived=True,
         ),
         Stage(
+            "entrance-evidence",
+            (("scripts.refresh_entrances",),),
+            ("data/entrance_evidence.json", "data/buildings.json", "data/residence_buildings.json"),
+        ),
+        Stage(
             "indoor-references",
             (("scripts.refresh_indoor_sources",),),
             ("data/indoor_sources.json",),
@@ -288,6 +293,7 @@ def assemble(root, statuses, now):
         official_feed_status=snapshot_status(root / "data/official_snapshot.json", now),
         indoor_references=indoor.get("records", []),
         library_elevator_sources=read_json(root, "data/library_elevator_sources.json"),
+        entrance_evidence=read_json(root, "data/entrance_evidence.json"),
         central_plan_references=images,
         campus_map=read_json(root, ".cache/residence-access.json"),
         indoor_maps=_indoor_maps(root, "data/indoor"),
