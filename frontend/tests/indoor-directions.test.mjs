@@ -51,3 +51,26 @@ test('directions show a current instruction and next control without opening all
   assert.match(html, /Show all steps/);
   assert.doesNotMatch(html, /Take the elevator to floor 2/);
 });
+
+test('regular route card and map line remain hidden until comparison is requested', async () => {
+  const {RouteSummary} = await server.ssrLoadModule('/src/components/RouteSummary.tsx');
+  const {buildScene} = await server.ssrLoadModule('/src/components/map/scene.ts');
+  const route = {summary: {total_duration_s: 60, total_distance_m: 70, max_grade_pct: 3,
+    warnings: [], stair_count: 0, elevation_gain_m: null}, steps: [], features: [{
+      geometry: {type: 'LineString', coordinates: [[-72.528, 42.39], [-72.527, 42.39]]},
+      properties: {is_step: false, grade: 0},
+    }]};
+  const props = {accessible: route, standard: route, showStandard: false, tab: 'accessible',
+    onTab() {}, onToggleStandard() {}, notes: [], prefs: {}, arrivalEntrance: null,
+    destinationBuilding: null, engine: 'remote', graphEdges: 10, loading: false};
+  const hidden = renderToStaticMarkup(React.createElement(RouteSummary, props));
+  assert.match(hidden, /Works for you/);
+  assert.match(hidden, /Compare on map/);
+  assert.doesNotMatch(hidden, /Regular map/);
+  const shown = renderToStaticMarkup(React.createElement(RouteSummary, {...props, showStandard: true}));
+  assert.match(shown, /Regular map/);
+  const sceneProps = {...props, buildings: [], closures: [], incidents: [], highContrast: false,
+    origin: null, destination: null, chosenEntranceIds: [], selectedBuildingId: null};
+  assert.equal(buildScene(sceneProps).lines.some(line => line.id.startsWith('std-')), false);
+  assert.equal(buildScene({...sceneProps, showStandard: true}).lines.some(line => line.id.startsWith('std-')), true);
+});
