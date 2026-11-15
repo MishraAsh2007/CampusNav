@@ -57,6 +57,16 @@ def render(model, floor_id: str, width: int = 1536, height: int = 1280) -> Optio
         out.append(f'<polygon points="{pts}" fill="#fbfaf7" stroke="#7d8794" stroke-width="5" '
                    f'stroke-linejoin="round" filter="url(#sh)"/>')
 
+    # rooms: shapes read off the plan (scripts/plan_outline.py --rooms), else none
+    rf = config.INDOOR_PLANS_DIR / model.key / f"{floor_id}.rooms.json"
+    if rf.is_file():
+        for nid, r in json.loads(rf.read_text(encoding="utf-8")).items():
+            if nid not in nodes:
+                continue
+            pts = " ".join(f"{x:.1f},{y:.1f}" for x, y in r["polygon"])
+            fill = "#eef3fa" if "restroom" in (nodes[nid].get("label") or "").lower() else "#ffffff"
+            out.append(f'<polygon points="{pts}" fill="{fill}" stroke="#aeb7c2" stroke-width="3" stroke-linejoin="round"/>')
+
     # hallways: edges between non-room nodes; doorway stubs to rooms
     halls, stubs = [], []
     for a, b, data in model.G.edges(data=True):
