@@ -42,7 +42,8 @@ class Car:
 def _building_cars(b: DestinationBuilding) -> list[Car]:
     cars = []
     for i, e in enumerate(b.elevators, 1):
-        cars.append(Car(e.location or f"Elevator {i}", None, e.lat, e.lng, (e.status or "").lower() in _OUT_WORDS))
+        cars.append(Car(e.location or f"Elevator {i}", None, e.lat, e.lng, (e.status or "").lower() in _OUT_WORDS,
+                        id=e.asset_id))
     return cars
 
 
@@ -97,6 +98,8 @@ def evaluate(b: DestinationBuilding, active: list[Closure]) -> tuple[ElevatorSta
 
 def assess(b: DestinationBuilding, active: list[Closure]) -> Assessment:
     cars, source, flagged_unattributed = build_cars(b)
+    spec_banks = ((overrides.find_building(b.id, b.name) or {}).get("elevators") or {}).get("banks") or {}
+    banks = {k: list(v.get("cars") or []) for k, v in spec_banks.items()}
     total = len(cars)
     all_out = False
     unattributed = flagged_unattributed
@@ -105,6 +108,22 @@ def assess(b: DestinationBuilding, active: list[Closure]) -> Assessment:
     located = [c for c in cars if c.lat is not None]
     for c in sorted((c for c in active if c.type == ClosureType.elevator_out and c.lat is not None),
                     key=lambda c: c.id):
+        # A closure that names a car or bank by its backend asset id needs no location match.
+        if c.asset_id:
+            car = next((k for k in cars if k.id == c.asset_id), None)
+            if car is not None:
+                car.out = True
+                matched.append(c)
+                continue
+            if c.asset_id in banks:
+                group = [k for k in cars if k.id in banks[c.asset_id]]
+                free = [k for k in group if not k.out]
+                matched.append(c)
+                if len(free) == 1:
+                    free[0].out = True
+                elif free:
+                    unattributed += 1
+                continue
         near_car = [k for k in located
                     if haversine_m(c.lat, c.lon, k.lat, k.lng) <= c.radius_m + config.DEST_ELEVATOR_MATCH_SLACK_M]
         near_building = haversine_m(c.lat, c.lon, b.lat, b.lng) <= max(config.DEST_BUILDING_MATCH_M, c.radius_m)

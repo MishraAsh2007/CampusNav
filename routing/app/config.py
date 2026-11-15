@@ -95,6 +95,14 @@ DEST_DOOR_DEGRADED_PENALTY_M = 40.0
 DEST_PUSH_BUTTON_PENALTY_M = 10.0
 
 # --------------------------------------------------------------------------
+# CampusNav backend (live closures and buildings); empty BACKEND_URL turns fetching off
+# --------------------------------------------------------------------------
+BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000").strip()
+BACKEND_TIMEOUT_S = _float("BACKEND_TIMEOUT_S", 3.0)
+BACKEND_CLOSURES_TTL_S = _float("BACKEND_CLOSURES_TTL_S", 5.0)
+BACKEND_BUILDINGS_TTL_S = _float("BACKEND_BUILDINGS_TTL_S", 60.0)
+
+# --------------------------------------------------------------------------
 # Closures
 # --------------------------------------------------------------------------
 DEFAULT_CLOSURE_RADIUS_M = _float("DEFAULT_CLOSURE_RADIUS_M", 25.0)

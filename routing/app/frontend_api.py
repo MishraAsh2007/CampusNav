@@ -30,7 +30,7 @@ from typing import Any, Optional
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
 
-from . import config
+from . import backend_client, config
 from .routing.pathfinding import plan_routes
 from .schemas import Closure, Destination, RouteRequest, RouteResult
 from .utils.geo import haversine_m
@@ -71,7 +71,7 @@ class FrontendRouteRequest(BaseModel):
     end: Optional[Point] = None
     destination: Optional[FrontendDestination] = None
     preferences: dict[str, Any] = Field(default_factory=dict)
-    closures: list[dict[str, Any]] = Field(default_factory=list)
+    closures: Optional[list[dict[str, Any]]] = None  # omitted: read the backend's GET /closures
 
     @model_validator(mode="after")
     def _target(self) -> "FrontendRouteRequest":
@@ -334,18 +334,29 @@ def frontend_route(body: FrontendRouteRequest, request: Request) -> dict[str, An
     if G is None:
         raise HTTPException(503, detail=f"graph not loaded: {request.app.state.graph_error}")
     grade, avoid_steps, ignored = map_preferences(body.preferences)
-    closures, skipped = map_closures(body.closures)
+    raw_closures, closures_source, closures_error = backend_client.get_closures(body.closures)
+    closures, skipped = map_closures(raw_closures)
+    data_warnings: list[str] = []
+    if closures_source == "unavailable":
+        data_warnings.append("Live closure data is unavailable, so this route doesn't account for current outages.")
 
     def building_block(fd: Optional[FrontendDestination], label: str) -> Optional[Destination]:
         if fd is None:
             return None
+        fb = fd.building
+        if "entrances" not in fb and fb.get("id"):  # only an id: read the building from the backend
+            found, _ = backend_client.get_building(fb.get("id"))
+            if found is None:
+                raise HTTPException(422, detail=f"{label} building {fb.get('id')!r}: not found in the backend; "
+                                                "send its entrances")
+            fb = {**found, **{k: v for k, v in fb.items() if k not in found}}
         try:
             return Destination.model_validate({
-                "building": map_building(fd.building),
+                "building": map_building(fb),
                 "needs_elevator": fd.needs_elevator,
                 "room": fd.room,
                 "need_automatic_door": bool(body.preferences.get("need_automatic_door", False)),
-                "door_issues": door_issues(body.closures),
+                "door_issues": door_issues(raw_closures),
             })
         except ValidationError as exc:
             raise HTTPException(422, detail=f"{label} building: {exc.errors()[0].get('msg')}")
@@ -420,6 +431,10 @@ def frontend_route(body: FrontendRouteRequest, request: Request) -> dict[str, An
         if not step_free["found"]:
             merged = plan_warnings  # the plans already explain why; skip the generic reason
         step_free["summary"]["warnings"] = list(dict.fromkeys(merged))
+    if data_warnings:
+        step_free["summary"]["warnings"] = data_warnings + step_free["summary"]["warnings"]
+        if shortest:
+            shortest["summary"]["warnings"] = data_warnings + shortest["summary"]["warnings"]
     return {
         "step_free": step_free,
         "shortest": shortest,
@@ -444,5 +459,8 @@ def frontend_route(body: FrontendRouteRequest, request: Request) -> dict[str, An
             "avoid_steps": avoid_steps,
             "ignored_preferences": ignored,
             "skipped_closures": skipped,
+            "closures_source": closures_source,
+            "closures_count": len(closures),
+            "backend_error": closures_error,
         },
     }

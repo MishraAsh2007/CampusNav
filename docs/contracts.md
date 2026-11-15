@@ -405,3 +405,28 @@ How it works:
   one unattributed outage, a bank of one car is skipped and a bank of two stays.
 - Doors with an unconfirmed step-free approach rank after confirmed ones and get a warning.
 - The maps are sketches (simplified corridors), so distances are approximate.
+
+
+## Reading the backend (live closures and buildings)
+
+The engine stays stateless. A request that sends its own `closures` uses them as is (an empty list
+means "no closures"). A request that **leaves `closures` out** makes the engine read the backend's
+`GET /closures` (cached 5 s). The same goes for buildings: `destination.building` / `origin.building`
+can be just `{"id": "ilc"}`, and the engine reads the entrances and elevators from `GET /buildings`
+(cached 60 s). An entrance with unknown `step_free` counts as not step-free.
+
+| env | default | |
+|---|---|---|
+| `BACKEND_URL` | `http://localhost:8000` | empty turns fetching off |
+| `BACKEND_TIMEOUT_S` | 3 | |
+| `BACKEND_CLOSURES_TTL_S` / `BACKEND_BUILDINGS_TTL_S` | 5 / 60 | |
+
+If the backend can't be reached, the request still runs without closures, and the response says so:
+`meta.closures_source` is `unavailable` (others: `request`, `backend`, `none`), `meta.backend_error`
+has the reason, and a warning is added to the route. The indoor router does the same.
+
+**Naming an elevator.** A backend closure may carry `asset_id` (and `building_id`). If the id is a car
+(`ilc-elevator-core-a`), that car is out. If it is an elevator bank from `indoor_overrides.json`
+(`ilc-elevator-west`, the core pair), one car in the bank is out, and which one is unknown unless
+only one is still free. Other ids are ignored and the closure is matched by location as before.
+`/api/indoor-route` reads closures the same way when `closures` is omitted.

@@ -22,7 +22,9 @@ from typing import Any, Literal, Optional
 from fastapi import APIRouter
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
+from . import backend_client
 from .frontend_api import map_building, map_closures
+from .indoor import overrides
 from .indoor import router as ir
 from .routing.closures import is_active
 from .schemas import DestinationBuilding
@@ -48,7 +50,11 @@ class IndoorRouteRequest(BaseModel):
     floor: Optional[str] = None
     node_id: Optional[str] = None
     preferences: dict[str, Any] = Field(default_factory=dict)
-    closures: list[dict[str, Any]] = Field(default_factory=list)
+    closures: Optional[list[dict[str, Any]]] = None  # omitted: read the backend's GET /closures
+
+
+def model_ov_aliases(key: str) -> list[str]:
+    return list((overrides.load().get(key) or {}).get("aliases", []))
 
 
 def _door_json(d: ir.Door, model: ir.Model) -> dict[str, Any]:
@@ -68,9 +74,14 @@ def indoor_route(body: IndoorRouteRequest) -> dict[str, Any]:
         return {"status": "no_map", "building_id": body.building_id,
                 "message": "No indoor map for this building yet."}
 
-    closures, skipped = map_closures(body.closures)
+    raw_closures, closures_source, _ = backend_client.get_closures(body.closures)
+    closures, skipped = map_closures(raw_closures)
     active = [c for c in closures if is_active(c)]
     building = None
+    if not body.building:
+        aliases = [a for a in (model_ov_aliases(key)) if " " not in a]
+        found, _ = backend_client.get_building(body.building_id, key, *aliases)
+        body.building = found
     if body.building:
         try:
             building = DestinationBuilding.model_validate(map_building(body.building))
@@ -133,6 +144,8 @@ def indoor_route(body: IndoorRouteRequest) -> dict[str, Any]:
     floor = model.floors.get(dest["floor_id"], {})
     if not floor.get("image_url"):
         warnings.append(f"There is no floor plan for {floor.get('label', dest['floor_id'])} yet; its layout here is a placeholder.")
+    if closures_source == "unavailable":
+        warnings.append("Live closure data is unavailable, so elevator outages aren't reflected.")
     for sk in skipped:
         warnings.append(f"Ignored closure {sk['id']}: {sk['reason']}")
 
@@ -147,7 +160,7 @@ def indoor_route(body: IndoorRouteRequest) -> dict[str, Any]:
         "legs": legs,
         "elevators": _elevators_json(model),
         "warnings": warnings,
-        "meta": {"direction": body.direction, "map_status": m.get("status"), "approximate": True, "step_free": avoid_steps,
+        "meta": {"closures_source": closures_source, "direction": body.direction, "map_status": m.get("status"), "approximate": True, "step_free": avoid_steps,
                  "elevator_count_source": st.count_source, "elevators_out_unknown": st.unattributed_out},
     }
 

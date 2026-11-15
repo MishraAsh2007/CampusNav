@@ -69,6 +69,9 @@ class Closure(BaseModel):
         "Unset means unknown (one car if the building has several, otherwise the only car).",
     )
     cars: list[int] = Field(default_factory=list, description='Car numbers when scope is "cars"')
+    building_id: Optional[str] = None
+    asset_id: Optional[str] = Field(default=None, description="elevator_out: the car or elevator bank it names")
+    floor_id: Optional[str] = None
 
     @model_validator(mode="before")
     @classmethod
@@ -150,6 +153,7 @@ class DestinationElevator(_AcceptsLon):
     lat: Optional[float] = Field(default=None, ge=-90, le=90)
     lng: Optional[float] = Field(default=None, ge=-180, le=180)
     status: Optional[str] = Field(default=None, description='"out_of_service" counts as out')
+    asset_id: Optional[str] = Field(default=None, description="Backend reference id; closures can name it")
 
 
 class DoorIssue(BaseModel):
