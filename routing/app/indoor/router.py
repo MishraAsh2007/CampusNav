@@ -21,6 +21,7 @@ from ..utils.geo import haversine_m, m_to_ft
 from . import overrides
 from .elevators import Assessment, assess
 
+ROOM_CODE_RX = re.compile(r"\b([ns])\s*(\d)(\d\d)\b", re.I)
 ENTRANCE_MATCH_M = 30.0        # a given outdoor door must be this close to an indoor door
 UNVERIFIED_DOOR_PENALTY_M = 150.0
 _SRC = "__entrance__"
@@ -160,11 +161,35 @@ def build_model(key: str, m: dict, active: list[Closure], avoid_steps: bool,
         sf = d.get("step_free_approach", True)  # key absent: a door the team confirmed as an accessible entrance
         doors.append(Door(k, d.get("name") or k, k, d["floor"], d["lat"], d["lng"], sf, d.get("verified"), d.get("approach")))
 
+    rule = ov.get("room_floor_rule")
+    if rule:
+        rx = re.compile(rule["pattern"], re.I)
+        for n in nodes.values():
+            code = rx.search(n.get("label", "")) if n["kind"] == "room" else None
+            if code and code.group(1) in floors and code.group(1) != n["floor_id"]:
+                n["floor_id"] = code.group(1)
+                n["approximate"] = True
+                n["label"] = re.sub(r",?\s*\d\w*\s+Floor entryway", "", n["label"]).strip()
+
+    def hub(fid: str) -> Optional[str]:
+        for kind in ("junction", "elevator_stop"):
+            for n in nodes.values():
+                if n["floor_id"] == fid and n["kind"] == kind:
+                    return n["id"]
+        return None
+
     for e in m["edges"]:
         if e["start"] not in nodes or e["end"] not in nodes:
             continue
         if e.get("public_access") is False:
             continue
+        # A room moved to another floor hangs off that floor's corridor instead (same length, approximate).
+        for room_end, other_end in (("start", "end"), ("end", "start")):
+            moved = nodes[e[room_end]]
+            if moved.get("approximate") and nodes[e[other_end]]["floor_id"] != moved["floor_id"]:
+                h = hub(moved["floor_id"])
+                if h:
+                    e = {**e, other_end: h}
         if avoid_steps and (e["kind"] == "steps" or e.get("step_free") is False):
             continue
         w = float(e.get("length_m") or 0.0)
@@ -197,6 +222,50 @@ def _floor_by_query(floors: dict[str, dict], q: str) -> Optional[str]:
     return None
 
 
+def _room_hits(cands: list[dict], room: str) -> list[dict]:
+    want = _tokens(room) - {"room", "the"}
+    return [n for n in cands if want and want <= _tokens(n["label"] + " " + " ".join(n.get("aliases", [])))]
+
+
+def _floor_hub(model: Model, fid: str) -> Optional[dict]:
+    for kind in ("junction", "elevator_stop"):
+        for n in model.nodes.values():
+            if n["floor_id"] == fid and n["kind"] == kind:
+                return n
+    return None
+
+
+def _unmapped_place(model: Model, room: str):
+    """A room the map lacks but whose floor is known: the floor's corridor, flagged as approximate.
+
+    Two sources of floor: the building's room-number rule (ILC: N250 is on floor 2) and the override's
+    list of named places per floor (Cafe, Lobby, Restrooms on floor 1).
+    """
+    fid = None
+    label = room.strip()
+    if model.ov.get("room_floor_rule"):
+        code = ROOM_CODE_RX.search(room)
+        if code and code.group(2) in model.floors:
+            fid = code.group(2)
+            label = f"{code.group(1).upper()}{code.group(2)}{code.group(3)}"
+    if fid is None:
+        nq = _norm(re.sub(r"^\s*ilc\s+", "", room, flags=re.I))
+        for f, names in (model.ov.get("unmapped_places") or {}).items():
+            for name in names:
+                if _norm(name) == nq and f in model.floors:
+                    fid, label = f, name
+    hub = _floor_hub(model, fid) if fid else None
+    if hub is None:
+        return None
+    node = {**hub, "label": label, "approximate": True, "unmapped": True}
+    return node, (f"{label} isn't on the indoor map yet. It is on {ir_floor_label(model, fid)}, so this "
+                  "takes you to that floor's main corridor; the last walk to the door isn't shown.")
+
+
+def ir_floor_label(model: Model, fid: str) -> str:
+    return model.floors.get(fid, {}).get("label", fid)
+
+
 def resolve_destination(model: Model, room: Optional[str], floor: Optional[str], node_id: Optional[str]):
     """-> (node dict or None, message)."""
     nodes, floors = model.nodes, model.floors
@@ -210,6 +279,10 @@ def resolve_destination(model: Model, room: Optional[str], floor: Optional[str],
         if exact:
             return exact[0], ""
         fid = _floor_by_query(floors, room)
+        if fid is None and not _room_hits(cands, room):
+            spot = _unmapped_place(model, room)
+            if spot is not None:
+                return spot
         if fid is not None:  # "2nd floor", "5": the whole floor, not a room that happens to mention it
             floor = fid
             room = None

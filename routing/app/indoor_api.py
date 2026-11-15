@@ -97,6 +97,8 @@ def indoor_route(body: IndoorRouteRequest) -> dict[str, Any]:
         return {"status": "not_found", "building": name, "message": msg}
     if msg:
         warnings.append(msg)
+    if dest.get("approximate") and not dest.get("unmapped"):
+        warnings.append(f"{dest['label']}'s exact spot on its floor isn't surveyed; the walking distance is approximate.")
     nonpublic = (model.ov.get("non_public_floors") or {}).get(dest["floor_id"])
     if nonpublic:
         return {"status": "not_public", "building": name,

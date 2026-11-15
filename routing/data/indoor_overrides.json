@@ -191,7 +191,20 @@
           }
         },
         "banks_note": "Maps the scraper map's elevator assets (east, west) onto cars. The map's 'west' elevator is the adjacent core pair."
-      }
+      },
+      "room_floor_rule": {
+        "pattern": "\\b[NS](\\d)\\d\\d\\b",
+        "source": "Team, 2026-11-14: in the ILC the first digit of a room number is its floor (N151 is on floor 1, 2xx on floor 2, 3xx on floor 3). The scraper map's N151 'entryway' sits on floor 2, the only one of its 16 rooms that breaks the rule."
+      },
+      "unmapped_places": {
+        "1": [
+          "Caf?",
+          "Cafe",
+          "Lobby",
+          "Restrooms"
+        ]
+      },
+      "unmapped_places_note": "Places the team confirmed on that floor (Role 2's sample map) that the scraper map doesn't have. Directions end at the floor's main corridor."
     }
   }
 }
