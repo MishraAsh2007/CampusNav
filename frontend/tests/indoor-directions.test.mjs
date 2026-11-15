@@ -13,6 +13,15 @@ after(() => server.close());
 const {measuredDisplayMap, adaptIndoorDirections} = await server.ssrLoadModule('/src/components/indoor/backendIndoor.js');
 const raw = JSON.parse(await readFile(new URL('../../data/indoor/ilc.json', import.meta.url), 'utf8'));
 
+test('live catalog rejects sample maps even when the backend is unavailable', async () => {
+  const {resolveCatalog} = await server.ssrLoadModule('/src/components/indoor/indoorCatalog.js');
+  const model = measuredDisplayMap(raw);
+  const buildings = [{id: 'ilc', name: 'Integrative Learning Center', code: 'ILC', location: {lat: 42.39, lng: -72.526}}];
+  assert.equal(resolveCatalog([{...model, source: 'sample', sample: true}], buildings).entries.length, 0);
+  assert.equal(resolveCatalog([{...model, synthetic: true}], buildings).entries.length, 0);
+  assert.equal(resolveCatalog([model], buildings).entries.length, 1);
+});
+
 test('ILC instructions include the corridor approach, elevator ride, and exit approach verbatim', () => {
   const model = measuredDisplayMap(raw);
   const ids = ['ilc-entrance-south', 'ilc-junction-f1', 'ilc-elev-east-f1', 'ilc-elev-east-f2', 'ilc-junction-f2', 'ilc-source-n211-f2'];

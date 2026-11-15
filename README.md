@@ -42,7 +42,8 @@ Open `/?indoor=ilc` and select **S335 Seminar** to view the indoor example.
 
 The integrated launcher connects the map to the API on port 8000. When running Vite separately,
 the map checks which routing endpoints are available before sending a trip. A standalone Data API
-can supply its closure feed and building catalog while the map uses the in-browser router. To enable live routing,
+can supply its closure feed and building catalog. Live routes require the source-backed Python router;
+the browser router and sample indoor layouts are restricted to explicit demo mode. To enable live routing,
 run the integrated launcher and stop any older server occupying port 8000.
 
 - Map: http://127.0.0.1:8000/

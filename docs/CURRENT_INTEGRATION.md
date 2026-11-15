@@ -4,6 +4,14 @@ The latest routing/scraper additions are layered on the combined `main` applicat
 The existing Role 2 UI, MongoDB/Data API bridge, upload endpoints, and explicit demo
 mode remain supported. There is one application origin in the standard launcher.
 
+Live mode uses our saved UMass/OSM building catalog, backend graph, and source-based
+indoor maps. It does not substitute the Role 2 sample floor layouts, alternate
+browser graph, seeded outage reports, or sample building accessibility attributes
+when the backend is missing. Static markers can use `data/residence_buildings.json`;
+routes and indoor maps remain unavailable until the source backend connects.
+The planner shows that connection failure explicitly. Fictional layouts and the
+browser router remain available only with `VITE_CAMPUSNAV_DEMO=1`.
+
 ## Start the application
 
 From the repository root:
@@ -132,6 +140,6 @@ npm.cmd --prefix frontend run build
 
 Tests cover ILC entrance/elevator/classroom instructions, exact arrival handoff,
 preservation of backend instructions in the floor view, shared outage handling,
-unknown drawing distance, consent, existing report endpoints, and legacy backend
-discovery. Floor-plan and facilities gaps remain documented; successful routing
+unknown drawing distance, consent, existing report endpoints, and source-only behavior
+when a backend is unavailable. Floor-plan and facilities gaps remain documented; successful routing
 is not a physical-accessibility certification.

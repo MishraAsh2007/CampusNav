@@ -4,6 +4,8 @@ import {
   closuresSignature,
   confirmClosure,
   getBuildings,
+  getSourceBuildings,
+  sourceRoutingAvailable,
   getClosures,
   markClosureResolved,
   planRoutes,
@@ -53,7 +55,7 @@ export function App() {
   const { provider, reason } = useMapProvider();
 
   // ---------- data ----------
-  const [baseBuildings, setBuildings] = useState<Building[]>(UMASS_BUILDINGS);
+  const [baseBuildings, setBuildings] = useState<Building[]>(() => DEMO_MODE ? UMASS_BUILDINGS : getSourceBuildings());
   // Reviewed indoor maps and built-in samples, matched to the outdoor buildings.
   // Buildings that only exist as an indoor map are added to the map too.
   const indoorCatalog = useIndoorCatalog(baseBuildings);
@@ -61,7 +63,8 @@ export function App() {
     () => (indoorCatalog.extraBuildings.length ? [...baseBuildings, ...indoorCatalog.extraBuildings] : baseBuildings),
     [baseBuildings, indoorCatalog.extraBuildings]
   );
-  const [closures, setClosures] = useState<Closure[]>(INITIAL_CLOSURES);
+  const [closures, setClosures] = useState<Closure[]>(DEMO_MODE ? INITIAL_CLOSURES : []);
+  const [routingConnected, setRoutingConnected] = useState<boolean | null>(DEMO_MODE ? true : null);
   const [scheduled, setScheduled] = useState<Closure[]>([]);
   const [live, setLive] = useState(false);
   const [lastSync, setLastSync] = useState<number | null>(null);
@@ -73,7 +76,7 @@ export function App() {
     ...incidents,
     ...scheduled.flatMap(c => groupIncidents([{...c, title: `Scheduled · ${c.title}`}], busData)),
   ], [incidents, scheduled, busData]);
-  const closuresSig = useRef(closuresSignature(INITIAL_CLOSURES));
+  const closuresSig = useRef(closuresSignature(DEMO_MODE ? INITIAL_CLOSURES : []));
 
   const applyClosures = useCallback((list: Closure[]) => {
     const sig = closuresSignature(list);
@@ -84,7 +87,8 @@ export function App() {
   }, []);
 
   const syncClosures = useCallback(async () => {
-    const r = await getClosures();
+    const [r, connected] = await Promise.all([getClosures(), sourceRoutingAvailable()]);
+    setRoutingConnected(connected);
     applyClosures(r.closures);
     setLive(r.live);
     setScheduled(previous => r.scheduled ?? previous.filter(c => Date.parse(c.start_time) > Date.now()));
@@ -93,7 +97,7 @@ export function App() {
   }, [applyClosures]);
 
   useEffect(() => {
-    loadCampusGraph().then(setGraph);
+    if (DEMO_MODE) loadCampusGraph().then(setGraph);
     loadBusRoutes().then(setBusData);
     getBuildings().then(setBuildings);
     syncClosures();
@@ -146,7 +150,7 @@ export function App() {
   const intentKey = JSON.stringify(indoorIntent);
 
   useEffect(() => {
-    if (!origin || !destination || !graph) return;
+    if (!origin || !destination || (DEMO_MODE && !graph)) return;
     const seq = ++planSeq.current;
     setLoading(true);
     planRoutes(origin, destination, prefs, closures, buildings, indoorIntent).then((p) => {
@@ -497,6 +501,7 @@ export function App() {
         <div className="mx-auto mt-2 h-1 w-9 rounded-full bg-black/15 lg:hidden" aria-hidden />
         <div className="scroll-soft flex-1 space-y-4 overflow-y-auto p-4">
           {arrivedAtIndoorBuilding && <button type="button" className="w-full rounded-xl bg-emerald-700 px-3 py-2 text-sm font-semibold text-white lg:hidden" onClick={() => {setInspectedLeg(null); setViewState('transition_modal');}}>At {destination?.name}? Go inside</button>}
+          {routingConnected === false && <p role="status" className="rounded-2xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">Routing backend unavailable. Showing our saved UMass building data. Outdoor routes and source indoor maps will be available when the backend connects.</p>}
           <TripPlanner
             origin={origin}
             destination={destination}

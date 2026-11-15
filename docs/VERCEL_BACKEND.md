@@ -81,6 +81,12 @@ standalone development.
 6. Redeploy the **frontend** so Vite includes the URLs in its build. Its URL is
    the one users open to see the map.
 
+Live mode will not substitute sample indoor maps or the browser routing graph
+when the backend is unavailable. A missing source backend produces a visible
+unavailable state. Keep **Include source files outside the Root Directory in the
+Build Step** enabled for the frontend project: its saved source catalog is imported
+from the repository's shared `data/residence_buildings.json`.
+
 The combined service inherits `CORS_ORIGINS` for requests from the separate map
 project, defaulting to the existing Data API policy of `*`. Set it to your actual
 frontend origin to restrict access, and redeploy the backend. If you set the

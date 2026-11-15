@@ -2,13 +2,14 @@
  * Data + routing gateway.
  *
  * Live mode: talks to Role 4 (closures, buildings, reports) and Role 1 (routing) over the shared contracts.
- * Offline mode: the same calls are served from an in-memory store and the in-browser router, so the demo
- * never depends on Wi-Fi.
+ * Explicit demo mode uses the sample store and browser router. Live mode retains our sourced
+ * building catalog when the backend is unavailable, and leaves routing unavailable.
  */
 import { Building, BuildingEntrance, Closure, Place, RouteResponse, UserPreferences, UserReportPayload } from '../types';
 import { INITIAL_CLOSURES } from '../data/mockClosures';
 import { routeSteps, type WireManeuver } from './routeSteps';
 import { UMASS_BUILDINGS } from '../data/mockBuildings';
+import sourceCatalog from '../../../data/residence_buildings.json';
 import { computeRoutes, Endpoint, getDistanceMeters, loadCampusGraph, RouteBundle } from './routingEngine';
 
 const integrated = import.meta.env.VITE_CAMPUSNAV_INTEGRATED === '1';
@@ -16,10 +17,9 @@ const API_BASE: string = integrated ? '' : (import.meta.env.VITE_API_BASE_URL ??
 const ROUTING_BASE: string = integrated ? '' : (import.meta.env.VITE_ROUTING_API_URL || API_BASE).replace(/\/$/, '');
 export const INDOOR_API_BASE = integrated ? '' : (import.meta.env.VITE_INDOOR_API_URL || ROUTING_BASE).replace(/\/$/, '');
 export const DEMO_MODE = import.meta.env.VITE_CAMPUSNAV_DEMO === '1';
-const ROUTING_MODE: 'auto' | 'local' | 'remote' = DEMO_MODE ? 'local'
-  : (import.meta.env.VITE_ROUTING_ENGINE as 'auto' | 'local' | 'remote') || 'auto';
+const ROUTING_MODE: 'local' | 'remote' = DEMO_MODE ? 'local' : 'remote';
 
-let store: Closure[] = INITIAL_CLOSURES.map((c) => ({ ...c }));
+let store: Closure[] = DEMO_MODE ? INITIAL_CLOSURES.map((c) => ({ ...c })) : [];
 /** Edits made in this browser (fixed / confirmed) win over a backend that has not caught up yet. */
 const overrides = new Map<string, Partial<Closure>>();
 
@@ -243,7 +243,7 @@ const CATEGORIES: Building['category'][] = ['academic', 'student_services', 'din
 
 /** Backend building -> the map UI's Building. Same mapping as the frontend-backend branch. */
 export function normalizeBuilding(raw: ApiBuilding): Building {
-  const local = UMASS_BUILDINGS.find((b) => b.id === raw.id);
+  const local = DEMO_MODE ? UMASS_BUILDINGS.find((b) => b.id === raw.id) : undefined;
   const rawEntrances: NonNullable<ApiBuilding['entrances']> = raw.entrances ?? (raw.step_free_entrances ?? []).map((e) => ({ ...e, step_free: true }));
   const entrances: BuildingEntrance[] = rawEntrances.map((e, i) => ({
     ...(local?.entrances.find((x) => x.id === e.id) ?? {}),
@@ -280,9 +280,17 @@ export function normalizeBuilding(raw: ApiBuilding): Building {
 
 /**
  * Buildings from Role 4 (GET /buildings; older contract: /api/buildings). Anything added to the backend,
- * dorms included, shows up on the map with no frontend change. Built-in buildings the backend doesn't
- * have yet are kept so the offline demo still works.
+ * dorms included, shows up on the map with no frontend change. Our saved source catalog
+ * supplies static building markers when the live catalog is unavailable.
  */
+export function getSourceBuildings(): Building[] {
+  return sourceCatalog.buildings.map(raw => normalizeBuilding(raw as unknown as ApiBuilding));
+}
+
+export async function sourceRoutingAvailable(): Promise<boolean> {
+  return DEMO_MODE || (await routingPaths()).has('/plan');
+}
+
 export async function getBuildings(): Promise<Building[]> {
   if (DEMO_MODE) return UMASS_BUILDINGS;
   let r = await fetchJson<ApiBuilding[]>(`${API_BASE}/buildings`, {}, 1500);
@@ -291,9 +299,9 @@ export async function getBuildings(): Promise<Building[]> {
     const remote = r.data
       .map(normalizeBuilding)
       .filter((b) => Number.isFinite(b.location.lat) && Number.isFinite(b.location.lng));
-    return [...remote, ...UMASS_BUILDINGS.filter(b => !remote.some(x => x.id === b.id || x.name === b.name))];
+    return [...remote, ...getSourceBuildings().filter(b => !remote.some(x => x.id === b.id || x.name === b.name))];
   }
-  return UMASS_BUILDINGS;
+  return getSourceBuildings();
 }
 
 // ---------- routing ----------
@@ -544,6 +552,10 @@ export async function planRoutes(
     const remote = paths.has('/plan') ? await requestRemotePlan(origin, destination, prefs, indoor, closures, paths, indoorPaths) : null;
     if (remote) return remote;
   }
+  if (!DEMO_MODE) return {
+    accessible: null, standard: null, engine: 'remote', ms: Math.round(performance.now() - t0), notes: [],
+    failure: 'Campus routing service unavailable. Routes require the source-backed Python backend. Please try again once the backend is connected.',
+  };
   const G = await loadCampusGraph();
   const o = endpointsFor(origin, buildings, prefs, closures);
   const d = endpointsFor(destination, buildings, prefs, closures);

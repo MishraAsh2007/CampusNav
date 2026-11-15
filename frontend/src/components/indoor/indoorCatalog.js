@@ -1,11 +1,11 @@
 /**
- * Reviewed indoor maps are loaded from the routing API. Built-in sample layouts
- * are used when no reviewed map is available.
+ * Live indoor maps come from the source-backed routing API. Sample layouts are
+ * restricted to explicit demo mode; an unavailable API leaves live indoor maps unavailable.
  *
  *   1. The indoor API (campus_routing): GET {VITE_INDOOR_API_URL}/indoor/status, then
  *      GET /indoor/maps/{building_id} for each routable building.
  *   2. The built-in sample layouts (sampleMaps.js) for ILC, Campus Center, Student Union and Du Bois.
- *      VITE_INDOOR_SAMPLES=prefer shows samples even where real maps exist; =off hides them.
+ *      These are loaded only when VITE_CAMPUSNAV_DEMO=1.
  *
  * Maps are matched to outdoor buildings (Role 4's GET /buildings) by id, then by name, then by distance.
  * A map with no matching outdoor building still becomes a destination on the map, built from the map's
@@ -18,7 +18,7 @@ import { drawingDisplayMap } from './backendIndoor';
 import { FLOOR_PLAN_IMAGES } from './floorCalibration';
 import { DEMO_MODE, INDOOR_API_BASE, routingPaths } from '../../services/api';
 
-const SAMPLES = DEMO_MODE ? 'prefer' : String(import.meta.env.VITE_INDOOR_SAMPLES ?? 'fallback');
+const SAMPLES = DEMO_MODE ? 'prefer' : 'off';
 const DATA_FILES = import.meta.glob('/data/indoor/*.json', { import: 'default' });
 const PRIORITY = SAMPLES === 'prefer' ? { sample: 3, api: 2, data: 1 } : { api: 3, data: 2, sample: 1 };
 
@@ -51,6 +51,7 @@ function overridesFor(buildingId) {
 
 function toModel(raw, source) {
   try {
+    if (!DEMO_MODE && (source === 'sample' || raw?.synthetic)) return null;
     const m = normalizeIndoorMap(raw, { source, imageOverrides: overridesFor(raw?.building_id) });
     return isNavigable(m) ? m : null;
   } catch (err) {
@@ -71,7 +72,7 @@ export function loadIndoorCatalog() {
   }
   const fromFiles = Promise.all(Object.values(DATA_FILES).map(async load => {
     const raw = await load().catch(() => null);
-    return raw?.version === 1 && raw.building_id ? toModel(raw, 'data') : null;
+    return raw?.version === 1 && raw.building_id && raw.status === 'reviewed' && !raw.synthetic ? toModel(raw, 'data') : null;
   }));
   const fromApi = routingPaths(INDOOR_API_BASE).then(async paths => {
     if (!paths.has('/indoor/status')) return [];
@@ -157,6 +158,7 @@ export function resolveCatalog(models, buildings) {
   const chosen = new Map(); // outdoor id -> model
   const extra = [];
   for (const m of models) {
+    if (!DEMO_MODE && (m.source === 'sample' || m.synthetic)) continue;
     const b = matchBuilding(m, buildings);
     const id = b?.id ?? m.id;
     const cur = chosen.get(id);

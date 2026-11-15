@@ -164,8 +164,13 @@ test('a standalone Data API is detected without sending unsupported routing POST
     return response({detail: 'Not Found'}, {status: 404});
   };
   const intent = {reviewedBuildingId: 'ilc', nodeId: 'ilc-source-n151-f2'};
-  for (let i = 0; i < 2; i++) assert.equal((await older.planRoutes(start, end, prefs, [], [], intent)).engine, 'local');
-  assert.deepEqual(paths, [['/health', undefined], ['/openapi.json', undefined], ['/data/campusGraph.json', undefined]]);
+  for (let i = 0; i < 2; i++) {
+    const plan = await older.planRoutes(start, end, prefs, [], [], intent);
+    assert.equal(plan.engine, 'remote');
+    assert.equal(plan.accessible, null);
+    assert.match(plan.failure, /routing service unavailable/i);
+  }
+  assert.deepEqual(paths, [['/health', undefined], ['/openapi.json', undefined]]);
 });
 
 test('if a server changes mid-session the missing navigation endpoint is tried once', async () => {
@@ -183,7 +188,7 @@ test('if a server changes mid-session the missing navigation endpoint is tried o
   assert.equal(guidedCalls, 1);
 });
 
-test('an older routing engine continues to use its advertised Role 2 endpoint', async () => {
+test('a backend without source routing does not substitute the alternate browser graph', async () => {
   const legacy = await server.ssrLoadModule('/src/services/api.ts?legacy');
   const graph = await readFile(new URL('../public/data/campusGraph.json', import.meta.url), 'utf8');
   const posts = [];
@@ -196,8 +201,19 @@ test('an older routing engine continues to use its advertised Role 2 endpoint', 
   };
   const result = await legacy.planRoutes(start, end, prefs, [], []);
   assert.equal(result.engine, 'remote');
-  assert.equal(result.arrivalPoint.entranceId, 'legacy-door');
-  assert.deepEqual(posts, ['/api/route']);
+  assert.equal(result.accessible, null);
+  assert.match(result.failure, /routing service unavailable/i);
+  assert.deepEqual(posts, []);
+});
+
+test('an unavailable backend uses our sourced building catalog and no seeded outage reports', async () => {
+  const isolated = await server.ssrLoadModule('/src/services/api.ts?source-only');
+  globalThis.fetch = async () => response({detail: 'Not Found'}, {status: 404});
+  const buildings = await isolated.getBuildings();
+  assert.ok(buildings.some(b => b.id === 'north-d'));
+  assert.ok(buildings.some(b => b.id === 'old-chapel'));
+  assert.ok(buildings.some(b => b.id === 'library'));
+  assert.deepEqual((await isolated.getClosures()).closures, []);
 });
 
 test('report creation, confirmation and resolution use the service endpoints', async () => {
