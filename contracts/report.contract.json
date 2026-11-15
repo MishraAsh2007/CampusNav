@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "User Report Contract",
+  "description": "Standard schema for student crowdsourced reports (elevator out, ramp blocked, path icy/closed) sent from the UI to MongoDB.",
+  "type": "object",
+  "required": ["lat", "lng", "type", "status", "timestamp"],
+  "properties": {
+    "lat": {
+      "type": "number",
+      "description": "Report latitude (from device GPS or clicked map pin)"
+    },
+    "lng": {
+      "type": "number",
+      "description": "Report longitude (from device GPS or clicked map pin)"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["elevator", "ramp", "path", "automatic_door", "construction"],
+      "description": "Type of accessibility barrier reported"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["broken", "working", "blocked", "under_repair"],
+      "description": "Reported condition"
+    },
+    "title": {
+      "type": "string",
+      "description": "Short headline (e.g. 'ILC West Elevator Beeping & Stalled')"
+    },
+    "description": {
+      "type": "string",
+      "description": "Free text report parsed by Gemini in background into structured outage"
+    },
+    "building_id": {
+      "type": "string"
+    },
+    "connector_id": {
+      "type": "string",
+      "description": "Optional. Graph connector this report is about (e.g. 'cc-concourse-elevator'). Lets the router close exactly that elevator instead of everything within radius. Backend should store and echo it on the resulting closure."
+    },
+    "reporter_device_id": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

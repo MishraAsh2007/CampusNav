@@ -1,0 +1,16 @@
+{
+  "status": "needs_input",
+  "code": "choose_indoor_destination",
+  "field": "continue_indoors",
+  "question": "Do you need to go somewhere inside SYNTHETIC ilc protocol fixture?",
+  "choices": [
+    {
+      "continue_indoors": true,
+      "label": "Choose a room or place"
+    },
+    {
+      "continue_indoors": false,
+      "label": "Finish outside"
+    }
+  ]
+}

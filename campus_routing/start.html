@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campus Navigation · Backend test</title>
+<style>
+  :root { font-family: system-ui, sans-serif; color: #153c34; background: #f1f6f3; }
+  body { max-width: 780px; margin: 4rem auto; padding: 0 1.2rem; line-height: 1.6; }
+  h1 { line-height: 1.2; } .eyebrow { text-transform: uppercase; letter-spacing: .12em; }
+  section { background: white; border: 1px solid #ceddd3; padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0; }
+  button, a { font: inherit; } button { color: white; background: #17634e; border: 0; border-radius: 6px; padding: .65rem 1rem; cursor: pointer; }
+  button:disabled { opacity: .6; cursor: wait; } a { color: #17634e; }
+  pre { overflow: auto; background: #edf4f0; padding: 1rem; font-size: .85rem; max-height: 28rem; }
+  .error { color: #9a302a; } li { margin-bottom: .4rem; }
+</style>
+<p class="eyebrow">Campus Navigation</p>
+<h1>Try your routing backend</h1>
+<p>This page checks your API. The interactive campus map will be built by your frontend teammate.</p>
+<p id="health" role="status">Checking the server…</p>
+<section>
+  <h2>1. Calculate a route</h2>
+  <p>Try two nearby campus points with stairs blocked and a 5% maximum estimated grade. This connectivity test sends an empty closures list.</p>
+  <button id="route">Test route</button>
+  <div id="result" aria-live="polite"></div>
+  <details><summary>Request sent to POST /route</summary><pre id="request"></pre></details>
+  <details id="response-panel" hidden><summary>Full route response for your teammate</summary><pre id="response"></pre></details>
+</section>
+<section>
+  <h2>2. Check official notices</h2>
+  <p>The notice scraper runs separately. This checks the data it last saved.</p>
+  <button id="notices">Check notice status</button>
+  <div id="notice-result" aria-live="polite"></div>
+</section>
+<section>
+  <h2>3. Review reports from other sources</h2>
+  <p>Transit alerts and public complaints can reveal accessibility problems. These reports need review before they can affect a route.</p>
+  <button id="reports">Show discovered reports</button>
+  <div id="report-result" aria-live="polite"></div>
+</section>
+<p>For other coordinates and preferences, open <a href="/docs#/default/route_route_post">API documentation</a>, expand <strong>POST /route</strong>, edit the prefilled request, then click <strong>Execute</strong>. Your actual result appears under <strong>Server response</strong>.</p>
+<script>
+const request = {start: {lat: 42.391, lng: -72.528}, end: {lat: 42.392, lng: -72.528}, max_grade: 5, no_stairs: true, allow_unknown_grade: false, closures: []};
+const $ = id => document.getElementById(id);
+$('request').textContent = JSON.stringify(request, null, 2);
+async function getJSON(url, options) {
+  const response = await fetch(url, {...options, signal: AbortSignal.timeout(20000)});
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.detail?.message || JSON.stringify(data.detail || data));
+  return data;
+}
+getJSON('/health').then(data => {
+  $('health').textContent = `Server ready · ${data.synthetic ? 'Synthetic demonstration graph' : 'Campus graph from OpenStreetMap'} · ${data.nodes.toLocaleString()} nodes`;
+}).catch(error => { $('health').textContent = error.message; $('health').className = 'error'; });
+$('route').onclick = async () => {
+  $('route').disabled = true;
+  $('result').textContent = 'Calculating…';
+  $('response-panel').hidden = true;
+  try {
+    const data = await getJSON('/route', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(request)});
+    const p = data.properties;
+    $('result').replaceChildren();
+    const summary = document.createElement('p');
+    summary.textContent = `Route found: ${p.total_distance.toFixed(0)} meters · maximum estimated grade ${p.max_grade === null ? 'unknown' : p.max_grade.toFixed(2) + '%'} · ${p.uses_stairs ? 'includes stairs' : 'no stairs'}`;
+    $('result').append(summary);
+    const directions = document.createElement('ol');
+    for (const line of p.directions) { const li = document.createElement('li'); li.textContent = line; directions.append(li); }
+    $('result').append(directions);
+    for (const warning of p.warnings) { const line = document.createElement('p'); line.textContent = warning; $('result').append(line); }
+    $('response').textContent = JSON.stringify(data, null, 2);
+    $('response-panel').hidden = false;
+  } catch (error) { $('result').textContent = `Could not calculate the route: ${error.message}`; }
+  finally { $('route').disabled = false; }
+};
+$('notices').onclick = async () => {
+  $('notices').disabled = true;
+  try {
+    const data = await getJSON('/official-closures/status');
+    const details = document.createElement('pre');
+    details.textContent = JSON.stringify(data, null, 2);
+    $('notice-result').replaceChildren(details);
+  } catch (error) { $('notice-result').textContent = error.message; }
+  finally { $('notices').disabled = false; }
+};
+$('reports').onclick = async () => {
+  $('reports').disabled = true;
+  $('report-result').textContent = 'Loading saved reports…';
+  try {
+    const status = await getJSON('/external-reports/status');
+    $('report-result').replaceChildren();
+    const sources = document.createElement('ul');
+    for (const source of Object.values(status.sources)) {
+      const li = document.createElement('li');
+      li.textContent = `${source.name}: ${source.state.replaceAll('_', ' ')}${source.message ? ' — ' + source.message : ''}`;
+      sources.append(li);
+    }
+    $('report-result').append(sources);
+    if (status.status === 'unavailable') {
+      const message = document.createElement('p');
+      message.textContent = 'No usable source data yet. Run refresh-reports.cmd in your project terminal.';
+      $('report-result').append(message);
+      return;
+    }
+    const reports = await getJSON('/external-reports');
+    if (!reports.length) {
+      const message = document.createElement('p');
+      message.textContent = 'No recent matching reports in the saved feeds. This is not an all-clear for campus.';
+      $('report-result').append(message);
+    }
+    for (const report of reports) {
+      const article = document.createElement('article');
+      const title = document.createElement('h3');
+      const link = document.createElement('a');
+      link.textContent = report.title; link.href = report.url;
+      link.target = '_blank'; link.rel = 'noopener noreferrer'; title.append(link);
+      const meta = document.createElement('p');
+      meta.textContent = `${report.source_name} · ${report.source} source · Needs review · ` +
+        (report.published_at ? `Posted ${new Date(report.published_at).toLocaleString()}` :
+        `Posting time unknown; first seen ${new Date(report.first_seen_at).toLocaleString()}`);
+      const text = document.createElement('p'); text.textContent = report.text.slice(0, 600);
+      article.append(title, meta, text);
+      $('report-result').append(article);
+    }
+  } catch (error) { $('report-result').append(document.createTextNode(error.message)); }
+  finally { $('reports').disabled = false; }
+};
+</script>
+</html>

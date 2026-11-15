@@ -1,0 +1,206 @@
+{
+  "$defs": {
+    "Closure": {
+      "properties": {
+        "lat": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Lat",
+          "type": "number"
+        },
+        "lng": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Lng",
+          "type": "number"
+        },
+        "radius": {
+          "description": "Affected radius in meters",
+          "exclusiveMinimum": 0,
+          "maximum": 1000,
+          "title": "Radius",
+          "type": "number"
+        },
+        "type": {
+          "enum": [
+            "elevator",
+            "ramp",
+            "path"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "closed",
+            "degraded"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "official",
+            "community",
+            "verified"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "start_time": {
+          "format": "date-time",
+          "title": "Start Time",
+          "type": "string"
+        },
+        "end_time": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "End Time"
+        },
+        "last_confirmed": {
+          "format": "date-time",
+          "title": "Last Confirmed",
+          "type": "string"
+        },
+        "asset_id": {
+          "anyOf": [
+            {
+              "maxLength": 150,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Asset Id"
+        },
+        "building_id": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Building Id"
+        },
+        "floor_id": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Floor Id"
+        }
+      },
+      "required": [
+        "lat",
+        "lng",
+        "radius",
+        "type",
+        "status",
+        "source",
+        "start_time",
+        "end_time",
+        "last_confirmed"
+      ],
+      "title": "Closure",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "max_grade": {
+      "anyOf": [
+        {
+          "maximum": 100,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": 5,
+      "title": "Max Grade"
+    },
+    "no_stairs": {
+      "default": true,
+      "title": "No Stairs",
+      "type": "boolean"
+    },
+    "allow_unknown_access": {
+      "default": false,
+      "title": "Allow Unknown Access",
+      "type": "boolean"
+    },
+    "allow_unknown_grade": {
+      "default": false,
+      "title": "Allow Unknown Grade",
+      "type": "boolean"
+    },
+    "need_automatic_door": {
+      "default": false,
+      "title": "Need Automatic Door",
+      "type": "boolean"
+    },
+    "min_width_m": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "maximum": 5,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Min Width M"
+    },
+    "building_id": {
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,79}$",
+      "title": "Building Id",
+      "type": "string"
+    },
+    "start_node_id": {
+      "title": "Start Node Id",
+      "type": "string"
+    },
+    "end_node_id": {
+      "title": "End Node Id",
+      "type": "string"
+    },
+    "closures": {
+      "items": {
+        "$ref": "#/$defs/Closure"
+      },
+      "maxItems": 500,
+      "title": "Closures",
+      "type": "array"
+    }
+  },
+  "required": [
+    "building_id",
+    "start_node_id",
+    "end_node_id"
+  ],
+  "title": "IndoorRouteRequest",
+  "type": "object"
+}

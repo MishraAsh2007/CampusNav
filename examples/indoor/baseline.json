@@ -1,0 +1,276 @@
+{
+  "building_id": "demo-building",
+  "synthetic": true,
+  "node_path": [
+    "entrance",
+    "hall1",
+    "a1",
+    "a2",
+    "hall2",
+    "room-201"
+  ],
+  "floor_sequence": [
+    "1",
+    "2"
+  ],
+  "segments": [
+    {
+      "edge_id": "entrance-hall",
+      "kind": "corridor",
+      "asset_id": "demo-hall",
+      "distance_m": 2.0,
+      "from_floor": "1",
+      "to_floor": "1",
+      "source_id": "synthetic-fixture",
+      "degraded": false,
+      "floor_id": "1",
+      "coordinate_system": "local_meters",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            2.0,
+            0.0
+          ]
+        ]
+      }
+    },
+    {
+      "edge_id": "hall-a1",
+      "kind": "corridor",
+      "asset_id": null,
+      "distance_m": 3.0,
+      "from_floor": "1",
+      "to_floor": "1",
+      "source_id": "synthetic-fixture",
+      "degraded": false,
+      "floor_id": "1",
+      "coordinate_system": "local_meters",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            2.0,
+            0.0
+          ],
+          [
+            5.0,
+            0.0
+          ]
+        ]
+      }
+    },
+    {
+      "edge_id": "hall-a2",
+      "kind": "corridor",
+      "asset_id": null,
+      "distance_m": 3.0,
+      "from_floor": "2",
+      "to_floor": "2",
+      "source_id": "synthetic-fixture",
+      "degraded": false,
+      "floor_id": "2",
+      "coordinate_system": "local_meters",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.0,
+            0.0
+          ],
+          [
+            2.0,
+            0.0
+          ]
+        ]
+      }
+    },
+    {
+      "edge_id": "hall-room",
+      "kind": "corridor",
+      "asset_id": "demo-hall",
+      "distance_m": 2.0,
+      "from_floor": "2",
+      "to_floor": "2",
+      "source_id": "synthetic-fixture",
+      "degraded": false,
+      "floor_id": "2",
+      "coordinate_system": "local_meters",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            2.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ]
+      }
+    }
+  ],
+  "steps": [
+    {
+      "edge_id": "entrance-hall",
+      "kind": "corridor",
+      "asset_id": "demo-hall",
+      "distance_m": 2.0,
+      "from_floor": "1",
+      "to_floor": "1",
+      "source_id": "synthetic-fixture",
+      "degraded": false,
+      "floor_id": "1",
+      "coordinate_system": "local_meters",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            2.0,
+            0.0
+          ]
+        ]
+      }
+    },
+    {
+      "edge_id": "hall-a1",
+      "kind": "corridor",
+      "asset_id": null,
+      "distance_m": 3.0,
+      "from_floor": "1",
+      "to_floor": "1",
+      "source_id": "synthetic-fixture",
+      "degraded": false,
+      "floor_id": "1",
+      "coordinate_system": "local_meters",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            2.0,
+            0.0
+          ],
+          [
+            5.0,
+            0.0
+          ]
+        ]
+      }
+    },
+    {
+      "edge_id": "lift-a",
+      "kind": "elevator",
+      "asset_id": "demo-lift-a",
+      "distance_m": 4.0,
+      "from_floor": "1",
+      "to_floor": "2",
+      "source_id": "synthetic-fixture",
+      "degraded": false,
+      "from_position": [
+        5.0,
+        0.0
+      ],
+      "to_position": [
+        5.0,
+        0.0
+      ]
+    },
+    {
+      "edge_id": "hall-a2",
+      "kind": "corridor",
+      "asset_id": null,
+      "distance_m": 3.0,
+      "from_floor": "2",
+      "to_floor": "2",
+      "source_id": "synthetic-fixture",
+      "degraded": false,
+      "floor_id": "2",
+      "coordinate_system": "local_meters",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.0,
+            0.0
+          ],
+          [
+            2.0,
+            0.0
+          ]
+        ]
+      }
+    },
+    {
+      "edge_id": "hall-room",
+      "kind": "corridor",
+      "asset_id": "demo-hall",
+      "distance_m": 2.0,
+      "from_floor": "2",
+      "to_floor": "2",
+      "source_id": "synthetic-fixture",
+      "degraded": false,
+      "floor_id": "2",
+      "coordinate_system": "local_meters",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            2.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ]
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "edge_id": "lift-a",
+      "kind": "elevator",
+      "asset_id": "demo-lift-a",
+      "distance_m": 4.0,
+      "from_floor": "1",
+      "to_floor": "2",
+      "source_id": "synthetic-fixture",
+      "degraded": false,
+      "from_position": [
+        5.0,
+        0.0
+      ],
+      "to_position": [
+        5.0,
+        0.0
+      ]
+    }
+  ],
+  "directions": [
+    "Continue 2 m to HALL landing on Floor 1.",
+    "Continue 3 m to A landing on Floor 1.",
+    "Use demo-lift-a from Floor 1 to Floor 2.",
+    "Continue 3 m to HALL landing on Floor 2.",
+    "Continue 2 m to Demo room 201 on Floor 2."
+  ],
+  "total_distance": 14.0,
+  "routing_cost": 14.0,
+  "max_grade": 0.0,
+  "uses_stairs": false,
+  "uses_elevator": true,
+  "warnings": [
+    "Synthetic indoor demonstration; this is not a campus floor plan.",
+    "Indoor routing uses the published map review; current access can change.",
+    "This route relies on an elevator; absence of an outage is not operating confirmation."
+  ],
+  "reviewed_at": "2026-11-14T12:00:00+00:00"
+}

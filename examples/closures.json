@@ -1,0 +1,13 @@
+[
+  {
+    "lat": 42.391425,
+    "lng": -72.5276,
+    "radius": 8,
+    "type": "elevator",
+    "status": "closed",
+    "source": "community",
+    "start_time": "2020-01-01T00:00:00Z",
+    "end_time": null,
+    "last_confirmed": "2020-01-01T00:00:00Z"
+  }
+]

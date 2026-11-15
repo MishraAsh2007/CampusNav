@@ -1,0 +1,1053 @@
+{
+  "building_id": "library",
+  "observed_at": "2026-11-14T23:36:46.628613+00:00",
+  "routing_eligible": false,
+  "historical_service_applies_to_current_routes": false,
+  "index_url": "https://umass.stackmap.com/explore/",
+  "floors": [
+    {
+      "source_floor_id": "31",
+      "floor_label": "Lower Level",
+      "image_url": "https://umass.stackmap.com/media/maps/lower-e-populated.png",
+      "image_dimensions": {
+        "width": 800,
+        "height": 1500
+      },
+      "regions": [
+        {
+          "source_place_id": "place-39",
+          "bounds": {
+            "x": 310.0,
+            "y": 420.0,
+            "width": 32.0,
+            "height": 62.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-38",
+          "bounds": {
+            "x": 377.0,
+            "y": 419.0,
+            "width": 33.0,
+            "height": 94.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/31?c=55",
+      "sha256": "8978002282d92c2bc5fa8ceb8bcf2ef171013daa024abd695eb8e1b5c6c53b0d"
+    },
+    {
+      "source_floor_id": "16",
+      "floor_label": "1st Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/1st-e-populated.png",
+      "image_dimensions": {
+        "width": 1270,
+        "height": 1500
+      },
+      "regions": [
+        {
+          "source_place_id": "place-51",
+          "bounds": {
+            "x": 490.0,
+            "y": 592.0,
+            "width": 72.0,
+            "height": 173.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-52",
+          "bounds": {
+            "x": 714.0,
+            "y": 592.0,
+            "width": 68.0,
+            "height": 287.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/16?c=55",
+      "sha256": "2cf554234cc321ead6daaab59556af7db2df844c9ee6af84094d0931c2384713"
+    },
+    {
+      "source_floor_id": "17",
+      "floor_label": "2nd Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/2nd-e-populated.png",
+      "image_dimensions": {
+        "width": 1270,
+        "height": 1500
+      },
+      "regions": [
+        {
+          "source_place_id": "place-60",
+          "bounds": {
+            "x": 492.0,
+            "y": 593.0,
+            "width": 75.0,
+            "height": 178.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-61",
+          "bounds": {
+            "x": 710.0,
+            "y": 592.0,
+            "width": 74.0,
+            "height": 277.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/17?c=55",
+      "sha256": "bdc1eca98ae63ad2864a7461c62f296ba8fb3d7592d27a7499d0c554c644ac96"
+    },
+    {
+      "source_floor_id": "19",
+      "floor_label": "4th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/4th-e-populated.png",
+      "image_dimensions": {
+        "width": 1270,
+        "height": 1500
+      },
+      "regions": [
+        {
+          "source_place_id": "place-72",
+          "bounds": {
+            "x": 482.0,
+            "y": 589.0,
+            "width": 81.0,
+            "height": 182.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-71",
+          "bounds": {
+            "x": 705.0,
+            "y": 584.0,
+            "width": 84.0,
+            "height": 282.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/19?c=55",
+      "sha256": "8254a7407affe2b6d9ccf7233d287d0f6055df3aec36921fc5c79744ca9237a8"
+    },
+    {
+      "source_floor_id": "20",
+      "floor_label": "5th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/5th-e-populated.png",
+      "image_dimensions": {
+        "width": 1270,
+        "height": 1500
+      },
+      "regions": [
+        {
+          "source_place_id": "place-79",
+          "bounds": {
+            "x": 486.0,
+            "y": 588.0,
+            "width": 75.0,
+            "height": 177.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-80",
+          "bounds": {
+            "x": 707.0,
+            "y": 588.0,
+            "width": 77.0,
+            "height": 275.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/20?c=55",
+      "sha256": "2374d5f9322865932ddd47f0ee69c12b75ce53fa2a8a6ad22a7e51e662114a03"
+    },
+    {
+      "source_floor_id": "21",
+      "floor_label": "6th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/6th-e-populated.png",
+      "image_dimensions": {
+        "width": 1270,
+        "height": 1500
+      },
+      "regions": [
+        {
+          "source_place_id": "place-88",
+          "bounds": {
+            "x": 481.0,
+            "y": 586.0,
+            "width": 89.0,
+            "height": 183.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-85",
+          "bounds": {
+            "x": 707.0,
+            "y": 586.0,
+            "width": 81.0,
+            "height": 279.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/21?c=55",
+      "sha256": "c15270c51de63307560c06630e642f36e0b919bfd99bf026517116f2c959d5af"
+    },
+    {
+      "source_floor_id": "22",
+      "floor_label": "7th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/7th-e-populated.png",
+      "image_dimensions": {
+        "width": 1270,
+        "height": 1500
+      },
+      "regions": [
+        {
+          "source_place_id": "place-92",
+          "bounds": {
+            "x": 481.0,
+            "y": 586.0,
+            "width": 80.0,
+            "height": 187.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-93",
+          "bounds": {
+            "x": 705.0,
+            "y": 588.0,
+            "width": 86.0,
+            "height": 288.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/22?c=55",
+      "sha256": "05138dcbdcacc9a8519afbe98c0b710c14a9b4687e5e3da6091eaa2f3ff25424"
+    },
+    {
+      "source_floor_id": "5",
+      "floor_label": "8th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/8th-floor_0owfkpa-e-populated.png",
+      "image_dimensions": {
+        "width": 1500,
+        "height": 1420
+      },
+      "regions": [
+        {
+          "source_place_id": "place-161",
+          "bounds": {
+            "x": 588.0,
+            "y": 525.0,
+            "width": 87.0,
+            "height": 187.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-160",
+          "bounds": {
+            "x": 808.0,
+            "y": 525.0,
+            "width": 85.0,
+            "height": 282.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/5?c=55",
+      "sha256": "ecf958f0d5525e8967ec6fbd6e75bef8859e8ccff3adc38765e003d5e76cecec"
+    },
+    {
+      "source_floor_id": "6",
+      "floor_label": "9th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/9th-floor-e-populated.png",
+      "image_dimensions": {
+        "width": 1500,
+        "height": 1420
+      },
+      "regions": [
+        {
+          "source_place_id": "place-165",
+          "bounds": {
+            "x": 589.0,
+            "y": 527.0,
+            "width": 86.0,
+            "height": 186.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-164",
+          "bounds": {
+            "x": 808.0,
+            "y": 525.0,
+            "width": 85.0,
+            "height": 287.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/6?c=55",
+      "sha256": "2134d198ebd5874582071bc73ab30341c57d7b08b77efa804030a43d4e65bb34"
+    },
+    {
+      "source_floor_id": "23",
+      "floor_label": "10th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/10th-e-populated.png",
+      "image_dimensions": {
+        "width": 1270,
+        "height": 1500
+      },
+      "regions": [
+        {
+          "source_place_id": "place-104",
+          "bounds": {
+            "x": 487.0,
+            "y": 592.0,
+            "width": 78.0,
+            "height": 177.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-105",
+          "bounds": {
+            "x": 708.0,
+            "y": 588.0,
+            "width": 76.0,
+            "height": 275.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/23?c=55",
+      "sha256": "7d967b579c78bca844ecb91e1653bd11086a97227e8d77fd8150463d5fb8bb82"
+    },
+    {
+      "source_floor_id": "7",
+      "floor_label": "11th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/11th-floor-e-populated.png",
+      "image_dimensions": {
+        "width": 1500,
+        "height": 1420
+      },
+      "regions": [
+        {
+          "source_place_id": "place-169",
+          "bounds": {
+            "x": 587.0,
+            "y": 527.0,
+            "width": 88.0,
+            "height": 185.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-168",
+          "bounds": {
+            "x": 811.0,
+            "y": 525.0,
+            "width": 82.0,
+            "height": 290.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/7?c=55",
+      "sha256": "7b42d72dc380210edb6d6313988242862af87b60fa07fa81e4ea97a77ae18071"
+    },
+    {
+      "source_floor_id": "24",
+      "floor_label": "12th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/12th-e-populated.png",
+      "image_dimensions": {
+        "width": 1270,
+        "height": 1500
+      },
+      "regions": [
+        {
+          "source_place_id": "place-106",
+          "bounds": {
+            "x": 484.0,
+            "y": 588.0,
+            "width": 81.0,
+            "height": 184.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-110",
+          "bounds": {
+            "x": 708.0,
+            "y": 585.0,
+            "width": 83.0,
+            "height": 284.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/24?c=55",
+      "sha256": "f7f3f988a0cc784cb59197fb39c3c0a838691420a35fe8e6524365b43de699cf"
+    },
+    {
+      "source_floor_id": "25",
+      "floor_label": "13th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/13th-e-populated.png",
+      "image_dimensions": {
+        "width": 1270,
+        "height": 1500
+      },
+      "regions": [
+        {
+          "source_place_id": "place-116",
+          "bounds": {
+            "x": 487.0,
+            "y": 590.0,
+            "width": 77.0,
+            "height": 180.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-117",
+          "bounds": {
+            "x": 711.0,
+            "y": 585.0,
+            "width": 73.0,
+            "height": 278.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/25?c=55",
+      "sha256": "261ee7b4fabb0247f60bb2b2137ff65c951568068c68ee9a954824c127e6a43a"
+    },
+    {
+      "source_floor_id": "8",
+      "floor_label": "14th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/14th-floor-e-populated.png",
+      "image_dimensions": {
+        "width": 1500,
+        "height": 1420
+      },
+      "regions": [
+        {
+          "source_place_id": "place-170",
+          "bounds": {
+            "x": 588.0,
+            "y": 527.0,
+            "width": 84.0,
+            "height": 185.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-173",
+          "bounds": {
+            "x": 808.0,
+            "y": 522.0,
+            "width": 82.0,
+            "height": 282.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/8?c=55",
+      "sha256": "7cceae88d6886bd29a5abc778d98ba47f12501553606c9a0b79b5d5e62238f70"
+    },
+    {
+      "source_floor_id": "9",
+      "floor_label": "15th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/15th-floor_qrtz0bo-e-populated.png",
+      "image_dimensions": {
+        "width": 1500,
+        "height": 1420
+      },
+      "regions": [
+        {
+          "source_place_id": "place-177",
+          "bounds": {
+            "x": 588.0,
+            "y": 527.0,
+            "width": 85.0,
+            "height": 185.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-176",
+          "bounds": {
+            "x": 808.0,
+            "y": 528.0,
+            "width": 85.0,
+            "height": 279.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/9?c=55",
+      "sha256": "58b713fdc5af5f54f6fe061a6dbb935d978e4137e2eb3acb2343cd5dbe0de044"
+    },
+    {
+      "source_floor_id": "26",
+      "floor_label": "16th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/16th-floor-e-populated.png",
+      "image_dimensions": {
+        "width": 1270,
+        "height": 1500
+      },
+      "regions": [
+        {
+          "source_place_id": "place-129",
+          "bounds": {
+            "x": 487.0,
+            "y": 588.0,
+            "width": 75.0,
+            "height": 179.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-128",
+          "bounds": {
+            "x": 711.0,
+            "y": 588.0,
+            "width": 70.0,
+            "height": 275.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/26?c=55",
+      "sha256": "03803c3c76a261de6949a404f47a94f3c24fa17aa67af549ab51ba311d7f9ce2"
+    },
+    {
+      "source_floor_id": "10",
+      "floor_label": "17th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/17th-floor_dyermkv-e-populated.png",
+      "image_dimensions": {
+        "width": 1500,
+        "height": 1420
+      },
+      "regions": [
+        {
+          "source_place_id": "place-181",
+          "bounds": {
+            "x": 587.0,
+            "y": 529.0,
+            "width": 87.0,
+            "height": 185.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-180",
+          "bounds": {
+            "x": 808.0,
+            "y": 525.0,
+            "width": 85.0,
+            "height": 284.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/10?c=55",
+      "sha256": "9ed4eaaa83852a9d1439735338fa8fe575fb8d2feaec4fdb7e4a87682039e315"
+    },
+    {
+      "source_floor_id": "11",
+      "floor_label": "18th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/18th-floor_6atsjml-e-populated.png",
+      "image_dimensions": {
+        "width": 1500,
+        "height": 1420
+      },
+      "regions": [
+        {
+          "source_place_id": "place-185",
+          "bounds": {
+            "x": 588.0,
+            "y": 530.0,
+            "width": 85.0,
+            "height": 184.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-184",
+          "bounds": {
+            "x": 808.0,
+            "y": 528.0,
+            "width": 85.0,
+            "height": 287.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/11?c=55",
+      "sha256": "bb60b3e1581e48927f310e48c31d8a354aef1425eaa8d283469045326f946388"
+    },
+    {
+      "source_floor_id": "27",
+      "floor_label": "19th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/19th-e-populated.png",
+      "image_dimensions": {
+        "width": 1270,
+        "height": 1500
+      },
+      "regions": [
+        {
+          "source_place_id": "place-132",
+          "bounds": {
+            "x": 486.0,
+            "y": 589.0,
+            "width": 78.0,
+            "height": 179.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-131",
+          "bounds": {
+            "x": 711.0,
+            "y": 583.0,
+            "width": 81.0,
+            "height": 286.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/27?c=55",
+      "sha256": "a7620bcecc234544f017ac239abbe4226907c949744bf9528109029e58a4a42c"
+    },
+    {
+      "source_floor_id": "12",
+      "floor_label": "20th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/20th-floor_9ljft9n-e-populated.png",
+      "image_dimensions": {
+        "width": 1500,
+        "height": 1420
+      },
+      "regions": [
+        {
+          "source_place_id": "place-189",
+          "bounds": {
+            "x": 586.0,
+            "y": 528.0,
+            "width": 88.0,
+            "height": 187.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-188",
+          "bounds": {
+            "x": 810.0,
+            "y": 527.0,
+            "width": 81.0,
+            "height": 289.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/12?c=55",
+      "sha256": "d3bce3e7f932b995c3be1b30cfa4fad6d74048d5afc4698234e249d26fc4ef97"
+    },
+    {
+      "source_floor_id": "13",
+      "floor_label": "21st Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/21st-floor_2aqpvdl-e-populated.png",
+      "image_dimensions": {
+        "width": 1500,
+        "height": 1420
+      },
+      "regions": [
+        {
+          "source_place_id": "place-193",
+          "bounds": {
+            "x": 589.0,
+            "y": 527.0,
+            "width": 84.0,
+            "height": 185.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-192",
+          "bounds": {
+            "x": 808.0,
+            "y": 525.0,
+            "width": 82.0,
+            "height": 282.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/13?c=55",
+      "sha256": "3d48e092a94590068c320110dd87ea55debbc892952ad6198f40deac6ecc3054"
+    },
+    {
+      "source_floor_id": "14",
+      "floor_label": "22nd Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/22nd-floor-e-populated.png",
+      "image_dimensions": {
+        "width": 1270,
+        "height": 1500
+      },
+      "regions": [
+        {
+          "source_place_id": "place-139",
+          "bounds": {
+            "x": 483.0,
+            "y": 590.0,
+            "width": 84.0,
+            "height": 179.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-138",
+          "bounds": {
+            "x": 705.0,
+            "y": 588.0,
+            "width": 80.0,
+            "height": 278.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/14?c=55",
+      "sha256": "af68e15ad3c9f03107f2360b1b436198e9133b34ab97b2fde965e1ea1124a125"
+    },
+    {
+      "source_floor_id": "15",
+      "floor_label": "23rd Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/23rd-floor_cy09806-e-populated.png",
+      "image_dimensions": {
+        "width": 1500,
+        "height": 1420
+      },
+      "regions": [
+        {
+          "source_place_id": "place-197",
+          "bounds": {
+            "x": 588.0,
+            "y": 524.0,
+            "width": 88.0,
+            "height": 186.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-196",
+          "bounds": {
+            "x": 808.0,
+            "y": 522.0,
+            "width": 82.0,
+            "height": 284.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/15?c=55",
+      "sha256": "e2dfacb963666bcdf2aa688362954b3a807c7514f52378d26f05ad524dc984c5"
+    },
+    {
+      "source_floor_id": "28",
+      "floor_label": "24th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/24th-floor-e-populated.png",
+      "image_dimensions": {
+        "width": 1270,
+        "height": 1500
+      },
+      "regions": [
+        {
+          "source_place_id": "place-145",
+          "bounds": {
+            "x": 491.0,
+            "y": 593.0,
+            "width": 71.0,
+            "height": 174.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-144",
+          "bounds": {
+            "x": 712.0,
+            "y": 591.0,
+            "width": 73.0,
+            "height": 277.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/28?c=55",
+      "sha256": "d8a7a70524ba71652002d0f8cb5db5e366509f5db16610407353d24f2e45e070"
+    },
+    {
+      "source_floor_id": "29",
+      "floor_label": "25th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/25th-e-populated.png",
+      "image_dimensions": {
+        "width": 1270,
+        "height": 1500
+      },
+      "regions": [
+        {
+          "source_place_id": "place-148",
+          "bounds": {
+            "x": 492.0,
+            "y": 592.0,
+            "width": 72.0,
+            "height": 176.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-147",
+          "bounds": {
+            "x": 715.0,
+            "y": 591.0,
+            "width": 73.0,
+            "height": 278.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/29?c=55",
+      "sha256": "8afb21ff3b30526286f45dea0c7c32ceb1eac5d535e3210e4c3e05e64ef5d870"
+    },
+    {
+      "source_floor_id": "30",
+      "floor_label": "26th Floor",
+      "image_url": "https://umass.stackmap.com/media/maps/26th-e-populated.png",
+      "image_dimensions": {
+        "width": 1270,
+        "height": 1500
+      },
+      "regions": [
+        {
+          "source_place_id": "place-154",
+          "bounds": {
+            "x": 486.0,
+            "y": 589.0,
+            "width": 79.0,
+            "height": 182.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        },
+        {
+          "source_place_id": "place-153",
+          "bounds": {
+            "x": 711.0,
+            "y": 591.0,
+            "width": 70.0,
+            "height": 281.0
+          },
+          "coordinate_system": "image_pixels",
+          "physical_car_id": null,
+          "routing_eligible": false
+        }
+      ],
+      "source_url": "https://umass.stackmap.com/explore/30?c=55",
+      "sha256": "d7f197ec08976c61c0a591e88f3d4eb5e5ca1ea2d7900c449020324c0b7b15e1"
+    }
+  ],
+  "missing_directory_floor_labels": [
+    "3rd Floor"
+  ],
+  "historical_cars": [
+    {
+      "source_car_label": "#1",
+      "source_edition": "2007-07-09",
+      "source_url": "https://people.umass.edu/ref/clipboardmessages/directory.pdf",
+      "source_page": 2,
+      "service_description": "Main and entrance/exit levels, then express service to floors 16 through 26.",
+      "current_service_confirmed": false,
+      "source_floor_labels_preserved": [
+        "Main",
+        "Entrance/Exit"
+      ],
+      "plan_region_id": null,
+      "routing_eligible": false
+    },
+    {
+      "source_car_label": "#2",
+      "source_edition": "2007-07-09",
+      "source_url": "https://people.umass.edu/ref/clipboardmessages/directory.pdf",
+      "source_page": 2,
+      "service_description": "Main and entrance/exit levels, then express service to floors 16 through 26.",
+      "current_service_confirmed": false,
+      "source_floor_labels_preserved": [
+        "Main",
+        "Entrance/Exit"
+      ],
+      "plan_region_id": null,
+      "routing_eligible": false
+    },
+    {
+      "source_car_label": "#3",
+      "source_edition": "2007-07-09",
+      "source_url": "https://people.umass.edu/ref/clipboardmessages/directory.pdf",
+      "source_page": 2,
+      "service_description": "Main and entrance/exit levels through floor 16.",
+      "current_service_confirmed": false,
+      "source_floor_labels_preserved": [
+        "Main",
+        "Entrance/Exit"
+      ],
+      "plan_region_id": null,
+      "routing_eligible": false
+    },
+    {
+      "source_car_label": "#4",
+      "source_edition": "2007-07-09",
+      "source_url": "https://people.umass.edu/ref/clipboardmessages/directory.pdf",
+      "source_page": 2,
+      "service_description": "Main and entrance/exit levels through floor 16.",
+      "current_service_confirmed": false,
+      "source_floor_labels_preserved": [
+        "Main",
+        "Entrance/Exit"
+      ],
+      "plan_region_id": null,
+      "routing_eligible": false
+    },
+    {
+      "source_car_label": "#5",
+      "source_edition": "2007-07-09",
+      "source_url": "https://people.umass.edu/ref/clipboardmessages/directory.pdf",
+      "source_page": 2,
+      "service_description": "Main and entrance/exit levels through floor 16.",
+      "current_service_confirmed": false,
+      "source_floor_labels_preserved": [
+        "Main",
+        "Entrance/Exit"
+      ],
+      "plan_region_id": null,
+      "routing_eligible": false
+    }
+  ],
+  "directory_sha256": "d6f6812d057453b070fc3f547b31c7453616d6b09b2fd4991cdcf1492f720643",
+  "warnings": [
+    "Map regions can cover several cars; region counts are not car counts.",
+    "Image coordinates are not geographic positions or surveyed doorways.",
+    "Historical car numbers are not matched to map regions or current outages.",
+    "2007 service patterns must not be promoted to current floor-stop connections."
+  ]
+}

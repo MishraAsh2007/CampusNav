@@ -1,0 +1,2509 @@
+{
+  "origin": "campus-center",
+  "synthetic": false,
+  "closures": "explicit_empty_test",
+  "graph_nodes": 10822,
+  "graph_edges": 24306,
+  "scope": "Outdoor network approaches only; gaps to doors are not traced. No indoor permission, operating status or physical verification implied.",
+  "buildings": [
+    {
+      "building_id": "patterson",
+      "name": "Patterson House",
+      "sourced_entrances": 1,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 1455.01,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-45",
+          "approach_gap_m": 3.47
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 1455.01,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-45",
+          "approach_gap_m": 3.47
+        }
+      ]
+    },
+    {
+      "building_id": "grayson",
+      "name": "Grayson House",
+      "sourced_entrances": 1,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 2910.52,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-135",
+          "approach_gap_m": 0.44
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 2910.52,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-135",
+          "approach_gap_m": 0.44
+        }
+      ]
+    },
+    {
+      "building_id": "birch",
+      "name": "Birch House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        }
+      ]
+    },
+    {
+      "building_id": "elm",
+      "name": "Elm House",
+      "sourced_entrances": 5,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 657.51,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "osm-entrance-13194425357",
+          "approach_gap_m": 1.94
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 657.51,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "osm-entrance-13194425357",
+          "approach_gap_m": 1.94
+        }
+      ]
+    },
+    {
+      "building_id": "linden",
+      "name": "Linden House",
+      "sourced_entrances": 2,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 889.32,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "osm-entrance-13194492317",
+          "approach_gap_m": 4.16
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 889.32,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "osm-entrance-13194492317",
+          "approach_gap_m": 4.16
+        }
+      ]
+    },
+    {
+      "building_id": "maple",
+      "name": "Maple House",
+      "sourced_entrances": 1,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        }
+      ]
+    },
+    {
+      "building_id": "oak",
+      "name": "Oak House",
+      "sourced_entrances": 2,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 840.09,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "osm-entrance-13194416869",
+          "approach_gap_m": 5.15
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 840.09,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "osm-entrance-13194416869",
+          "approach_gap_m": 5.15
+        }
+      ]
+    },
+    {
+      "building_id": "sycamore",
+      "name": "Sycamore House",
+      "sourced_entrances": 2,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 641.92,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "osm-entrance-13194430162",
+          "approach_gap_m": 7.84
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 641.92,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "osm-entrance-13194430162",
+          "approach_gap_m": 7.84
+        }
+      ]
+    },
+    {
+      "building_id": "baker",
+      "name": "Baker House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        }
+      ]
+    },
+    {
+      "building_id": "brett",
+      "name": "Brett House",
+      "sourced_entrances": 1,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 998.88,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-44",
+          "approach_gap_m": 8.04
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 998.88,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-44",
+          "approach_gap_m": 8.04
+        }
+      ]
+    },
+    {
+      "building_id": "brooks",
+      "name": "Brooks House",
+      "sourced_entrances": 1,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 1001.53,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-43",
+          "approach_gap_m": 1.24
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 1001.53,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-43",
+          "approach_gap_m": 1.24
+        }
+      ]
+    },
+    {
+      "building_id": "butterfield",
+      "name": "Butterfield House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 2424.45,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-butterfield",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 2424.45,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-butterfield",
+          "approach_gap_m": 0.0
+        }
+      ]
+    },
+    {
+      "building_id": "chadbourne",
+      "name": "Chadbourne House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 3355.31,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-chadbourne",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 3355.31,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-chadbourne",
+          "approach_gap_m": 0.0
+        }
+      ]
+    },
+    {
+      "building_id": "gorman",
+      "name": "Gorman House",
+      "sourced_entrances": 1,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 938.75,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "osm-entrance-5261619800",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 938.75,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "osm-entrance-5261619800",
+          "approach_gap_m": 0.0
+        }
+      ]
+    },
+    {
+      "building_id": "greenough",
+      "name": "Greenough House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 3262.72,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-greenough",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 3262.72,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-greenough",
+          "approach_gap_m": 0.0
+        }
+      ]
+    },
+    {
+      "building_id": "van-meter",
+      "name": "Van Meter House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        }
+      ]
+    },
+    {
+      "building_id": "wheeler",
+      "name": "Wheeler House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        }
+      ]
+    },
+    {
+      "building_id": "north-a",
+      "name": "North A",
+      "sourced_entrances": 2,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 1375.15,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-51",
+          "approach_gap_m": 0.2
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 1375.15,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-51",
+          "approach_gap_m": 0.2
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 784.51,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-51",
+          "approach_gap_m": 0.2
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 784.51,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-51",
+          "approach_gap_m": 0.2
+        }
+      ]
+    },
+    {
+      "building_id": "north-b",
+      "name": "North B",
+      "sourced_entrances": 2,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 1262.06,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-52",
+          "approach_gap_m": 0.17
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 1262.06,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-52",
+          "approach_gap_m": 0.17
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 678.25,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-52",
+          "approach_gap_m": 0.17
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 678.25,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-52",
+          "approach_gap_m": 0.17
+        }
+      ]
+    },
+    {
+      "building_id": "north-c",
+      "name": "North C",
+      "sourced_entrances": 2,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 1209.79,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-49",
+          "approach_gap_m": 3.03
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 1209.79,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-49",
+          "approach_gap_m": 3.03
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 776.17,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-46",
+          "approach_gap_m": 0.48
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 776.17,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-46",
+          "approach_gap_m": 0.48
+        }
+      ]
+    },
+    {
+      "building_id": "north-d",
+      "name": "North D",
+      "sourced_entrances": 2,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 1106.33,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-50",
+          "approach_gap_m": 1.86
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 1106.33,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-50",
+          "approach_gap_m": 1.86
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 655.8,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-53",
+          "approach_gap_m": 14.6
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 655.8,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-53",
+          "approach_gap_m": 14.6
+        }
+      ]
+    },
+    {
+      "building_id": "crabtree",
+      "name": "Crabtree House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 1113.02,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-crabtree",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 1113.02,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-crabtree",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 434.65,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-crabtree",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 434.65,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-crabtree",
+          "approach_gap_m": 0.0
+        }
+      ]
+    },
+    {
+      "building_id": "dwight",
+      "name": "Dwight House",
+      "sourced_entrances": 1,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 966.7,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "osm-entrance-2264382776",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 966.7,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "osm-entrance-2264382776",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 492.74,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "osm-entrance-2264382776",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 492.74,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "osm-entrance-2264382776",
+          "approach_gap_m": 0.0
+        }
+      ]
+    },
+    {
+      "building_id": "hamlin",
+      "name": "Hamlin House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 512.5,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-hamlin",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 512.5,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-hamlin",
+          "approach_gap_m": 0.0
+        }
+      ]
+    },
+    {
+      "building_id": "johnson",
+      "name": "Johnson House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 538.17,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-johnson",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 538.17,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-johnson",
+          "approach_gap_m": 0.0
+        }
+      ]
+    },
+    {
+      "building_id": "knowlton",
+      "name": "Knowlton House",
+      "sourced_entrances": 1,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        }
+      ]
+    },
+    {
+      "building_id": "leach",
+      "name": "Leach House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 953.72,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-leach",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 953.72,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-leach",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 520.09,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-leach",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 520.09,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-leach",
+          "approach_gap_m": 0.0
+        }
+      ]
+    },
+    {
+      "building_id": "lewis",
+      "name": "Lewis House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 781.71,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-lewis",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 781.71,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-lewis",
+          "approach_gap_m": 0.0
+        }
+      ]
+    },
+    {
+      "building_id": "mary-lyon",
+      "name": "Mary Lyon House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        }
+      ]
+    },
+    {
+      "building_id": "thatcher",
+      "name": "Thatcher House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 744.05,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-thatcher",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 744.05,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-thatcher",
+          "approach_gap_m": 0.0
+        }
+      ]
+    },
+    {
+      "building_id": "dickinson",
+      "name": "Dickinson House",
+      "sourced_entrances": 1,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 3000.7,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-37",
+          "approach_gap_m": 0.37
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 3000.7,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-37",
+          "approach_gap_m": 0.37
+        }
+      ]
+    },
+    {
+      "building_id": "field",
+      "name": "Field House",
+      "sourced_entrances": 1,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        }
+      ]
+    },
+    {
+      "building_id": "webster",
+      "name": "Webster House",
+      "sourced_entrances": 1,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        }
+      ]
+    },
+    {
+      "building_id": "cance",
+      "name": "Cance House",
+      "sourced_entrances": 1,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 2274.8,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-54",
+          "approach_gap_m": 49.34
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 2274.8,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-54",
+          "approach_gap_m": 49.34
+        }
+      ]
+    },
+    {
+      "building_id": "coolidge",
+      "name": "Coolidge House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        }
+      ]
+    },
+    {
+      "building_id": "crampton",
+      "name": "Crampton House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 1227.15,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-crampton",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 1227.15,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-crampton",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 1063.45,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-crampton",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 1063.45,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-crampton",
+          "approach_gap_m": 0.0
+        }
+      ]
+    },
+    {
+      "building_id": "emerson",
+      "name": "Emerson House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 2234.58,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-emerson",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 2234.58,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-emerson",
+          "approach_gap_m": 0.0
+        }
+      ]
+    },
+    {
+      "building_id": "james",
+      "name": "James House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 2318.23,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-james",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 2318.23,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-james",
+          "approach_gap_m": 0.0
+        }
+      ]
+    },
+    {
+      "building_id": "john-adams",
+      "name": "Adams, John House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 1260.9,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-john-adams",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 1260.9,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-john-adams",
+          "approach_gap_m": 0.0
+        }
+      ]
+    },
+    {
+      "building_id": "john-quincy-adams",
+      "name": "Adams, John Q. House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        }
+      ]
+    },
+    {
+      "building_id": "kennedy",
+      "name": "Kennedy House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 1011.81,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-kennedy",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 1011.81,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-kennedy",
+          "approach_gap_m": 0.0
+        }
+      ]
+    },
+    {
+      "building_id": "mackimmie",
+      "name": "Mackimmie House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        }
+      ]
+    },
+    {
+      "building_id": "melville",
+      "name": "Melville House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 1071.07,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-melville",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 1071.07,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-melville",
+          "approach_gap_m": 0.0
+        }
+      ]
+    },
+    {
+      "building_id": "moore",
+      "name": "Moore House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        }
+      ]
+    },
+    {
+      "building_id": "pierpont",
+      "name": "Pierpont House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        }
+      ]
+    },
+    {
+      "building_id": "prince",
+      "name": "Prince House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 1053.6,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-prince",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 1053.6,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-prince",
+          "approach_gap_m": 0.0
+        }
+      ]
+    },
+    {
+      "building_id": "thoreau",
+      "name": "Thoreau House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 1129.5,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-thoreau",
+          "approach_gap_m": 0.0
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 1129.5,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "network-approach-thoreau",
+          "approach_gap_m": 0.0
+        }
+      ]
+    },
+    {
+      "building_id": "washington",
+      "name": "Washington House",
+      "sourced_entrances": 0,
+      "network_meeting_points": 1,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        }
+      ]
+    },
+    {
+      "building_id": "brown-house",
+      "name": "Brown House",
+      "sourced_entrances": 1,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 800.93,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-3",
+          "approach_gap_m": 8.03
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 800.93,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-3",
+          "approach_gap_m": 8.03
+        }
+      ]
+    },
+    {
+      "building_id": "cashin",
+      "name": "Cashin House",
+      "sourced_entrances": 1,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 3597.3,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-106",
+          "approach_gap_m": 0.35
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 3597.3,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-106",
+          "approach_gap_m": 0.35
+        }
+      ]
+    },
+    {
+      "building_id": "mcnamara",
+      "name": "McNamara House",
+      "sourced_entrances": 1,
+      "network_meeting_points": 0,
+      "indoor_status": "not_enabled",
+      "checks": [
+        {
+          "max_grade": 5,
+          "direction": "outbound",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 5,
+          "direction": "return",
+          "status": "no_route",
+          "distance": null,
+          "failure": "No mapped route satisfies the selected entrances, slope limit, stairs preference, and active closures.",
+          "standard_route_available": true,
+          "entrance_id": null,
+          "approach_gap_m": null
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "outbound",
+          "status": "route_ready",
+          "distance": 883.08,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-38",
+          "approach_gap_m": 0.01
+        },
+        {
+          "max_grade": 8.33,
+          "direction": "return",
+          "status": "route_ready",
+          "distance": 883.08,
+          "failure": null,
+          "standard_route_available": true,
+          "entrance_id": "umass-entrance-38",
+          "approach_gap_m": 0.01
+        }
+      ]
+    }
+  ]
+}
