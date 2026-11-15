@@ -2,17 +2,44 @@
   "_readme": "Indoor ground truth: corrections applied on top of the indoor maps from routing-scraper (data/indoor/*.json, contracts/indoor-map.schema.json) when they are loaded, so updates to those maps don't erase on-site findings. Remove an entry once the source map has it. Keys are the indoor map's building_id; `aliases` lists the same building's ids elsewhere (frontend, backend, GIS).",
   "buildings": {
     "library": {
-      "aliases": ["dubois-library", "DuBois Library", "W.E.B. Du Bois Library"],
+      "aliases": [
+        "dubois-library",
+        "DuBois Library",
+        "W.E.B. Du Bois Library"
+      ],
       "elevators": {
         "replace_assets": true,
         "cars": [
-          { "id": "library-elevator-1", "number": 1, "label": "Elevator 1" },
-          { "id": "library-elevator-2", "number": 2, "label": "Elevator 2" },
-          { "id": "library-elevator-3", "number": 3, "label": "Elevator 3" },
-          { "id": "library-elevator-4", "number": 4, "label": "Elevator 4" },
-          { "id": "library-elevator-5", "number": 5, "label": "Elevator 5" }
+          {
+            "id": "library-elevator-1",
+            "number": 1,
+            "label": "Elevator 1"
+          },
+          {
+            "id": "library-elevator-2",
+            "number": 2,
+            "label": "Elevator 2"
+          },
+          {
+            "id": "library-elevator-3",
+            "number": 3,
+            "label": "Elevator 3"
+          },
+          {
+            "id": "library-elevator-4",
+            "number": 4,
+            "label": "Elevator 4"
+          },
+          {
+            "id": "library-elevator-5",
+            "number": 5,
+            "label": "Elevator 5"
+          }
         ],
-        "position": { "lat": 42.389838, "lng": -72.52823 },
+        "position": {
+          "lat": 42.389838,
+          "lng": -72.52823
+        },
         "serves": "all_floors",
         "verified": true,
         "source": "On-site check by the team, 2026-11-14: five cars in the same lobby, numbered 1-5, all serving every floor. Consistent with UMass SIN #813 ('State elevator inspection (#5)'). The ArcGIS layer and the routing-scraper map show a single marker for the lobby."
@@ -22,7 +49,9 @@
       }
     },
     "student-union": {
-      "aliases": ["Student Union"],
+      "aliases": [
+        "Student Union"
+      ],
       "elevators": {
         "car_count": 1,
         "verified": false,
@@ -30,7 +59,9 @@
       }
     },
     "ilc": {
-      "aliases": ["Integrative Learning Center"],
+      "aliases": [
+        "Integrative Learning Center"
+      ],
       "entrance_floors": {
         "ilc-se": {
           "floor": "2",
@@ -38,7 +69,8 @@
           "lat": 42.390887,
           "lng": -72.525402,
           "nearest_elevator": "ilc-elevator-east",
-          "source": "On-site check by the team, 2026-11-14: the door on North Pleasant St (you face west on entering, photo taken) opens straight onto floor 2, with an elevator immediately to the right. The ArcGIS east elevator is 2 m from this door."
+          "source": "On-site check by the team, 2026-11-14: the door on North Pleasant St (you face west on entering, photo taken) opens straight onto floor 2, with an elevator immediately to the right. The ArcGIS east elevator is 2 m from this door.",
+          "replaces_portal": "ilc-portal-west"
         },
         "ilc-sw": {
           "floor": "2",
@@ -46,7 +78,8 @@
           "lat": 42.390829,
           "lng": -72.526256,
           "step_free_approach": true,
-          "source": "On-site check by the team, 2026-11-14 (photo): glass door onto the paved plaza between the ILC and Du Bois (the Du Bois tower is reflected behind the photographer). No stairs; opens onto floor 2."
+          "source": "On-site check by the team, 2026-11-14 (photo): glass door onto the paved plaza between the ILC and Du Bois (the Du Bois tower is reflected behind the photographer). No stairs; opens onto floor 2.",
+          "replaces_portal": "ilc-portal-south"
         },
         "ilc-nw": {
           "floor": "2",
@@ -57,9 +90,27 @@
           "approach": "footbridge from the Campus Center / Hotel UMass side",
           "source": "On-site check by the team, 2026-11-14 (photo): you face southeast on entering; reached by a footbridge from the Campus Center / Hotel UMass, spanning ground ~7 m below. The door is level with floor 2, but a wheelchair user can only reach the bridge through Hotel UMass, so it is not a practical step-free entrance from outdoors."
         },
-        "_unverified": "ilc-ne (push-button, same ground height as ilc-se) was not among the doors checked; its floor is unknown. The routing-scraper map's floor-1 entrances (south, west) are also unchecked.",
-        "_note": "The routing-scraper map puts its two ILC entrances (south, west) on floor 1; this list overrides by location."
-      }
+        "_note": "Doors are matched by location. routing-scraper's ILC map has two portals on floor 1, ilc-portal-south (4.6 m from ilc-sw) and ilc-portal-west (7.6 m from ilc-se), taken from ArcGIS entrance points that carry no floor. The on-site check found those two doors open onto floor 2, so ilc-sw and ilc-se replace them. The ILC's real floor-1 doors are the two vestibules on the north wing's glass wall (ilc-north-floor1, ilc-west-floor1); ground there is ~65 m, vs 69.5-71.5 m at the floor-2 doors (USGS 3DEP). Neither floor-1 door is in the scraper map or the frontend's building data.",
+        "_unchecked": "ilc-ne (push-button, possibly a wheelchair exit) is left out until someone checks it.",
+        "ilc-north-floor1": {
+          "floor": "1",
+          "verified": true,
+          "lat": 42.391388,
+          "lng": -72.526301,
+          "step_free_approach": true,
+          "approach": "level paved walkway at ground level; the footbridge to the Campus Center rises on the left as you exit",
+          "source": "On-site photo by the team, 2026-11-14 (looking out from this door: Campus Center ahead, bridge on the left, flat walkway to the right), matched to the floor-1 plan's door vestibule at the north end of the north wing. Position is read off the plan (about +/-3 m). Door threshold not checked."
+        },
+        "ilc-west-floor1": {
+          "floor": "1",
+          "verified": "partial",
+          "lat": 42.391059,
+          "lng": -72.526322,
+          "step_free_approach": null,
+          "source": "Team member reports a second floor-1 door on the west side of the north wing. The floor-1 plan shows a vestibule there (N199C) whose doors face west; the team member remembers it facing north. Floor and position come from the plan; facing direction and step-free approach are unconfirmed (the plan also shows an exterior stair just south of it)."
+        }
+      },
+      "elevator_count_note": "UMass GIS lists 2 ILC elevators, the frontend lists 3, and the floor plans show box-with-X shafts at the north wing's north end, the south wing's central core (a pair) and the east end. Real count unconfirmed."
     }
   }
 }
