@@ -209,6 +209,11 @@ def resolve_destination(model: Model, room: Optional[str], floor: Optional[str],
         exact = [n for n in cands if nq in {_norm(n["label"])} | {_norm(x) for x in n.get("aliases", [])}]
         if exact:
             return exact[0], ""
+        fid = _floor_by_query(floors, room)
+        if fid is not None:  # "2nd floor", "5": the whole floor, not a room that happens to mention it
+            floor = fid
+            room = None
+    if room:
         want = _tokens(room) - {"room", "the"}
         hits = [n for n in cands if want and want <= _tokens(n["label"] + " " + " ".join(n.get("aliases", [])))]
         if floor:
@@ -225,15 +230,13 @@ def resolve_destination(model: Model, room: Optional[str], floor: Optional[str],
         fid = _floor_by_query(floors, floor)
         if fid is None:
             return None, f"{model.map.get('name')} has no floor {floor!r}."
-        on = [n for n in cands if n["floor_id"] == fid]
-        if on:
-            return on[0], ""
-        # No room mapped there: aim for the floor's main corridor, not a particular car's stop
-        # (that car may be the one that's out).
-        spots = [n for n in nodes.values() if n["floor_id"] == fid and n["kind"] == "junction"] or \
-                [n for n in nodes.values() if n["floor_id"] == fid and n["kind"] == "elevator_stop"]
-        if spots:
-            return spots[0], ""
+        # A whole floor means its lobby/main corridor, not a particular room or car stop (that car may be
+        # the one that's out). Floors with no corridor node fall back to a room, then to an elevator stop.
+        for kind in ("junction", "room", "elevator_stop"):
+            spots = [n for n in nodes.values() if n["floor_id"] == fid and n["kind"] == kind
+                     and n["id"] not in {d.node for d in model.doors}]
+            if spots:
+                return spots[0], ""
         return None, f"No mapped destination on floor {floors[fid].get('label', fid)}."
     return None, "Give a room, a floor or a node_id."
 
