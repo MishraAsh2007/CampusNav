@@ -1,151 +1,214 @@
-# CampusNav
+# CampusNav: routing, maps and live disruption sources
 
-**Step-free routes across UMass Amherst that change when an elevator, door opener or ramp breaks.**
+Expanded indoor pilots: [Oak, Campus Center and Student Union](docs/EXPANDED_INDOOR_PILOTS.md).
+Run `start-indoor-pilots.cmd` for their source-based wayfinding API on port 8004.
 
-Google Maps knows where a ramp is. It does not know the Campus Center elevator stopped working at 9 a.m. CampusNav routes on the real campus path network, with the needs you set (wheelchair, crutches, stroller, low vision), and reroutes everyone the moment a student reports an outage.
+For the new Honors College shared-hall pilot, run `start-oak-pilot.cmd` and read
+[Oak elevator wayfinding](docs/OAK_HONORS_PILOT.md). This is a private, opt-in drawing-based
+backend pilot with explicit outage handling; it does not claim verified physical access.
 
-## Why
+The expanded residence outdoor configuration is available through `start-residences.cmd`.
+Read [all-residence route verification](docs/ALL_RESIDENCE_ROUTES.md) for its 51-building
+catalog, sourced-door versus outdoor-meeting-point distinctions, and remaining indoor gaps.
 
-Student reporting at UMass describes the gap directly:
+CampusNav is a UMass Amherst walking-route planner. It combines a saved walking graph,
+stairs/slope preferences, mapped building entrances and reported disruptions to calculate
+routes. This branch packages the current Role 1 routing and Role 3 ingestion work alongside
+the existing map UI. The Role 4 data service remains in `backend/`.
 
-- A dorm elevator stayed broken for four weeks while a wheelchair user lived on that floor. Library and ILC automatic doors were out for weeks. ([Daily Collegian, 2023](https://dailycollegian.com/2023/03/umass-campus-is-not-accessible/))
-- Plows bury curb cuts; Disability Services said it depends on people telling it where problems are. ([Daily Collegian, 2013](https://dailycollegian.com/2013/02/for-some-winter-weather-burdens-on-campus-handicap-accessibility/))
-- Boyden and Totman have inaccessible floors but are common exam rooms. ([Daily Collegian, 2018](https://dailycollegian.com/2018/09/handicap-inaccessible/))
+**Indoor coverage is a pilot.** ILC and Du Bois have computable indoor graphs with
+approximate connections that still need physical verification. Dorm drawings are acquired
+through authenticated SharePoint; Oak has a separate drawing-based wayfinding pilot with
+documented gaps. Do not interpret a
+successful route calculation or a map's `reviewed` status as facilities certification.
 
-Reddit and Yik Yak were not searchable for this research (Reddit returned 403; Yik Yak has no public web index), so the sources are student journalism and UMass pages.
+## Run the integrated local map
 
-## What's real
-
-| Data | Source |
-| --- | --- |
-| 2,347 walkway segments, 44.7 km | OpenStreetMap (Overpass API) |
-| 140 staircases, 1,240 steps, handrails, surfaces, kerbs | OpenStreetMap tags |
-| Slope at every one of 1,894 intersections | USGS 3DEP 1 m lidar |
-| Building outlines and entrance positions | OpenStreetMap |
-| Door types, elevator lists, ramp grades | Seed data for the demo (Role 3 replaces it) |
-| Elevator connector (Campus Center) | `scripts/curated-connectors.json` |
-
-## Run
-
-Open a terminal in VS Code (**Terminal → New Terminal**). It starts in the project folder.
-
-### Laptop
+Use Python 3.11+ and Node.js/npm. From the repository root in PowerShell:
 
 ```powershell
-npm run dev
-```
-
-Open http://localhost:5173/. Stop the server with `Ctrl + C`.
-
-Run `npm install` first if you haven't yet, or if you pulled teammates' changes that add packages.
-
-### Phone
-
-1. Connect the phone to the same Wi-Fi as the laptop.
-2. On the laptop, run:
-   ```powershell
-   npm run dev:phone
-   ```
-3. Open the `Network:` address that starts with `172.30.` on the phone, for example `https://172.30.231.238:5173/`. Skip the `192.168.56.1` one.
-4. Accept the certificate warning:
-   - **Android:** Advanced → Proceed.
-   - **iPhone:** Show Details → visit this website.
-
-If the page won't load on the phone, allow Node.js through Windows Firewall, or set your Wi-Fi network to Private.
-
-### Indoor shortcut
-
-Add `?indoor=ilc` to the address, for example `http://localhost:5173/?indoor=ilc`. It goes straight to the ILC room picker. `?indoor=dubois-library`, `?indoor=student-union` and `?indoor=campus-center` work too.
-
-Backend (optional, second terminal; full details in [backend/BACKEND.md](backend/BACKEND.md)):
-
-```powershell
-Set-Location backend
 python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe -m uvicorn main:app --reload    # http://127.0.0.1:8000
+.\.venv\Scripts\python.exe -m pip install -e ".[pipeline,scraper,data,dev,build]"
+npm.cmd --prefix frontend ci
+.\start-server.cmd
 ```
 
-The frontend finds the backend at `VITE_API_BASE_URL` (default `http://localhost:8000`), polls `GET /closures`, sends reports to `POST /reports`, and taps "Still a problem" to `POST /reports/{id}/confirm`. When the backend is off, the same features run from an in-browser store.
+Open **http://127.0.0.1:8000**. Keep the server terminal running. The launcher builds
+and serves `frontend/`, the Python routing API, and the Data API on one origin.
+It reads `backend/.env` when present. `start-server.cmd --memory` runs with temporary data
+even when Atlas is configured. Use `--demo` to enable the browser's route simulation.
 
-Routing engine (optional, third terminal; Role 1's `routing/` folder on the `Ash_ver` branch):
+- Map: http://127.0.0.1:8000/
+- API documentation and request testing: http://127.0.0.1:8000/docs
+- Data API documentation: http://127.0.0.1:8000/api/data/docs
+- Backend diagnostic page: http://127.0.0.1:8000/backend
+- Graph health: http://127.0.0.1:8000/health
+
+The saved real outdoor graph is included: 6,885 nodes and 15,618 directed edges.
+Starting the app does not download a new walking network or start background scrapers.
+
+The integrated map and routing engine share the Data API's active closures. Official coverage
+is shown as unavailable until a scrape is published. In memory mode publication lasts until
+the server stops.
+
+## How routing works
+
+1. Outdoor paths from OpenStreetMap become a NetworkX graph. Nodes represent places and
+   edges represent paths. Terrain elevation supplies estimated grades during graph preparation.
+2. A request supplies endpoints, preferences and active closures. The router filters stairs,
+   excessive grades and other constraints, blocks closed edges, and penalizes degraded edges.
+3. Dijkstra's algorithm selects the lowest-cost remaining path. The result contains geometry,
+   distance, grade estimates, directions and warnings. Gemini does not select the route.
+4. Building-aware routing compares feasible entrance approaches. The outdoor graph does not
+   imply an indoor connection or a verified path across the final entrance gap.
+5. Indoor graphs explicitly connect corridors, doors and elevator stops. Reviewed portals
+   bind those graphs to exact outdoor graph nodes. Floor-plan images alone cannot route.
+
+Choose a room in the trip planner to get an approach to a reviewed entry portal. Confirm
+arrival at that entrance to refresh closures and continue with the indoor route.
+
+## Where the web scraper is
+
+**The scraper implementation is `campus_notices/`; runnable workers are in `scripts/`.**
+
+Run **`.\scrape-all.cmd --rules-only`** to collect all source families together.
+It creates `data/collected_data.json`, a per-source `data/scrape_status.json`, and
+an ignored private bundle. Use `--offline` to combine existing data without fetching.
+See the [unified scraper guide](docs/UNIFIED_SCRAPER.md) for source coverage and fallback behavior.
+
+Run `.\refresh-scrapers.cmd --rules-only` for just official notices and public reports.
+The public worker uses Reddit's public feed when no Reddit API token is configured.
+Public reports stay in the review queue and cannot close routes.
+
+| Source/work | Implementation | Run from the repository root |
+| --- | --- | --- |
+| Official UMass service interruptions | `campus_notices/sharepoint.py`, `sources.py`, `pipeline.py` | `.\refresh-notices.cmd --rules-only` |
+| Deterministic parsing and optional Gemini fallback | `campus_notices/rules.py`, `gemini.py`, `pipeline.py` | Rules run first; omit `--rules-only` to permit configured fallback |
+| Public transit, news and social reports | `campus_notices/reports.py` and source adapters | `.\refresh-reports.cmd --rules-only` |
+| Public indoor floor references and room directories | `campus_notices/indoor_sources.py`, `indoor_arcgis.py` | `.\refresh-indoor.cmd` |
+| Authenticated residence-plan PDFs | `campus_notices/residence_plans.py` | `.\.venv\Scripts\python.exe -m scripts.refresh_residence_plans` |
+| All-dorm drawing/review preparation | `campus_notices/residence_workspace.py` | `.\.venv\Scripts\python.exe -m scripts.prepare_all_residences` |
+
+For the official SharePoint notices, install the browser runtime once:
+
 ```powershell
-uvicorn app.main:app --port 8001      # run inside routing/
+.\.venv\Scripts\python.exe -m playwright install chromium
+.\login-notices.cmd
+.\refresh-scrapers.cmd --rules-only
 ```
-Add this to `.env` (already in `.env.example`), then restart `npm run dev`:
+
+Complete UMass sign-in/MFA yourself in the helper's browser and follow the terminal prompts.
+The helper stores a local session under ignored `data/private/`. Each teammate/operator
+must use their own authorized session; do not distribute session files or passwords.
+
+Run the unified collector hourly in one terminal:
+
+```powershell
+.\scrape-all.cmd --rules-only --watch
 ```
-VITE_ROUTING_API_URL=http://localhost:8001
-```
-The frontend checks the engine's `GET /health` every 15 s and sends routes to `POST /api/route`. The route card shows a badge: **Main routing engine** when the engine answered, **In-browser router** when it was unreachable and the app routed locally. If the engine answers "no route", the card says *No step-free route available via Main routing engine* instead of swapping in a local route. The indoor directions start at the entrance the engine picked.
 
-The frontend works with no keys and no backend. Optional `.env` keys (see `.env.example`):
+Use `.\refresh-scrapers.cmd --demo` to exercise both pipelines offline with synthetic
+data. It writes separate demo snapshots that the live map does not read.
 
-- `VITE_GOOGLE_MAPS_API_KEY`: Google basemap, plus Google's wheelchair-entrance data in building sheets (enable *Maps JavaScript API* and *Places API (New)*). Without it, or if Google rejects the key, the app uses OpenStreetMap tiles.
-- `VITE_GEMINI_API_KEY`: Gemini route summaries (default model `gemini-3.8-flash`; 2.0 Flash has been shut down).
-- `VITE_ROUTING_ENGINE=local`: force the in-browser router during a live demo.
-- `VITE_INDOOR_API_URL`: optional live indoor maps from the campus_routing server (`GET /indoor/status`, `GET /indoor/maps/{id}`).
-- `VITE_INDOOR_SAMPLES`: `fallback` (default), `prefer` or `off` for the built-in sample floor plans.
+The normal official source is the authenticated scraper. A previously downloaded spreadsheet
+is a last-resort fallback, not a required shared asset. A failed scrape preserves prior
+source data and freshness metadata. Gemini is optional and stays off the routing request path.
+For Gemini, set `GEMINI_API_KEY` in your local ignored `.env`; see `.env.example` and
+[the pipeline guide](docs/ROLE3.md). No credentials are included in this branch.
 
-## Adding a building (dorms included): no frontend change
+Residence PDF downloads and tracing outputs also remain private. A fresh clone will not
+contain those drawings; rerun the authenticated importer with permission to the source folder.
 
-**Outdoor (map pin, routing to its doors):** add the building to the Role 4 backend (`POST /buildings` with `id`, `name`, `lat`, `lng`, `entrances[]`). The app reads `GET /buildings` and shows it on the next load. Routing to buildings outside central campus needs the main routing engine; the in-browser fallback graph only covers central campus and says so instead of guessing.
+## Data sources and current limits
 
-**Indoor (floor plans, room search, turn-by-turn, 2D/3D):** add one map file in the team's IndoorMap v1 format (`contracts/indoor-map.schema.json` on the `routing-scraper` branch) to `data/indoor/<building_id>.json`, or serve it from the indoor API. The app:
-- matches it to the outdoor building by `building_id`, then by name, then by position (so `library` matches `dubois-library`);
-- adds it as a destination by itself if the backend doesn't have the building yet (location and doors from entrances with `position`);
-- builds the room search from `nodes` of kind `room` (`label` and `aliases`) and the floor picker from `floors` (order from the floor `level`, or parsed from labels like "Lower Level" or "3rd Floor");
-- routes step-free over `edges` (no `steps`, nothing marked `step_free: false` or not public), avoids elevators that closures mark out of service (`asset_id`), and prefers automatic doors;
-- shows `image_url` when it is an image in the floor's pixel space, else draws a schematic from the corridors and rooms;
-- places GPS from the floor's `bounds` (`{ topLeft, bottomRight }` lat/lng of the image, optional) or from entrances and elevators that have coordinates.
-
-Maps with no entrance or no rooms and corridors (like the current Campus Center draft) are skipped, and the built-in sample is used if there is one. A `draft` map that can be routed is used, with a "Draft indoor map" note.
-
-## Judge demo (60 seconds)
-
-Open `http://localhost:5173/?demo` or press **J**.
-
-1. **Load trip**: Student Union to the Campus Center upper terrace, manual wheelchair. A regular map says 2 min with **27 steps**. CampusNav says 3 min via the concourse elevator.
-2. **Break elevator**: POSTs a fake student report to `/reports`, re-fetches `/closures`, and recomputes. The line visibly moves (the old path fades out in grey): **398 m, +267 m, about 4 min longer**, still zero stairs. The log shows each call's latency.
-3. **Fix it**: reports the elevator working; the route snaps back.
-
-Then open **Manual wheelchair ▾** to show the needs dropdown, tap a building pin for entrances, elevators and sourced student reports, and tap **Report** to show the two-tap flow.
-
-## Role 2 checklist
-
-| Requirement | Where |
+| Source | Contribution |
 | --- | --- |
-| Map canvas | Google Maps (`@vis.gl/react-google-maps`) with Leaflet/OSM fallback, `src/components/map/` |
-| Preference panel: max-slope slider, No Stairs toggle | `NeedsMenu.tsx` (plus wheelchair, handrails, surfaces, covered, auto doors, restroom, crossings) |
-| Draw GeoJSON route | `scene.ts` draws `RouteResponse.features`; elevator and stairs segments styled separately |
-| Interactive entrance status markers | Green / amber / red / grey dots per entrance; tap for details |
-| Poll `/closures` | Every 5 s in `App.tsx`; state only updates when the data changes |
-| Send closures with start/end to the router | `planRoutes()` POSTs `{start, end, preferences, closures}` to `/api/route`, falls back to the in-browser engine |
-| Report Outage / Judge Mode, redraw without refresh | `ReportSheet.tsx`, `JudgePanel.tsx` |
+| OpenStreetMap / Overpass | Outdoor walking paths and available access/stair tags |
+| Open Topo Data terrain elevations | Estimated outdoor grades; not measured sidewalk/ramp slopes |
+| UMass ArcGIS accessibility layers | Building/entrance/elevator/restroom positions and access attributes; accessibility-map edition August 2022 |
+| UMass SharePoint interruption notices | Official outage descriptions and scheduled times |
+| Library StackMap and service directory | Floor-image references and service-to-floor associations |
+| ILC classroom directory and public floor layers | Classroom references; floor-plan assets for floors 1 and 2 |
+| PVTA/news sources | Candidates for review; not automatic proof that a walking path is closed |
+| Direct community reports | Observed disruptions with timestamps and expiry |
 
-## Scripts
+Public indoor reference collection contains 155 records across six sources. Residence
+inventory contains 218 PDFs in 56 folders, grouped into 51 distinct building workspaces.
+Counts describe the local source snapshot and can change after refreshes.
 
-```bash
-node scripts/build-campus-graph.mjs   # rebuild public/data/campusGraph.json (cached; --refresh re-downloads OSM)
-node scripts/check-demo.mjs           # rehearse the elevator demo in the terminal
-node scripts/analyze-graph.mjs        # slope stats, worst stair detours, building pairs
+Current indoor audit:
+
+- ILC: all 16 mapped destinations route from an entrance and back. Floors 3/4 lack plan
+  assets; floor 4 has no mapped destination. Closing either modeled elevator preserves all
+  destinations; closing both leaves only the seven first-floor destinations reachable.
+- Du Bois: all 27 mapped service destinations route from an entrance and back. Third-floor
+  plan is missing; E/LL floor-label correspondence and actual door/corridor geometry need
+  verification. One modeled elevator asset does not represent verified independent banks.
+- Brown and other dorms: private drafts/workspaces await doorway, distance, elevator-stop,
+  entrance and resident-access review. Automatic unsupported Brown connections are disabled.
+
+See [exact missing evidence](docs/INDOOR_DATA_NEEDED.md),
+[floor coverage](docs/INDOOR_COVERAGE_AUDIT.md) and
+[residence work](docs/RESIDENCE_NAVIGATION.md).
+
+## APIs and the separate Role 4 service
+
+| Routing API | Purpose |
+| --- | --- |
+| `POST /route` | Outdoor point-to-point route |
+| `POST /plan` | Building/entrance-aware outdoor route and comparison |
+| `GET /closures`, `/closures/status` | Current local merged disruptions and freshness |
+| `GET /indoor/status`, `/indoor/maps/{building_id}` | Map coverage and floor-aware graph data |
+| `POST /indoor/route`, `/journey` | Indoor-only or combined indoor/outdoor journey |
+| `GET /navigation/catalog` | Available mapped buildings, floors and landmarks |
+| `POST /navigation/resolve`, `/navigation/plan`, `/navigation/arrive` | Clarify location, plan travel, confirm arrival and continue indoors |
+
+The integrated Data API uses the deployed MongoDB collections and validators. Startup checks
+those collections and the existing community report TTL index using read-only operations.
+After scraping, preview and publish using the configured server-side admin key:
+
+```powershell
+.\.venv\Scripts\python.exe -m scripts.post_scraped_data
+.\.venv\Scripts\python.exe -m scripts.post_scraped_data --apply
 ```
 
-## Integration notes for other roles
+See the [Data API guide](backend/BACKEND.md) for document shapes and standalone testing.
 
-- **Backend (`backend/main.py`)**: no changes needed. The frontend reads its closure shape as-is. `POST /reports` only takes `{lat, lng, type, radius}`, so the frontend keeps the report's title and `connector_id` locally, and elevator closures snap to the nearest elevator within 30 m. Two things the backend doesn't have yet and the frontend handles in the browser: `automatic_door` reports, and marking a closure fixed.
-- **Routing (Role 1)**: the frontend POSTs `{start, end, preferences, closures}` to `/api/route` and uses the answer if it's valid; otherwise the in-browser engine (`src/services/routingEngine.ts`) routes on `public/data/campusGraph.json`.
-- **Contracts**: `contracts/` adds an optional `connector_id` on reports and closures.
-- `roles/` holds the earlier per-role stubs; `backend/` is the real Role 4 service.
+## Tests and offline examples
 
-## Team layout
-
-```
-backend/     Role 4: FastAPI + MongoDB Atlas (see backend/BACKEND.md)
-src/         Role 2: map UI
-public/data/ campus walkway graph used by the in-browser router
-scripts/     graph build + demo checks (scripts/cache keeps OSM + lidar downloads)
-contracts/   shared JSON schemas
-roles/       earlier stubs for routing, pipeline and backend
+```powershell
+.\.venv\Scripts\python.exe -m pytest -q
+.\.venv\Scripts\ruff.exe check campus_routing campus_notices scripts tests
+npm.cmd --prefix frontend run test:integration
+npm.cmd --prefix frontend run build
+.\.venv\Scripts\python.exe -m scripts.demo_navigation
+.\.venv\Scripts\python.exe -m scripts.audit_indoor_coverage
 ```
 
-Map data © OpenStreetMap contributors (ODbL). Elevation: USGS 3DEP (public domain).
+The guided demonstration uses fictional layouts under `examples/`; it does not publish
+synthetic campus geometry. The current Python suite contains 204 passing tests. Passing
+tests demonstrate modeled behavior, not physical accessibility verification.
+
+## Project layout and further reading
+
+| Path | Contents |
+| --- | --- |
+| `campus_routing/` | FastAPI, outdoor/indoor graph search, entrance selection and guided flow |
+| `campus_notices/` | Scraping, rules/Gemini extraction, caching, reports and source preparation |
+| `scripts/` | Refresh, graph build, map import, demonstration and audit commands |
+| `frontend/` | Existing React/Vite map UI snapshot with its current local API adapter |
+| `backend/` | Existing Role 4 data API and MongoDB schema tools |
+| `contracts/` | JSON schemas generated from routing models |
+| `data/` | Public source catalog, walking graph and pilot maps |
+| `data/private/` | Ignored sessions, private PDFs and operator-specific data; not shipped |
+| `docs/` | Architecture, source inventory, integration and coverage findings |
+| `tests/`, `examples/` | Backend checks and explicitly synthetic protocol examples |
+
+- [Full application guide](docs/APPLICATION_GUIDE.md)
+- [All sources and expected output](DATA_SOURCES.md)
+- [Scraper operation and fallbacks](docs/ROLE3.md)
+- [Indoor contracts and mapping](docs/INDOOR_MAPPING.md)
+- [Guided navigation requests](docs/GUIDED_NAVIGATION.md)
+
+Some detailed guides describe the original developer workspace and its historical snapshots.
+Use this README for the branch's clean-clone setup and the latest coverage audit for current limits.

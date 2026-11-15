@@ -1,0 +1,969 @@
+{
+  "buildings": [
+    {
+      "building_id": "ilc",
+      "map_status": "reviewed",
+      "floors": [
+        {
+          "floor_id": "1",
+          "label": "1st Floor",
+          "has_plan": true,
+          "room_count": 7,
+          "destinations": [
+            {
+              "node_id": "ilc-source-n111-f1",
+              "label": "ILC N111, 1st Floor entryway",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            },
+            {
+              "node_id": "ilc-source-n155-f1",
+              "label": "ILC N155, 1st Floor entryway",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            },
+            {
+              "node_id": "ilc-source-n101-f1",
+              "label": "ILC N101, 1st Floor entryway",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            },
+            {
+              "node_id": "ilc-source-s140-f1",
+              "label": "ILC S140, 1st Floor entryway",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            },
+            {
+              "node_id": "ilc-source-s120-f1",
+              "label": "ILC S120, 1st Floor entryway",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            },
+            {
+              "node_id": "ilc-source-s131-f1",
+              "label": "ILC S131, 1st Floor entryway",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            },
+            {
+              "node_id": "ilc-source-s110-f1",
+              "label": "ILC S110, 1st Floor entryway",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 7,
+          "returnable_count": 7,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "2",
+          "label": "2nd Floor",
+          "has_plan": true,
+          "room_count": 7,
+          "destinations": [
+            {
+              "node_id": "ilc-source-n255-f2",
+              "label": "ILC N255, 2nd Floor entryway",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            },
+            {
+              "node_id": "ilc-source-s240-f2",
+              "label": "ILC S240, 2nd Floor entryway",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            },
+            {
+              "node_id": "ilc-source-n211-f2",
+              "label": "ILC N211, 2nd Floor entryway",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            },
+            {
+              "node_id": "ilc-source-s220-f2",
+              "label": "ILC S220, 2nd Floor entryway",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            },
+            {
+              "node_id": "ilc-source-s211-f2",
+              "label": "ILC S211, 2nd Floor entryway",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            },
+            {
+              "node_id": "ilc-source-s231-f2",
+              "label": "ILC S231, 2nd Floor entryway",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            },
+            {
+              "node_id": "ilc-source-n151-f2",
+              "label": "ILC N151, 2nd Floor entryway",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 7,
+          "returnable_count": 7,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "3",
+          "label": "3rd Floor",
+          "has_plan": false,
+          "room_count": 2,
+          "destinations": [
+            {
+              "node_id": "ilc-source-s311-f3",
+              "label": "ILC S311, 3rd Floor entryway",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            },
+            {
+              "node_id": "ilc-source-s331-f3",
+              "label": "ILC S331, 3rd Floor entryway",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 2,
+          "returnable_count": 2,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "4",
+          "label": "4th Floor",
+          "has_plan": false,
+          "room_count": 0,
+          "destinations": [],
+          "reachable_count": 0,
+          "returnable_count": 0,
+          "physical_verification": "not_established_by_route_test"
+        }
+      ],
+      "source_notes": "Topology authored from ArcGIS accessibility layer elevator and entrance positions, matched to OSM outdoor graph. Corridors are simplified; room-level detail is not yet mapped. Includes the source-linked N151 2nd-floor entryway pilot waypoint; its doorway position is not survey-grade and must be field-verified. Includes the source-linked N151 2nd-floor entryway pilot waypoint; its doorway position is not survey-grade and must be field-verified. Expanded to 16 source-linked classroom records across documented pilot floors; coordinates are hackathon pilot approximations requiring field verification. Expanded to 16 source-linked classroom records across documented pilot floors; coordinates are hackathon pilot approximations requiring field verification. Public floor-plan assets are registered; corridor and doorway topology still requires explicit tracing from those plans. Public floor-plan assets are registered; corridor and doorway topology still requires explicit tracing from those plans. ILC floors 1 and 2 are now anchored to the public scaled ArcGIS floor plans with explicit room-to-corridor polylines. Doorway clearance and obstruction status still require field verification.",
+      "elevator_outage_checks": [
+        {
+          "scenario": "ilc-elevator-east",
+          "closed_asset_ids": [
+            "ilc-elevator-east"
+          ],
+          "destinations": [
+            {
+              "node_id": "ilc-source-n111-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-n155-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-n101-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s140-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s120-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s131-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s110-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-n255-f2",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s240-f2",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-n211-f2",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s220-f2",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s211-f2",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s231-f2",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s311-f3",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s331-f3",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-n151-f2",
+              "route_available": true
+            }
+          ]
+        },
+        {
+          "scenario": "ilc-elevator-west",
+          "closed_asset_ids": [
+            "ilc-elevator-west"
+          ],
+          "destinations": [
+            {
+              "node_id": "ilc-source-n111-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-n155-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-n101-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s140-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s120-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s131-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s110-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-n255-f2",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s240-f2",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-n211-f2",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s220-f2",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s211-f2",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s231-f2",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s311-f3",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s331-f3",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-n151-f2",
+              "route_available": true
+            }
+          ]
+        },
+        {
+          "scenario": "all_elevators",
+          "closed_asset_ids": [
+            "ilc-elevator-east",
+            "ilc-elevator-west"
+          ],
+          "destinations": [
+            {
+              "node_id": "ilc-source-n111-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-n155-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-n101-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s140-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s120-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s131-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-s110-f1",
+              "route_available": true
+            },
+            {
+              "node_id": "ilc-source-n255-f2",
+              "route_available": false
+            },
+            {
+              "node_id": "ilc-source-s240-f2",
+              "route_available": false
+            },
+            {
+              "node_id": "ilc-source-n211-f2",
+              "route_available": false
+            },
+            {
+              "node_id": "ilc-source-s220-f2",
+              "route_available": false
+            },
+            {
+              "node_id": "ilc-source-s211-f2",
+              "route_available": false
+            },
+            {
+              "node_id": "ilc-source-s231-f2",
+              "route_available": false
+            },
+            {
+              "node_id": "ilc-source-s311-f3",
+              "route_available": false
+            },
+            {
+              "node_id": "ilc-source-s331-f3",
+              "route_available": false
+            },
+            {
+              "node_id": "ilc-source-n151-f2",
+              "route_available": false
+            }
+          ]
+        }
+      ],
+      "warning": "Computable routes do not verify walls, doorways, scale, access or stops."
+    },
+    {
+      "building_id": "library",
+      "map_status": "reviewed",
+      "floors": [
+        {
+          "floor_id": "lower-level",
+          "label": "Lower Level",
+          "has_plan": true,
+          "room_count": 2,
+          "destinations": [
+            {
+              "node_id": "lib-source-e89f67a5556510f56265",
+              "label": "Info Desk; Procrastination Station CafÃ© (E)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            },
+            {
+              "node_id": "lib-source-b95ed8c222033dfffbfb",
+              "label": "Learning Commons; Digital Media Lab; UMass/5 College Item Hold Shelf; New Books Shelf (LL)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 2,
+          "returnable_count": 2,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "1st-floor",
+          "label": "1st Floor",
+          "has_plan": true,
+          "room_count": 0,
+          "destinations": [],
+          "reachable_count": 0,
+          "returnable_count": 0,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "2nd-floor",
+          "label": "2nd Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-2f9cf0cb673d6873f4c3",
+              "label": "Quiet Study, RECESS (2)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "4th-floor",
+          "label": "4th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-36f6df78844c81521786",
+              "label": "Library Administration Offices (4)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "5th-floor",
+          "label": "5th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-a00b50a47628693cf465",
+              "label": "Graduate Commons; Quiet Study (5)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "6th-floor",
+          "label": "6th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-82b2119d5e232132f4bf",
+              "label": "Data Services, IDEAS, Instructional Design, Engagement & Support, Center for Teaching & Learning (6)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "7th-floor",
+          "label": "7th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-cd0d97f0b5f29526f8bb",
+              "label": "IT Instructional Media Lab, IDEAS, Center for Teaching & Learning (7)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "8th-floor",
+          "label": "8th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-3fb52f1d26936de55612",
+              "label": "Book Stacks: K, P-PQ5999 (8)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "9th-floor",
+          "label": "9th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-ca3d3a66a4ca957adb78",
+              "label": "Book Stacks: M, N, TR; CDs & DVDs (9)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "10th-floor",
+          "label": "10th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-ec25f160684e3930b74a",
+              "label": "Learning Resource Center (10)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "11th-floor",
+          "label": "11th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-fc7454b659aa8f0ffc9b",
+              "label": "Book Stacks: PQ6000-PT (11)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "12th-floor",
+          "label": "12th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-21b573afe60d58929602",
+              "label": "Writing Program (12)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "13th-floor",
+          "label": "13th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-f247cd3294a48bf844f5",
+              "label": "Writing Program (13)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "14th-floor",
+          "label": "14th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-8b93a2a171b3826be8d3",
+              "label": "Book Stacks: DS-F (14)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "15th-floor",
+          "label": "15th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-30210eb4b272231aa653",
+              "label": "Book Stacks: C-DR (15)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "16th-floor",
+          "label": "16th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-ba66e64c2dc1203d4086",
+              "label": "IT Computer Classrooms (16)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "17th-floor",
+          "label": "17th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-1d60f06dff71470a59fc",
+              "label": "Book Stacks: A, HG2000-HZ, J (17)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "18th-floor",
+          "label": "18th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-b91a107007a9afd396cb",
+              "label": "Book Stacks: G, H-HG-1999 (18)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "19th-floor",
+          "label": "19th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-2e97dc0f949006483e1c",
+              "label": "Office of Scholarly Communication (19)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "20th-floor",
+          "label": "20th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-6a5ebbc1ea991ccb011a",
+              "label": "Book Stacks: B, L; Theses & Dissertations (20)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "21st-floor",
+          "label": "21st Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-d703d1b73cade2fc8aa7",
+              "label": "Book Stacks: PZ, Z; Juvenile Collection  (including Rudman Collection);  East Asian & Near Eastern Collections (21)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "22nd-floor",
+          "label": "22nd Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-0548130e67b69973a2c1",
+              "label": "W. E. B. Du Bois Center; East Asian Reference Collection (22)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "23rd-floor",
+          "label": "23rd Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-1c70f757f27d2394be2d",
+              "label": "Books Stacks: Q-V (not TR) (23)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "24th-floor",
+          "label": "24th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-9b87e54b8b51f665e052",
+              "label": "Archives Storage (24)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "25th-floor",
+          "label": "25th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-8014ce1ba0c8d3e10acd",
+              "label": "Special Collections & University Archives (25)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "26th-floor",
+          "label": "26th Floor",
+          "has_plan": true,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-89b2058cf978fd22e516",
+              "label": "Office of Faculty Development and Faculty/Librarian Commons (26)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        },
+        {
+          "floor_id": "3rd-floor",
+          "label": "3rd Floor",
+          "has_plan": false,
+          "room_count": 1,
+          "destinations": [
+            {
+              "node_id": "lib-source-d4aeb59897b9e661b496",
+              "label": "Staff Offices (3)",
+              "reachable_from_entrance": true,
+              "can_return_to_entrance": true
+            }
+          ],
+          "reachable_count": 1,
+          "returnable_count": 1,
+          "physical_verification": "not_established_by_route_test"
+        }
+      ],
+      "source_notes": "Topology authored from ArcGIS accessibility layer elevator and entrance positions, matched to OSM outdoor graph. All 26 floors connected by elevator. Corridors are simplified; room-level detail is not yet mapped. Includes one source-linked 2nd-floor Recess/Quiet Study pilot waypoint; its doorway position is not survey-grade and must be field-verified. Includes one source-linked 2nd-floor Recess/Quiet Study pilot waypoint; its doorway position is not survey-grade and must be field-verified. Expanded to 27 source-linked floor destinations; coordinates are hackathon pilot approximations requiring field verification. Expanded to 27 source-linked floor destinations; coordinates are hackathon pilot approximations requiring field verification. Public floor-plan assets are registered; corridor and doorway topology still requires explicit tracing from those plans. Public floor-plan assets are registered; corridor and doorway topology still requires explicit tracing from those plans.",
+      "elevator_outage_checks": [
+        {
+          "scenario": "library-elevator-main",
+          "closed_asset_ids": [
+            "library-elevator-main"
+          ],
+          "destinations": [
+            {
+              "node_id": "lib-source-89b2058cf978fd22e516",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-8014ce1ba0c8d3e10acd",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-9b87e54b8b51f665e052",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-1c70f757f27d2394be2d",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-0548130e67b69973a2c1",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-d703d1b73cade2fc8aa7",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-6a5ebbc1ea991ccb011a",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-2e97dc0f949006483e1c",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-b91a107007a9afd396cb",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-1d60f06dff71470a59fc",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-ba66e64c2dc1203d4086",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-30210eb4b272231aa653",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-8b93a2a171b3826be8d3",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-f247cd3294a48bf844f5",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-21b573afe60d58929602",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-fc7454b659aa8f0ffc9b",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-ec25f160684e3930b74a",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-ca3d3a66a4ca957adb78",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-3fb52f1d26936de55612",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-cd0d97f0b5f29526f8bb",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-82b2119d5e232132f4bf",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-a00b50a47628693cf465",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-36f6df78844c81521786",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-d4aeb59897b9e661b496",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-2f9cf0cb673d6873f4c3",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-e89f67a5556510f56265",
+              "route_available": false
+            },
+            {
+              "node_id": "lib-source-b95ed8c222033dfffbfb",
+              "route_available": false
+            }
+          ]
+        }
+      ],
+      "warning": "Computable routes do not verify walls, doorways, scale, access or stops."
+    }
+  ],
+  "residences": {
+    "building_count": 51,
+    "floors": 349,
+    "by_area": {
+      "CHCRC": 6,
+      "Central": 9,
+      "North Apartments": 4,
+      "Northeast": 9,
+      "Orchard Hill": 4,
+      "Southwest": 16,
+      "Sylvan": 3
+    },
+    "reviewed_route_count": 0,
+    "note": "Workspace preparation does not publish routes."
+  }
+}

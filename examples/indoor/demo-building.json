@@ -1,0 +1,392 @@
+{
+  "version": 1,
+  "building_id": "demo-building",
+  "name": "SYNTHETIC two-floor building",
+  "synthetic": true,
+  "status": "reviewed",
+  "reviewed_at": "2026-11-14T12:00:00Z",
+  "review_notes": "Test fixture review only; never a campus fact.",
+  "sources": [
+    {
+      "id": "synthetic-fixture",
+      "url": "https://example.org/synthetic-indoor-fixture",
+      "edition": "Synthetic",
+      "observed_at": "2026-11-14T12:00:00Z"
+    }
+  ],
+  "floors": [
+    {
+      "id": "1",
+      "label": "Floor 1",
+      "coordinate_system": "local_meters",
+      "image_url": null,
+      "image_width": null,
+      "image_height": null,
+      "source_id": "synthetic-fixture"
+    },
+    {
+      "id": "2",
+      "label": "Floor 2",
+      "coordinate_system": "local_meters",
+      "image_url": null,
+      "image_width": null,
+      "image_height": null,
+      "source_id": "synthetic-fixture"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "hall1",
+      "label": "HALL landing",
+      "floor_id": "1",
+      "kind": "junction",
+      "x": 2.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "synthetic-fixture"
+    },
+    {
+      "id": "a1",
+      "label": "A landing",
+      "floor_id": "1",
+      "kind": "elevator_stop",
+      "x": 5.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "synthetic-fixture"
+    },
+    {
+      "id": "b1",
+      "label": "B landing",
+      "floor_id": "1",
+      "kind": "elevator_stop",
+      "x": 15.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "synthetic-fixture"
+    },
+    {
+      "id": "hall2",
+      "label": "HALL landing",
+      "floor_id": "2",
+      "kind": "junction",
+      "x": 2.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "synthetic-fixture"
+    },
+    {
+      "id": "a2",
+      "label": "A landing",
+      "floor_id": "2",
+      "kind": "elevator_stop",
+      "x": 5.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "synthetic-fixture"
+    },
+    {
+      "id": "b2",
+      "label": "B landing",
+      "floor_id": "2",
+      "kind": "elevator_stop",
+      "x": 15.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "synthetic-fixture"
+    },
+    {
+      "id": "entrance",
+      "label": "Demo entrance",
+      "floor_id": "1",
+      "kind": "entrance",
+      "x": 0.0,
+      "y": 0.0,
+      "position": {
+        "lat": 42.392,
+        "lng": -72.52805
+      },
+      "source_id": "synthetic-fixture"
+    },
+    {
+      "id": "room-201",
+      "label": "Demo room 201",
+      "floor_id": "2",
+      "kind": "room",
+      "x": 0.0,
+      "y": 0.0,
+      "position": null,
+      "source_id": "synthetic-fixture"
+    }
+  ],
+  "assets": [
+    {
+      "id": "demo-lift-a",
+      "label": "demo-lift-a",
+      "kind": "elevator",
+      "position": {
+        "lat": 42.392,
+        "lng": -72.52805
+      },
+      "source_id": "synthetic-fixture",
+      "aliases": []
+    },
+    {
+      "id": "demo-lift-b",
+      "label": "demo-lift-b",
+      "kind": "elevator",
+      "position": {
+        "lat": 42.392,
+        "lng": -72.52805
+      },
+      "source_id": "synthetic-fixture",
+      "aliases": []
+    },
+    {
+      "id": "demo-hall",
+      "label": "demo-hall",
+      "kind": "path",
+      "position": {
+        "lat": 42.392,
+        "lng": -72.52805
+      },
+      "source_id": "synthetic-fixture",
+      "aliases": []
+    }
+  ],
+  "edges": [
+    {
+      "id": "entrance-hall",
+      "start": "entrance",
+      "end": "hall1",
+      "kind": "corridor",
+      "length_m": 2.0,
+      "geometry": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          2.0,
+          0.0
+        ]
+      ],
+      "asset_id": "demo-hall",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 1.5,
+      "door_type": "automatic",
+      "source_id": "synthetic-fixture",
+      "evidence": "Synthetic test layout; not a UMass building."
+    },
+    {
+      "id": "hall-room",
+      "start": "hall2",
+      "end": "room-201",
+      "kind": "corridor",
+      "length_m": 2.0,
+      "geometry": [
+        [
+          2.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "asset_id": "demo-hall",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 1.5,
+      "door_type": "automatic",
+      "source_id": "synthetic-fixture",
+      "evidence": "Synthetic test layout; not a UMass building."
+    },
+    {
+      "id": "hall-a1",
+      "start": "hall1",
+      "end": "a1",
+      "kind": "corridor",
+      "length_m": 3.0,
+      "geometry": [
+        [
+          2.0,
+          0.0
+        ],
+        [
+          5.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 1.5,
+      "door_type": "automatic",
+      "source_id": "synthetic-fixture",
+      "evidence": "Synthetic test layout; not a UMass building."
+    },
+    {
+      "id": "hall-b1",
+      "start": "hall1",
+      "end": "b1",
+      "kind": "corridor",
+      "length_m": 13.0,
+      "geometry": [
+        [
+          2.0,
+          0.0
+        ],
+        [
+          15.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 1.5,
+      "door_type": "automatic",
+      "source_id": "synthetic-fixture",
+      "evidence": "Synthetic test layout; not a UMass building."
+    },
+    {
+      "id": "hall-a2",
+      "start": "hall2",
+      "end": "a2",
+      "kind": "corridor",
+      "length_m": 3.0,
+      "geometry": [
+        [
+          2.0,
+          0.0
+        ],
+        [
+          5.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 1.5,
+      "door_type": "automatic",
+      "source_id": "synthetic-fixture",
+      "evidence": "Synthetic test layout; not a UMass building."
+    },
+    {
+      "id": "hall-b2",
+      "start": "hall2",
+      "end": "b2",
+      "kind": "corridor",
+      "length_m": 13.0,
+      "geometry": [
+        [
+          2.0,
+          0.0
+        ],
+        [
+          15.0,
+          0.0
+        ]
+      ],
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 1.5,
+      "door_type": "automatic",
+      "source_id": "synthetic-fixture",
+      "evidence": "Synthetic test layout; not a UMass building."
+    },
+    {
+      "id": "lift-a",
+      "start": "a1",
+      "end": "a2",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "demo-lift-a",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 1.5,
+      "door_type": "automatic",
+      "source_id": "synthetic-fixture",
+      "evidence": "Synthetic test layout; not a UMass building."
+    },
+    {
+      "id": "lift-b",
+      "start": "b1",
+      "end": "b2",
+      "kind": "elevator",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": "demo-lift-b",
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 1.5,
+      "door_type": "automatic",
+      "source_id": "synthetic-fixture",
+      "evidence": "Synthetic test layout; not a UMass building."
+    },
+    {
+      "id": "stairs",
+      "start": "hall1",
+      "end": "hall2",
+      "kind": "steps",
+      "length_m": 4.0,
+      "geometry": null,
+      "asset_id": null,
+      "bidirectional": true,
+      "public_access": true,
+      "step_free": false,
+      "grade_percent": 50.0,
+      "width_m": 1.5,
+      "door_type": "automatic",
+      "source_id": "synthetic-fixture",
+      "evidence": "Synthetic test layout; not a UMass building."
+    }
+  ],
+  "portals": [
+    {
+      "id": "demo-entrance-link",
+      "indoor_node_id": "entrance",
+      "outdoor_node_id": 2,
+      "geometry": [
+        [
+          -72.52805,
+          42.392
+        ],
+        [
+          -72.528,
+          42.392
+        ]
+      ],
+      "length_m": 4.2,
+      "public_access": true,
+      "step_free": true,
+      "grade_percent": 0.0,
+      "width_m": 1.5,
+      "door_type": "automatic",
+      "asset_id": null,
+      "source_id": "synthetic-fixture",
+      "evidence": "Synthetic reviewed link to demo graph node 2; not campus access."
+    }
+  ]
+}

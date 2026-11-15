@@ -1,0 +1,13 @@
+{
+  "start": {
+    "lat": 42.391,
+    "lng": -72.528
+  },
+  "end": {
+    "lat": 42.392,
+    "lng": -72.528
+  },
+  "max_grade": 5,
+  "no_stairs": true,
+  "closures": []
+}

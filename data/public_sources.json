@@ -1,0 +1,24 @@
+{
+  "sources": [
+    {
+      "id": "pvta-alerts", "name": "PVTA service alerts", "kind": "pvta",
+      "authority": "official", "url": "https://pvta.us/swiftly/RevizeAlerts2.php",
+      "routes": ["30", "31", "33", "34", "35", "36", "38", "38NS", "45", "46", "B43", "B43E", "B79", "UMG"],
+      "retention_hours": 24
+    },
+    {
+      "id": "collegian-feed", "name": "Massachusetts Daily Collegian", "kind": "rss",
+      "authority": "publisher", "url": "https://dailycollegian.com/feed/", "retention_hours": 24
+    },
+    {
+      "id": "umass-reddit", "name": "r/umass", "kind": "reddit",
+      "authority": "community", "subreddit": "umass", "include_comments": true,
+      "token_env": "REDDIT_ACCESS_TOKEN", "public_feed": true, "retention_hours": 24
+    },
+    {
+      "id": "facebook-page", "name": "Facebook Page (configure a Page ID)", "kind": "facebook",
+      "authority": "community", "page_id": "", "api_version": "v27.0",
+      "token_env": "FACEBOOK_PAGE_ACCESS_TOKEN", "retention_hours": 24
+    }
+  ]
+}

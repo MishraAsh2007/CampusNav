@@ -21,7 +21,7 @@ const CACHE = path.join(ROOT, 'scripts', 'cache');
 const OSM_CACHE = path.join(CACHE, 'osm.json');
 const ELEV_CACHE = path.join(CACHE, 'elevation.json');
 const CURATED = path.join(ROOT, 'scripts', 'curated-connectors.json');
-const OUT = path.join(ROOT, 'public', 'data', 'campusGraph.json');
+const OUT = path.join(ROOT, 'frontend', 'public', 'data', 'campusGraph.json');
 const REFRESH = process.argv.includes('--refresh');
 
 // South, West, North, East: central campus from Southwest/Boyden to Worcester/Hasbrouck

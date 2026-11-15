@@ -1,20 +1,28 @@
-# From main (backend)
-.env
 .venv/
-__pycache__/
-
-# Frontend
-node_modules/
-dist/
-*.local
-.env.*.local
 .vite/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.cache/
+.env
+.env.*
+!.env.example
+data/private/
+data/official_snapshot.json
+data/official_snapshot.*.json
+data/official_closures.json
+data/official_status.json
+data/notice_review.json
+data/*.lock
+dist/
+data/collected_data.json
+data/scrape_status.json
+tmp/
 
-# Local scratch and backups
-.backup/
+frontend/node_modules/
 
-# OS / editor
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
+frontend/dist/
+
+node_modules/

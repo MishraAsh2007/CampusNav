@@ -45,8 +45,8 @@
       },
       "source": {
         "type": "string",
-        "enum": ["official", "community", "verified"],
-        "description": "Source of data: official UMass facilities notice, community report, or field-verified"
+        "enum": ["official", "community", "app", "verified"],
+        "description": "Official UMass Facilities notice, community report, report submitted through the app, or field-verified notice"
       },
       "title": {
         "type": "string",

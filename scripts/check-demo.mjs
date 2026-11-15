@@ -5,11 +5,11 @@
  * Student Union -> Campus Center upper terrace, wheelchair profile, elevator working vs broken.
  */
 import fs from 'node:fs';
-import { prepareGraph, computeRoutes } from '../src/services/routingEngine.ts';
-import { UMASS_BUILDINGS } from '../src/data/mockBuildings.ts';
-import { INITIAL_CLOSURES, DEMO_ELEVATOR_REPORT } from '../src/data/mockClosures.ts';
+import { prepareGraph, computeRoutes } from '../frontend/src/services/routingEngine.ts';
+import { UMASS_BUILDINGS } from '../frontend/src/data/mockBuildings.ts';
+import { INITIAL_CLOSURES, DEMO_ELEVATOR_REPORT } from '../frontend/src/data/mockClosures.ts';
 
-const G = prepareGraph(JSON.parse(fs.readFileSync(new URL('../public/data/campusGraph.json', import.meta.url), 'utf8')));
+const G = prepareGraph(JSON.parse(fs.readFileSync(new URL('../frontend/public/data/campusGraph.json', import.meta.url), 'utf8')));
 const prefs = {
   mobility_preset: 'manual_wheelchair', wheelchair_required: true, no_stairs: true, max_grade_pct: 6,
   avoid_rough_surfaces: true, prefer_indoor: false, handrails_required: false, need_automatic_door: true,
