@@ -72,8 +72,8 @@ export default function IndoorStepPanel({ steps, active, onGo, onDone, autoSpeak
     return () => window.removeEventListener('keydown', onKey);
   }, [active, onGo, speak, step, steps.length]);
 
-  const totalFt = useMemo(() => steps.reduce((n, s) => n + (s.distanceFt || 0), 0), [steps]);
-  const leftFt = useMemo(() => steps.slice(active).reduce((n, s) => n + (s.distanceFt || 0), 0), [steps, active]);
+  const totalM = useMemo(() => steps.reduce((n, s) => n + (s.distanceM || 0), 0), [steps]);
+  const leftM = useMemo(() => steps.slice(active).reduce((n, s) => n + (s.distanceM || 0), 0), [steps, active]);
   if (!step) return null;
 
   return (
@@ -89,7 +89,7 @@ export default function IndoorStepPanel({ steps, active, onGo, onDone, autoSpeak
       <div className="flex items-center justify-between gap-2 px-4 pt-3 sm:pt-3.5">
         <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-600 sm:text-[12px]">
           Step {active + 1} of {steps.length}
-          {totalFt > 0 && <span className="normal-case tracking-normal text-slate-500"> · {leftFt} ft left</span>}
+          {totalM > 0 && <span className="normal-case tracking-normal text-slate-500"> · {Math.round(leftM)} m left</span>}
         </span>
         <div className="flex items-center gap-1">
           {supported && (

@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CACHE = path.join(ROOT, 'scripts', 'cache', 'bus-osm.json');
-const OUT = path.join(ROOT, 'public', 'data', 'busRoutes.json');
+const OUT = path.join(ROOT, 'frontend', 'public', 'data', 'busRoutes.json');
 const REFRESH = process.argv.includes('--refresh');
 // Same box as the walkway graph, slightly padded
 const [S, W, N, E] = [42.3840, -72.5345, 42.3955, -72.5215];

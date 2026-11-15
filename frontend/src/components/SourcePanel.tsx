@@ -27,7 +27,7 @@ export function SourcePanel() {
     {Object.entries(status?.source_status ?? {}).map(([id, s]) => <p key={id}>UMass maintenance: <strong>{s.mode === 'live' ? 'last refresh fetched live' : s.mode.replace('_', ' ')}</strong>. Observed {new Date(s.observed_at).toLocaleString()}.</p>)}
     {status?.stale && <p className="text-warn-ink">Notice data needs attention: {status.status}. Missing coverage is not an all-clear.</p>}
     {!!status?.counts?.review && <p>{status.counts.review} official notice(s) need review before they can be placed on the routing graph.</p>}
-    <p>Building access: UMass map (August 2022) + OpenStreetMap entrances. Unknown door access is labeled. Indoor elevator routes are not mapped.</p>
+    <p>Building access comes from the UMass map and OpenStreetMap entrances. Indoor routes are available where reviewed connections exist.</p>
     {notices.map(n => <p key={n.id}><strong>{n.title}</strong><br />Starts {new Date(n.start_time).toLocaleString()}{n.end_time ? `; ends ${new Date(n.end_time).toLocaleString()}` : ''}. Upcoming; does not block routes yet.</p>)}
     <details><summary className="cursor-pointer">Public-source reports awaiting review ({reports.length})</summary>
       {Object.entries(external?.sources ?? {}).map(([id, s]) => <p className="mt-2 text-ink-3" key={id}>{id}: {s.state.replace(/_/g, ' ')}{s.state !== 'live' && s.message ? ` — ${s.message}` : ''}.</p>)}

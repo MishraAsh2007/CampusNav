@@ -166,7 +166,7 @@ export function buildScene(i: SceneInput): Scene {
     if (c.status === 'repaired') continue;
     const degraded = c.status === 'degraded';
     circles.push({ id: `cz-${c.id}`, center: [c.lat, c.lng], radius: c.radius, color: degraded ? '#f0a020' : '#e5484d', dashed: degraded });
-    const fresh = Date.now() - new Date(c.last_confirmed).getTime() < 2 * 3600_000;
+    const fresh = c.last_confirmed !== null && Date.now() - Date.parse(c.last_confirmed) < 2 * 3600_000;
     markers.push({
       id: `c-${c.id}`,
       position: [c.lat, c.lng],

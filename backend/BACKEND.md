@@ -258,7 +258,7 @@ The app sends `source: "app"`. The API defaults to `community` when a client omi
 
 The server generates `id`, `start_time`, `end_time`, and `last_updated`. Each submission creates a new report that expires after 48 hours. To renew an existing one, copy its `id` and call **`POST /community-reports/{report_id}/confirm`** with an empty body. Confirmation updates `last_updated` and extends expiry by 48 hours from the confirmation time. `last_confirmed` is still available for existing clients. A missing or expired report returns HTTP 404.
 
-To mark a community report fixed, call **`DELETE /community-reports/{report_id}`** with the report's `id` and an empty body. The API deletes the matching document from `CommunityReports`. HTTP 204 means the community report is absent, so retrying the request is safe. In the app, use **It works now** on the incident or choose the report under **Fixed now** in the report form. Facilities notices are managed through the official snapshot.
+To mark a community report fixed, call **`DELETE /community-reports/{report_id}`** with the report's `id` and an empty body. HTTP 204 confirms deletion, and HTTP 404 means there is no matching community report. In the map, use the resolve action on the incident. Facilities notices are managed through the official snapshot.
 
 ## Combined closures
 
@@ -361,10 +361,10 @@ In Atlas Data Explorer, a community report's MongoDB `_id` matches the API respo
 
 ### Import scraped data
 
-Start the Data API with the Atlas settings above:
+Start the integrated service with the Atlas settings in `backend/.env`:
 
 ```powershell
-.\backend\.venv\Scripts\python.exe -m uvicorn backend.main:app --env-file backend\.env --port 8001
+.\start-server.cmd
 ```
 
 From another terminal at the repository root, use the Python environment you set up for the
@@ -377,8 +377,8 @@ combined scraper:
 ```
 
 The first upload command previews the destination and record counts. `--apply` sends the
-processed data using `CAMPUSNAV_ADMIN_KEY` from the environment or `backend/.env`. Pass
-`--api-url` to target a different Data API, or use `--only buildings`, `--only official`, or
+processed data to `http://127.0.0.1:8000/api/data` using `CAMPUSNAV_ADMIN_KEY` from the environment or `backend/.env`. Pass
+`--api-url http://127.0.0.1:8001` for a standalone Data API on port 8001. Use `--only buildings`, `--only official`, or
 `--only public` to sync one kind of data.
 
 | Input | Destination | Read back from |
@@ -390,26 +390,16 @@ processed data using `CAMPUSNAV_ADMIN_KEY` from the environment or `backend/.env
 Each successful scrape replaces its own capture. An empty success clears that source's records.
 A failed refresh leaves the previous records available. The importer skips older and duplicate
 captures. An unverified public report is available for review until expiry and has no effect on
-routing. If your database has MongoDB validators for the earlier record shapes, extend the
-installed rules before uploading:
-
-```powershell
-.\backend\.venv\Scripts\python.exe -m backend.mongo_schema --scraper-imports
-.\backend\.venv\Scripts\python.exe -m backend.mongo_schema --scraper-imports --apply
-```
+routing. If a deployed validator rejects the upload, inspect the error and correct the
+input adapter. The saved scrape is still available locally.
 
 ### MongoDB schema validation
 
 MongoDB validators check coordinates and building accessibility fields, official notice snapshots, and the community report dates used for TTL. Official `end_time` accepts a BSON Date or `null`. The validators accept older records that predate the new fields.
 
-From the repo root, check the configured database or install the validators:
-
-```powershell
-.\backend\.venv\Scripts\python.exe -m backend.mongo_schema
-.\backend\.venv\Scripts\python.exe -m backend.mongo_schema --apply
-```
-
-Both commands check existing documents first. Applying the schema also creates compound indexes for looking up community and official closures by building, asset, and floor. For official closures, use `$elemMatch` on the `closures` array to match those fields on the same notice. Applying requires MongoDB's `collMod` and `createIndex` permissions.
+Atlas startup checks the three existing collections and the `CommunityReports.end_time` TTL
+index using read-only queries. The deployed validators and indexes govern all writes. Use
+`start-server.cmd --memory` for local tests with temporary storage.
 
 ## Local options
 

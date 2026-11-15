@@ -6,9 +6,9 @@
  * a regular map would send a wheelchair user up stairs.
  */
 import fs from 'node:fs';
-import { prepareGraph, computeRoutes } from '../src/services/routingEngine.ts';
+import { prepareGraph, computeRoutes } from '../frontend/src/services/routingEngine.ts';
 
-const raw = JSON.parse(fs.readFileSync(new URL('../public/data/campusGraph.json', import.meta.url), 'utf8'));
+const raw = JSON.parse(fs.readFileSync(new URL('../frontend/public/data/campusGraph.json', import.meta.url), 'utf8'));
 const G = prepareGraph(raw);
 console.log('meta', raw.meta);
 

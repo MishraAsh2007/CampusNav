@@ -23,7 +23,7 @@ class Closure(Coordinate):
     source: Literal["official", "community", "verified"]
     start_time: AwareDatetime
     end_time: AwareDatetime | None
-    last_confirmed: AwareDatetime
+    last_confirmed: AwareDatetime | None
     asset_id: str | None = Field(default=None, max_length=150)
     building_id: str | None = Field(default=None, max_length=100)
     floor_id: str | None = Field(default=None, max_length=80)

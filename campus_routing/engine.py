@@ -112,7 +112,7 @@ class RoutingEngine:
                     "its effect on the route is unknown."
                 )
             (blocked if closure.status == "closed" else degraded).update(matches)
-            if now - closure.last_confirmed > timedelta(hours=24):
+            if closure.last_confirmed is None or now - closure.last_confirmed > timedelta(hours=24):
                 warnings.append("An active closure was last confirmed more than 24 hours ago.")
         return blocked, degraded, warnings
 

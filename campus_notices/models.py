@@ -64,6 +64,7 @@ class Extraction(ContractModel):
 
 
 class PublishedClosure(Closure):
+    last_confirmed: AwareDatetime
     id: str
     notice_id: str
     location_id: str

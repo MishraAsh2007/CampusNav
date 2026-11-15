@@ -28,27 +28,28 @@ Use Python 3.11+ and Node.js/npm. From the repository root in PowerShell:
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -e ".[pipeline,scraper,dev]"
+.\.venv\Scripts\python.exe -m pip install -e ".[pipeline,scraper,data,dev,build]"
 npm.cmd --prefix frontend ci
 .\start-server.cmd
 ```
 
 Open **http://127.0.0.1:8000**. Keep the server terminal running. The launcher builds
-`frontend/dist` if it does not exist and serves it through the Python routing API.
-After editing frontend source, rebuild with `npm.cmd --prefix frontend run build`.
+and serves `frontend/`, the Python routing API, and the Data API on one origin.
+It reads `backend/.env` when present. `start-server.cmd --memory` runs with temporary data
+even when Atlas is configured. Use `--demo` to enable the browser's route simulation.
 
 - Map: http://127.0.0.1:8000/
 - API documentation and request testing: http://127.0.0.1:8000/docs
+- Data API documentation: http://127.0.0.1:8000/api/data/docs
 - Backend diagnostic page: http://127.0.0.1:8000/backend
 - Graph health: http://127.0.0.1:8000/health
 
 The saved real outdoor graph is included: 6,885 nodes and 15,618 directed edges.
 Starting the app does not download a new walking network or start background scrapers.
 
-Fresh clones have no authenticated notice snapshot. Closure/status endpoints may report
-unavailable until a source refresh succeeds. Building routing with an explicit `closures: []`
-is useful for isolated API testing, but deliberately excludes all disruptions. The map's
-stale/unavailable-source display should be respected; no notices does not establish no outages.
+The integrated map and routing engine share the Data API's active closures. Official coverage
+is shown as unavailable until a scrape is published. In memory mode publication lasts until
+the server stops.
 
 ## How routing works
 
@@ -63,8 +64,8 @@ stale/unavailable-source display should be respected; no notices does not establ
 5. Indoor graphs explicitly connect corridors, doors and elevator stops. Reviewed portals
    bind those graphs to exact outdoor graph nodes. Floor-plan images alone cannot route.
 
-The integrated map currently calls the outdoor `/plan` flow. Indoor `/journey` and guided
-`/navigation/*` are backend handoffs; this branch does not add a floor-selector interface.
+Choose a room in the trip planner to get an approach to a reviewed entry portal. Confirm
+arrival at that entrance to refresh closures and continue with the indoor route.
 
 ## Where the web scraper is
 
@@ -162,12 +163,16 @@ See [exact missing evidence](docs/INDOOR_DATA_NEEDED.md),
 | `GET /navigation/catalog` | Available mapped buildings, floors and landmarks |
 | `POST /navigation/resolve`, `/navigation/plan`, `/navigation/arrive` | Clarify location, plan travel, confirm arrival and continue indoors |
 
-The root Python service currently uses local caches and its development community store.
-The separate `backend/` service supports MongoDB Atlas and its own buildings/reports feeds;
-it is **not automatically connected** by starting the routing app. See
-[backend setup](backend/BACKEND.md) and [contract/integration gaps](docs/BACKEND_HANDOFF.md).
-If running both services, use different ports, such as routing `8000` and data service `8001`.
-Keep the data-service admin key in its backend environment, never in frontend code.
+The integrated Data API uses the deployed MongoDB collections and validators. Startup checks
+those collections and the existing community report TTL index using read-only operations.
+After scraping, preview and publish using the configured server-side admin key:
+
+```powershell
+.\.venv\Scripts\python.exe -m scripts.post_scraped_data
+.\.venv\Scripts\python.exe -m scripts.post_scraped_data --apply
+```
+
+See the [Data API guide](backend/BACKEND.md) for document shapes and standalone testing.
 
 ## Tests and offline examples
 

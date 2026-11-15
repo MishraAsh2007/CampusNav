@@ -316,7 +316,7 @@ class IndoorEngine:
                 )
             for ident in matches:
                 effects[ident] = max(effects.get(ident, 1), math.inf if c.status == "closed" else 5)
-            if matches and now - c.last_confirmed > timedelta(hours=24):
+            if matches and (c.last_confirmed is None or now - c.last_confirmed > timedelta(hours=24)):
                 warnings.append("An indoor closure was confirmed more than 24 hours ago.")
             if not matches and c.building_id == self.data.building_id:
                 warnings.append(

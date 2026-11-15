@@ -4,7 +4,7 @@ import json
 import logging
 import os
 import re
-from contextlib import asynccontextmanager
+from contextlib import AsyncExitStack, asynccontextmanager
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -18,13 +18,13 @@ from campus_notices.community import ReportStore, UserReport
 from campus_notices.models import ExternalReport
 from campus_notices.reports import active_reports, read_reports, reports_status
 
-from .buildings import TripRequest, plan_trip, read_buildings
+from .buildings import Place, TripRequest, choices, plan_trip, read_buildings
 from .engine import RoutingEngine, RoutingError
 from .indoor import IndoorEngine, IndoorRouteRequest, read_indoor
 from .journey import JourneyRequest, plan_journey
 from .models import Closure, RouteRequest, RouteResponse
 from .navigation import ArrivalRequest, NavigationRequest, NavigationService
-from .places import PILOT_BUILDINGS, PlaceResolver, ResolveRequest
+from .places import PILOT_BUILDINGS, LocationQuery, PlaceResolver, ResolveRequest
 from .plan_wayfinding import PlanWayfindingMap, PlanWayfindingRequest, plan_directions
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -41,7 +41,13 @@ def create_app(
     indoor_dir: Path | None = None,
     indoor_sources_path: Path | None = None,
     plan_wayfinding_dir: Path | None = None,
+    data_app: FastAPI | None = None,
 ) -> FastAPI:
+    bridge = None
+    if data_app is not None:
+        from .data_bridge import DataBridge
+
+        bridge = DataBridge(data_app)
     path = graph_path or Path(os.getenv("ROUTING_GRAPH", ROOT / "data" / "umass.graph.json"))
     official = official_path or Path(
         os.getenv("OFFICIAL_CLOSURES_SNAPSHOT", ROOT / "data" / "official_snapshot.json")
@@ -78,13 +84,16 @@ def create_app(
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
-        app.state.engine = engine
-        if engine is None:
-            try:
-                app.state.engine = RoutingEngine.from_file(path)
-            except (OSError, ValueError, KeyError, TypeError):
-                logger.exception("Could not load routing graph from %s", path)
-        yield
+        async with AsyncExitStack() as stack:
+            if data_app is not None:
+                await stack.enter_async_context(data_app.router.lifespan_context(data_app))
+            app.state.engine = engine
+            if engine is None:
+                try:
+                    app.state.engine = RoutingEngine.from_file(path)
+                except (OSError, ValueError, KeyError, TypeError):
+                    logger.exception("Could not load routing graph from %s", path)
+            yield
 
     app = FastAPI(
         title="UMass Campus Routing",
@@ -130,7 +139,8 @@ def create_app(
 
     def catalog():
         try:
-            return read_buildings(building_file)
+            local = read_buildings(building_file)
+            return bridge.catalog(local) if bridge is not None else local
         except (OSError, ValueError, KeyError) as exc:
             raise HTTPException(
                 503,
@@ -149,7 +159,10 @@ def create_app(
     @app.post("/plan", tags=["Campus navigation"])
     def plan(request: TripRequest):
         try:
-            return plan_trip(get_engine(), catalog(), request)
+            result = plan_trip(get_engine(), catalog(), current_closures(request))
+            if bridge is not None and bridge.official_status()["stale"]:
+                result["notes"].append("Official closure data is stale or unavailable.")
+            return result
         except RoutingError as exc:
             raise HTTPException(
                 exc.status, detail={"code": exc.code, "message": exc.message}
@@ -157,12 +170,16 @@ def create_app(
 
     @app.get("/closures/status", tags=["Campus navigation"])
     def closure_status():
+        if bridge is not None:
+            return bridge.official_status()
         status = snapshot_status(official)
         status["community_count"] = len(community.active())
         status["community_storage"] = "local_file"
         return status
 
     def official_records(*, scheduled=False):
+        if bridge is not None:
+            return bridge.official(scheduled=scheduled)
         try:
             snapshot = read_snapshot(official)
         except (OSError, ValueError) as exc:
@@ -194,10 +211,9 @@ def create_app(
 
     @app.get("/closures", tags=["Campus navigation"])
     def closures(response: Response):
-        rows = official_records()
         response.headers["Cache-Control"] = "no-store"
-        response.headers["X-Closures-Stale"] = str(snapshot_status(official)["stale"]).lower()
-        return rows + community.active()
+        response.headers["X-Closures-Stale"] = str(closure_status()["stale"]).lower()
+        return bridge.active() if bridge is not None else official_records() + community.active()
 
     @app.get("/notices", tags=["Campus navigation"])
     def scheduled_notices():
@@ -239,12 +255,17 @@ def create_app(
                 )
             request = request.model_copy(update={"lat": lift["lat"], "lng": lift["lng"]})
         try:
-            return community.submit(request)
-        except ValueError as exc:
-            raise HTTPException(422, detail={"message": str(exc)}) from exc
+            return bridge.submit(request) if bridge is not None else community.submit(request)
+        except ValueError:
+            raise HTTPException(422, detail={"message": "The report does not fit the data contract."}) from None
 
     @app.post("/reports/{report_id}/confirm", tags=["Campus navigation"])
     def confirm_report(report_id: str):
+        if bridge is not None:
+            confirmed = bridge.app.state.closures.confirm(report_id)
+            if confirmed is None:
+                raise HTTPException(404, "This community report has expired or was resolved.")
+            return bridge.display_closure(confirmed)
         try:
             return community.confirm(report_id)
         except KeyError as exc:
@@ -261,7 +282,21 @@ def create_app(
             "synthetic": current.graph.graph.get("synthetic", False),
             "nodes": current.graph.number_of_nodes(),
             "edges": current.graph.number_of_edges(),
+            "demo": demo_enabled(),
+            "storage_mode": bridge.app.state.storage_mode if bridge is not None else "local_files",
         }
+
+    def demo_enabled():
+        return (os.getenv("CAMPUSNAV_DEMO") == "1" and
+                (bridge is None or bridge.app.state.storage_mode == "memory"))
+
+    def current_closures(request):
+        if bridge is None:
+            return request
+        rows = bridge.active(routing=True)
+        if demo_enabled():
+            rows = [*rows, *(request.closures or [])]
+        return request.model_copy(update={"closures": rows})
 
     @app.post(
         "/route",
@@ -273,7 +308,7 @@ def create_app(
     )
     def route(request: RouteRequest):
         try:
-            return get_engine().route(request)
+            return get_engine().route(current_closures(request))
         except RoutingError as exc:
             raise HTTPException(
                 exc.status, detail={"code": exc.code, "message": exc.message}
@@ -281,7 +316,7 @@ def create_app(
 
     @app.get("/official-closures/status", tags=["Official notices"])
     def official_status():
-        return snapshot_status(official)
+        return closure_status() if bridge is not None else snapshot_status(official)
 
     @app.get(
         "/official-closures",
@@ -290,6 +325,13 @@ def create_app(
         description="Cached official closures only. Role 4 merges these with community reports.",
     )
     def official_closures(response: Response):
+        if bridge is not None:
+            status = bridge.official_status()
+            response.headers["X-Closures-Stale"] = str(status["stale"]).lower()
+            response.headers["X-Closures-Status"] = status["status"]
+            response.headers["X-Closures-Demo"] = "false"
+            response.headers["Cache-Control"] = "no-store"
+            return [row for row in bridge.active(routing=True) if row.source == "official"]
         try:
             snapshot = read_snapshot(official)
         except (OSError, ValueError) as exc:
@@ -309,7 +351,7 @@ def create_app(
 
     @app.get("/external-reports/status", tags=["Discovered reports"])
     def external_status():
-        return reports_status(reports)
+        return bridge.public_reports()[1] if bridge is not None else reports_status(reports)
 
     @app.get(
         "/external-reports",
@@ -318,6 +360,11 @@ def create_app(
         description="Public reports awaiting review. These are not routing closures.",
     )
     def external_reports(response: Response):
+        if bridge is not None:
+            rows, status = bridge.public_reports()
+            response.headers["X-Reports-Stale"] = str(status["stale"]).lower()
+            response.headers["Cache-Control"] = "no-store"
+            return rows
         status = reports_status(reports)
         if status["status"] == "unavailable":
             raise HTTPException(
@@ -385,6 +432,12 @@ def create_app(
         return PlaceResolver(maps, sources)
 
     def navigation_closures():
+        if bridge is not None:
+            rows = bridge.active(routing=True)
+            status = bridge.official_status()
+            return [row.model_dump() for row in rows], {
+                "stale": status["stale"], "count": len(rows), "generated_at": status["generated_at"],
+            }
         rows = official_records() + community.active()
         status = snapshot_status(official)
         return rows, dict(
@@ -405,12 +458,35 @@ def create_app(
 
     @app.post("/navigation/plan", tags=["Guided navigation"])
     def guided_plan(request: NavigationRequest):
+        if bridge is not None:
+            request = request.model_copy(update={"closures": None})
         try:
-            return NavigationService(
+            service = NavigationService(
                 get_engine(),
                 place_resolver(),
                 navigation_closures,
-            ).plan(request)
+            )
+            origin = request.origin
+            if (bridge is not None and origin and origin.building_id
+                    and not (origin.node_id or origin.floor_id or origin.text)):
+                local = catalog()
+                building = next((row for row in local["buildings"] if row["id"] == origin.building_id), None)
+                if building is None:
+                    raise RoutingError("unknown_building", "This building is not in the campus catalog.", 422)
+                entrances = choices(
+                    Place(**building["location"], building_id=origin.building_id,
+                          entrance_id=request.origin_entrance_id),
+                    local, step_free=request.no_stairs, automatic=request.need_automatic_door,
+                )
+                # Use one snapshot for all candidate approaches.
+                captured = navigation_closures()
+                service = NavigationService(service.outdoor, service.resolver, lambda: captured)
+                results = [service.plan(request.model_copy(update={
+                    "origin": LocationQuery(outdoor={"lat": entry["lat"], "lng": entry["lng"]}),
+                })) for entry in entrances]
+                ready = [row for row in results if row["status"] == "route_ready"]
+                return min(ready, key=lambda row: row["journey"]["routing_cost"]) if ready else results[0]
+            return service.plan(request)
         except RoutingError as exc:
             raise HTTPException(
                 exc.status, detail={"code": exc.code, "message": exc.message}
@@ -418,6 +494,8 @@ def create_app(
 
     @app.post("/navigation/arrive", tags=["Guided navigation"])
     def guided_arrival(request: ArrivalRequest):
+        if bridge is not None:
+            request = request.model_copy(update={"closures": None})
         try:
             return NavigationService(
                 get_engine(),
@@ -505,7 +583,7 @@ def create_app(
     @app.post("/indoor/route", tags=["Indoor navigation"])
     def indoor_route(request: IndoorRouteRequest):
         try:
-            return indoor_engine(request.building_id).route(request)
+            return indoor_engine(request.building_id).route(current_closures(request))
         except RoutingError as exc:
             raise HTTPException(
                 exc.status, detail={"code": exc.code, "message": exc.message}
@@ -514,7 +592,7 @@ def create_app(
     @app.post("/journey", tags=["Indoor navigation"])
     def journey(request: JourneyRequest):
         try:
-            return plan_journey(get_engine(), indoor_engine, request)
+            return plan_journey(get_engine(), indoor_engine, current_closures(request))
         except RoutingError as exc:
             raise HTTPException(
                 exc.status, detail={"code": exc.code, "message": exc.message}
@@ -524,6 +602,8 @@ def create_app(
     def indoor_floor_map(building_id: str):
         return indoor_map(building_id)
 
+    if data_app is not None:
+        app.mount("/api/data", data_app, name="data-api")
     frontend = ROOT / "frontend/dist"
     if frontend.exists():
         app.mount("/", StaticFiles(directory=frontend, html=True), name="map-ui")

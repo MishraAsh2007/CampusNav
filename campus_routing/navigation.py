@@ -13,6 +13,7 @@ from .places import LocationQuery
 
 class NavigationRequest(IndoorPreferences):
     origin: LocationQuery | None = None
+    origin_entrance_id: str | None = Field(default=None, max_length=150)
     destination: LocationQuery | None = None
     closures: list[Closure] | None = Field(default=None, max_length=500)
 
@@ -126,7 +127,15 @@ class NavigationService:
         if destination["kind"] != "building":
             closures, context = self.closure_context(request)
             try:
-                return self.ready(self.route(origin, destination, prefs, closures, now), context)
+                journey = self.route(origin, destination, prefs, closures, now)
+                response = self.ready(journey, context)
+                entrance = next((leg for leg in journey["legs"] if leg["kind"] == "portal"
+                                 and leg["direction"] == "enter"), None)
+                if entrance is not None:
+                    response.update(arrival_context={"building_id": entrance["building_id"],
+                                                     "portal_id": entrance["portal_id"]},
+                                    arrival_confirmation_required=True)
+                return response
             except RoutingError as exc:
                 return self.problem(exc)
         building = destination["building_id"]
@@ -259,4 +268,11 @@ class NavigationService:
             journey = self.route(origin, end["endpoint"], prefs, closures, now)
         except RoutingError as exc:
             return self.problem(exc)
-        return self.ready(journey, context)
+        response = self.ready(journey, context)
+        replacement = next((leg for leg in journey["legs"] if leg["kind"] == "portal"
+                            and leg["direction"] == "enter" and leg["portal_id"] != portal.id), None)
+        if replacement is not None:
+            response.update(arrival_context={"building_id": request.building_id,
+                                             "portal_id": replacement["portal_id"]},
+                            arrival_confirmation_required=True)
+        return response

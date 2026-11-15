@@ -31,7 +31,7 @@ export interface Closure {
   reference?: string;
   start_time: string;
   end_time?: string;
-  last_confirmed: string; // ISO timestamp
+  last_confirmed: string | null; // ISO timestamp when known
   confirmations_count: number;
 }
 

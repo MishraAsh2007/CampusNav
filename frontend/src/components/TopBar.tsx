@@ -9,7 +9,7 @@ interface Props {
   lastSync: number | null;
   onReport: () => void;
   onAbout: () => void;
-  onJudge: () => void;
+  onJudge?: () => void;
   judgeOpen: boolean;
   highContrast: boolean;
   onHighContrast: () => void;
@@ -86,7 +86,7 @@ export function TopBar(p: Props) {
           )}
         </div>
 
-        <button
+        {p.onJudge && <button
           onClick={p.onJudge}
           className={cx('glass btn h-10 !px-3 text-ink', p.judgeOpen && '!bg-ink !text-white')}
           aria-pressed={p.judgeOpen}
@@ -94,7 +94,7 @@ export function TopBar(p: Props) {
         >
           <Sparkles className="h-4 w-4" />
           <span className="hidden sm:inline">Demo</span>
-        </button>
+        </button>}
 
         <button onClick={p.onReport} className="btn h-10 bg-stop !px-4 text-white shadow-float hover:brightness-105">
           <AlertTriangle className="h-4 w-4" />

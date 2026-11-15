@@ -150,7 +150,8 @@ export const DEMO_ELEVATOR_REPORT = {
   description: 'Doors will not open on the concourse level. Sign says technician called.'
 };
 
-export function formatFreshness(isoString: string): string {
+export function formatFreshness(isoString: string | null): string {
+  if (!isoString) return 'at an unknown time';
   const then = new Date(isoString).getTime();
   if (!Number.isFinite(then)) return 'recently';
   const diffMin = Math.max(0, Math.floor((Date.now() - then) / 60000));

@@ -10,7 +10,7 @@ import httpx
 from dotenv import dotenv_values
 from pydantic import AwareDatetime, TypeAdapter
 
-from backend.main import Building
+from backend.main import Building, BuildingWrite
 from backend.scraper_imports import OfficialSourceSnapshot, PublicSourceSnapshot
 from campus_notices.cache import read_snapshot
 from campus_notices.reports import read_reports
@@ -26,7 +26,7 @@ def building_uploads(path):
     for row in catalog["buildings"]:
         elevators = row["elevators"]
         uploads.append(
-            Building.model_validate(
+            BuildingWrite.model_validate(
                 {
                     "id": row["id"],
                     "name": row["name"],
@@ -34,6 +34,7 @@ def building_uploads(path):
                     "entrances": [
                         {
                             "name": entrance["name"],
+                            "id": entrance["id"],
                             "lat": entrance["lat"],
                             "lng": entrance["lng"],
                             "step_free": entrance.get("step_free"),
@@ -44,7 +45,10 @@ def building_uploads(path):
                     ],
                     "elevator_count": elevators.get("total_count"),
                     "elevators": [
-                        {"location": point["name"], "lat": point["lat"], "lng": point["lng"]}
+                        {
+                            "location": point["name"], "lat": point["lat"], "lng": point["lng"],
+                            "asset_id": point["id"], "building_id": row["id"],
+                        }
                         for point in elevators["list"]
                     ],
                 }
@@ -163,7 +167,7 @@ def post_uploads(uploads, api_url, key):
                 if not building and exc.response.status_code == 404:
                     print("Restart the Data API to load the new importer.", file=sys.stderr)
                 if exc.response.status_code == 409:
-                    print("Check the MongoDB validators for scraper imports.", file=sys.stderr)
+                    print("The stored schema rejected this upload. Local input retained.", file=sys.stderr)
                 failed = True
             except (httpx.RequestError, AttributeError, ValueError) as exc:
                 print(f"{name} failed ({type(exc).__name__}).", file=sys.stderr)
@@ -183,7 +187,7 @@ def main(argv=None):
     parser.add_argument("--public", type=Path, default=ROOT / "data/private/external_reports.json")
     parser.add_argument("--only", choices=("buildings", "official", "public"))
     parser.add_argument(
-        "--api-url", help="Base URL of the Data API (default http://127.0.0.1:8001)"
+        "--api-url", help="Base URL of the Data API (default http://127.0.0.1:8000/api/data)"
     )
     parser.add_argument("--apply", action="store_true", help="Write to the Data API")
     args = parser.parse_args(argv)
@@ -217,7 +221,7 @@ def main(argv=None):
             args.api_url
             or os.getenv("CAMPUSNAV_API_URL")
             or config.get("CAMPUSNAV_API_URL")
-            or "http://127.0.0.1:8001"
+            or "http://127.0.0.1:8000/api/data"
         )
         key = os.getenv("CAMPUSNAV_ADMIN_KEY") or config.get("CAMPUSNAV_ADMIN_KEY")
         if not key:

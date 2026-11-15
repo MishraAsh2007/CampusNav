@@ -138,7 +138,7 @@ export function groupIncidents(closures: Closure[], bus: BusRouteData | null): I
     const official = all.filter((c) => c.source === 'official' || c.source === 'verified');
     const community = all.filter((c) => !official.includes(c));
     const primary = official[0] ?? [...community].sort((a, b) => b.confirmations_count - a.confirmations_count)[0];
-    const lastConfirmed = all.map((c) => c.last_confirmed).sort().pop() ?? primary.last_confirmed;
+    const lastConfirmed = all.flatMap((c) => c.last_confirmed ? [c.last_confirmed] : []).sort().pop() ?? '';
     const impacts = all.map((c) => busImpact(c, bus)).filter(Boolean) as BusImpact[];
     const busMerged: BusImpact | null = impacts.length
       ? {

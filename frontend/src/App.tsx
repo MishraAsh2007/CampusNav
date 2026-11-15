@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Building, Closure, Place, RouteResponse, UserPreferences, UserReportPayload } from './types';
-import { closuresSignature, confirmClosure, getBuildings, getClosures, getHealth, planRoutes, submitUserReport, type Health, type PlanResult } from './services/api';
+import { approachPlan, closuresSignature, confirmArrival, confirmClosure, getBuildings, getClosures,
+  getHealth, getIndoorCatalog, planRoom, planRoutes, resolveClosure, submitUserReport,
+  type Health, type IndoorBuilding, type NavigationResult, type PlanResult } from './services/api';
 import { DEFAULT_PREFERENCES } from './data/profiles';
 import { buildingPlaces } from './data/places';
 import { MapView } from './components/MapView';
@@ -17,6 +19,7 @@ import { ReportSheet } from './components/ReportSheet';
 import { AboutSheet } from './components/AboutSheet';
 import { SourcePanel } from './components/SourcePanel';
 import { useMapProvider } from './components/map/MapsProvider';
+import { ReviewedDirections } from './components/indoor/ReviewedDirections';
 
 const placeFor = (b: Building): Place => ({name: b.name, ...b.location, building_id: b.id});
 const message = (e: unknown) => e instanceof Error ? e.message : 'The request failed.';
@@ -34,7 +37,9 @@ export function App() {
   const [origin, setOrigin] = useState<Place | null>(null);
   const [destination, setDestination] = useState<Place | null>(null);
   const [prefs, setPrefs] = useState<UserPreferences>({...DEFAULT_PREFERENCES, max_grade_pct: 5, need_automatic_door: false, avoid_rough_surfaces: false});
-  const [plan, setPlan] = useState<PlanResult | null>(null);
+  const [initialPlan, setPlan] = useState<PlanResult | null>(null);
+  const [revisedApproach, setRevisedApproach] = useState<PlanResult | null>(null);
+  const plan = revisedApproach ?? initialPlan;
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState<'accessible' | 'standard'>('accessible');
   const [showStandard, setShowStandard] = useState(true);
@@ -55,6 +60,16 @@ export function App() {
   const [hc, setHc] = useState(false);
   const [largeText, setLargeText] = useState(false);
   const [focus, setFocus] = useState<{lat: number; lng: number; key: number} | null>(null);
+  const [indoorCatalog, setIndoorCatalog] = useState<IndoorBuilding[]>([]);
+  const [indoorError, setIndoorError] = useState('');
+  const [room, setRoom] = useState<{building: string; id: string} | null>(null);
+  const [indoorResult, setIndoorResult] = useState<NavigationResult | null>(null);
+  const [arriving, setArriving] = useState(false);
+  const arrivalSequence = useRef(0);
+  const [mobilePlannerOpen, setMobilePlannerOpen] = useState(true);
+  const indoorBuilding = indoorCatalog.find(b => b.id === destination?.building_id);
+  const rooms = indoorBuilding?.landmarks.filter(node => node.kind === 'room' || node.kind === 'restroom') ?? [];
+  const roomId = room?.building === destination?.building_id ? room?.id : undefined;
   const sync = useCallback(async () => {
     const result = await getClosures();
     setRealClosures(old => closuresSignature(old) === closuresSignature(result.closures) ? old : result.closures);
@@ -69,9 +84,15 @@ export function App() {
       const a = bs.find(b => b.id === 'campus-center'); const b = bs.find(b => b.id === 'library');
       if (a) setOrigin(placeFor(a)); if (b) setDestination(placeFor(b));
     }).catch(e => mounted && setActionError(message(e)));
+    getIndoorCatalog().then(result => {if (mounted) setIndoorCatalog(result.buildings);})
+      .catch(e => {if (mounted) setIndoorError(message(e));});
     void sync(); const interval = setInterval(sync, 15000);
     return () => {mounted = false; clearInterval(interval);};
   }, [sync]);
+  useEffect(() => {
+    ++arrivalSequence.current;
+    setRevisedApproach(null); setIndoorResult(null); setArriving(false);
+  }, [origin, destination, prefs, roomId]);
   useEffect(() => {
     document.documentElement.classList.toggle('hc', hc);
     document.documentElement.classList.toggle('text-large', largeText);
@@ -80,7 +101,10 @@ export function App() {
     if (!origin || !destination || !buildings.length) return;
     const id = ++seq.current; setLoading(true); setPlan(null);
     const timer = setTimeout(() => {
-      planRoutes(origin, destination, prefs, closures).then(p => {
+      const request = roomId && destination.building_id
+        ? planRoom(origin, destination.building_id, roomId, prefs)
+        : planRoutes(origin, destination, prefs, simulation ? [simulation] : closures);
+      request.then(p => {
         if (id !== seq.current) return;
         const trip = JSON.stringify([origin, destination, prefs]); const sig = closuresSignature(closures);
         if (last.current.trip === trip && last.current.sig !== sig && last.current.route && JSON.stringify(last.current.route.features) !== JSON.stringify(p.accessible?.features)) {
@@ -94,7 +118,29 @@ export function App() {
       });
     }, 150);
     return () => {clearTimeout(timer); ++seq.current;};
-  }, [origin, destination, prefs, closures, buildings, health]);
+  }, [origin, destination, prefs, closures, buildings, health, roomId, simulation]);
+  const arrive = async () => {
+    if (!plan?.indoorArrival || !roomId) return;
+    const current = ++arrivalSequence.current;
+    setArriving(true); setActionError('');
+    try {
+      const result = await confirmArrival(plan.indoorArrival, roomId, prefs);
+      if (current !== arrivalSequence.current) return;
+      if (result.status !== 'route_ready') {
+        throw new Error(result.message || result.question || 'No indoor route is available.');
+      }
+      if (result.arrival_context) {
+        const revised = approachPlan(result);
+        setRevisedApproach({...revised, notes: ['The entrance changed after checking current closures.', ...revised.notes]});
+      } else {
+        setIndoorResult(result);
+      }
+    } catch (error) {
+      if (current === arrivalSequence.current) setActionError(message(error));
+    } finally {
+      if (current === arrivalSequence.current) setArriving(false);
+    }
+  };
   const report = async (payload: UserReportPayload) => {await submitUserReport(payload); await sync();};
   const mutate = async (fn: () => Promise<unknown>) => {
     setActionError(''); try {await fn(); await sync(); setSelectedClosure(null);} catch (e) {setActionError(message(e));}
@@ -115,7 +161,7 @@ export function App() {
       end_time: new Date(Date.now() + 3600000).toISOString(), last_confirmed: now, confirmations_count: 0});
   };
   return <div className="fixed inset-0 overflow-hidden bg-canvas">
-    <MapView buildings={buildings.filter(b => b.in_routing_area)} closures={closures}
+    <MapView buildings={buildings} closures={closures}
       accessible={loading ? null : plan?.accessible ?? null} standard={loading ? null : plan?.standard ?? null}
       ghost={ghost} showStandard={showStandard} origin={origin} destination={destination}
       chosenEntranceIds={[plan?.startEndpointId, plan?.endEndpointId].filter(Boolean) as string[]}
@@ -129,29 +175,45 @@ export function App() {
       }} />
     <TopBar activeIssues={realClosures.length} live={live} lastSync={lastSync}
       onReport={() => {setReportBuildingId(null); setReportPoint(null); setReportOpen(true);}}
-      onAbout={() => setAboutOpen(true)} onJudge={() => setDemoOpen(v => !v)} judgeOpen={demoOpen}
+      onAbout={() => setAboutOpen(true)} onJudge={health?.demo ? () => setDemoOpen(v => !v) : undefined} judgeOpen={demoOpen}
       highContrast={hc} onHighContrast={() => setHc(v => !v)} largeText={largeText} onLargeText={() => setLargeText(v => !v)} />
     {picking && <div className="fixed left-1/2 top-20 z-40 -translate-x-1/2 rounded-full bg-ink px-4 py-2 text-white" role="status">
       Tap the map to set {picking === 'report' ? 'the problem location' : picking}. <button className="underline" onClick={() => setPicking(null)}>Cancel</button>
     </div>}
     <aside className="glass fixed z-20 flex flex-col overflow-hidden inset-x-0 bottom-0 max-h-[58vh] rounded-t-4xl lg:inset-x-auto lg:bottom-4 lg:left-4 lg:top-[84px] lg:max-h-none lg:w-[400px] lg:rounded-4xl" aria-label="Trip planner">
-      <div className="scroll-soft flex-1 space-y-4 overflow-y-auto p-4">
+      <button type="button" className="btn-quiet lg:hidden" aria-expanded={mobilePlannerOpen} aria-controls="trip-controls"
+        onClick={() => setMobilePlannerOpen(open => !open)}>{mobilePlannerOpen ? 'Show more map' : 'Open trip planner'}</button>
+      <div id="trip-controls" className={`${mobilePlannerOpen ? 'block' : 'hidden lg:block'} scroll-soft flex-1 space-y-4 overflow-y-auto p-4`}>
         {(dataError || actionError) && <p className="rounded-xl bg-warn-soft p-3 text-sm" role="alert">{dataError || actionError} Saved information may be incomplete.</p>}
         <TripPlanner origin={origin} destination={destination} options={buildingPlaces(buildings.filter(b => b.in_routing_area))}
           onOrigin={setOrigin} onDestination={setDestination} onSwap={() => {setOrigin(destination); setDestination(origin);}}
           picking={picking === 'report' ? null : picking} onPick={setPicking} />
-        {demoOpen && <section className="rounded-2xl bg-lift-soft p-3 text-sm" aria-label="Routing simulation">
+        {rooms.length > 0 && <label className="block text-sm font-semibold">
+          Indoor destination
+          <select className="mt-1 block w-full rounded-xl border border-black/15 bg-white p-2" value={roomId ?? ''}
+            onChange={event => {setRoom(event.target.value && indoorBuilding ? {building: indoorBuilding.id, id: event.target.value} : null); setTab('accessible');}}>
+            <option value="">Building entrance only</option>
+            {rooms.map(node => <option key={node.id} value={node.id}>{node.label} · {indoorBuilding?.floors.find(f => f.id === node.floor_id)?.label ?? node.floor_id}</option>)}
+          </select>
+        </label>}
+        {indoorError && <p className="text-sm text-warn-ink" role="status">Indoor destinations unavailable. {indoorError}</p>}
+        {destBuilding?.in_routing_area === false && <p className="text-sm text-warn-ink">This building has no mapped entrance in the walking graph.</p>}
+        {demoOpen && health?.demo && <section className="rounded-2xl bg-lift-soft p-3 text-sm" aria-label="Routing simulation">
           <p className="font-semibold">Path closure simulation</p><p>Try Campus Center to the library to see a detour. Other trips may have no feasible alternative. This is never saved as a real outage.</p>
           <button className="btn-quiet mt-2" disabled={!plan?.accessible || !!simulation || loading} onClick={simulate}>Simulate blocked path</button>
           {simulation && <button className="btn-quiet mt-2" onClick={() => setSimulation(null)}>Clear simulation</button>}
         </section>}
         {simulation && <p role="status" className="rounded-xl bg-lift-soft p-3 text-sm">Simulation active: the marked path is blocked in this browser.</p>}
         <NeedsMenu prefs={prefs} onChange={setPrefs} open={needsOpen} onToggle={() => setNeedsOpen(v => !v)} />
-        {origin && destination && <RouteSummary accessible={plan?.accessible ?? null} standard={plan?.standard ?? null}
-          failure={plan?.failure} notes={plan?.notes ?? []} tab={tab} onTab={setTab} showStandard={showStandard}
+        {origin && destination && (!plan?.indoorArrival || plan.accessible) && <RouteSummary accessible={plan?.accessible ?? null} standard={plan?.standard ?? null}
+          failure={plan?.failure} notes={plan?.notes ?? []} tab={tab} onTab={setTab} showStandard={showStandard && !roomId}
           onToggleStandard={() => setShowStandard(v => !v)} prefs={prefs}
           arrivalEntrance={arrival && destBuilding ? {building: destBuilding, name: arrival.name, door: arrival.door_type} : null}
           destinationBuilding={destBuilding} engine="remote" graphEdges={health?.edges ?? 0} loading={loading} justRerouted={rerouted} />}
+        {plan?.indoorArrival && !plan.accessible && plan.notes.map(note => <p key={note} className="text-sm">{note}</p>)}
+        {plan?.indoorArrival && !indoorResult && !loading && <button type="button" className="btn"
+          disabled={arriving} onClick={() => void arrive()}>{arriving ? 'Checking current closures…' : 'I’m at the mapped entrance'}</button>}
+        {indoorResult && <ReviewedDirections result={indoorResult} onDone={() => setIndoorResult(null)} />}
         {rerouted && <p role="status" className="rounded-xl bg-lift-soft p-3 text-sm">Route recalculated after a closure changed.</p>}
         {tab === 'accessible' && plan?.accessible && origin && destination && <Narrator route={plan.accessible} originName={origin.name} destinationName={destination.name} prefs={prefs} />}
         {activeRoute && <Directions steps={activeRoute.steps} onFocusStep={s => s.at && setFocus({lat: s.at[1], lng: s.at[0], key: Date.now()})} />}
@@ -164,7 +226,7 @@ export function App() {
       onReport={b => {setReportBuildingId(b.id); setReportPoint(null); setReportOpen(true); setSelectedBuilding(null);}} />
     <ClosureSheet closure={selectedClosure} onClose={() => setSelectedClosure(null)}
       onConfirm={c => {void mutate(() => confirmClosure(c.id));}}
-      onResolve={c => {void mutate(() => submitUserReport({lat: c.lat, lng: c.lng, type: c.type, status: 'working', title: c.title, description: 'Reported restored', connector_id: c.connector_id, asset_id: c.asset_id, building_id: c.building_id, floor_id: c.floor_id, timestamp: new Date().toISOString()}));}} />
+      onResolve={c => {void mutate(() => resolveClosure(c.id));}} />
     <ReportSheet open={reportOpen} onClose={() => setReportOpen(false)} buildings={buildings} initialBuildingId={reportBuildingId}
       pickedPoint={reportPoint} onPickOnMap={() => {setReportOpen(false); setPicking('report');}} onSubmit={report} />
     <AboutSheet open={aboutOpen} onClose={() => setAboutOpen(false)} graphMeta={health} provider={provider} />

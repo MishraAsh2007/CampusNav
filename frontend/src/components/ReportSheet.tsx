@@ -22,7 +22,6 @@ const TYPES: { id: BarrierType; label: string; icon: JSX.Element }[] = [
 const STATUSES = [
   { id: 'broken', label: 'Not working' },
   { id: 'blocked', label: 'Blocked (snow, ice, cars)' },
-  { id: 'working', label: 'Fixed now' }
 ] as const;
 
 export function ReportSheet({ open, onClose, buildings, initialBuildingId, pickedPoint, onPickOnMap, onSubmit }: Props) {
@@ -52,7 +51,7 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
   const title = useMemo(() => {
     const t = TYPES.find((x) => x.id === type)!.label;
     const place = type === 'elevator' && lift ? `${b?.name} ${lift.name.toLowerCase()}` : b?.name ?? 'Campus';
-    const s = status === 'working' ? 'working again' : status === 'blocked' ? 'blocked' : 'not working';
+    const s = status === 'blocked' ? 'blocked' : 'not working';
     return `${place}${type === 'elevator' && lift ? '' : ` ${t.toLowerCase()}`} ${s}`;
   }, [type, status, b, lift]);
 
@@ -133,7 +132,7 @@ export function ReportSheet({ open, onClose, buildings, initialBuildingId, picke
                 onClick={() => setStatus(s.id)}
                 className={cx(
                   'rounded-full px-3 py-1.5 text-[13px] transition',
-                  status === s.id ? (s.id === 'working' ? 'bg-go text-white' : 'bg-stop text-white') : 'bg-black/[0.04] text-ink-2'
+                  status === s.id ? 'bg-stop text-white' : 'bg-black/[0.04] text-ink-2'
                 )}
               >
                 {s.label}

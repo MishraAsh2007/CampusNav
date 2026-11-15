@@ -77,3 +77,33 @@ test('notice refresh failure preserves the last real cache and labels it stale',
     assert.deepEqual(result.closures,[closure]);
   } finally {globalThis.fetch=previous;}
 });
+
+test('room planning and arrival use the server-selected entrance without client closure overrides', async () => {
+  const previous = globalThis.fetch;
+  const calls = [];
+  const portal = {building_id: 'ilc', portal_id: 'ilc-portal-south'};
+  const ready = {status: 'route_ready', arrival_context: portal, journey: {warnings: [], legs: [
+    {kind: 'outdoor', route: wire},
+    {kind: 'portal', direction: 'enter', portal_id: portal.portal_id, entrance_label: 'South entrance'},
+  ]}};
+  globalThis.fetch = async (url, init) => {
+    calls.push([url, JSON.parse(init.body)]);
+    return response(url.endsWith('/plan') ? ready : {status: 'no_route', message: 'Elevator unavailable'});
+  };
+  try {
+    const prefs = {max_grade_pct: 5, no_stairs: true};
+    const result = await api.planRoom({name: 'Campus Center', building_id: 'campus-center', entrance_id: 'south'}, 'ilc', 'n151', prefs);
+    assert.deepEqual(result.indoorArrival, portal);
+    assert.equal(result.notes[0], 'Approach: South entrance.');
+    assert.deepEqual(calls[0][1].origin, {building_id: 'campus-center'});
+    assert.equal(calls[0][1].origin_entrance_id, 'south');
+    assert.equal(calls[0][1].closures, undefined);
+    const arrival = await api.confirmArrival(portal, 'n151', prefs);
+    assert.equal(calls[1][0], '/navigation/arrive');
+    assert.deepEqual(calls[1][1].destination, {building_id: 'ilc', node_id: 'n151'});
+    assert.equal(calls[1][1].portal_id, portal.portal_id);
+    assert.equal(calls[1][1].closures, undefined);
+    assert.equal(arrival.status, 'no_route');
+    assert.equal(calls.length, 2);
+  } finally {globalThis.fetch = previous;}
+});
