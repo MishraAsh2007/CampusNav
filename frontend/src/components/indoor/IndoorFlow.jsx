@@ -11,6 +11,8 @@ import { nextStepFromGps, progressOnStep, snapToPolyline, useGeolocation } from 
 import { destinationsOf } from './indoorModel';
 import { entranceNear, findTarget, nearestNode, routeFromPoint, routeIndoor } from './indoorRouter';
 import { reviewedRoute } from './reviewedRoute';
+import { requestIndoorDirections } from './backendIndoor';
+import { closuresSignature } from '../../services/api';
 import { useAltitudeFloor } from './altitudeFloor';
 import { POS } from './layout';
 
@@ -43,19 +45,22 @@ const OFF_ROUTE_MS = 4000;
 const REROUTE_COOLDOWN_MS = 10000;
 const NO_CLOSURES = [];
 
-export default function IndoorFlow({ viewState, onViewStateChange, map: model, buildingId, weather = SAMPLE_WEATHER, highContrast = false, targetRoomId = null, entrance = null, closures = NO_CLOSURES, preferences }) {
+export default function IndoorFlow({ viewState, onViewStateChange, map: model, buildingId, weather = SAMPLE_WEATHER, highContrast = false, targetRoomId = null, entrance = null, closures = NO_CLOSURES, preferences, startNodeId = null, consent = {} }) {
   // Rooms plus "whole floor" entries (arrive at that floor's elevator lobby)
   const rooms = useMemo(() => destinationsOf(model), [model]);
   const [roomId, setRoomId] = useState(null);
   const [active, setActive] = useState(0);
   const [verifiedRoute, setVerifiedRoute] = useState(null);
   const [verifiedError, setVerifiedError] = useState(null);
-  const reviewed = model?.source === 'api' && model.status === 'reviewed';
+  const reviewed = model?.source === 'api';
+  const [manualStart, setManualStart] = useState('');
+  const serverStart = startNodeId || entrance?.indoorNodeId || manualStart;
+  useEffect(() => {setManualStart('');}, [model]);
   const requestSequence = useRef(0);
   // GPS is opt-in; Next / Back always work, with or without it
   const [gpsOn, setGpsOn] = useState(false);
   const [follow, setFollow] = useState(true);
-  const geo = useGeolocation(gpsOn && viewState !== 'outdoor' && viewState !== 'transition_modal');
+  const geo = useGeolocation(gpsOn && !reviewed && viewState !== 'outdoor' && viewState !== 'transition_modal');
 
   // New building or a room picked in the search bar: start from that room (or none)
   useEffect(() => {
@@ -72,13 +77,30 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
 
   // Only elevator closures matter indoors; keep the route stable while other reports change
   const elevatorClosures = useMemo(() => closures.filter((c) => c.type === 'elevator' && c.status !== 'repaired'), [closures]);
-  const closureKey = elevatorClosures.map((c) => `${c.id}:${c.status}`).join('|');
+  const closureKey = closuresSignature(closures);
   const planned = useMemo(
     () => (!reviewed && roomId && model ? routeIndoor(model, roomId, { entrance: startEntrance, closures: elevatorClosures }) : null),
     [model, reviewed, roomId, startEntrance, closureKey] // eslint-disable-line react-hooks/exhaustive-deps
   );
   const baseRoute = reviewed ? verifiedRoute : planned && !planned.blocked ? planned : null;
   const blockedReason = reviewed ? verifiedError : planned?.blocked ? `No step-free route to ${planned.room.name}: ${planned.reason}` : null;
+
+  const stepRef = useRef(null);
+  stepRef.current = verifiedRoute?.steps[active];
+  const liveClosureKey = useRef(closureKey);
+  useEffect(() => {
+    if (liveClosureKey.current === closureKey) return;
+    liveClosureKey.current = closureKey;
+    if (!reviewed || !verifiedRoute || viewState === 'outdoor' || viewState === 'transition_modal') return;
+    const from = stepRef.current?.fromNodeId;
+    const seq = ++requestSequence.current;
+    setVerifiedRoute(null);
+    setVerifiedError('An outage changed. Recalculating from your current instruction landmark.');
+    if (!from) return;
+    requestIndoorDirections(model, from, roomId, closures, {...consent, preferences})
+      .then(next => {if (seq === requestSequence.current) {setVerifiedRoute(next); setVerifiedError(null); setActive(0);}})
+      .catch(error => {if (seq === requestSequence.current) setVerifiedError(error.message);});
+  }, [closureKey]); // Route changes must not restart this effect.
 
   // A GPS reroute replaces the route until you pick another room
   const [reroute, setReroute] = useState(null);
@@ -233,6 +255,12 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
     return (
       <BuildingTransitionModal
         open
+        allow3D={!reviewed}
+        startControl={reviewed ? <div className="mb-4 space-y-2 text-sm">
+          {(serverStart || entrance?.portalId) ? <p className="rounded-xl bg-emerald-50 p-3 text-emerald-900">Starting at {model.nodes.get(serverStart)?.label || entrance?.name || "your routed entrance"}. Directions include the approach to the elevator.</p> : <label>Where are you now?<select aria-label="Current indoor landmark" className="mt-1 w-full rounded-xl border p-2" value={manualStart} onChange={e => setManualStart(e.target.value)}><option value="">Choose a mapped landmark</option>{[...model.nodes.values()].map(n => <option key={n.id} value={n.id}>{n.label} · floor {n.floor}</option>)}</select></label>}
+          {model.routingKind === "drawing" && !consent.drawing && <p>Accept drawing-based directions in the trip planner first.</p>}
+          {model.residentAccessRequired && !consent.resident && <p>Confirm residence/keycard permission in the trip planner first.</p>}
+        </div> : null}
         buildingName={building.name}
         rooms={rooms}
         initialRoomId={roomId}
@@ -247,7 +275,9 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
             const request = ++requestSequence.current;
             setVerifiedError(null);
             try {
-              const next = await reviewedRoute(model, id, preferences, {portalId: entrance?.portalId});
+              const next = model.routingKind === 'drawing' || !entrance?.portalId
+                ? await requestIndoorDirections(model, serverStart, id, closures, {...consent, preferences})
+                : await reviewedRoute(model, id, preferences, {portalId: entrance.portalId});
               if (request !== requestSequence.current) return;
               setVerifiedRoute(next);
             } catch (error) {
@@ -255,14 +285,19 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
               return;
             }
           }
-          onViewStateChange(mode === '3d' ? 'indoor_3d' : 'indoor_2d');
+          onViewStateChange(!reviewed && mode === '3d' ? 'indoor_3d' : 'indoor_2d');
         }}
       />
     );
   }
 
   const destination = { name: route.room.name, x: route.room.doorX, y: route.room.doorY, floor: route.room.floor };
-  const warnings = <RouteWarningsPanel weather={weather} surfaces={surfaces} compact />;
+  const warnings = <div className="max-w-sm space-y-2"><RouteWarningsPanel weather={reviewed ? null : weather} surfaces={reviewed ? [] : surfaces} compact />
+    {reviewed && <details className="rounded-2xl bg-amber-50 p-3 text-sm text-amber-950"><summary className="cursor-pointer font-semibold">Source-based directions · access unverified</summary>
+      <p className="mt-2">Follow the mapped approach to the named elevator. Use Next / Back as you walk; indoor GPS is unavailable.</p>
+      {(route.warnings || []).map((warning, i) => <p className="mt-2" key={i}>{warning}</p>)}
+    </details>}
+  </div>;
   const panelVars = {
     '--indoor-panel-h': `${panelBox.fromBottom || 16}px`,
     '--indoor-right-inset': `${panelBox.fullWidth ? panelBox.fromBottom : 16}px`
@@ -273,7 +308,7 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
       const request = ++requestSequence.current;
       try {
         const startNode = nearbyReviewedNode(model, step.floor, gps?.pos && gps.floorId === step.floor ? gps.pos : step.pts?.[0]);
-        const next = await reviewedRoute(model, id, preferences, {startNode});
+        const next = await requestIndoorDirections(model, route.steps[active]?.fromNodeId || startNode, id, closures, {...consent, preferences});
         if (request !== requestSequence.current) return;
         setVerifiedRoute(next);
       } catch (error) {
@@ -314,7 +349,7 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
           destination={destination}
           building={building.name}
           gps={gps?.pos ? gps : null}
-          onSwitch3D={() => onViewStateChange('indoor_3d')}
+          onSwitch3D={reviewed ? undefined : () => onViewStateChange('indoor_3d')}
           onExit={exit}
           onSelectRoom={(r) => pickRoom(r.id)}
           overlay={warnings}
@@ -332,6 +367,7 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
           <div role="toolbar" aria-label="Location and destination" className="flex max-w-full items-center gap-0.5 overflow-x-auto rounded-full bg-white/95 p-1 text-slate-900 shadow-lg ring-1 ring-black/10 backdrop-blur [scrollbar-width:none]">
             <button
               type="button"
+              disabled={reviewed}
               onClick={() => setGpsOn((v) => !v)}
               aria-pressed={gpsOn}
               title={gpsOn ? 'Stop using your location' : 'Use my location'}

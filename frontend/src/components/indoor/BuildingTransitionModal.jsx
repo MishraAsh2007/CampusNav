@@ -13,7 +13,7 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
  *   error         message when the chosen room has no step-free route (e.g. elevator out of service)
  *   mapNote       small caveat about the map (sample layout, draft)
  */
-export default function BuildingTransitionModal({ open, buildingName, rooms, initialRoomId, onClose, onLaunch, error = null, mapNote = null }) {
+export default function BuildingTransitionModal({ open, buildingName, rooms, initialRoomId, onClose, onLaunch, error = null, mapNote = null, startControl = null, allow3D = true }) {
   const [query, setQuery] = useState('');
   const [roomId, setRoomId] = useState(initialRoomId ?? null);
   const [listOpen, setListOpen] = useState(false);
@@ -83,6 +83,7 @@ export default function BuildingTransitionModal({ open, buildingName, rooms, ini
           </button>
         </div>
 
+        {startControl}
         <label htmlFor={listId + '-input'} className="mb-2 block text-[14px] font-semibold text-slate-800">
           Which room do you want to go to?
         </label>
@@ -166,7 +167,7 @@ export default function BuildingTransitionModal({ open, buildingName, rooms, ini
             <span className="text-[16px] font-semibold">2D Floor Plan</span>
             <span className="text-[13px] text-white/70">Bird's Eye View</span>
           </button>
-          <button
+          {allow3D && (<button
             type="button"
             disabled={!selected}
             onClick={() => onLaunch?.('3d', roomId)}
@@ -177,7 +178,7 @@ export default function BuildingTransitionModal({ open, buildingName, rooms, ini
             </span>
             <span className="text-[16px] font-semibold">3D Immersive View</span>
             <span className="text-[13px] text-white/80">First-person, wheelchair height</span>
-          </button>
+          </button>)}
         </div>
         {error && selected?.id === initialRoomId && (
           <p role="alert" className="mt-4 rounded-2xl bg-red-50 px-4 py-3 text-[14px] font-medium text-red-800 ring-1 ring-red-200">

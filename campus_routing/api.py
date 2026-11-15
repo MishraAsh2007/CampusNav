@@ -10,7 +10,7 @@ from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
 from campus_notices.cache import active_closures, read_snapshot, snapshot_status
@@ -18,7 +18,9 @@ from campus_notices.community import ReportStore, UserReport
 from campus_notices.models import ExternalReport
 from campus_notices.reports import active_reports, read_reports, reports_status
 
+from .arrival import matched_arrival
 from .buildings import Place, TripRequest, choices, plan_trip, read_buildings
+from .drawing_journey import DrawingPortalRegistry
 from .engine import RoutingEngine, RoutingError
 from .indoor import IndoorEngine, IndoorRouteRequest, read_indoor
 from .journey import JourneyRequest, plan_journey
@@ -42,6 +44,7 @@ def create_app(
     indoor_sources_path: Path | None = None,
     plan_wayfinding_dir: Path | None = None,
     data_app: FastAPI | None = None,
+    plan_portals_path: Path | None = None,
 ) -> FastAPI:
     bridge = None
     if data_app is not None:
@@ -65,6 +68,19 @@ def create_app(
     indoor_maps = indoor_dir or Path(os.getenv("INDOOR_MAPS_DIR", ROOT / "data/indoor"))
     indoor_sources = indoor_sources_path or ROOT / "data/indoor_sources.json"
     plan_dir = plan_wayfinding_dir or os.getenv("PLAN_WAYFINDING_DIR")
+    portal_path = plan_portals_path or os.getenv("PLAN_PORTALS_PATH")
+    if not portal_path and plan_dir:
+        portal_path = Path(plan_dir).parent / "plan_wayfinding_portals.json"
+
+    def drawing_portal_registry():
+        if not portal_path or not Path(portal_path).exists():
+            return DrawingPortalRegistry()
+        try:
+            return DrawingPortalRegistry.model_validate_json(Path(portal_path).read_text("utf-8"))
+        except (OSError, ValueError) as error:
+            raise HTTPException(
+                503, detail="Drawing entrance registry failed validation."
+            ) from error
 
     def source_plan(building_id):
         if not re.fullmatch(r"[a-z0-9][a-z0-9_-]{0,79}", building_id):
@@ -162,6 +178,41 @@ def create_app(
             result = plan_trip(get_engine(), catalog(), current_closures(request))
             if bridge is not None and bridge.official_status()["stale"]:
                 result["notes"].append("Official closure data is stale or unavailable.")
+            building_id = request.destination.building_id
+            if building_id and result["accessible"]:
+                try:
+                    data = indoor_map(building_id)
+                    if data.status == "reviewed" and not data.synthetic:
+                        result["indoor_arrival"] = matched_arrival(
+                            get_engine(),
+                            result["accessible"],
+                            result["end_entrance"],
+                            building_id,
+                            {n.id: n for n in data.nodes},
+                            data.portals,
+                        )
+                except HTTPException:
+                    pass  # An unavailable indoor map must not break an outdoor-only route.
+                if not result.get("indoor_arrival") and plan_dir:
+                    try:
+                        data = source_plan(building_id)
+                        portals = [
+                            p
+                            for p in drawing_portal_registry().portals
+                            if p.building_id == building_id
+                            and data.floor_sources.get(p.floor_id, {}).get("sha256")
+                            == p.plan_source_sha256
+                        ]
+                        result["indoor_arrival"] = matched_arrival(
+                            get_engine(),
+                            result["accessible"],
+                            result["end_entrance"],
+                            building_id,
+                            {n.id: n for n in data.nodes},
+                            portals,
+                        )
+                    except HTTPException:
+                        pass
             return result
         except RoutingError as exc:
             raise HTTPException(
@@ -257,7 +308,9 @@ def create_app(
         try:
             return bridge.submit(request) if bridge is not None else community.submit(request)
         except ValueError:
-            raise HTTPException(422, detail={"message": "The report does not fit the data contract."}) from None
+            raise HTTPException(
+                422, detail={"message": "The report does not fit the data contract."}
+            ) from None
 
     @app.post("/reports/{report_id}/confirm", tags=["Campus navigation"])
     def confirm_report(report_id: str):
@@ -288,8 +341,9 @@ def create_app(
         }
 
     def demo_enabled():
-        return (os.getenv("CAMPUSNAV_DEMO") == "1" and
-                (bridge is None or bridge.app.state.storage_mode == "memory"))
+        return os.getenv("CAMPUSNAV_DEMO") == "1" and (
+            bridge is None or bridge.app.state.storage_mode == "memory"
+        )
 
     def current_closures(request):
         if bridge is None:
@@ -437,7 +491,9 @@ def create_app(
             rows = bridge.active(routing=True)
             status = bridge.official_status()
             return [row.model_dump() for row in rows], {
-                "stale": status["stale"], "count": len(rows), "generated_at": status["generated_at"],
+                "stale": status["stale"],
+                "count": len(rows),
+                "generated_at": status["generated_at"],
             }
         rows = official_records() + community.active()
         status = snapshot_status(official)
@@ -468,25 +524,51 @@ def create_app(
                 navigation_closures,
             )
             origin = request.origin
-            if (bridge is not None and origin and origin.building_id
-                    and not (origin.node_id or origin.floor_id or origin.text)):
+            if (
+                bridge is not None
+                and origin
+                and origin.building_id
+                and not (origin.node_id or origin.floor_id or origin.text)
+            ):
                 local = catalog()
-                building = next((row for row in local["buildings"] if row["id"] == origin.building_id), None)
+                building = next(
+                    (row for row in local["buildings"] if row["id"] == origin.building_id), None
+                )
                 if building is None:
-                    raise RoutingError("unknown_building", "This building is not in the campus catalog.", 422)
+                    raise RoutingError(
+                        "unknown_building", "This building is not in the campus catalog.", 422
+                    )
                 entrances = choices(
-                    Place(**building["location"], building_id=origin.building_id,
-                          entrance_id=request.origin_entrance_id),
-                    local, step_free=request.no_stairs, automatic=request.need_automatic_door,
+                    Place(
+                        **building["location"],
+                        building_id=origin.building_id,
+                        entrance_id=request.origin_entrance_id,
+                    ),
+                    local,
+                    step_free=request.no_stairs,
+                    automatic=request.need_automatic_door,
                 )
                 # Use one snapshot for all candidate approaches.
                 captured = navigation_closures()
                 service = NavigationService(service.outdoor, service.resolver, lambda: captured)
-                results = [service.plan(request.model_copy(update={
-                    "origin": LocationQuery(outdoor={"lat": entry["lat"], "lng": entry["lng"]}),
-                })) for entry in entrances]
+                results = [
+                    service.plan(
+                        request.model_copy(
+                            update={
+                                "origin": LocationQuery(
+                                    outdoor={"lat": entry["lat"], "lng": entry["lng"]}
+                                ),
+                            }
+                        )
+                    )
+                    for entry in entrances
+                ]
                 ready = [row for row in results if row["status"] == "route_ready"]
-                return min(ready, key=lambda row: row["journey"]["routing_cost"]) if ready else results[0]
+                return (
+                    min(ready, key=lambda row: row["journey"]["routing_cost"])
+                    if ready
+                    else results[0]
+                )
             return service.plan(request)
         except RoutingError as exc:
             raise HTTPException(
@@ -546,10 +628,30 @@ def create_app(
     def get_plan_wayfinding(building_id: str):
         return source_plan(building_id)
 
+    @app.get(
+        "/plan-wayfinding/{building_id}/floors/{floor_id}/image", tags=["Drawing wayfinding pilot"]
+    )
+    def drawing_floor_image(building_id: str, floor_id: str):
+        data = source_plan(building_id)
+        value = data.floor_sources.get(floor_id, {}).get("local_image")
+        if not value:
+            raise HTTPException(404, detail="No source floor image for this pilot.")
+        image_path = Path(value).resolve()
+        allowed = (Path(plan_dir) / "sources").resolve()
+        if (
+            not image_path.is_relative_to(allowed)
+            or image_path.suffix.lower() != ".png"
+            or not image_path.is_file()
+        ):
+            raise HTTPException(404, detail="Floor image is unavailable.")
+        return FileResponse(
+            image_path, media_type="image/png", headers={"Cache-Control": "no-store"}
+        )
+
     @app.post("/plan-wayfinding/{building_id}", tags=["Drawing wayfinding pilot"])
     def drawing_directions(building_id: str, request: PlanWayfindingRequest):
         try:
-            return plan_directions(source_plan(building_id), request)
+            return plan_directions(source_plan(building_id), current_closures(request))
         except RoutingError as error:
             raise HTTPException(
                 error.status, detail=dict(code=error.code, message=error.message)
@@ -593,11 +695,28 @@ def create_app(
     @app.post("/journey", tags=["Indoor navigation"])
     def journey(request: JourneyRequest):
         try:
-            return plan_journey(get_engine(), indoor_engine, current_closures(request))
+            drawing = any(e.kind == "drawing" for e in (request.origin, request.destination))
+            return plan_journey(
+                get_engine(),
+                indoor_engine,
+                current_closures(request),
+                get_drawing=source_plan,
+                drawing_portals=drawing_portal_registry() if drawing else None,
+            )
         except RoutingError as exc:
             raise HTTPException(
                 exc.status, detail={"code": exc.code, "message": exc.message}
             ) from exc
+
+    @app.get("/journey/portals", tags=["Indoor navigation"])
+    def journey_portals():
+        """Source-matched drawing thresholds and explicit unresolved entrance gaps."""
+        registry = drawing_portal_registry()
+        return dict(
+            status="source_matched_only" if registry.portals else "unavailable",
+            physical_verification=False,
+            **registry.model_dump(mode="json"),
+        )
 
     @app.get("/indoor/maps/{building_id}", tags=["Indoor navigation"])
     def indoor_floor_map(building_id: str):

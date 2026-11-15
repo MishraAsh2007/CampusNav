@@ -9,6 +9,7 @@ import {
   planRoutes,
   PlanResult,
   type IndoorIntent,
+  DEMO_MODE,
   resetClosures,
   submitUserReport,
   addLocalOfficialNotice
@@ -26,6 +27,8 @@ import { NeedsMenu } from './components/NeedsMenu';
 import { RouteSummary } from './components/RouteSummary';
 import { Narrator } from './components/Narrator';
 import { Directions } from './components/Directions';
+import { SourcePanel } from './components/SourcePanel';
+import type { JourneyEndpoint, JourneyLeg } from './services/api';
 import { OutageList } from './components/OutageList';
 import { BuildingSheet } from './components/BuildingSheet';
 import { ClosureSheet } from './components/ClosureSheet';
@@ -117,18 +120,30 @@ export function App() {
 
   // Room / floor picked in the destination search bar, handed to the indoor flow on arrival
   const [indoorTarget, setIndoorTarget] = useState<DestinationTarget | null>(null);
+  const [originTarget, setOriginTarget] = useState<DestinationTarget | null>(null);
+  const [acceptDrawing, setAcceptDrawing] = useState(false);
+  const [residentAccess, setResidentAccess] = useState(false);
+  const [inspectedLeg, setInspectedLeg] = useState<JourneyLeg | null>(null);
   // Tell the routing engine what happens inside: a room on another floor means an elevator is needed,
   // so it prefers the entrance closest to a working one
   const destIndoorMap = indoorCatalog.forBuilding(destination?.building_id);
   const indoorIntent = useMemo<IndoorIntent>(() => {
-    if (!destIndoorMap) return {};
-    const target = indoorTarget?.buildingId === destination?.building_id ? indoorTarget : null;
-    const intent = {room: target?.label, needsElevator: !!target?.floorId && target.floorId !== destIndoorMap.entryFloor};
-    if (destIndoorMap.source !== 'api' || destIndoorMap.status !== 'reviewed') return intent;
-    const targetId = target?.roomId ?? undefined;
-    return {...intent, reviewedBuildingId: destIndoorMap.id, nodeId: targetId?.endsWith(':@lobby') ? undefined : targetId};
-  }, [destIndoorMap, indoorTarget, destination?.building_id]);
-  const intentKey = `${indoorIntent.reviewedBuildingId ?? ''}|${indoorIntent.nodeId ?? ''}|${indoorIntent.room ?? ''}`;
+    const endpoint = (target: DestinationTarget | null, id?: string): JourneyEndpoint | undefined => {
+      const model = indoorCatalog.forBuilding(id);
+      if (!model || model.source !== 'api' || !target?.roomId || target.buildingId !== id) return undefined;
+      const floor = /^(.+):@lobby$/.exec(target.roomId);
+      const node = floor ? [...model.nodes.values()].find(n => n.floor === floor[1] && n.kind === 'elevator_stop')?.id : target.roomId;
+      return {kind: model.routingKind || 'indoor', building_id: model.id, node_id: node || target.roomId};
+    };
+    const from = endpoint(originTarget, origin?.building_id);
+    const to = endpoint(indoorTarget, destination?.building_id);
+    if (!from && destIndoorMap?.source === 'api' && destIndoorMap.status === 'reviewed' && !destIndoorMap.routingKind) {
+      return {reviewedBuildingId: destIndoorMap.id, nodeId: to && to.kind !== 'outdoor' ? to.node_id : undefined};
+    }
+    return {origin: from, destination: to,
+      acceptDrawing, residentAccess};
+  }, [indoorCatalog, originTarget, indoorTarget, origin?.building_id, destination?.building_id, acceptDrawing, residentAccess]);
+  const intentKey = JSON.stringify(indoorIntent);
 
   useEffect(() => {
     if (!origin || !destination || !graph) return;
@@ -151,6 +166,11 @@ export function App() {
       setLoading(false);
       onPlanned.current?.(p);
       onPlanned.current = null;
+    }).catch(error => {
+      if (seq !== planSeq.current) return;
+      setPlan({accessible: null, standard: null, engine: 'remote', ms: 0, notes: [],
+        failure: error instanceof Error ? error.message : 'Could not calculate this journey.'});
+      setLoading(false);
     });
     // indoorIntent is captured through intentKey
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -315,10 +335,11 @@ export function App() {
     return {
       id: ap.entranceId,
       portalId: ap.portalId,
+      indoorNodeId: ap.indoorNodeId,
       // Exactly the coordinate the engine returned; names come from our building data when the id matches
       lat: ap.lat,
       lng: ap.lng,
-      name: e?.name ?? 'Entrance',
+      name: ap.label || e?.name || 'Entrance',
       door: (e?.door_type === 'manual' ? 'manual' : 'automatic') as 'manual' | 'automatic',
       source: ap.source
     };
@@ -373,11 +394,18 @@ export function App() {
     prevIndoorId.current = indoorBuildingId;
   }, [indoorBuildingId]);
   const arrivedAtIndoorBuilding = !!indoorBuildingId && !!plan?.accessible && viewState === 'outdoor';
+  const inspectedSteps = (inspectedLeg?.steps || []) as {from_node_id: string; to_node_id: string}[];
+  const viewBuildingId = inspectedLeg?.building_id || indoorBuildingId;
+  const viewModel = inspectedLeg ? indoorCatalog.forBuilding(inspectedLeg.building_id) : destIndoorMap;
+  const viewTargetId = inspectedLeg ? inspectedSteps[inspectedSteps.length - 1]?.to_node_id : indoorTarget?.roomId;
+  const viewStartId = inspectedLeg ? inspectedSteps[0]?.from_node_id : undefined;
 
   // Picking a different destination elsewhere (the To field, a building pin) drops a stale room
   useEffect(() => {
     if (indoorTarget && destination?.building_id !== indoorTarget.buildingId) setIndoorTarget(null);
   }, [destination?.building_id, indoorTarget]);
+  useEffect(() => {if (originTarget && originTarget.buildingId !== origin?.building_id) setOriginTarget(null);}, [origin?.building_id, originTarget]);
+  useEffect(() => {setInspectedLeg(null);}, [plan]);
   const onDestinationSearch = (t: DestinationTarget) => {
     const b = buildings.find((x) => x.id === t.buildingId);
     setDestination({ name: b?.name ?? t.buildingName, lat: b?.location.lat ?? t.lat, lng: b?.location.lng ?? t.lng, building_id: t.buildingId });
@@ -468,12 +496,33 @@ export function App() {
             onOrigin={setOrigin}
             onDestination={setDestination}
             onSwap={() => {
+              setOriginTarget(indoorTarget);
+              setIndoorTarget(originTarget);
               setOrigin(destination);
               setDestination(origin);
             }}
             picking={picking === 'origin' || picking === 'destination' ? picking : null}
             onPick={setPicking}
           />
+          {activeRoute && <Directions key={routeKey(activeRoute)} steps={activeRoute.steps} onFocusStep={focusStep} />}
+          <div className="space-y-2">
+            <p className="text-xs font-semibold">Indoor starting place (optional)</p>
+            <DestinationInput placeholder="Start at a building, floor or landmark" value={originTarget?.label}
+              onSelect={target => {const b = buildings.find(b => b.id === target.buildingId); if (b) setOrigin({name: b.name, building_id: b.id, ...b.location}); setOriginTarget(target.type === 'building' ? null : target);}} />
+            {originTarget && <button className="text-xs underline" onClick={() => setOriginTarget(null)}>Start outdoors instead</button>}
+            <label className="flex gap-2 text-xs"><input type="checkbox" checked={acceptDrawing} onChange={e => setAcceptDrawing(e.target.checked)} />I accept drawing-based directions with unverified physical access.</label>
+            <label className="flex gap-2 text-xs"><input type="checkbox" checked={residentAccess} onChange={e => setResidentAccess(e.target.checked)} />I have permission/keycard access for the selected residence.</label>
+          </div>
+          {plan?.journey && <section className="space-y-3 rounded-2xl border border-emerald-200 p-3" aria-label="Complete journey directions">
+            <h2 className="font-semibold">Indoor and outdoor journey</h2>
+            {plan.journey.total_distance === null && <p className="text-xs">Indoor distance is unknown; the map shows the outdoor portion.</p>}
+            {plan.journey.legs.map((leg, i) => <details key={i} open={leg.kind === 'indoor'}>
+              <summary className="text-sm font-semibold">{i + 1}. {leg.kind}{leg.building_id ? ` · ${leg.building_id}` : ''}</summary>
+              {leg.kind === 'indoor' && <><ol className="my-2 space-y-1 text-sm">{((leg.steps || []) as {instruction: string}[]).map((step, n) => <li key={n}>{step.instruction}</li>)}</ol><button className="rounded-xl bg-emerald-700 px-3 py-2 text-sm text-white" onClick={() => {setInspectedLeg(leg); setViewState('indoor_2d');}}>View this floor route</button></>}
+              {leg.kind === 'portal' && <p className="text-sm">{String(leg.instruction || '')}</p>}
+            </details>)}
+          </section>}
+          {plan?.failure && !activeRoute && <p role="alert" className="rounded-xl bg-red-50 p-3 text-sm text-red-900">{plan.failure}</p>}
           <NeedsMenu prefs={prefs} onChange={setPrefs} open={needsOpen} onToggle={() => setNeedsOpen((o) => !o)} />
           {origin && destination && (
             <RouteSummary
@@ -497,8 +546,8 @@ export function App() {
           {tab === 'accessible' && plan?.accessible && origin && destination && (
             <Narrator route={plan.accessible} originName={origin.name} destinationName={destination.name} prefs={prefs} />
           )}
-          {activeRoute && <Directions steps={activeRoute.steps} onFocusStep={focusStep} />}
           <OutageList incidents={listedIncidents} onSelect={onSelectIncident} live={live} lastSync={lastSync} />
+          {!DEMO_MODE && <SourcePanel />}
           {provider === 'osm' && reason && (
             <p className="px-1 text-[11px] text-ink-4">
               Basemap: OpenStreetMap ({reason.toLowerCase()}). Add VITE_GOOGLE_MAPS_API_KEY to use Google Maps.
@@ -577,7 +626,7 @@ export function App() {
       {arrivedAtIndoorBuilding && (
         <button
           type="button"
-          onClick={() => setViewState('transition_modal')}
+          onClick={() => {setInspectedLeg(null); setViewState('transition_modal');}}
           className="fixed bottom-6 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 rounded-full bg-emerald-600 px-5 py-3 text-[15px] font-semibold text-white shadow-lift ring-4 ring-white/80 transition hover:bg-emerald-500 active:scale-95 max-lg:bottom-[calc(58vh+12px)] lg:left-[calc(50%+210px)]"
         >
           <span aria-hidden="true">🏛️</span> At {destination?.name}? Go inside{indoorTarget ? ` to ${indoorTarget.label.replace(/^\S+\s/, '')}` : ''}
@@ -592,10 +641,12 @@ export function App() {
       <IndoorFlow
         viewState={viewState}
         onViewStateChange={setViewState}
-        map={destIndoorMap}
-        buildingId={indoorBuildingId}
-        targetRoomId={indoorTarget?.buildingId === indoorBuildingId ? indoorTarget.roomId : null}
-        entrance={indoorEntrance}
+        map={viewModel}
+        buildingId={viewBuildingId}
+        targetRoomId={viewTargetId || null}
+        startNodeId={viewStartId}
+        consent={{drawing: acceptDrawing, resident: residentAccess}}
+        entrance={inspectedLeg ? null : indoorEntrance}
         closures={closures}
         preferences={prefs}
         highContrast={hc}

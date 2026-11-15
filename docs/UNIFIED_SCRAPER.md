@@ -32,7 +32,9 @@ The entry point is `scripts/scrape_all.py`; orchestration and bundling are in
 | `library-elevators` | StackMap floor-local elevator regions and explicitly historical car references |
 | `central-plans` | Hospitality images, public PDF references and current official Student Union gallery directions |
 | `plan-search` | Private SharePoint document-search results for Student Union, Campus Center and library elevators |
-| `building-documents` | Official project-linked SharePoint brochures for Student Union, the Honors complex and Campus Center |
+| `building-documents` | Official SharePoint brochures, Old Chapel tour guide and Goodell's original public directory plan |
+| `additional-wayfinding` | Builds Old Chapel, North D and Goodell traces only from hash-pinned inspected editions |
+| `plan-portals` | Checks explicit drawing/GIS/OSM entrance matches; enables North D's southwest threshold and records unresolved doors |
 | `official-notices` | Scraped maintenance notices, rules-first parsing and processed official closures |
 | `public-reports` | Configured PVTA/news/social feeds and a private review queue |
 

@@ -24,11 +24,14 @@ export interface IndoorFlowProps {
   /** Live closures: elevators reported out of service are avoided indoors */
   closures?: Closure[];
   preferences: UserPreferences;
+  startNodeId?: string;
+  consent?: {drawing?: boolean; resident?: boolean};
 }
 
 export interface IndoorEntrance {
   id?: string | null;
   portalId?: string;
+  indoorNodeId?: string;
   lat: number;
   lng: number;
   name: string;

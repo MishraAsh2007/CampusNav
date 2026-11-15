@@ -270,7 +270,8 @@ class NavigationService:
             return self.problem(exc)
         response = self.ready(journey, context)
         replacement = next((leg for leg in journey["legs"] if leg["kind"] == "portal"
-                            and leg["direction"] == "enter" and leg["portal_id"] != portal.id), None)
+                            and leg["direction"] == "enter"
+                            and leg["portal_id"] != portal.id), None)
         if replacement is not None:
             response.update(arrival_context={"building_id": request.building_id,
                                              "portal_id": replacement["portal_id"]},

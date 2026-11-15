@@ -4,6 +4,10 @@ A successful scrape of a newer plan must not silently reuse the older trace.
 """
 
 REVIEWED_HASHES = {
+    "old-chapel-tour-guide.pdf": "0ec72426424627fd7d5a915dc8d689d1ad222a0444279d13fc6099b063611095",
+    "goodell-march-2025.jpg": "73b9f6385e1f7c2df97193a376040ab9cacdd802ff6fc6ebaaa7d2eb539da1fd",
+    "673-01.pdf": "641d5d9393b6dddd037ee6abf827c48f4420795ade76b86c01de8c77777a6633",
+    "673-02.03.04.05.pdf": "9f731cdd19398b5afd6c9cc0dc21699564f0ea347cf22b06bd921ebdeb473388",
     "cc-2026-conference-program.pdf": (
         "7082e1cf28ce545e4fe13d91b7f5226039ead24e41f018364ba6af3405cd8941"
     ),

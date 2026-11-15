@@ -82,6 +82,21 @@ def stages(rules_only=False, rebuild_graphs=False):
             ("data/private/building_documents/manifest.json",),
         ),
         Stage(
+            "additional-wayfinding",
+            (("scripts.build_additional_wayfinding",),),
+            tuple(
+                f"data/private/plan_wayfinding/{b}.json"
+                for b in ("old-chapel", "north-d", "goodell")
+            ),
+            derived=True,
+        ),
+        Stage(
+            "plan-portals",
+            (("scripts.build_plan_portals",),),
+            ("data/private/plan_wayfinding_portals.json",),
+            derived=True,
+        ),
+        Stage(
             "official-notices",
             (("scripts.refresh_notices", *parsing),),
             ("data/official_snapshot.json",),
@@ -297,6 +312,7 @@ def assemble(root, statuses, now):
         external_reports=reports,
         local_community_reports=read_json(root, "data/private/community_reports.json"),
         drawing_wayfinding_maps=_indoor_maps(root, "data/private/plan_wayfinding"),
+        drawing_portals=read_json(root, "data/private/plan_wayfinding_portals.json"),
         building_documents=read_json(root, "data/private/building_documents/manifest.json"),
         indoor_gap_research={
             key: read_json(root, "data/private/indoor_gap_research/" + name)

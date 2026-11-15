@@ -48,6 +48,34 @@ async function fetchJson<T>(url: string, init: RequestInit = {}, timeoutMs = 150
   }
 }
 
+export async function apiJSON<T>(path: string, init: RequestInit = {}): Promise<T> {
+  const result = await fetchJson<T>(INDOOR_API_BASE + path, init, 15000);
+  if (!result.ok || !result.data) throw new Error(result.message || 'The indoor routing service could not complete this request.');
+  return result.data;
+}
+export function activeClosures(rows: Closure[]) {
+  const now = Date.now();
+  return rows.filter(c => c.status !== 'repaired' && (!c.start_time || Date.parse(c.start_time) <= now)
+    && (!c.end_time || Date.parse(c.end_time) > now));
+}
+export function closureContract(c: Closure) {
+  return {lat: c.lat, lng: c.lng, radius: c.radius, type: c.type === 'construction' ? 'path' : c.type,
+    status: c.status, source: c.source, start_time: c.start_time, end_time: c.end_time || null,
+    last_confirmed: c.last_confirmed, building_id: c.building_id, asset_id: c.asset_id, floor_id: c.floor_id};
+}
+export function simulatedClosures(rows: Closure[]) {
+  return activeClosures(rows).filter(c => c.id.startsWith('local-') && BACKEND_TYPES.includes(c.type)).map(closureContract);
+}
+
+export interface SourceStatus {
+  status: string; stale: boolean; counts?: {review?: number; imported?: number};
+  source_status?: Record<string, {mode: string; observed_at: string; message: string}>;
+}
+export const getNoticeStatus = () => apiJSON<SourceStatus>('/closures/status');
+export const getUpcomingNotices = () => apiJSON<(Closure & {scheduled: boolean})[]>('/notices');
+export const getExternalReports = () => apiJSON<{id: string; title: string; url: string; source_name: string; published_at: string | null; first_seen_at: string}[]>('/external-reports');
+export const getExternalStatus = () => apiJSON<{sources: Record<string, {state: string; message: string}>}>('/external-reports/status');
+
 type RoutingPaths = Set<string>;
 const discoveredRoutes = new Map<string, { expires: number; paths: Promise<RoutingPaths> }>();
 
@@ -322,16 +350,33 @@ function endpointsFor(place: Place, buildings: Building[], prefs: UserPreference
   return { accessible: choice.endpoints, standard, note: choice.note };
 }
 
+export type JourneyEndpoint = {kind: 'drawing' | 'indoor'; building_id: string; node_id: string} |
+  {kind: 'outdoor'; lat: number; lng: number};
+export interface JourneyLeg {
+  kind: 'indoor' | 'portal' | 'outdoor'; building_id?: string;
+  indoor_node_id?: string; portal_id?: string; entrance_id?: string;
+  route?: WireRoute; geometry?: {type: string; coordinates: number[] | number[][]};
+  [key: string]: unknown;
+}
+export interface JourneyResult {
+  legs: JourneyLeg[]; warnings: string[]; total_distance: number | null;
+  known_distance_m?: number; physical_verification?: boolean; complete: boolean;
+}
 export interface PlanResult extends RouteBundle {
   engine: 'local' | 'remote';
+  journey?: JourneyResult;
   ms: number;
   notes: string[];
   /** Where the accessible route reaches the destination building. The indoor route starts here. */
-  arrivalPoint?: { entranceId: string | null; lat: number; lng: number; source: 'engine' | 'local'; portalId?: string };
+  arrivalPoint?: { entranceId: string | null; lat: number; lng: number; source: 'engine' | 'local'; portalId?: string; indoorNodeId?: string; label?: string };
 }
 
 /** What the person is heading to inside the destination building (from the room search). */
 export interface IndoorIntent {
+  origin?: JourneyEndpoint;
+  destination?: JourneyEndpoint;
+  acceptDrawing?: boolean;
+  residentAccess?: boolean;
   /** Room or floor label, echoed by the engine */
   room?: string | null;
   /** The room is on another floor than the entrance: the engine then prefers doors near a working elevator */
@@ -351,6 +396,7 @@ type WireRoute = {
 type OutdoorPlan = {
   accessible: WireRoute | null; standard: WireRoute | null;
   start_entrance: Entrance | null; end_entrance: Entrance | null;
+  indoor_arrival?: {node_id: string; label: string; portal_id: string} | null;
   notes: string[]; failure?: string | null;
 };
 type ReviewedPlan = {
@@ -447,7 +493,9 @@ async function requestRemotePlan(
     accessible: adaptWireRoute(walk.data?.accessible, walk.ms), standard, engine: 'remote', ms: walk.ms,
     startEndpointId: walk.data?.start_entrance?.id ?? undefined,
     endEndpointId: end?.id ?? undefined,
-    arrivalPoint: end ? {lat: end.lat, lng: end.lng, entranceId: end.id, source: 'engine'} : undefined,
+    arrivalPoint: end ? {lat: end.lat, lng: end.lng, entranceId: end.id, source: 'engine',
+      indoorNodeId: walk.data?.indoor_arrival?.node_id, label: walk.data?.indoor_arrival?.label,
+      portalId: walk.data?.indoor_arrival?.portal_id} : undefined,
     notes: walk.data?.notes ?? [],
     failure: walk.data?.failure || walk.message || (!walk.ok ? 'Routing service is unavailable.' : undefined),
   };
@@ -462,6 +510,32 @@ export async function planRoutes(
   indoor: IndoorIntent = {}
 ): Promise<PlanResult> {
   const t0 = performance.now();
+  if (!DEMO_MODE && (indoor.origin || indoor.destination)) {
+    const result = await apiJSON<JourneyResult>('/journey', {
+      method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({
+        origin: indoor.origin || {kind: 'outdoor', lat: origin.lat, lng: origin.lng},
+        destination: indoor.destination || {kind: 'outdoor', lat: destination.lat, lng: destination.lng},
+        max_grade: prefs.max_grade_pct, no_stairs: prefs.no_stairs || prefs.wheelchair_required,
+        need_automatic_door: prefs.need_automatic_door,
+        accept_drawing_only: !!indoor.acceptDrawing, resident_access_confirmed: !!indoor.residentAccess,
+        closures: simulatedClosures(closures),
+      }),
+    });
+    const outside = result.legs.find(leg => leg.kind === 'outdoor')?.route || null;
+    const portals = result.legs.filter(leg => leg.kind === 'portal');
+    const destId = indoor.destination && indoor.destination.kind !== 'outdoor' ? indoor.destination.building_id : undefined;
+    const arrival = destId ? [...portals].reverse().find(leg => leg.building_id === destId) : undefined;
+    const coords = outside?.geometry.coordinates;
+    const end = coords?.[coords.length - 1];
+    const ms = Math.round(performance.now() - t0);
+    return {accessible: adaptWireRoute(outside, ms), standard: null, ms, engine: 'remote',
+      startEndpointId: portals[0]?.entrance_id,
+      endEndpointId: arrival?.entrance_id, journey: result,
+      notes: [...result.warnings, ...(result.total_distance === null ? ['Indoor distance is unknown. Map distance describes the outdoor portion only.'] : [])],
+      arrivalPoint: end && arrival ? {entranceId: arrival.entrance_id || null,
+        indoorNodeId: arrival.indoor_node_id, label: String(arrival.entrance_label || ''), lat: end[1], lng: end[0], source: 'engine'} : undefined};
+  }
+
   const paths = await routingPaths();
   if (ROUTING_MODE !== 'local') {
     const indoorPaths = indoor.reviewedBuildingId ? await routingPaths(INDOOR_API_BASE) : paths;

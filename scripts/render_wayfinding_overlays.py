@@ -59,7 +59,17 @@ def main():
         for f, s in cc.floor_sources.items()
     }
     render(cc, backgrounds, folder)
-    print("Rendered Oak and Campus Center floor overlays in", folder)
+    for building in ["old-chapel", "north-d", "goodell"]:
+        path = folder / f"{building}.json"
+        if not path.exists():
+            continue
+        data = PlanWayfindingMap.model_validate_json(path.read_text())
+        backgrounds = {
+            f: (Path(s["local_image"]), float(s["width"]), float(s["height"]))
+            for f, s in data.floor_sources.items()
+        }
+        render(data, backgrounds, folder)
+    print("Rendered available drawing floor overlays in", folder)
 
 
 if __name__ == "__main__":

@@ -7,6 +7,7 @@ from typing import Annotated, Literal
 from pydantic import Field
 from shapely.geometry import LineString, Point
 
+from .drawing_journey import DrawingJourneyEngine, finalize_drawing_journey
 from .engine import RoutingError
 from .indoor import IndoorPreferences, IndoorRouteRequest, eligible
 from .models import Closure, ContractModel, Coordinate, RouteRequest
@@ -24,24 +25,44 @@ class IndoorEndpoint(ContractModel):
     portal_id: str | None = None
 
 
-Endpoint = Annotated[OutdoorEndpoint | IndoorEndpoint, Field(discriminator="kind")]
+class DrawingEndpoint(IndoorEndpoint):
+    kind: Literal["drawing"]
+
+
+Endpoint = Annotated[
+    OutdoorEndpoint | IndoorEndpoint | DrawingEndpoint, Field(discriminator="kind")
+]
 
 
 class JourneyRequest(IndoorPreferences):
     origin: Endpoint
     destination: Endpoint
     closures: list[Closure] = Field(default_factory=list, max_length=500)
+    accept_drawing_only: bool = False
+    resident_access_confirmed: bool = False
 
 
-def plan_journey(outdoor, get_indoor, request, *, now=None):
+def plan_journey(outdoor, get_indoor, request, *, now=None, get_drawing=None, drawing_portals=None):
     now = now or datetime.now(UTC)
     prefs = {k: getattr(request, k) for k in IndoorPreferences.model_fields}
     engines = {}
     for endpoint in (request.origin, request.destination):
-        if endpoint.kind == "indoor":
-            if endpoint.building_id not in engines:
-                engines[endpoint.building_id] = get_indoor(endpoint.building_id)
-            engine = engines[endpoint.building_id]
+        if endpoint.kind != "outdoor":
+            key = (endpoint.kind, endpoint.building_id)
+            if key not in engines:
+                if endpoint.kind == "drawing":
+                    if get_drawing is None or drawing_portals is None:
+                        raise RoutingError(
+                            "drawing_journey_unavailable",
+                            "Drawing journey sources are not configured.",
+                            503,
+                        )
+                    engines[key] = DrawingJourneyEngine(
+                        get_drawing(endpoint.building_id), drawing_portals, request, outdoor
+                    )
+                else:
+                    engines[key] = get_indoor(endpoint.building_id)
+            engine = engines[key]
             if endpoint.node_id not in engine.nodes:
                 raise RoutingError(
                     "unknown_indoor_node", "The indoor destination is not mapped.", 422
@@ -50,7 +71,7 @@ def plan_journey(outdoor, get_indoor, request, *, now=None):
                 raise RoutingError("unknown_portal", "This entrance connection is not mapped.", 422)
 
     def indoor_leg(endpoint, start, end):
-        return engines[endpoint.building_id].route(
+        return engines[(endpoint.kind, endpoint.building_id)].route(
             IndoorRouteRequest(
                 building_id=endpoint.building_id,
                 start_node_id=start,
@@ -73,12 +94,21 @@ def plan_journey(outdoor, get_indoor, request, *, now=None):
                     warnings=[],
                 )
             ]
-        engine = engines[endpoint.building_id]
+        engine = engines[(endpoint.kind, endpoint.building_id)]
+        drawing = getattr(engine, "drawing_only", False)
         result = []
         for portal in engine.data.portals:
             if endpoint.portal_id and portal.id != endpoint.portal_id:
                 continue
-            if not eligible(portal, request):
+            if drawing and portal.keycard_required and not request.resident_access_confirmed:
+                raise RoutingError(
+                    "resident_access_required",
+                    "Confirm permission to use this keycard entrance.",
+                    409,
+                )
+            # A coincident point threshold has no outdoor walkway grade to measure.
+            # Drawing widths/door requirements are checked by the adapter, not guessed.
+            if not drawing and not eligible(portal, request):
                 continue
             if portal.outdoor_node_id not in outdoor.graph:
                 raise RoutingError(
@@ -86,7 +116,11 @@ def plan_journey(outdoor, get_indoor, request, *, now=None):
                 )
             attrs = outdoor.graph.nodes[portal.outdoor_node_id]
             point = Coordinate(lat=attrs["lat"], lng=attrs["lng"])
-            line = LineString([outdoor.to_xy(x, y) for x, y in portal.geometry])
+            line = (
+                Point(outdoor.to_xy(point.lng, point.lat))
+                if drawing
+                else LineString([outdoor.to_xy(x, y) for x, y in portal.geometry])
+            )
             if Point(outdoor.to_xy(point.lng, point.lat)).distance(Point(line.coords[-1])) > 1:
                 raise RoutingError(
                     "invalid_portal", "Portal geometry does not reach its outdoor node.", 409
@@ -119,7 +153,7 @@ def plan_journey(outdoor, get_indoor, request, *, now=None):
             try:
                 inside = indoor_leg(endpoint, start, end)
             except RoutingError as exc:
-                if exc.code == "no_indoor_route":
+                if exc.code in ("no_indoor_route", "no_plan_path"):
                     continue
                 raise
             portal_leg = dict(
@@ -145,6 +179,17 @@ def plan_journey(outdoor, get_indoor, request, *, now=None):
                 degraded=factor > 1,
                 max_grade=portal.grade_percent,
             )
+            if drawing:
+                portal_leg.update(
+                    geometry=dict(type="Point", coordinates=[point.lng, point.lat]),
+                    connection_type=portal.connection_type,
+                    entrance_id=portal.entrance_id,
+                    physical_verification=False,
+                    source_urls=[str(u) for u in portal.source_urls],
+                    evidence=portal.evidence,
+                    keycard_required=portal.keycard_required,
+                    door_type=portal.door_type,
+                )
             inner_leg = dict(kind="indoor", **inside)
             result.append(
                 dict(
@@ -160,7 +205,8 @@ def plan_journey(outdoor, get_indoor, request, *, now=None):
 
     candidates = []
     if (
-        request.origin.kind == request.destination.kind == "indoor"
+        request.origin.kind == request.destination.kind
+        and request.origin.kind in ("indoor", "drawing")
         and request.origin.building_id == request.destination.building_id
         and not request.origin.portal_id
         and not request.destination.portal_id
@@ -176,7 +222,7 @@ def plan_journey(outdoor, get_indoor, request, *, now=None):
                 )
             )
         except RoutingError as exc:
-            if exc.code != "no_indoor_route":
+            if exc.code not in ("no_indoor_route", "no_plan_path"):
                 raise
     starts, ends = options(request.origin, True), options(request.destination, False)
     # Indoor portals are few. Comparing full journey cost avoids choosing a short outdoor
@@ -237,4 +283,4 @@ def plan_journey(outdoor, get_indoor, request, *, now=None):
         e.data.synthetic for e in engines.values()
     )
     result["complete"] = True
-    return result
+    return finalize_drawing_journey(result)

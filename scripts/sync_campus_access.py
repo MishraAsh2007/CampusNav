@@ -27,6 +27,7 @@ SOURCES = {
     "elevators": ("Elevators", "OBJECTID,Description"),
 }
 BUILDINGS = {
+    "080": ("old-chapel", "Old Chapel", "CHAP", "student_services", ["Old Chapel", "Chapel"]),
     "413": (
         "campus-center",
         "Lincoln Campus Center",

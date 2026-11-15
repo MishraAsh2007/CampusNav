@@ -60,6 +60,21 @@ the server stops.
 
 ## How routing works
 
+The latest routing/scraper additions are integrated with the main Data API and Role 2 UI.
+Directions now appear directly below the trip fields, with a visible current instruction
+and Back / Next controls. Indoor instructions include the corridor approach to the named
+elevator, the ride, and the approach from the elevator to the destination. ILC floor-plan
+turns come from the mapped path, while missing connections remain explicit gaps.
+
+You can select an **indoor starting place** for a combined indoor/outdoor journey.
+North D has an explicit source-matched outdoor threshold. Old Chapel and Goodell have
+scoped indoor drawing pilots, but their outdoor joins remain unresolved. Drawing routes
+require acceptance of their limitations; residence routes also require permission/keycard
+confirmation. Authenticated source plans and generated private pilot data stay out of Git;
+collect them locally with the [unified scraper](docs/UNIFIED_SCRAPER.md).
+See [the current UI integration](docs/ROLE2_INTEGRATION.md) and
+[pilot coverage and sources](docs/ADDITIONAL_INDOOR_PILOTS.md).
+
 1. Outdoor paths from OpenStreetMap become a NetworkX graph. Nodes represent places and
    edges represent paths. Terrain elevation supplies estimated grades during graph preparation.
 2. A request supplies endpoints, preferences and active closures. The router filters stairs,

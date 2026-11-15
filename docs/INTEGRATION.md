@@ -1,5 +1,10 @@
 # Running and understanding the integrated CampusNav app
 
+**Current integration:** see [the updated Role 2 guide](ROLE2_INTEGRATION.md).
+It replaces this older frontend handoff: the updated UI now displays backend indoor
+routes and automatically uses a matched outdoor-selected entrance. The original
+integration notes below describe the earlier outdoor-only UI and branch state.
+
 For the new floor-aware backend and the Role 2 indoor-view handoff, see
 [Indoor mapping](INDOOR_MAPPING.md). Real floor-plan references are available; the current
 map interface still uses outdoor routes until reviewed indoor topology and the floor view

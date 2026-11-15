@@ -4,7 +4,7 @@ import basicSsl from '@vitejs/plugin-basic-ssl';
 import { fileURLToPath } from 'node:url';
 
 const routes = ['/api/data', '/api/route', '/health', '/openapi.json', '/buildings', '/closures', '/reports', '/notices',
-  '/plan', '/navigation', '/indoor', '/external-reports'];
+  '/plan', '/journey', '/plan-wayfinding', '/navigation', '/indoor', '/external-reports'];
 
 // https://vitejs.dev/config/
 // `npm run dev:phone` (mode "https") serves over HTTPS with a self-signed certificate, because phones

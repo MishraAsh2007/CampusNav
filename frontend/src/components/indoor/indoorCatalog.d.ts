@@ -10,6 +10,9 @@ export interface IndoorMapModel {
   sample: boolean;
   source: 'api' | 'data' | 'sample';
   entryFloor: string;
+  routingKind?: 'drawing' | 'indoor';
+  residentAccessRequired?: boolean;
+  nodes: Map<string, {id: string; label: string; floor: string; kind: string}>;
   floors: { id: string; label: string; level: number }[];
   rooms: { id: string; name: string; floor: string; floorLabel: string; type: string }[];
 }

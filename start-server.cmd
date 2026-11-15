@@ -16,13 +16,16 @@ if not exist ".venv\Scripts\python.exe" (
     exit /b 1
 )
 if not defined ROUTING_GRAPH (
-    if exist "data\umass.graph.json" (
-        set "ROUTING_GRAPH=data/umass.graph.json"
+    if exist "data\umass-residences.graph.json" (
+        set "ROUTING_GRAPH=data/umass-residences.graph.json"
     ) else (
-        set "ROUTING_GRAPH=data/demo.graph.json"
+        set "ROUTING_GRAPH=data/umass.graph.json"
     )
 )
 echo Graph: %ROUTING_GRAPH%
+if not defined BUILDINGS_PATH set "BUILDINGS_PATH=data/residence_buildings.json"
+if not defined PLAN_WAYFINDING_DIR set "PLAN_WAYFINDING_DIR=data/private/plan_wayfinding"
+if not defined PLAN_PORTALS_PATH set "PLAN_PORTALS_PATH=data/private/plan_wayfinding_portals.json"
 if not exist "frontend\node_modules\.bin\vite.cmd" (
     call npm.cmd --prefix frontend ci
     if errorlevel 1 (
