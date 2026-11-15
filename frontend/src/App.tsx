@@ -38,8 +38,6 @@ import IndoorFlow, { type ViewState } from './components/indoor/IndoorFlow';
 import { IndoorCatalogContext, useIndoorCatalog } from './components/indoor/indoorCatalog';
 import DestinationInput, { type DestinationTarget } from './components/indoor/DestinationInput';
 
-const POLL_MS = 5000;
-
 function routeKey(r: RouteResponse | null): string {
   if (!r) return '';
   const c = r.features.flatMap((f) => f.geometry.coordinates);
@@ -89,16 +87,27 @@ export function App() {
     return r;
   }, [applyClosures]);
 
+  const lastVisitRefresh = useRef(0);
+  const refreshOnVisit = useCallback(() => {
+    const now = Date.now();
+    // A tab focus can coincide with startup or opening the arrival dialog.
+    if (document.hidden || now - lastVisitRefresh.current < 2000) return;
+    lastVisitRefresh.current = now;
+    void syncClosures();
+  }, [syncClosures]);
+
   useEffect(() => {
     loadCampusGraph().then(setGraph);
     loadBusRoutes().then(setBusData);
     getBuildings().then(setBuildings);
-    syncClosures();
-    const poll = setInterval(syncClosures, POLL_MS);
+    refreshOnVisit();
+    window.addEventListener('focus', refreshOnVisit);
+    document.addEventListener('visibilitychange', refreshOnVisit);
     return () => {
-      clearInterval(poll);
+      window.removeEventListener('focus', refreshOnVisit);
+      document.removeEventListener('visibilitychange', refreshOnVisit);
     };
-  }, [syncClosures]);
+  }, [refreshOnVisit]);
 
   // ---------- trip ----------
   const [origin, setOrigin] = useState<Place | null>(DEMO_TRIP.origin);
@@ -348,6 +357,9 @@ export function App() {
   // The outdoor map stays mounted underneath; indoor views render on top of it.
   const indoorBuildingId = destIndoorMap ? destination?.building_id ?? null : null;
   const [viewState, setViewState] = useState<ViewState>('outdoor');
+  useEffect(() => {
+    if (viewState === 'transition_modal') refreshOnVisit();
+  }, [viewState, refreshOnVisit]);
   // ?indoor=<building id or map id> jumps straight to the arrival modal (demo / testing).
   // Waits for the catalog, since map files and the indoor API load after the first render.
   const indoorParamDone = useRef(false);
