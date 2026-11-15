@@ -11,6 +11,11 @@ room dimensions or new routable destinations. The N151 auditorium's upper-level
 outline is included on floor 2 in both drawn maps; it is a display landmark, not
 an additional routing connection. **Focus this step** enlarges the current
 instruction area for phone use. All three views retain the same route coordinates.
+Detailed-map circulation strokes use the active routing graph, so the gray
+background and selected route no longer show two offset editions of the paths.
+Thin strokes, smaller in-room labels and compact elevator badges keep junctions
+clear. Badge leaders point to source-traced shafts; these display placements do
+not move walls, doorways or routing endpoints. Stroke width is not corridor width.
 Elevator icons mark the centers of the crossed shaft boxes on the source plans,
 as confirmed by the user. Routing endpoints remain on the hallway side of the
 elevator doors; they are deliberately distinct from the shaft-center icons.
