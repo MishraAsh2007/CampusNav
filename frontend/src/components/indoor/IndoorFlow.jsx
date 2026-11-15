@@ -11,6 +11,7 @@ import { nextStepFromGps, progressOnStep, snapToPolyline, useGeolocation } from 
 import { destinationsOf } from './indoorModel';
 import { entranceNear, findTarget, nearestNode, routeFromPoint, routeIndoor } from './indoorRouter';
 import { reviewedRoute } from './reviewedRoute';
+import { engineRoute } from './engineRoute';
 import { useAltitudeFloor } from './altitudeFloor';
 import { POS } from './layout';
 
@@ -51,6 +52,8 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
   const [verifiedRoute, setVerifiedRoute] = useState(null);
   const [verifiedError, setVerifiedError] = useState(null);
   const reviewed = model?.source === 'api' && model.status === 'reviewed';
+  // Maps served by the Role 1 engine: the engine computes every route (outage rules included)
+  const engine = model?.status === 'engine';
   const requestSequence = useRef(0);
   // GPS is opt-in; Next / Back always work, with or without it
   const [gpsOn, setGpsOn] = useState(false);
@@ -74,11 +77,24 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
   const elevatorClosures = useMemo(() => closures.filter((c) => c.type === 'elevator' && c.status !== 'repaired'), [closures]);
   const closureKey = elevatorClosures.map((c) => `${c.id}:${c.status}`).join('|');
   const planned = useMemo(
-    () => (!reviewed && roomId && model ? routeIndoor(model, roomId, { entrance: startEntrance, closures: elevatorClosures }) : null),
-    [model, reviewed, roomId, startEntrance, closureKey] // eslint-disable-line react-hooks/exhaustive-deps
+    () => (!reviewed && !engine && roomId && model ? routeIndoor(model, roomId, { entrance: startEntrance, closures: elevatorClosures }) : null),
+    [model, reviewed, engine, roomId, startEntrance, closureKey] // eslint-disable-line react-hooks/exhaustive-deps
   );
-  const baseRoute = reviewed ? verifiedRoute : planned && !planned.blocked ? planned : null;
-  const blockedReason = reviewed ? verifiedError : planned?.blocked ? `No step-free route to ${planned.room.name}: ${planned.reason}` : null;
+  // Engine maps: ask the engine again whenever the room, the door or the elevator reports change
+  useEffect(() => {
+    if (!engine || !roomId || !model) return;
+    const request = ++requestSequence.current;
+    setVerifiedError(null);
+    engineRoute(model, roomId, preferences, { entrance, closures: elevatorClosures })
+      .then((next) => request === requestSequence.current && setVerifiedRoute(next))
+      .catch((error) => {
+        if (request !== requestSequence.current) return;
+        setVerifiedRoute(null);
+        setVerifiedError(error.message);
+      });
+  }, [model, engine, roomId, entranceKey, closureKey, preferences?.no_stairs, preferences?.wheelchair_required]); // eslint-disable-line react-hooks/exhaustive-deps
+  const baseRoute = reviewed || engine ? verifiedRoute : planned && !planned.blocked ? planned : null;
+  const blockedReason = reviewed || engine ? verifiedError : planned?.blocked ? `No step-free route to ${planned.room.name}: ${planned.reason}` : null;
 
   // A GPS reroute replaces the route until you pick another room
   const [reroute, setReroute] = useState(null);
@@ -189,7 +205,7 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
   const recalculateRoute = useCallback(async () => {
     const { gps: g, route: r, active: i } = live.current;
     const step = r?.steps[i];
-    if (!g?.raw || !g.inside || !r || !step || !model) return;
+    if (!g?.raw || !g.inside || !r || !step || !model || engine) return;
     lastRerouteAt.current = Date.now();
     speak('Recalculating route.', { priority: true });
     flash('Recalculating route…', 6000);
@@ -206,7 +222,7 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
     } else {
       flash("Couldn't find a new route. Use Next / Back.", 5000);
     }
-  }, [model, flash, elevatorClosures, reviewed, preferences]);
+  }, [model, flash, elevatorClosures, reviewed, engine, preferences]);
 
   // Off route for OFF_ROUTE_MS in a row -> reroute. Any fix back on the route cancels the countdown.
   // Only while Follow is on: with Follow off you are stepping manually and may be ahead of your position.
