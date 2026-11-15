@@ -301,12 +301,17 @@ def _floor_label(model: Model, fid: str) -> str:
     return model.floors.get(fid, {}).get("label", fid)
 
 
-def build_legs(model: Model, found: Found, dest: dict) -> tuple[list[dict], list[str]]:
+def build_legs(model: Model, found: Found, dest: dict, reverse: bool = False) -> tuple[list[dict], list[str]]:
+    """Legs and text for found.path. With ``reverse`` the path runs room -> door (leaving the building)."""
     G, nodes = model.G, model.nodes
     legs: list[dict] = []
     steps: list[str] = []
     door = found.door
-    steps.append(f"Enter through the {door.name} (opens onto {_floor_label(model, door.floor)}).")
+    goal = door.name if reverse else dest["label"]
+    if reverse:
+        steps.append(f"Start at {dest['label']} ({_floor_label(model, dest['floor_id'])}).")
+    else:
+        steps.append(f"Enter through the {door.name} (opens onto {_floor_label(model, door.floor)}).")
 
     def floor_meta(fid: str) -> dict:
         f = model.floors.get(fid, {})
@@ -367,7 +372,10 @@ def build_legs(model: Model, found: Found, dest: dict) -> tuple[list[dict], list
             elif path[j] != path[-1]:
                 steps.append(f"Walk about {_ft(length)} ft along {_floor_label(model, fid)}.")
             else:
-                steps.append(f"Walk about {_ft(length)} ft to {dest['label']}.")
+                steps.append(f"Walk about {_ft(length)} ft to {goal}.")
         i = j
-    steps.append(f"Arrive at {dest['label']} ({_floor_label(model, dest['floor_id'])}).")
+    if reverse:
+        steps.append(f"Leave through the {door.name} ({_floor_label(model, door.floor)}).")
+    else:
+        steps.append(f"Arrive at {dest['label']} ({_floor_label(model, dest['floor_id'])}).")
     return legs, steps

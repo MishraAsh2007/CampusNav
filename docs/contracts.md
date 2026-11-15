@@ -380,6 +380,10 @@ outdoor route ended at (`destination.end` from `/api/route`) and the same closur
 }
 ```
 
+**Leaving a building.** Add `"direction": "to_exit"` and pass the door as `"exit": {lat, lng}` (the
+start exit `/api/route` chose, or omit for the best door). `room` or `floor` is then where the user
+starts, and the response has `exit` in place of `entrance`. The rules below apply the same way.
+
 Every outcome is HTTP 200; check `status`:
 
 | status | meaning |

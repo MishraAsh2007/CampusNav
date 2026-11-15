@@ -17,7 +17,7 @@ Response (HTTP 200 for every outcome; check `status`)
 """
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 from fastapi import APIRouter
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
@@ -42,6 +42,8 @@ class IndoorRouteRequest(BaseModel):
     building_name: Optional[str] = None
     building: Optional[dict[str, Any]] = None
     entrance: Optional[IndoorPoint] = None
+    exit: Optional[IndoorPoint] = None      # with direction "to_exit": the door to leave through
+    direction: Literal["to_room", "to_exit"] = "to_room"
     room: Optional[str] = None
     floor: Optional[str] = None
     node_id: Optional[str] = None
@@ -89,17 +91,19 @@ def indoor_route(body: IndoorRouteRequest) -> dict[str, Any]:
         return {"status": "not_public", "building": name,
                 "message": f"{ir._floor_label(model, dest['floor_id'])} of {name} isn't open to visitors. {nonpublic}"}
 
+    leaving = body.direction == "to_exit"
+    point = (body.exit or body.entrance) if leaving else body.entrance
     door = None
-    if body.entrance is not None:
-        door = ir._match_door(model, body.entrance.lat, body.entrance.lng)
+    if point is not None:
+        door = ir._match_door(model, point.lat, point.lng)
         if door is None:
-            warnings.append("That entrance isn't on the indoor map; using the best door instead.")
+            warnings.append(f"That {'exit' if leaving else 'entrance'} isn't on the indoor map; using the best door instead.")
     found = ir.find_route(model, dest["id"], door)
     if found is None and door is not None:
         # The chosen door may be wrong for this destination (e.g. it only reaches a floor with its elevator out).
         alt = ir.find_route(model, dest["id"], None)
         if alt is not None:
-            warnings.append(f"No indoor route from {door.name}; using {alt.door.name} instead.")
+            warnings.append(f"No indoor route {'to' if leaving else 'from'} {door.name}; using {alt.door.name} instead.")
             found = alt
 
     if found is None:
@@ -114,7 +118,9 @@ def indoor_route(body: IndoorRouteRequest) -> dict[str, Any]:
         return {"status": "no_route", "building": name, "destination": _dest_json(model, dest),
                 "message": reason, "elevators": _elevators_json(model), "warnings": warnings}
 
-    legs, steps = ir.build_legs(model, found, dest)
+    if leaving:
+        found = ir.Found(found.door, list(reversed(found.path)), found.total_m)
+    legs, steps = ir.build_legs(model, found, dest, reverse=leaving)
     d = found.door
     if d.step_free is None or d.verified == "partial":
         warnings.append(f"The {d.name} hasn't been checked for a step-free approach.")
@@ -133,7 +139,7 @@ def indoor_route(body: IndoorRouteRequest) -> dict[str, Any]:
     return {
         "status": "ok",
         "building": name,
-        "entrance": _door_json(d, model),
+        "exit" if leaving else "entrance": _door_json(d, model),
         "destination": _dest_json(model, dest),
         "total_m": round(found.total_m, 1),
         "total_ft": round(m_to_ft(found.total_m)),
@@ -141,7 +147,7 @@ def indoor_route(body: IndoorRouteRequest) -> dict[str, Any]:
         "legs": legs,
         "elevators": _elevators_json(model),
         "warnings": warnings,
-        "meta": {"map_status": m.get("status"), "approximate": True, "step_free": avoid_steps,
+        "meta": {"direction": body.direction, "map_status": m.get("status"), "approximate": True, "step_free": avoid_steps,
                  "elevator_count_source": st.count_source, "elevators_out_unknown": st.unattributed_out},
     }
 
