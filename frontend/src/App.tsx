@@ -26,6 +26,7 @@ import { NeedsMenu } from './components/NeedsMenu';
 import { RouteSummary } from './components/RouteSummary';
 import { Narrator } from './components/Narrator';
 import { Directions } from './components/Directions';
+import { OutdoorGuide } from './components/OutdoorGuide';
 import { IndoorDirectionsSheet, IndoorLeg, useIndoorDirectionsAvailable } from './components/IndoorDirectionsSheet';
 import { OutageList } from './components/OutageList';
 import { BuildingSheet } from './components/BuildingSheet';
@@ -172,6 +173,8 @@ export function App() {
   const [reportPoint, setReportPoint] = useState<{ lat: number; lng: number } | null>(null);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [indoorDirOpen, setIndoorDirOpen] = useState(false);
+  // Guided outdoor navigation (one spoken step at a time); hides the trip panel while on
+  const [guiding, setGuiding] = useState(false);
   const [focus, setFocus] = useState<{ lat: number; lng: number; key: number } | null>(null);
 
   const onSelectBuilding = useCallback((b: Building) => {
@@ -468,6 +471,7 @@ export function App() {
         </div>
       )}
 
+      {!guiding && (
       <aside
         className={cx(
           'glass fixed z-20 flex flex-col overflow-hidden',
@@ -515,6 +519,11 @@ export function App() {
             <Narrator route={plan.accessible} originName={origin.name} destinationName={destination.name} prefs={prefs} />
           )}
           {activeRoute && <Directions steps={activeRoute.steps} onFocusStep={focusStep} />}
+          {activeRoute && activeRoute.steps.length > 1 && (
+            <button type="button" className="btn btn-primary w-full justify-center" onClick={() => setGuiding(true)}>
+              Start guided directions
+            </button>
+          )}
           {indoorDirAvailable && plan?.accessible && (arriveLeg || leaveLeg) && (
             <button type="button" className="btn btn-quiet w-full justify-center" onClick={() => setIndoorDirOpen(true)}>
               Indoor directions{arriveLeg ? ` ? ${arriveLeg.buildingName}` : ''}
@@ -528,6 +537,23 @@ export function App() {
           )}
         </div>
       </aside>
+      )}
+
+      {guiding && (
+        <OutdoorGuide
+          route={activeRoute}
+          routeId={routeKey(activeRoute)}
+          destinationName={destination?.name ?? 'your destination'}
+          canGoInside={!!indoorBuildingId}
+          onGoInside={() => {
+            setGuiding(false);
+            setViewState('transition_modal');
+          }}
+          onFocus={(lat, lng) => setFocus({ lat, lng, key: Date.now() })}
+          onRerouteFrom={(lat, lng) => setOrigin({ name: 'Your location', lat, lng })}
+          onStop={() => setGuiding(false)}
+        />
+      )}
 
       <BuildingSheet
         building={selectedBuilding}
@@ -607,7 +633,7 @@ export function App() {
         live={live}
       />
 
-      {arrivedAtIndoorBuilding && (
+      {arrivedAtIndoorBuilding && !guiding && (
         <button
           type="button"
           onClick={() => setViewState('transition_modal')}
