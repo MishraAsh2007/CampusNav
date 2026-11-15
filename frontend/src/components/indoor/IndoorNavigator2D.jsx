@@ -1,14 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import L from 'leaflet';
-import { Circle, CircleMarker, ImageOverlay, MapContainer, Marker, Polyline, Tooltip, useMap } from 'react-leaflet';
+import { CircleMarker, ImageOverlay, MapContainer, Marker, Polyline, Tooltip, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import ViewToggleFab from './ViewToggleFab';
 import { POS } from './layout';
 
 /**
  * 2D bird's-eye indoor map. Pixel-space only: Leaflet runs in L.CRS.Simple with the floor plan image as
- * an ImageOverlay, so nothing here touches GPS coordinates or the outdoor map directly. GPS arrives
- * already converted to plan pixels (see indoorGps.js).
+ * an ImageOverlay, with the active route step drawn in plan pixels.
  *
  * Coordinates: route points are image pixels [x, y] with the origin top-left and y down. CRS.Simple has
  * y up, so a pixel maps to LatLng [height - y, x]. In CRS.Simple distances are in pixels, so a Circle's
@@ -23,12 +22,10 @@ import { POS } from './layout';
  *   steps, active steps with `floor` and `pts` (pixels); the active one is highlighted
  *   destination   { name, x, y, floor }
  *   building      title
- *   gps           { pos: [x,y], floorId?, accuracyPx, label, follow, offRoute } | null   live position in plan pixels
  *   onSwitch3D    show the round "3D" button (bottom right, above the zoom controls)
  *   onExit        back to the outdoor map
  *   onSelectRoom  (room) => void   tap a room on the plan to route there (optional)
  *   overlay       node shown top-left on large screens (e.g. <RouteWarningsPanel compact />)
- *   floorHint     { floorId, key } switch the visible floor whenever `key` changes (altitude floor detection)
  *   bottomInset   px covered by the directions card at the bottom (phones), kept clear when fitting the plan
  */
 
@@ -50,9 +47,8 @@ function cardPadding(bottomInset) {
   return { paddingTopLeft: [wide ? 440 : 16, 124], paddingBottomRight: [72, wide ? 24 : bottomInset + 16] };
 }
 
-function MapBehaviour({ bounds, here, follow, onMap, bottomInset }) {
+function MapBehaviour({ bounds, here, onMap, bottomInset }) {
   const map = useMap();
-  const followed = useRef(false);
   const pad = useMemo(() => cardPadding(bottomInset), [bottomInset]);
 
   useEffect(() => {
@@ -61,23 +57,11 @@ function MapBehaviour({ bounds, here, follow, onMap, bottomInset }) {
 
   useEffect(() => {
     map.fitBounds(bounds, { ...pad, animate: false });
-    followed.current = false;
   }, [map, bounds, pad]);
 
   useEffect(() => {
-    if (!here) return;
-    if (follow) {
-      // Like a maps app: first fix zooms in on you, after that the map glides along with you
-      if (!followed.current) {
-        map.flyTo(here, Math.max(map.getZoom(), 0), { duration: 0.8 });
-        followed.current = true;
-      } else {
-        map.panInside(here, { ...pad, animate: true });
-      }
-    } else {
-      map.panInside(here, { ...pad, animate: true });
-    }
-  }, [map, here, follow, pad]);
+    if (here) map.panInside(here, { ...pad, animate: true });
+  }, [map, here, pad]);
 
   return null;
 }
@@ -91,7 +75,6 @@ const dot = (bg, ring) =>
     html: `<div style="transform:translate(-50%,-50%)" class="relative flex h-6 w-6 items-center justify-center"><span class="absolute inline-flex h-full w-full animate-ping rounded-full ${ring} opacity-60"></span><span class="relative inline-flex h-5 w-5 rounded-full border-[3px] border-white ${bg} shadow-lg"></span></div>`,
     iconSize: [0, 0]
   });
-const gpsIcon = dot('bg-blue-600', 'bg-blue-500');
 const stepIcon = dot('bg-slate-800', 'bg-slate-500');
 
 const destIcon = L.divIcon({
@@ -110,12 +93,10 @@ export default function IndoorNavigator2D({
   active = 0,
   destination,
   building,
-  gps = null,
   onSwitch3D,
   onExit,
   onSelectRoom,
   overlay,
-  floorHint = null,
   bottomInset = 0
 }) {
   const floors = useMemo(() => floorsProp ?? [{ id: 'main', label: 'Floor plan', imageUrl, width, height }], [floorsProp, imageUrl, width, height]);
@@ -129,11 +110,6 @@ export default function IndoorNavigator2D({
   useEffect(() => {
     if (step?.floor) setViewFloorId(step.floor);
   }, [step?.floor]);
-  // Floor detected from GPS altitude (or the Floor 1 default): switch to it when it changes
-  useEffect(() => {
-    if (floorHint?.floorId && floors.some((f) => f.id === floorHint.floorId)) setViewFloorId(floorHint.floorId);
-  }, [floorHint?.key]); // eslint-disable-line react-hooks/exhaustive-deps
-
   useEffect(() => {
     if (!map) return;
     const update = () => setZoom(map.getZoom());
@@ -166,10 +142,7 @@ export default function IndoorNavigator2D({
   const done = floorSteps.filter(({ s, i }) => i < active && s.pts?.length > 1);
   const activeOnFloor = step && (step.floor ?? fl.id) === fl.id;
 
-  // GPS is drawn on the floor it was placed on (altitude, else the current step's floor)
-  const gpsHere = gps?.pos && (gps.floorId ? gps.floorId === fl.id : activeOnFloor) ? ll(gps.pos) : null;
-  const stepHere = activeOnFloor && step.pts?.[0] ? ll(step.pts[0]) : null;
-  const here = gpsHere ?? stepHere;
+  const here = activeOnFloor && step.pts?.[0] ? ll(step.pts[0]) : null;
   const hereKey = here ? `${Math.round(here[0])},${Math.round(here[1])}` : null;
   const herePos = useMemo(() => here, [hereKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -200,7 +173,7 @@ export default function IndoorNavigator2D({
           className="h-full w-full !bg-[#e9e7e2]"
         >
           <ImageOverlay url={fl.imageUrl} bounds={bounds} />
-          <MapBehaviour bounds={bounds} here={herePos} follow={!!gps?.follow && !!gpsHere} onMap={setMap} bottomInset={bottomInset} />
+          <MapBehaviour bounds={bounds} here={herePos} onMap={setMap} bottomInset={bottomInset} />
 
           {onSelectRoom &&
             (fl.rooms ?? []).map((r) => (
@@ -233,21 +206,10 @@ export default function IndoorNavigator2D({
 
           {destination && (destination.floor ?? fl.id) === fl.id && <Marker position={ll([destination.x, destination.y])} icon={destIcon} title={destination.name} />}
 
-          {/* GPS: accuracy circle + current location pointer */}
-          {gpsHere && gps.accuracyPx > 0 && (
-            <Circle center={gpsHere} radius={gps.accuracyPx} pathOptions={{ color: '#0a84ff', weight: 1, fillColor: '#0a84ff', fillOpacity: 0.12 }} interactive={false} />
-          )}
-          {gpsHere && (
-            <Marker position={gpsHere} icon={gpsIcon} zIndexOffset={1000} title={gps.label}>
-              <Tooltip permanent direction="top" offset={[0, -16]} className="!rounded-full !border-0 !bg-blue-600 !px-3 !py-1 !text-[12px] !font-semibold !text-white !shadow-lg before:!hidden">
-                📍 {gps.label}
-              </Tooltip>
-            </Marker>
-          )}
-          {!gpsHere && stepHere && (
-            <Marker position={stepHere} icon={stepIcon} zIndexOffset={900} title="Current location">
+          {here && (
+            <Marker position={here} icon={stepIcon} zIndexOffset={900} title="Current route step">
               <Tooltip permanent direction="top" offset={[0, -16]} className="!rounded-full !border-0 !bg-slate-900 !px-3 !py-1 !text-[12px] !font-semibold !text-white !shadow-lg before:!hidden">
-                📍 Current location · step {active + 1}
+                📍 Route step {active + 1}
               </Tooltip>
             </Marker>
           )}
@@ -333,9 +295,9 @@ export default function IndoorNavigator2D({
           </button>
           <button
             type="button"
-            className={`${btn} border-t border-slate-200 text-[18px] ${gpsHere ? 'text-blue-600' : ''}`}
-            aria-label="Center on current location"
-            title="Center on current location"
+            className={`${btn} border-t border-slate-200 text-[18px]`}
+            aria-label="Center on current step"
+            title="Center on current step"
             onClick={() => here && map?.flyTo(here, Math.max(map.getZoom(), 1), { duration: 0.6 })}
             disabled={!here}
           >

@@ -164,12 +164,11 @@ function edgePts(model, edge, fromId) {
 }
 
 /**
- * Route from a node (or a free point on `floorId`, for GPS reroutes) to a target.
+ * Route from a mapped node to a target.
  *   opts.entrance   entrance object (from model.entrances) -> starts with "Enter through the …"
- *   opts.point      [x,y] display pixels: a short "head to the corridor" leg is added first
  *   opts.closures   active closures (elevators out of service)
  */
-export function routeIndoor(model, targetId, { entrance = null, startNode = null, point = null, closures = [] } = {}) {
+export function routeIndoor(model, targetId, { entrance = null, startNode = null, closures = [] } = {}) {
   if (!model) return null;
   const room = findTarget(model, targetId);
   const targets = targetNodes(model, targetId);
@@ -178,7 +177,7 @@ export function routeIndoor(model, targetId, { entrance = null, startNode = null
   const closed = closedAssets(model, closures);
   const path = shortestPath(model, start, targets, closed);
   if (!path) return { blocked: true, room, reason: closed.size ? 'An elevator on every step-free path is out of service.' : 'No step-free path reaches this room on the map.' };
-  return renderPath(model, room, path, { entrance, point });
+  return renderPath(model, room, path, { entrance });
 }
 
 /** Draw the server's reviewed path using the same steps and map views as the Role 2 router. */
@@ -196,7 +195,7 @@ export function renderReviewedPath(model, targetId, result) {
   return {...renderPath(model, room, path), reviewedPath: result.node_path};
 }
 
-function renderPath(model, room, path, { entrance = null, point = null } = {}) {
+function renderPath(model, room, path, { entrance = null } = {}) {
   const start = path[0].node;
   const steps = [];
   const paths = {};
@@ -209,7 +208,7 @@ function renderPath(model, room, path, { entrance = null, point = null } = {}) {
     for (const p of pts) if (!cur.length || !samePt(cur[cur.length - 1], p)) cur.push(p);
   };
 
-  const ent = entrance ?? (startN.kind === 'entrance' && !point ? model.entrances.find((e) => e.id === start) : null);
+  const ent = entrance ?? (startN.kind === 'entrance' ? model.entrances.find((e) => e.id === start) : null);
   if (ent) {
     steps.push({
       id: `st${n++}`,
@@ -236,15 +235,6 @@ function renderPath(model, room, path, { entrance = null, point = null } = {}) {
   let prevHeading = null;
   let afterElevator = false;
   let lastPt = startN.px;
-  if (point) {
-    const f = floorOf(start);
-    const m = dist(point, startN.px) / f.pxPerM;
-    if (m >= 2) {
-      steps.push({ id: `st${n++}`, kind: 'straight', floor: f.id, surface: surface(f), distanceFt: ft(m), label: 'Corridor', text: `Head to the corridor, ${ft(m)} feet.`, pts: [point, startN.px] });
-      pushPath(f.id, [point, startN.px]);
-      prevHeading = [startN.px[0] - point[0], startN.px[1] - point[1]];
-    }
-  }
 
   runs.forEach((run, ri) => {
     const f = model.floorById.get(run.floor);
@@ -352,7 +342,7 @@ function renderPath(model, room, path, { entrance = null, point = null } = {}) {
   return { building: model.name, destination: room.name, room: { ...room, doorX: endNode.px[0], doorY: endNode.px[1] }, floors: Object.keys(paths), paths, steps };
 }
 
-/** Nearest routable node to a pixel on a floor (for GPS reroutes). */
+/** Nearest routable node to a point on the floor plan. */
 export function nearestNode(model, floorId, point) {
   let best = null;
   for (const n of model.nodes.values()) {
@@ -362,19 +352,6 @@ export function nearestNode(model, floorId, point) {
     if (!best || d < best.d) best = { id: n.id, d };
   }
   return best?.id ?? null;
-}
-
-/** Reroute: from a GPS point on a floor to the same target. */
-export function routeFromPoint(model, floorId, point, targetId, closures = []) {
-  const from = nearestNode(model, floorId, point);
-  if (!from) return null;
-  const r = routeIndoor(model, targetId, { startNode: from, point, closures });
-  if (!r || r.blocked) return null;
-  // Say where the first stretch of corridor leads
-  const along = r.steps.find((s, i) => s.kind === 'straight' && !(i === 0 && s.text.startsWith('Head to')));
-  const next = along && r.steps[r.steps.indexOf(along) + 1];
-  if (along) along.text = `Follow the corridor ${along.distanceFt} feet toward ${next?.kind === 'elevator' ? `the ${inSentence(next.label)}` : r.room.name}.`;
-  return { ...r, rerouted: true };
 }
 
 export { lobbyId };

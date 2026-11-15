@@ -4,6 +4,7 @@ import {cx} from './ui';
 
 interface Props {
   children: ReactNode;
+  actions?: ReactNode;
   hasRoute: boolean;
   picking: boolean;
   title: string;
@@ -13,7 +14,7 @@ interface Props {
 }
 
 /** The desktop sidebar becomes a draggable, collapsible sheet on phones. */
-export function MobileTripSheet({children, hasRoute, picking, title, detail, onNext, nextLabel = 'Next'}: Props) {
+export function MobileTripSheet({children, actions, hasRoute, picking, title, detail, onNext, nextLabel = 'Next'}: Props) {
   const contentId = useId();
   const [collapsed, setCollapsed] = useState(false);
   const [dragHeight, setDragHeight] = useState<number | null>(null);
@@ -59,6 +60,7 @@ export function MobileTripSheet({children, hasRoute, picking, title, detail, onN
       <span className="trip-sheet-grip" aria-hidden="true" />
       <span>{collapsed ? 'Show directions' : 'More map'}<ChevronDown size={16} className={collapsed ? 'rotate-180' : ''} /></span>
     </button>
+    {actions && <div className="shrink-0 px-4 pb-2 lg:hidden">{actions}</div>}
     <div className="trip-sheet-summary">
       <button type="button" className="trip-sheet-summary-text" onClick={() => setCollapsed(false)} aria-label="Expand trip details">
         <span>{title}</span><strong>{detail}</strong>

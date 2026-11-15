@@ -62,10 +62,10 @@ const viewPrefs = { zoom: 1 };
 const ZOOM_MIN = 0.6;
 const ZOOM_MAX = 2.4;
 
-export default function IndoorSimulation({ step, onComplete, highContrast = false, auto = false, onAutoChange, gpsTraveledM = null, gpsLabel = null, fab = null }) {
+export default function IndoorSimulation({ step, onComplete, highContrast = false, auto = false, onAutoChange, fab = null }) {
   const canvasRef = useRef(null);
   const wrapRef = useRef(null);
-  const sim = useRef({ traveled: 0, vel: 0, phase: 'approach', anim: 0, yaw: 0, fwd: false, back: false, left: false, right: false, camX: 0, zoom: viewPrefs.zoom, gps: null, auto: false });
+  const sim = useRef({ traveled: 0, vel: 0, phase: 'approach', anim: 0, yaw: 0, fwd: false, back: false, left: false, right: false, camX: 0, zoom: viewPrefs.zoom, auto: false });
   const stepRef = useRef(step);
   const doneRef = useRef(onComplete);
   const [hud, setHud] = useState({ remaining: 0, phase: 'approach' });
@@ -80,9 +80,6 @@ export default function IndoorSimulation({ step, onComplete, highContrast = fals
     setZoomState(v);
   }, []);
 
-  useEffect(() => {
-    sim.current.gps = gpsTraveledM;
-  }, [gpsTraveledM]);
 
   // New step: start at its beginning
   useEffect(() => {
@@ -186,13 +183,7 @@ export default function IndoorSimulation({ step, onComplete, highContrast = fals
       // Steering: A / D slide you across the corridor, like nudging the push rims
       const steer = (s.right ? 1 : 0) - (s.left ? 1 : 0);
       if (s.phase === 'approach') s.camX = Math.max(-(HALF - 0.45), Math.min(HALF - 0.45, s.camX + steer * 0.9 * dt));
-      if (s.phase === 'approach' && s.gps != null) {
-        // GPS drives your position along this step; ease toward it so a jumpy fix doesn't teleport you
-        const target = Math.max(0, Math.min(L, s.gps));
-        const before = s.traveled;
-        s.traveled += (target - s.traveled) * Math.min(1, dt * 2.5);
-        s.vel = (s.traveled - before) / Math.max(dt, 1e-3);
-      } else if (s.phase === 'approach') {
+      if (s.phase === 'approach') {
         const target = s.fwd || s.auto ? SPEED : s.back ? -SPEED * 0.5 : 0;
         s.vel += (target - s.vel) * Math.min(1, dt * 4);
         s.traveled = Math.max(0, Math.min(L, s.traveled + s.vel * dt));
@@ -269,8 +260,7 @@ export default function IndoorSimulation({ step, onComplete, highContrast = fals
           onPointerUp={holdOff}
           onPointerLeave={holdOff}
           onPointerCancel={holdOff}
-          disabled={hud.phase !== 'approach' || gpsTraveledM != null}
-          title={gpsTraveledM != null ? 'GPS is moving you; turn off "Follow" to drive manually' : undefined}
+          disabled={hud.phase !== 'approach'}
           className="rounded-full bg-white px-5 py-2.5 text-[14px] font-semibold text-slate-950 shadow-lg ring-2 ring-white/40 transition active:scale-95 disabled:opacity-40"
           aria-label="Hold to roll forward"
         >
@@ -297,19 +287,18 @@ export default function IndoorSimulation({ step, onComplete, highContrast = fals
           {hud.phase === 'approach' ? `${Math.ceil(hud.remaining)} ft` : hud.phase === 'ready' ? label : hud.phase === 'acting' ? '…' : '✓'}
         </div>
       </div>
-      {/* Current location pointer */}
+      {/* Simulated step position */}
       <div
         className="pointer-events-none absolute left-1/2 z-20 flex -translate-x-1/2 flex-col items-center"
         style={{ bottom: 'calc(var(--indoor-panel-h, 16px) + 72px)' }}
         aria-live="polite"
       >
-        <span className={`rounded-full px-3 py-1.5 text-[13px] font-semibold shadow-lg ${gpsLabel ? 'bg-blue-600 text-white' : 'bg-white/90 text-slate-900'}`}>
-          📍 {gpsLabel ?? 'Current location'}
+        <span className="rounded-full bg-white/90 px-3 py-1.5 text-[13px] font-semibold text-slate-900 shadow-lg">
+          📍 Simulated position
         </span>
-        <span className={`h-3 w-0.5 ${gpsLabel ? 'bg-blue-600' : 'bg-white/90'}`} />
+        <span className="h-3 w-0.5 bg-white/90" />
         <span className="relative flex h-4 w-4">
-          {gpsLabel && <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-500 opacity-60" />}
-          <span className={`relative inline-flex h-4 w-4 rounded-full border-2 border-white ${gpsLabel ? 'bg-blue-600' : 'bg-slate-700'}`} />
+          <span className="relative inline-flex h-4 w-4 rounded-full border-2 border-white bg-slate-700" />
         </span>
       </div>
 

@@ -8,14 +8,11 @@ import IndoorStepPanel from './IndoorStepPanel';
 import RouteWarningsPanel from './RouteWarningsPanel';
 import { SAMPLE_WEATHER, surfacesFromSteps } from './mockIndoorData';
 import DestinationInput from './DestinationInput';
-import { speak } from '../../services/voiceEngine';
-import { nextStepFromGps, progressOnStep, snapToPolyline, useGeolocation } from './indoorGps';
 import { destinationsOf } from './indoorModel';
-import { entranceNear, findTarget, nearestNode, routeFromPoint, routeIndoor } from './indoorRouter';
+import { entranceNear, findTarget, nearestNode, routeIndoor } from './indoorRouter';
 import { reviewedRoute } from './reviewedRoute';
 import { requestIndoorDirections } from './backendIndoor';
 import { closuresSignature } from '../../services/api';
-import { useAltitudeFloor } from './altitudeFloor';
 import { POS } from './layout';
 
 /**
@@ -41,10 +38,6 @@ import { POS } from './layout';
  *   closures          live closures; elevators reported out of service are avoided
  */
 
-// Off route for this long before rerouting, so one jumpy GPS fix can't trigger it
-const OFF_ROUTE_MS = 4000;
-// After a reroute, wait at least this long before the next one
-const REROUTE_COOLDOWN_MS = 10000;
 const NO_CLOSURES = [];
 
 export default function IndoorFlow({ viewState, onViewStateChange, map: model, buildingId, weather = SAMPLE_WEATHER, highContrast = false, targetRoomId = null, entrance = null, closures = NO_CLOSURES, preferences, startNodeId = null, consent = {} }) {
@@ -62,10 +55,6 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
   const startReady = !reviewed || !!serverStart || (model?.routingKind !== 'drawing' && !!entrance?.portalId);
   useEffect(() => {setManualStart(''); setManualEnabled(false);}, [model, entrance?.id, entrance?.portalId]);
   const requestSequence = useRef(0);
-  // GPS is opt-in; Next / Back always work, with or without it
-  const [gpsOn, setGpsOn] = useState(false);
-  const [follow, setFollow] = useState(true);
-  const geo = useGeolocation(gpsOn && !reviewed && viewState !== 'outdoor' && viewState !== 'transition_modal');
 
   // New building or a room picked in the search bar: start from that room (or none)
   useEffect(() => {
@@ -87,7 +76,7 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
     () => (!reviewed && roomId && model ? routeIndoor(model, roomId, { entrance: startEntrance, closures: elevatorClosures }) : null),
     [model, reviewed, roomId, startEntrance, closureKey] // eslint-disable-line react-hooks/exhaustive-deps
   );
-  const baseRoute = reviewed ? verifiedRoute : planned && !planned.blocked ? planned : null;
+  const route = reviewed ? verifiedRoute : planned && !planned.blocked ? planned : null;
   const blockedReason = reviewed ? verifiedError : planned?.blocked ? `No step-free route to ${planned.room.name}: ${planned.reason}` : null;
 
   const stepRef = useRef(null);
@@ -107,11 +96,7 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
       .catch(error => {if (seq === requestSequence.current) setVerifiedError(error.message);});
   }, [closureKey]); // Route changes must not restart this effect.
 
-  // A GPS reroute replaces the route until you pick another room
-  const [reroute, setReroute] = useState(null);
   const [notice, setNotice] = useState(null);
-  useEffect(() => setReroute(null), [baseRoute]);
-  const route = reroute ?? baseRoute;
   const floors = useMemo(
     () =>
       model?.floors.map((f) => ({
@@ -128,82 +113,12 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
   );
   const surfaces = useMemo(() => (route ? surfacesFromSteps(route.steps) : []), [route]);
 
-  // ---- Floor from GPS altitude (Floor 1 when the phone reports none) ----
-  const altFloor = useAltitudeFloor(gpsOn ? geo.fix : null, model, { atEntrance: active === 0 && !reroute });
-  const altFromGps = gpsOn && altFloor.source === 'altitude';
-
-  // ---- GPS -> floor pixels, snapped to the route on the floor you are on ----
-  const gps = useMemo(() => {
-    if (!route || !geo.fix || !model) return null;
-    const stepFloor = route.steps[active]?.floor;
-    const floorId = altFromGps && model.floorById.has(altFloor.floorId) ? altFloor.floorId : stepFloor;
-    const fl = model.floorById.get(floorId);
-    // A floor needs a lat/lng reference (corner bounds, or entrances / elevators with coordinates)
-    if (!fl?.georef) return { unreferenced: true, floorId };
-    const raw = fl.georef.toPx(geo.fix.lat, geo.fix.lng);
-    const pxPerM = 1 / fl.georef.mPerPx;
-    const margin = 15 * pxPerM;
-    const inside = raw[0] >= -margin && raw[0] <= fl.width + margin && raw[1] >= -margin && raw[1] <= fl.height + margin;
-    const path = route.paths[floorId];
-    const snap = path ? snapToPolyline(raw, path) : null;
-    const offRoute = !snap || snap.dist > 20 * pxPerM;
-    const pos = inside ? (offRoute ? raw : snap.point) : null;
-    const acc = Math.round(geo.fix.accuracy);
-    const floorLabel = altFromGps ? ` · ${fl.label}` : '';
-    return {
-      raw,
-      pos,
-      floorId,
-      pxPerM,
-      onStepFloor: floorId === stepFloor,
-      inside,
-      offRoute,
-      accuracyM: acc,
-      accuracyPx: geo.fix.accuracy * pxPerM,
-      label: `Current location · ±${acc} m${floorLabel}${offRoute && inside ? ' · off route' : ''}`,
-      follow
-    };
-  }, [route, geo.fix, model, active, follow, altFromGps, altFloor.floorId]);
-
-  // Follow mode: move to the next step as you walk. Without altitude, never past an elevator.
-  useEffect(() => {
-    if (!follow || !gps?.pos || !route || !gps.onStepFloor) return;
-    const next = nextStepFromGps(route.steps, active, gps.pos, 5 * gps.pxPerM);
-    if (next !== active) setActive(next);
-  }, [follow, gps, route, active]);
-
-  // Altitude says you changed floor (e.g. got out of the elevator): jump to the first step on that floor
-  useEffect(() => {
-    if (!follow || !altFromGps || !route) return;
-    const here = route.steps[active];
-    if (!here || here.floor === altFloor.floorId) return;
-    const i = route.steps.findIndex((s, k) => k > active && s.floor === altFloor.floorId);
-    if (i > active) setActive(i);
-  }, [follow, altFromGps, altFloor.floorId, route]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // The 2D map switches to the detected floor whenever it changes (Floor 1 if there is no altitude)
-  const floorHint = useMemo(
-    () => (gpsOn && geo.fix ? { floorId: altFloor.floorId, key: `${altFloor.source}:${altFloor.floorId}` } : null),
-    [gpsOn, !!geo.fix, altFloor.source, altFloor.floorId] // eslint-disable-line react-hooks/exhaustive-deps
-  );
-
-  const gpsTraveledM = useMemo(() => {
-    if (!follow || !gps?.pos || !route || !gps.onStepFloor) return null;
-    const pr = progressOnStep(gps.pos, route.steps[active]);
-    return pr ? pr.alongPx / gps.pxPerM : null;
-  }, [follow, gps, route, active]);
-
   // ---- Layout: keep controls above the step panel ----
   const [panelBox, setPanelBox] = useState({ fromBottom: 0, fullWidth: false });
   const onPanelBox = useCallback((b) => setPanelBox((p) => (p.fromBottom === b.fromBottom && p.fullWidth === b.fullWidth ? p : b)), []);
   const [searchOpen, setSearchOpen] = useState(false);
   const [warningsOpen, setWarningsOpen] = useState(false);
 
-  // ---- Live rerouting ----
-  // Latest values for the timer callback, without restarting the 4-second countdown on every GPS fix
-  const live = useRef({ gps, route, active });
-  live.current = { gps, route, active };
-  const lastRerouteAt = useRef(0);
   const noticeTimer = useRef(0);
 
   const flash = useCallback((text, ms = 3500) => {
@@ -212,38 +127,6 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
     noticeTimer.current = window.setTimeout(() => setNotice(null), ms);
   }, []);
   useEffect(() => () => window.clearTimeout(noticeTimer.current), []);
-
-  const recalculateRoute = useCallback(async () => {
-    const { gps: g, route: r, active: i } = live.current;
-    const step = r?.steps[i];
-    if (!g?.raw || !g.inside || !r || !step || !model) return;
-    lastRerouteAt.current = Date.now();
-    speak('Recalculating route.', { priority: true });
-    flash('Recalculating route…', 6000);
-    // Start on the altitude floor if the phone reports it, or use the current step's floor.
-    const seq = requestSequence.current;
-    const next = reviewed ? await reviewedRoute(model, r.room.id, preferences, {
-      startNode: nearbyReviewedNode(model, g.floorId ?? step.floor, g.raw),
-    }).catch(() => null) : routeFromPoint(model, g.floorId ?? step.floor, g.raw, r.room.id, elevatorClosures);
-    if (seq !== requestSequence.current) return;
-    if (next) {
-      setReroute(next);
-      setActive(0); // the step panel then speaks the new first step, right after the announcement
-      flash('New route from your current location');
-    } else {
-      flash("Couldn't find a new route. Use Next / Back.", 5000);
-    }
-  }, [model, flash, elevatorClosures, reviewed, preferences]);
-
-  // Off route for OFF_ROUTE_MS in a row -> reroute. Any fix back on the route cancels the countdown.
-  // Only while Follow is on: with Follow off you are stepping manually and may be ahead of your position.
-  const offRoute = !!(follow && gps?.inside && gps?.offRoute && route && route.steps[active]?.kind !== 'arrive');
-  useEffect(() => {
-    if (!offRoute) return;
-    const cooldownLeft = REROUTE_COOLDOWN_MS - (Date.now() - lastRerouteAt.current);
-    const t = window.setTimeout(recalculateRoute, Math.max(OFF_ROUTE_MS, cooldownLeft));
-    return () => window.clearTimeout(t);
-  }, [offRoute, recalculateRoute]);
 
   const exit = useCallback(() => {
     ++requestSequence.current;
@@ -275,7 +158,6 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
         onClose={exit}
         onLaunch={async (mode, id) => {
           if (!startReady) return;
-          setReroute(null);
           setRoomId(id);
           setActive(0);
           if (reviewed) {
@@ -317,7 +199,7 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
       const step = route.steps[active];
       const request = ++requestSequence.current;
       try {
-        const startNode = nearbyReviewedNode(model, step.floor, gps?.pos && gps.floorId === step.floor ? gps.pos : step.pts?.[0]);
+        const startNode = nearbyReviewedNode(model, step.floor, step.pts?.[0]);
         const next = await requestIndoorDirections(model, route.steps[active]?.fromNodeId || startNode, id, closures, {...consent, preferences});
         if (request !== requestSequence.current) return;
         setVerifiedRoute(next);
@@ -326,7 +208,6 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
         return;
       }
     }
-    setReroute(null);
     setRoomId(id);
     setActive(0);
   };
@@ -346,8 +227,6 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
           onExit={exit}
           overlay={warnings}
           highContrast={highContrast}
-          gpsTraveledM={gpsTraveledM}
-          gpsLabel={gps?.pos ? gps.label : null}
           onSwitch2D={() => onViewStateChange('indoor_2d')}
         />
       ) : (
@@ -358,12 +237,10 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
           active={active}
           destination={destination}
           building={building.name}
-          gps={gps?.pos ? gps : null}
           onSwitch3D={reviewed ? undefined : () => onViewStateChange('indoor_3d')}
           onExit={exit}
           onSelectRoom={(r) => pickRoom(r.id)}
           overlay={warnings}
-          floorHint={floorHint}
           bottomInset={panelBox.fullWidth ? panelBox.fromBottom : 0}
         />
       )}
@@ -371,40 +248,10 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
       {/* Shared across both views: same step, same voice */}
       <IndoorStepPanel steps={route.steps} active={active} onGo={go} onDone={exit} onBox={onPanelBox} />
 
-      {/* One pill toolbar for location, follow, room and (on small screens) warnings, under the header */}
+      {/* Toolbar for room search and (on small screens) warnings, under the header */}
       <div className="pointer-events-none absolute inset-x-0 z-[1001] flex justify-center px-3" style={{ top: POS.toolbarTop }}>
         <div className="pointer-events-auto relative max-w-full">
-          <div role="toolbar" aria-label="Location and destination" className="flex max-w-full items-center gap-0.5 overflow-x-auto rounded-full bg-white/95 p-1 text-slate-900 shadow-lg ring-1 ring-black/10 backdrop-blur [scrollbar-width:none]">
-            <button
-              type="button"
-              disabled={reviewed}
-              onClick={() => setGpsOn((v) => !v)}
-              aria-pressed={gpsOn}
-              title={gpsOn ? 'Stop using your location' : 'Use my location'}
-              className={`${seg} ${gpsOn ? 'bg-blue-600 text-white' : 'hover:bg-slate-100'}`}
-            >
-              <span aria-hidden="true">📍</span>
-              <span className="whitespace-nowrap">{gpsOn ? gpsStatusText(geo, gps) : 'Locate'}</span>
-            </button>
-            {gpsOn && gps?.pos && (
-              <button
-                type="button"
-                onClick={() => setFollow((v) => !v)}
-                aria-pressed={follow}
-                title="Move through the steps automatically as you walk"
-                className={`${seg} ${follow ? 'bg-slate-950 text-white' : 'hover:bg-slate-100'}`}
-              >
-                Follow
-              </button>
-            )}
-            {gpsOn && altFromGps && (
-              <span
-                className="flex h-10 shrink-0 items-center whitespace-nowrap rounded-full bg-slate-100 px-2.5 text-[12px] font-semibold text-slate-700"
-                title={`Floor estimated from GPS altitude (${Math.round(altFloor.altitude ?? 0)} m; ground ${Math.round(altFloor.groundAltitude)} m${altFloor.calibrated ? ', set at the entrance' : ''})`}
-              >
-                Fl {altFloor.floorId}
-              </span>
-            )}
+          <div role="toolbar" aria-label="Indoor directions controls" className="flex max-w-full items-center gap-0.5 overflow-x-auto rounded-full bg-white/95 p-1 text-slate-900 shadow-lg ring-1 ring-black/10 backdrop-blur [scrollbar-width:none]">
             <button
               type="button"
               onClick={() => {
@@ -416,8 +263,7 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
               className={`${seg} min-w-0 ${searchOpen ? 'bg-slate-950 text-white' : 'hover:bg-slate-100'}`}
             >
               <span aria-hidden="true">🔎</span>
-              {/* With GPS on, phones show just the icon so the whole toolbar fits */}
-              <span className={`max-w-[5.5rem] truncate sm:inline sm:max-w-[9rem] ${gpsOn ? 'hidden' : ''}`}>{route.room.name}</span>
+              <span className="max-w-[5.5rem] truncate sm:max-w-[9rem]">{route.room.name}</span>
             </button>
             <button
               type="button"
@@ -457,24 +303,7 @@ export default function IndoorFlow({ viewState, onViewStateChange, map: model, b
         </div>
       </div>
 
-      {!searchOpen && !warningsOpen && (
-        <Notice
-          tone={notice ? 'blue' : gpsOn && geo.error ? 'amber' : gpsOn && gps && (gps.unreferenced || !gps.inside) ? 'dark' : offRoute ? 'amber' : null}
-          assertive={!!notice}
-        >
-          {notice
-            ? `🔄 ${notice}`
-            : gpsOn && geo.error
-              ? `${geo.error} Next / Back still work without GPS.`
-              : gpsOn && gps?.unreferenced
-                ? `This floor's map has no location reference yet, so GPS can't place you on it. Use Next / Back.`
-                : gpsOn && gps && !gps.inside
-                  ? `GPS puts you outside ${building.name}. Use Next / Back, or walk in and wait for a better fix.`
-                  : offRoute
-                    ? 'Off route. Rerouting in a few seconds unless you head back.'
-                    : null}
-        </Notice>
-      )}
+      {!searchOpen && !warningsOpen && notice && <Notice>{notice}</Notice>}
     </div>
   );
 }
@@ -487,34 +316,15 @@ function nearbyReviewedNode(model, floorId, point) {
   return node && floor && Math.hypot(node.px[0] - point[0], node.px[1] - point[1]) <= 8 * floor.pxPerM ? id : null;
 }
 
-const NOTICE_TONE = {
-  blue: 'bg-blue-600 text-white',
-  amber: 'bg-amber-400 text-slate-950',
-  dark: 'bg-slate-900 text-white'
-};
-
-/** One status line under the toolbar (reroutes, GPS problems). */
-function Notice({ tone, assertive, children }) {
-  if (!tone || !children) return null;
+function Notice({ children }) {
   return (
     <p
       role="status"
-      aria-live={assertive ? 'assertive' : 'polite'}
-      className={`absolute left-1/2 z-[1001] w-max max-w-[calc(100vw-1.5rem)] -translate-x-1/2 rounded-2xl px-4 py-2 text-center text-[13px] font-semibold shadow-lg ${NOTICE_TONE[tone]}`}
+      aria-live="assertive"
+      className="absolute left-1/2 z-[1001] w-max max-w-[calc(100vw-1.5rem)] -translate-x-1/2 rounded-2xl bg-blue-600 px-4 py-2 text-center text-[13px] font-semibold text-white shadow-lg"
       style={{ top: POS.noticeTop }}
     >
-      {children}
+      🔄 {children}
     </p>
   );
-}
-
-function gpsStatusText(geo, gps) {
-  if (geo.status === 'locating') return 'Finding you…';
-  if (geo.status === 'denied') return 'Location blocked';
-  if (geo.status === 'insecure') return 'Needs HTTPS';
-  if (geo.status === 'unsupported') return 'No GPS';
-  const acc = geo.fix ? `±${Math.round(geo.fix.accuracy)} m` : null;
-  if (geo.status === 'timeout' || geo.status === 'unavailable') return acc ?? 'No fix yet';
-  if (gps && acc) return acc;
-  return 'GPS on';
 }

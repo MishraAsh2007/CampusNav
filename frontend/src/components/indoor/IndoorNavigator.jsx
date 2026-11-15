@@ -29,8 +29,6 @@ import { POS } from './layout';
  *   toolbar       optional node shown in the top bar
  *   onSwitch2D    shows the round "2D" button (bottom right, above the zoom controls)
  *   highContrast  boolean
- *   gpsTraveledM  metres along the current straight step from GPS (null = drive manually)
- *   gpsLabel      text for the current-location pointer, e.g. 'Current location · ±12 m'
  */
 
 const YAW = { 'turn-left': -90, 'turn-right': 90 };
@@ -51,8 +49,6 @@ export default function IndoorNavigator({
   toolbar,
   onSwitch2D,
   highContrast = false,
-  gpsTraveledM = null,
-  gpsLabel = null
 }) {
   const [internal, setInternal] = useState(Math.min(initialStep, Math.max(0, steps.length - 1)));
   const active = Math.max(0, Math.min(steps.length - 1, activeStep ?? internal));
@@ -112,8 +108,6 @@ export default function IndoorNavigator({
           highContrast={highContrast}
           auto={autoDrive}
           onAutoChange={setAutoDrive}
-          gpsTraveledM={gpsTraveledM}
-          gpsLabel={gpsLabel}
           fab={fab}
           onComplete={() => (last ? setAutoDrive(false) : go(active + 1))}
         />
