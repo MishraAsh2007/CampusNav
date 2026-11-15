@@ -1,0 +1,93 @@
+@import './styles/map.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+  font-feature-settings: 'cv11', 'ss01', 'ss03';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Larger text: everything is rem-based, so scaling the root scales the UI */
+html.text-large {
+  font-size: 112.5%;
+}
+
+body {
+  margin: 0;
+  background: #f5f5f7;
+  color: #1d1d1f;
+}
+
+*:focus-visible {
+  outline: 2px solid #0a84ff;
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/80 backdrop-blur-2xl backdrop-saturate-150 border border-white/60 shadow-float;
+  }
+  .card {
+    @apply rounded-3xl bg-white shadow-ring;
+  }
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-4;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-full px-3.5 py-2 text-[13px] font-medium transition-all duration-200 ease-soft active:scale-[0.97] disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-primary {
+    @apply btn bg-ink text-white hover:bg-ink-2;
+  }
+  .btn-quiet {
+    @apply btn bg-black/[0.04] text-ink hover:bg-black/[0.07];
+  }
+  .btn-ghost {
+    @apply btn text-ink-2 hover:bg-black/[0.05];
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium;
+  }
+  .field {
+    @apply w-full rounded-2xl bg-black/[0.04] px-3.5 py-2.5 text-[14px] text-ink placeholder:text-ink-4 outline-none transition focus:bg-white focus:ring-2 focus:ring-sky/40;
+  }
+  .scroll-soft {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+  }
+}
+
+/* High contrast: stronger text, borders and route colors (WCAG AAA-leaning) */
+html.hc body {
+  color: #000;
+}
+html.hc .glass,
+html.hc .card {
+  background: #fff !important;
+  border: 2px solid #000 !important;
+  box-shadow: none !important;
+}
+html.hc .text-ink-3,
+html.hc .text-ink-4 {
+  color: #1d1d1f !important;
+}
+html.hc .bg-black\/\[0\.04\] {
+  background: #fff !important;
+  outline: 1.5px solid #000;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
