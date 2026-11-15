@@ -111,20 +111,34 @@
         }
       },
       "elevators": {
-        "car_count": 2,
+        "car_count": 3,
         "verified": true,
         "cars": [
           {
             "id": "ilc-elevator-east",
-            "label": "East elevator",
-            "near_entrance": "ilc-se"
+            "label": "East elevator (beside the North Pleasant St door)",
+            "near_entrance": "ilc-se",
+            "lat": 42.3908924,
+            "lng": -72.5254216,
+            "gis_marker": true
           },
           {
-            "id": "ilc-elevator-west",
-            "label": "West elevator"
+            "id": "ilc-elevator-core-a",
+            "label": "Core elevator A (next to core-b)",
+            "lat": 42.390955,
+            "lng": -72.525973,
+            "gis_marker": false
+          },
+          {
+            "id": "ilc-elevator-core-b",
+            "label": "Core elevator B (next to core-a)",
+            "lat": 42.390955,
+            "lng": -72.525973,
+            "gis_marker": false
           }
         ],
-        "source": "Team member has seen two ILC elevators (on site, 2026-11-14). Matches UMass GIS (two) and routing-scraper's map (ilc-elevator-east, ilc-elevator-west). The frontend's mockBuildings.ts lists three (adds a 'Service elevator'); the floor plans show extra box-with-X shafts that may be service or other shafts."
+        "gis_note": "UMass GIS puts one marker per elevator lobby, not per car: the ILC's 'west' marker (42.3908828, -72.5259219) stands for the adjacent pair, and Du Bois's single marker stands for its five cars. Do not read a car count from GIS markers.",
+        "source": "Team member, on site 2026-11-14 (corrected from an earlier 'two'): three elevators, two right next to each other and one beside the North Pleasant St entrance. Matches the frontend's mockBuildings.ts (3) and the floor-1 plan (a pair of shaft symbols in the south wing's core, one at the east end). Core pair position is read off the plan (+/-5 m). Which car is out of service today is unknown."
       }
     }
   }
