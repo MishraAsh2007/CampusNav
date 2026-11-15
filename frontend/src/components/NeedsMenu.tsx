@@ -143,6 +143,7 @@ export function NeedsMenu({ prefs, onChange, open, onToggle }: Props) {
               <span className={cx(prefs.max_grade_pct <= 5 && 'text-go-ink font-medium')}>5% ADA walkway</span>
               <span className={cx(prefs.max_grade_pct > 8.33 && 'text-stop-ink font-medium')}>8.3% ramp max</span>
             </div>
+            <p className="mt-2 text-xs text-ink-3">The slope limit also applies to stairs when you allow them.</p>
           </div>
 
           <div className="rounded-2xl bg-white px-3.5 py-1 shadow-ring divide-y divide-hairline">
@@ -156,6 +157,11 @@ export function NeedsMenu({ prefs, onChange, open, onToggle }: Props) {
             <Switch
               icon={<Footprints className="h-4 w-4" />}
               label="Avoid all stairs"
+              hint={prefs.wheelchair_required
+                ? 'Required while Wheelchair required is on. Turn that off first to allow stairs.'
+                : prefs.no_stairs
+                  ? 'Stair segments are excluded from your route.'
+                  : `Stairs are allowed; your ${prefs.max_grade_pct}% slope limit still applies. The best route may still have no stairs.`}
               checked={stairsBlocked}
               disabled={prefs.wheelchair_required}
               onChange={(v) => set({ no_stairs: v })}

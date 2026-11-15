@@ -303,3 +303,20 @@ test('Ash indoor directions retain the outdoor doorway and filter expired report
   globalThis.fetch = async () => response({detail:'Unavailable'},{status:503});
   assert.equal((await api.getIndoorDirections(req)).status,'unavailable');
 });
+
+test('stairs toggles reach the backend independently of slope, with wheelchair mode enforcing no stairs', async () => {
+  const sent=[];
+  mockRouting((url,init)=>{
+    sent.push(JSON.parse(init.body));
+    return response({accessible:wire,standard:wire,notes:[]});
+  });
+  for (const [wheelchair_required,no_stairs,max_grade_pct] of [
+    [false,true,7],[false,false,7],[false,false,12],[true,false,7],
+  ]) {
+    await api.planRoutes(start,end,{...prefs,wheelchair_required,no_stairs,max_grade_pct},[],[]);
+  }
+  assert.deepEqual(sent.map(body=>({no_stairs:body.no_stairs,max_grade:body.max_grade})),[
+    {no_stairs:true,max_grade:7},{no_stairs:false,max_grade:7},
+    {no_stairs:false,max_grade:12},{no_stairs:true,max_grade:7},
+  ]);
+});
