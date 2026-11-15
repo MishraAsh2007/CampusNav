@@ -33,6 +33,7 @@ MOCKS_DIR = ROUTING_DIR / "mocks"
 GRAPH_PATH = Path(os.getenv("GRAPH_PATH", DATA_DIR / "graph.graphml"))
 ELEVATION_CACHE_PATH = DATA_DIR / "elevation_cache.json"
 GROUND_TRUTH_PATH = DATA_DIR / "ground_truth.json"
+INDOOR_OVERRIDES_PATH = DATA_DIR / "indoor_overrides.json"
 
 # --------------------------------------------------------------------------
 # Area of interest: UMass Amherst central campus

@@ -62,10 +62,17 @@ entrance that suits the indoor leg, and both routes end at that entrance. Send e
 How the entrance is chosen:
 1. **Unusable** entrances: not `step_free`, within the radius of an active non-elevator closure,
    or no step-free route under the grade limit.
-2. **Elevator status**: an active `elevator_out` closure counts against an elevator within
-   `radius_m + 10 m` of its coordinates. If the elevators have no coordinates, a closure within
-   60 m of the building center marks **all** of them as possibly out (conservative, same policy as
-   "may be unavailable" notices).
+2. **Elevator status**: how many cars a building has comes from `data/indoor_overrides.json` when
+   it has an entry (UMass GIS and the map UI hold one marker per lobby, not per car; the ILC has
+   3 cars, Du Bois 5), otherwise from the building data. A closure counts when it is within
+   `radius_m + 10 m` of a car, or within 60 m of the building center. What it takes out depends
+   on its `scope`:
+   - `all`: every car (building power shutdown, "all four elevators").
+   - `cars` + `cars: [5]`: the named cars (matched by car number).
+   - `one`, or no scope: one car. If the closure sits at a lobby with one free car, that car is
+     out. Otherwise one car is out and *which* is unknown (`elevators.unattributed_out`); the
+     rest stay usable.
+   - A building with a single car loses it to any elevator closure.
 3. **Ranking** among usable entrances: no key card first, then (if `needs_elevator`) entrances
    not marked `isAccessibleToAllFloors: false`, then lowest outdoor route cost plus the
    straight-line distance from the door to the nearest working elevator.
@@ -90,9 +97,9 @@ The response gets a `destination` object (null when `end` was used):
   ],
   "elevators": {
     "total": 2, "possibly_out": 1, "working": 1, "located": 2,
-    "closure_ids": ["sin-1751-ilc-e188"], "last_confirmed_at": "2026-11-13T22:00:00-05:00"
+    "closure_ids": ["sin-1751-ilc~one"], "count_source": "override", "out_cars": [], "unattributed_out": 1, "last_confirmed_at": "2026-11-13T22:00:00-05:00"
   },
-  "warnings": ["1 of 2 elevator(s) at Integrative Learning Center may be out of service."]
+  "warnings": ["1 of 2 elevator(s) at Integrative Learning Center may be out of service (not known which); the other should still reach upper floors."]
 }
 ```
 
@@ -127,12 +134,19 @@ The response gets a `destination` object (null when `end` was used):
 | `type` | enum | `elevator_out` \| `construction` \| `ramp_blocked` \| `path_closed` |
 | `lat`, `lon`, `radius_m` | number | Locate by point (default radius 25 m, max 500). |
 | `edge_ids` | `string[]` | Alternative/additional: `"u_v"` OSM node-id pairs, both directions blocked. |
+| `scope`, `cars` | `"all"` \| `"one"` \| `"cars"`, `int[]` | `elevator_out` only: which cars. Optional; see below. |
 | `reported_at`, `confirmed_at`, `expires_at` | ISO-8601 datetime | Naive datetimes are treated as UTC. `expires_at` null = never. |
 
 At least one of (`lat` + `lon`) or `edge_ids` is required.
 
 `starts_at` (optional): a closure is not applied before this time and is counted in
 `meta.closures_pending`.
+
+**Scope in the id.** The backend's `OfficialNotice` and the map UI carry only `id`, `title` and
+`description`, so scope also travels as an id suffix: `sin-1394-ilc~one`, `sin-813-dubois-library~car5`,
+`sin-1049-lincoln-campus-center~car1+2+3+4`, `sin-1458-student-union~all`. The engine reads the
+suffix when `scope` isn't set. Community reports have no suffix, so each reads as one car at its
+location.
 
 **Backend format is accepted as-is.** Items from the backend's `GET /closures`,
 `/official-reports` or `/community-reports` can be passed straight into `closures`. They're

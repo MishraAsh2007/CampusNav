@@ -373,6 +373,8 @@ class Notice:
     dept: str
     status: str = "scheduled"
     flags: list[str] = field(default_factory=list)
+    car_scope: str = "one"          # all | one | cars (which elevator cars the notice takes out)
+    cars: list[int] = field(default_factory=list)
 
     def to_json(self) -> dict:
         d = self.__dict__.copy()
@@ -414,6 +416,40 @@ def classify(row: dict) -> tuple[list[str], Optional[str], Optional[str]]:
     return cats, severity, scope
 
 
+ALL_CARS_RX = re.compile(r"\ball\s+(?:\w+\s+|\(\d+\)\s+){0,3}(?:elevators?|cars?)\b|\bevery\s+(?:elevator|car)\b", re.I)
+CAR_NUM_RX = re.compile(r"(?:\b(?:cars?|elevators?)\s*(?:\(s\))?\s*(?:#|no\.?)?\s*|#)(\d{1,2})\b(?!\s*(?::|[ap]\.?m\b))", re.I)
+CAR_LIST_RX = re.compile(r"^\s*(?:,|and|&|\+)\s*#?(\d{1,2})\b(?!\s*(?::|[ap]\.?m\b))", re.I)
+CAR_RANGE_RX = re.compile(r"^\s*(?:through|thru|to|-)\s*#?(\d{1,2})\b(?!\s*(?::|[ap]\.?m\b))", re.I)
+
+
+def derive_car_scope(cats: list[str], severity: Optional[str], text: str) -> tuple[str, list[int]]:
+    """Which cars a notice takes out: ("all", []), ("one", []) or ("cars", [numbers])."""
+    if "building_power" in cats:
+        return "all", []
+    if ALL_CARS_RX.search(text):
+        return "all", []
+    nums: list[int] = []
+    for m in CAR_NUM_RX.finditer(text):
+        nums.append(int(m.group(1)))
+        rest = text[m.end():]
+        while True:
+            r = CAR_RANGE_RX.match(rest)
+            if r and int(r.group(1)) > nums[-1]:
+                nums.extend(range(nums[-1] + 1, int(r.group(1)) + 1))
+                rest = rest[r.end():]
+                continue
+            li = CAR_LIST_RX.match(rest)
+            if li:
+                nums.append(int(li.group(1)))
+                rest = rest[li.end():]
+                continue
+            break
+    nums = sorted(set(n for n in nums if 0 < n <= 20))
+    if nums:
+        return "cars", nums
+    return "one", []
+
+
 def _clean(s: str) -> str:
     return PHONE_RX.sub("[phone removed]", re.sub(r"\s+", " ", s or "")).strip()
 
@@ -439,6 +475,7 @@ def parse_csv(path: Path, index: BuildingIndex) -> list[Notice]:
         start, end = resolve_window(r, flags)
         cats, severity, scope = classify(r)
         before = len(index.ambiguous_hits)
+        car_scope, cars = derive_car_scope(cats, severity, " ".join(r[k] for k in ("Building", "Desc", "Other Service")))
         names, missing, area = index.match(r["Building"])
         if {"elevator", "building_power"} & set(cats) and not names:
             flags.append("building_unmatched")
@@ -479,6 +516,8 @@ def parse_csv(path: Path, index: BuildingIndex) -> list[Notice]:
                 dept=r["Dept"],
                 status=status,
                 flags=flags,
+                car_scope=car_scope,
+                cars=cars,
             )
         )
     notices.sort(key=lambda n: (n.starts_at or datetime.min.replace(tzinfo=TZ), n.doc_id))
@@ -501,13 +540,40 @@ def blocks_elevators(n: Notice, skip_partial: bool, include_freight: bool) -> bo
 def _label(n: Notice) -> str:
     if "elevator" not in n.categories:
         return "Building power shutdown; elevators may stop"
-    return {"out": "Elevator out of service", "partial": "Some elevator cars out of service"}.get(
+    if n.car_scope == "cars" and n.cars:
+        nums = ", ".join(f"#{c}" for c in n.cars)
+        verb = {"out": "out of service", "partial": "out of service"}.get(n.severity, "may be unavailable")
+        return f"Elevator {nums} {verb}"
+    return {"out": "Elevator out of service", "partial": "One elevator car out of service"}.get(
         n.severity, "Elevator may be unavailable"
     )
 
 
 def _slug(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
+
+
+def scope_token(n: Notice) -> str:
+    """Id suffix the routing engine reads back as the closure's scope (see docs/contracts.md)."""
+    if n.severity == "partial" and n.car_scope != "all" and len(n.cars) != 1:
+        return "one"  # "one car at a time": several named cars are never out together
+    if n.car_scope == "cars" and n.cars:
+        return "car" + "+".join(str(c) for c in n.cars)
+    return n.car_scope
+
+
+def notice_site(b: dict) -> tuple[float, float, float]:
+    """(lat, lon, radius_m) for a notice's single closure in building ``b``.
+
+    The GIS has one marker per lobby, not per car, so a notice no longer gets one closure per
+    marker. It sits at the marker nearest the building center, or at the center if none.
+    """
+    if b["elevators"]:
+        clat, clon = b["centroid"]
+        e = min(b["elevators"], key=lambda e: (e["lat"] - clat) ** 2 + (e["lon"] - clon) ** 2)
+        return e["lat"], e["lon"], ELEVATOR_RADIUS_M
+    lat, lon = b["centroid"]
+    return lat, lon, min(b["radius_m"] + 5, MAX_BUILDING_RADIUS_M)
 
 
 def build_closures(
@@ -534,14 +600,11 @@ def build_closures(
                 "starts_at": n.starts_at.isoformat(),
                 "severity": n.severity,
             }
-            if b["elevators"]:
-                for e in b["elevators"]:
-                    out.append({"id": f"sin-{n.doc_id}-{_slug(name)}-e{e['id']}", "lat": e["lat"], "lon": e["lon"],
-                                "radius_m": ELEVATOR_RADIUS_M, **base})
-            else:
-                lat, lon = b["centroid"]
-                out.append({"id": f"sin-{n.doc_id}-{_slug(name)}", "lat": lat, "lon": lon,
-                            "radius_m": min(b["radius_m"] + 5, MAX_BUILDING_RADIUS_M), **base})
+            lat, lon, radius = notice_site(b)
+            token = scope_token(n)
+            out.append({"id": f"sin-{n.doc_id}-{_slug(name)}~{token}", "lat": lat, "lon": lon,
+                        "radius_m": radius, "scope": "cars" if token.startswith("car") else token,
+                        "cars": n.cars if token.startswith("car") else [], **base})
     return out
 
 

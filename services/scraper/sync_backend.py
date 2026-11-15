@@ -29,8 +29,8 @@ import requests
 from dotenv import load_dotenv
 
 from parse_sin import (
-    DEFAULT_CSV, ELEVATOR_RADIUS_M, MAX_BUILDING_RADIUS_M, TZ, BuildingIndex, Notice, _label, _slug,
-    blocks_elevators, parse_csv,
+    DEFAULT_CSV, TZ, BuildingIndex, Notice, _label, _slug,
+    blocks_elevators, notice_site, parse_csv, scope_token,
 )
 from umass_gis import load_gis
 
@@ -60,14 +60,9 @@ def sin_entries(notices: list[Notice], index: BuildingIndex, now: datetime,
                 "start_time": n.starts_at.isoformat(),
                 "end_time": n.ends_at.isoformat(),
             }
-            if b["elevators"]:
-                for e in b["elevators"]:
-                    entries.append({"id": f"{OWN_PREFIX}{n.doc_id}-{_slug(name)}-e{e['id']}",
-                                    "lat": e["lat"], "lng": e["lon"], "radius": ELEVATOR_RADIUS_M, **common})
-            else:
-                lat, lon = b["centroid"]
-                entries.append({"id": f"{OWN_PREFIX}{n.doc_id}-{_slug(name)}", "lat": lat, "lng": lon,
-                                "radius": min(b["radius_m"] + 5, MAX_BUILDING_RADIUS_M), **common})
+            lat, lon, radius = notice_site(b)
+            entries.append({"id": f"{OWN_PREFIX}{n.doc_id}-{_slug(name)}~{scope_token(n)}", "lat": lat, "lng": lon,
+                            "radius": radius, **common})
     return entries
 
 

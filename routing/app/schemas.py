@@ -1,9 +1,10 @@
 """Pydantic models: the shared request/response contracts (see docs/contracts.md)."""
 from __future__ import annotations
 
+import re
 from datetime import datetime
 from enum import Enum
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, Field, model_validator
 
@@ -39,6 +40,9 @@ BACKEND_FIELDS = {
 }
 
 
+SCOPE_ID_RX = re.compile(r"~(all|one|car\d+(?:\+\d+)*)$")
+
+
 class Closure(BaseModel):
     """An active problem reported on campus. Locate it by lat/lon (+ radius) or by edge_ids.
 
@@ -59,6 +63,12 @@ class Closure(BaseModel):
     confirmed_at: Optional[datetime] = None
     starts_at: Optional[datetime] = Field(default=None, description="Not active before this time")
     expires_at: Optional[datetime] = None
+    scope: Optional[Literal["all", "one", "cars"]] = Field(
+        default=None,
+        description="elevator_out only: every car in the building, one unnamed car, or the named `cars`. "
+        "Unset means unknown (one car if the building has several, otherwise the only car).",
+    )
+    cars: list[int] = Field(default_factory=list, description='Car numbers when scope is "cars"')
 
     @model_validator(mode="before")
     @classmethod
@@ -66,6 +76,16 @@ class Closure(BaseModel):
         if not isinstance(data, dict):
             return data
         d = dict(data)
+        # The backend and map UI carry only the id, so scope travels as an id suffix:
+        # "~all", "~one", "~car5", "~car1+2".
+        m = SCOPE_ID_RX.search(str(d.get("id", "")))
+        if m and not d.get("scope"):
+            token = m.group(1)
+            if token.startswith("car"):
+                d["scope"] = "cars"
+                d["cars"] = [int(n) for n in token[3:].split("+")]
+            else:
+                d["scope"] = token
         loc = d.get("location")
         if isinstance(loc, dict):
             d.setdefault("lat", loc.get("lat"))
@@ -282,6 +302,9 @@ class ElevatorStatus(BaseModel):
     located: int = Field(description="How many elevators have coordinates")
     closure_ids: list[str] = Field(default_factory=list)
     last_confirmed_at: Optional[datetime] = None
+    count_source: str = Field(default="building", description="Where `total` came from: building | override")
+    out_cars: list[str] = Field(default_factory=list, description="Cars known to be out (labels)")
+    unattributed_out: int = Field(default=0, description="Cars out whose identity is unknown")
 
 
 class DestinationPlan(BaseModel):

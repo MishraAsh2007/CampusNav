@@ -38,10 +38,19 @@ Re-export the CSV to pick up new notices; notices are posted days to weeks ahead
 
 ## Closure output
 
-One closure per elevator point in the building (radius 10 m), or one at the building
-centroid if the GIS data has no elevator there. Extra fields (`source`, `notice_id`,
-`building`, `starts_at`, `severity`) are ignored by the routing engine but useful to the app.
-`confirmed_at` is the CSV export time.
+One closure per notice per building (not per GIS marker: the GIS has one marker per elevator
+lobby, so the ILC shows 2 for 3 cars and Du Bois 1 for 5). It sits at the marker nearest the
+building centroid (radius 10 m), or at the centroid if there is none. The id ends in a scope
+token the routing engine reads (see `docs/contracts.md`):
+
+| token | meaning | when |
+|---|---|---|
+| `~all` | every car | building power shutdown, "all four elevators", or a notice that also cuts building power |
+| `~car5`, `~car1+2` | named cars | "(#5)", "cars 1 through 4", "cars 1, 2 and 4" |
+| `~one` | one car, unknown which | everything else, and "one car at a time" notices |
+
+Extra fields (`source`, `notice_id`, `building`, `starts_at`, `severity`) are ignored by the
+routing engine but useful to the app. `confirmed_at` is the CSV export time.
 
 The contract has no start time, so only closures active at `--at` are written. Upcoming
 notices are in `sin_notices.json`.

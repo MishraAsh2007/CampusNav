@@ -28,6 +28,7 @@ from ..schemas import (
     ElevatorStatus,
     EntranceOption,
 )
+from ..indoor.elevators import evaluate as evaluate_elevators
 from ..utils.geo import haversine_m, m_to_ft, nearest_node
 from .closures import AFFECTS_STANDARD, _aware, is_active
 from .pathfinding import find_path, path_cost
@@ -54,43 +55,7 @@ def _near(c: Closure, lat: float, lon: float, slack: float = 0.0) -> bool:
 
 def _elevator_status(dest: Destination, active: list[Closure]) -> tuple[ElevatorStatus, list[tuple[float, float]]]:
     """Returns the status and the coordinates of elevators believed to be working."""
-    b = dest.building
-    total = b.total_elevators
-    located = [(e.lat, e.lng) for e in b.elevators if e.lat is not None and e.lng is not None]
-    elevator_closures = [c for c in active if c.type == ClosureType.elevator_out and c.lat is not None]
-
-    matched: list[Closure] = []
-    out_located: set[int] = set()
-    building_wide = False
-    for c in elevator_closures:
-        hits = [i for i, (la, lo) in enumerate(located) if _near(c, la, lo, config.DEST_ELEVATOR_MATCH_SLACK_M)]
-        if hits:
-            out_located.update(hits)
-            matched.append(c)
-        elif haversine_m(c.lat, c.lon, b.lat, b.lng) <= max(config.DEST_BUILDING_MATCH_M, c.radius_m):
-            # Can't tell which car: be conservative, as for "may be unavailable" notices.
-            building_wide = True
-            matched.append(c)
-
-    # Elevators the building data itself marks out of service (e.g. the map UI's status field).
-    flagged = [e for e in b.elevators if (e.status or "").lower() in ("out_of_service", "out", "down")]
-    flagged_located = {i for i, e in enumerate(e for e in b.elevators if e.lat is not None and e.lng is not None)
-                       if (e.status or "").lower() in ("out_of_service", "out", "down")}
-    out_located |= flagged_located
-    unlocated_flagged = len(flagged) - len(flagged_located)
-
-    possibly_out = total if building_wide else min(total, len(out_located) + unlocated_flagged)
-    working = [] if building_wide else [p for i, p in enumerate(located) if i not in out_located]
-    stamps = [_aware(c.confirmed_at or c.reported_at) for c in matched if (c.confirmed_at or c.reported_at)]
-    status = ElevatorStatus(
-        total=total,
-        possibly_out=possibly_out,
-        working=total - possibly_out,
-        located=len(located),
-        closure_ids=[c.id for c in matched],
-        last_confirmed_at=max(stamps) if stamps else None,
-    )
-    return status, working
+    return evaluate_elevators(dest.building, active)
 
 
 def _door_issue(e: DestinationEntrance, dest: Destination):
@@ -131,9 +96,11 @@ def plan_destination(
             "the entrance level are not reachable step-free right now."
         )
     elif elevators.possibly_out:
-        warnings.append(
-            f"{elevators.possibly_out} of {elevators.total} elevator(s) at {b.name} may be out of service."
-        )
+        msg = f"{elevators.possibly_out} of {elevators.total} elevators at {b.name} may be out of service"
+        if elevators.unattributed_out:
+            msg += " (not known which)"
+        msg += f"; the other{'s' if elevators.working != 1 else ''} should still reach upper floors."
+        warnings.append(msg)
 
     # ---- evaluate each entrance
     options: list[tuple[tuple, EntranceOption, int, float, list[int]]] = []
