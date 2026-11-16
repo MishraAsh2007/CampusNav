@@ -1,4 +1,4 @@
-# CampusNav: routing, maps and live disruption sources (Go here: umass-nav.us, and go from Dubois to ILC for test)
+# CampusNav: routing, maps and live disruption sources (Go here: [umass-nav.us](https://www.umassnav.us/), and go from Dubois to ILC for test)
 
 Expanded indoor pilots: [Oak, Campus Center and Student Union](docs/EXPANDED_INDOOR_PILOTS.md).
 Run `start-indoor-pilots.cmd` for their source-based wayfinding API on port 8004.
